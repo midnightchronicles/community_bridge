@@ -1,4 +1,6 @@
-function InternalNotify(message, type, time)
+Notify = Notify or {}
+
+Notify.SendNotify = function(message, type, time)
     if BridgeClientConfig == nil or BridgeClientConfig.NotifySystem == nil then return Prints.error("You have not configured a compatable notify in community_bridge") end
     local notifyType = BridgeClientConfig.NotifySystem
     time = time or 3000
@@ -25,7 +27,7 @@ function InternalNotify(message, type, time)
     end
 end
 
-function InternalShowHelpText(message, position)
+Notify.ShowHelpText = function(message, position)
     if BridgeClientConfig == nil or BridgeClientConfig.ShowHelpText == nil then return Prints.error("You have not configured a compatable helptext in community_bridge") end
     local helptextType = BridgeClientConfig.ShowHelpText
     if helptextType == 'ox' then
@@ -43,7 +45,7 @@ function InternalShowHelpText(message, position)
     end
 end
 
-function InternalHideHelpText()
+Notify.HideHelpText = function()
     if BridgeClientConfig == nil or BridgeClientConfig.ShowHelpText == nil then return Prints.error("You have not configured a compatable helptext in community_bridge") end
     local helptextType = BridgeClientConfig.ShowHelpText
     if helptextType == 'ox' then
@@ -61,6 +63,6 @@ function InternalHideHelpText()
     end
 end
 
-RegisterNetEvent('community_bridge:Client:Notify', function(message, type, time)
-    InternalNotify(message, type, time)
+RegisterNetEvent('community_bridge:Client:Notify', function(message, _type, time)
+    Notify.SendNotify(message, _type, time)
 end)
