@@ -1,0 +1,3 @@
+Stashes = {}
+
+-- Needs Redone

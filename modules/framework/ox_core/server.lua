@@ -1,0 +1,1 @@
+if GetResourceState('ox_core') ~= 'started' then return end
