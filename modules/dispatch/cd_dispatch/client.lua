@@ -4,7 +4,7 @@ Dispatch = {}
 
 Dispatch.SendAlert = function(data)
     local playerData = exports['cd_dispatch']:GetPlayerInfo()
-    local randomID = Bridge.Helper.RandomString()
+    local randomID = Utility.CreateUniqueId(nil, 14, nil)
     TriggerServerEvent('cd_dispatch:AddNotification', {
         job_table = data.job,
         coords = data.coords or playerData.coords,

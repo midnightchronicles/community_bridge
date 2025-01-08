@@ -24,25 +24,10 @@ Bridge.Table = Table
 Bridge.Math = Math
 Bridge.Clothing = Clothing
 Bridge.Progressbar = Progressbar
-Bridge.Helper = Helper
+Bridge.Utility = Utility
+Bridge.Prints = Prints
+Bridge.Table = Table
 
--- Fill the bridge tables with player data.
-function FillBridgeTables()
-    PlayerLoaded = true
-    PlayerIdentifier = Framework.GetPlayerIdentifier()
-    PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel = Framework.GetPlayerJob()
-end
-
--- Clean the bridge tables.
-function ClearClientSideVariables()
-    PlayerLoaded = false
-    PlayerIdentifier = nil
-    PlayerJobName = nil
-    PlayerJobLabel = nil
-    PlayerJobGradeName = nil
-    PlayerJobGradeLevel = nil
-    StoredOldClothing = {}
-end
 
 CreateThread(function()
     for k, v in pairs(Bridge) do
@@ -86,3 +71,22 @@ exports('RegisterCompatibility', RegisterCompatibility)
 exports('Bridge', function()
     return Bridge
 end)
+
+if IsDuplicityVersion() then return end
+
+function FillBridgeTables()
+    PlayerLoaded = true
+    PlayerIdentifier = Framework.GetPlayerIdentifier()
+    PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel = Framework.GetPlayerJob()
+end
+
+-- Clean the bridge tables.
+function ClearClientSideVariables()
+    PlayerLoaded = false
+    PlayerIdentifier = nil
+    PlayerJobName = nil
+    PlayerJobLabel = nil
+    PlayerJobGradeName = nil
+    PlayerJobGradeLevel = nil
+    StoredOldClothing = {}
+end

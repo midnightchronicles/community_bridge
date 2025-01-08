@@ -1,3 +1,5 @@
+Utility = Utility or {}
+
 local activePlacementProp = nil
 lib.locale()
 
