@@ -27,14 +27,16 @@ Notify.SendNotify = function(message, type, time)
     end
 end
 
-Notify.ShowHelpText = function(message, position)
+Notify.ShowHelpText = function(message, _position)
     if BridgeClientConfig == nil or BridgeClientConfig.ShowHelpText == nil then return Prints.error("You have not configured a compatable helptext in community_bridge") end
     local helptextType = BridgeClientConfig.ShowHelpText
     if helptextType == 'ox' then
-        return exports.ox_lib:showTextUI(message, { position = 'left-center' })
+        if _position == nil then _position = 'left-center' end
+        return exports.ox_lib:showTextUI(message, { position = _position })
     elseif helptextType == 'jg' then
         return exports['jg-textui']:DrawText(message)
     elseif helptextType == 'qb' then
+        if _position == nil then _position = 'left' end
         return exports['qb-core']:DrawText(message, 'left')
     elseif helptextType == 'lab' then
         return exports['lab-HintUI']:Show(message, "Hint Text")

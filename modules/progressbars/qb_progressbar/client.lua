@@ -37,7 +37,7 @@ ProgressBar.StartProgressBar = function(time, label, whiledead, cancancel, disab
     local canceled = canceledAction or function() print("Cancelled") end
     local repackedTable = convertOxToQB(disable, animTable)
     exports['progressbar']:Progress({
-        name = "random_task",
+        name = textLabel,
         duration = runTime,
         label = textLabel,
         useWhileDead = deadBool,
