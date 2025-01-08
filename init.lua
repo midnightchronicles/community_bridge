@@ -1,79 +1,67 @@
-Bridge = {
-    modules = {},
-}
-PlayerLoaded = false
-PlayerIdentifier = nil
-PlayerJobName = nil
-PlayerJobLabel = nil
-PlayerJobGradeName = nil
-PlayerJobGradeLevel = nil
+Bridge = {}
 
-Bridge.Inventory = Inventory
-Bridge.Menu = Menu
-Bridge.Language = Language
-Bridge.Debugger = Debugger
-Bridge.Framework = Framework
-Bridge.Doorlock = Doorlock
-Bridge.Phone = Phone
-Bridge.Notify = Notify
-Bridge.Vehicle = Vehicle
-Bridge.Dispatch = Dispatch
-Bridge.Weather = Weather
-Bridge.Target = Target
-Bridge.Table = Table
-Bridge.Math = Math
-Bridge.Clothing = Clothing
-Bridge.Progressbar = Progressbar
-Bridge.Utility = Utility
-Bridge.Prints = Prints
-Bridge.Table = Table
-
-
-CreateThread(function()
-    for k, v in pairs(Bridge) do
-        if type(v) == 'table' then
-            exports(k, function()
-                return v
-            end)
-            v.__index = function(key, value)
-                IndexingFallback(v, key, value)
-            end
-        else
-            exports(k, v)
-        end
+local function registerModule(moduleName, moduleTable)
+    local wrappedModule = {}
+    for functionName, func in pairs(moduleTable) do
+        wrappedModule[functionName] = func
     end
-end)
-
-function IndexingFallback(module, k, v)
-    if not module[k] then
-        local func = Framework[k] and type(Framework[k]) == 'function' and Framework[k] or nil
-        return function(...)
-            return func(...)
-        end
-    end
-    return module[k]
+    print("Registering module:", moduleName)
+    Bridge[moduleName] = wrappedModule
 end
 
-OverRide = function(module, key, value)
-    module[key] = value
-end
-
-RegisterCompatibility = function(key, module)
-    module = module or {}
-    module.__index = IndexingFallback
-    module.OverRide = function(key, value)
-        OverRide(module, key, value)
+function Bridge.RegisterModule(moduleName, moduleTable)
+    if not moduleTable then
+        moduleTable = Framework
+        registerModule(moduleName, moduleTable)
+        return
     end
-    Bridge[key] = module
+    if Bridge[moduleName] then
+        print("Module already registered:", moduleName)
+        return
+    end
+    registerModule(moduleName, moduleTable)
 end
-exports('RegisterCompatibility', RegisterCompatibility)
+--TODO: Create a way to overide functions or create a new functions for module
+-- local OverRide = function(module, key, value)
+--     module[key] = value
+-- end
 
-exports('Bridge', function()
-    return Bridge
-end)
+-- RegisterCompatibility = function(moduleName, key, func)
+--     local module = Bridge[moduleName] or {}
 
-if IsDuplicityVersion() then return end
+--     if not module[key] then
+--         module[key] = func
+--         print("Registered function for:", moduleName, key)
+--     else
+--         print("Key already exists for:", moduleName, key)
+--     end
+--     Bridge[moduleName] = module
+--     Bridge[moduleName].OverRide = function(k, v)
+--         OverRide(module, k, v)
+--     end
+-- end
+-- exports('RegisterCompatibility', RegisterCompatibility)
 
+Bridge.RegisterModule("Inventory", Inventory)
+Bridge.RegisterModule("Framework", Framework)
+Bridge.RegisterModule("Notify", Notify)
+Bridge.RegisterModule("Utility", Utility)
+Bridge.RegisterModule("Progressbar", Progressbar)
+Bridge.RegisterModule("Clothing", Clothing)
+Bridge.RegisterModule("Menu", Menu)
+Bridge.RegisterModule("Language", Language)
+Bridge.RegisterModule("Debugger", Debugger)
+Bridge.RegisterModule("Doorlock", Doorlock)
+Bridge.RegisterModule("Phone", Phone)
+Bridge.RegisterModule("Vehicle", Vehicle)
+Bridge.RegisterModule("Dispatch", Dispatch)
+Bridge.RegisterModule("Weather", Weather)
+Bridge.RegisterModule("Target", Target)
+Bridge.RegisterModule("Table", Table)
+Bridge.RegisterModule("Math", Math)
+Bridge.RegisterModule("Prints", Prints)
+
+-- Fill the bridge tables with player data.
 function FillBridgeTables()
     PlayerLoaded = true
     PlayerIdentifier = Framework.GetPlayerIdentifier()
@@ -90,3 +78,19 @@ function ClearClientSideVariables()
     PlayerJobGradeLevel = nil
     StoredOldClothing = {}
 end
+
+CreateThread(function()
+    for k, v in pairs(Bridge) do
+        if type(v) == 'table' then
+            exports(k, function()
+                return v
+            end)
+        else
+            exports(k, v)
+        end
+    end
+end)
+
+exports('Bridge', function()
+    return Bridge
+end)
