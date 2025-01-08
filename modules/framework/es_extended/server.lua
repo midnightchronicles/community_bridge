@@ -189,8 +189,8 @@ Framework.RemoveItem = function(src, item, amount, slot, metadata)
     return xPlayer.removeInventoryItem(item, amount)
 end
 
--- Framework.CreateUseableItem(item, cb)
+-- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
-Framework.CreateUseableItem = function(item, cb)
-    ESX.CreateUseableItem(item, cb)
+Framework.RegisterUsableItem = function(item, cb)
+    ESX.RegisterUsableItem(item, cb)
 end

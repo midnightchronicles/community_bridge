@@ -228,8 +228,8 @@ Framework.SetMetadata = function(src, item, slot, metadata)
     return player.Functions.AddItem(item, 1, slot, metadata)
 end
 
--- Framework.CreateUseableItem(item, cb)
+-- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
-Framework.CreateUseableItem = function(item, cb)
+Framework.RegisterUsableItem = function(item, cb)
     return QBox:CreateUseableItem(item, cb)
 end
