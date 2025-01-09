@@ -1,9 +1,9 @@
-Inventory = Inventory or {}
+DefaultInventory = DefaultInventory or {}
 
-Inventory.GetItemInfo = function(item)
+DefaultInventory.GetItemInfo = function(item)
     return Framework.GetItemInfo(item)
 end
 
-Inventory.GetImagePath = function(item)
+DefaultInventory.GetImagePath = function(item)
     return "https://avatars.githubusercontent.com/u/47620135"
 end

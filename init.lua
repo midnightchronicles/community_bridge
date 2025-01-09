@@ -35,8 +35,6 @@ end
 
 --TODO: Create a way to overide functions or create a new functions for module
 
-local DefaultInventory = Require("components/modules_defaults/inventory/defaults.lua")
-
 Bridge.RegisterModule("Framework", Framework)
 Bridge.RegisterModule("Inventory", Inventory, DefaultInventory)
 Bridge.RegisterModule("Notify", Notify)
