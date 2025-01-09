@@ -1,6 +1,15 @@
 Bridge = {}
 
-local function registerModule(moduleName, moduleTable)
+function Bridge.RegisterModule(moduleName, moduleTable)
+    if not moduleTable then
+        print("No moduleTable provided for module and no defaultsTable found: ", moduleName)
+        return
+    end
+    if Bridge[moduleName] then
+        print("Module already registered:", moduleName)
+        return
+    end
+
     local wrappedModule = {}
     for functionName, func in pairs(moduleTable) do
         wrappedModule[functionName] = func
@@ -9,38 +18,10 @@ local function registerModule(moduleName, moduleTable)
     Bridge[moduleName] = wrappedModule
 end
 
-function Bridge.RegisterModule(moduleName, moduleTable, defaultsTable)
-    if not moduleTable then
-        if not defaultsTable then
-            print("No moduleTable or defaultsTable provided for module:", moduleName)
-            return
-        end
-        moduleTable = defaultsTable
-        registerModule(moduleName, moduleTable)
-        return
-    end
-
-    if Bridge[moduleName] then
-        print("Module already registered:", moduleName)
-        return
-    end
-
-    if defaultsTable and type(defaultsTable) == "table" then
-        for functionName, func in pairs(defaultsTable) do
-            if not moduleTable[functionName] then
-                moduleTable[functionName] = func
-                print(string.format("Added function '%s' from defaultsTable to module '%s'", functionName, moduleName))
-            end
-        end
-    end
-
-    registerModule(moduleName, moduleTable)
-end
-
 --TODO: Create a way to overide functions or create a new functions for module
 
 Bridge.RegisterModule("Framework", Framework)
-Bridge.RegisterModule("Inventory", Inventory, DefaultInventory)
+Bridge.RegisterModule("Inventory", Inventory)
 Bridge.RegisterModule("Notify", Notify)
 Bridge.RegisterModule("Utility", Utility)
 Bridge.RegisterModule("Progressbar", Progressbar)
