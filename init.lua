@@ -15,7 +15,6 @@ Bridge.Framework = Framework
 Bridge.Doorlock = Doorlock
 Bridge.Phone = Phone
 Bridge.Notify = Notify
-Bridge.Vehicle = Vehicle
 Bridge.Fuel = Fuel
 Bridge.Dispatch = Dispatch
 Bridge.Weather = Weather
@@ -29,7 +28,6 @@ Bridge.Clothing = Clothing
 Bridge.Progressbar = Progressbar
 Bridge.Utility = Utility
 Bridge.Prints = Prints
-
 
 CreateThread(function()
     for k, v in pairs(Bridge) do
