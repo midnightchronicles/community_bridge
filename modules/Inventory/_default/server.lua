@@ -9,7 +9,7 @@ DefaultInventory.RemoveItem = function(src, item, count, slot, metadata)
 end
 
 DefaultInventory.GetItemInfo = function(item)
-    return false, Print.Error("This Inventory Has Not Been Bridged For An Item Info Feature.")
+    return false, print("This Inventory Has Not Been Bridged For An Item Info Feature.")
 end
 
 DefaultInventory.GetItemCount = function(src, item, metadata)
@@ -25,7 +25,7 @@ DefaultInventory.SetMetadata = function(src, item, slot, metadata)
 end
 
 DefaultInventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    return false, Print.Error("This Inventory Has Not Been Bridged For A Stash Feature.")
+    return false, print("This Inventory Has Not Been Bridged For A Stash Feature.")
 end
 
 DefaultInventory.GetImagePath = function(item)

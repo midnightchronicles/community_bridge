@@ -11,7 +11,11 @@ end
 
 function Bridge.RegisterModule(moduleName, moduleTable, defaultsTable)
     if not moduleTable then
-        moduleTable = Framework
+        if not defaultsTable then
+            print("No moduleTable or defaultsTable provided for module:", moduleName)
+            return
+        end
+        moduleTable = defaultsTable
         registerModule(moduleName, moduleTable)
         return
     end
