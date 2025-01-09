@@ -1,6 +1,8 @@
-LootTables = {}
+Utility = Utility or {}
 
-LootTables.RegisterLootTable = function(name, items)
+local lootTables = {}
+
+Utility.RegisterLootTable = function(name, items)
     local repackedTable = {}
     for k, v in pairs(items) do
         table.insert(repackedTable, {
@@ -13,19 +15,19 @@ LootTables.RegisterLootTable = function(name, items)
             metadata = v.metadata
         })
     end
-    LootTables[name] = repackedTable
-    return LootTables[name]
+    lootTables[name] = repackedTable
+    return lootTables[name]
 end
 
-LootTables.GetLootTable = function(name)
+Utility.GetLootTable = function(name)
     assert(name, "No Name Passed For Loot Table")
-    return LootTables[name] or {}
+    return lootTables[name] or {}
 end
 
-LootTables.GetRandomItem = function(name, tier, randomNumber)
+Utility.GetRandomItem = function(name, tier, randomNumber)
     assert(name, "No Name Passed For Loot Table")
     if tier == nil then tier = 1 end
-    local lootTable = LootTables[name] or {}
+    local lootTable = lootTables[name] or {}
     math.randomseed(GetGameTimer())
     local chance = randomNumber or math.random(1, 100)
     for _, v in pairs(lootTable) do
@@ -35,10 +37,10 @@ LootTables.GetRandomItem = function(name, tier, randomNumber)
     end
 end
 
-LootTables.GetRandomItems = function(name, tier, randomNumber)
+Utility.GetRandomItems = function(name, tier, randomNumber)
     assert(name, "No Name Passed For Loot Table")
     if tier == nil then tier = 1 end
-    local lootTable = LootTables.GetLootTable(name)
+    local lootTable = Utility.GetLootTable(name)
     math.randomseed(GetGameTimer())
     local chance = randomNumber or math.random(1, 100)
     local items = {}
@@ -50,10 +52,10 @@ LootTables.GetRandomItems = function(name, tier, randomNumber)
     return items
 end
 
-LootTables.GetRandomItemsWithLimit = function(name, tier, randomNumber)
+Utility.GetRandomItemsWithLimit = function(name, tier, randomNumber)
     assert(name, "No Name Passed For Loot Table")
     if tier == nil then tier = 1 end
-    local lootTable = LootTables.GetLootTable(name)
+    local lootTable = Utility.GetLootTable(name)
     math.randomseed(GetGameTimer())
     local chance = randomNumber or math.random(1, 100)
     local items = {}

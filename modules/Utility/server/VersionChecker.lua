@@ -1,6 +1,6 @@
-VersionCheck = {}
+Utility = Utility or {}
 
-function VersionCheck.VersionChecker(repoPath)
+function Utility.VersionChecker(repoPath)
     local resource = repoPath:match("([^/]+)$")
     if not resource then return Prints.Error('^1Invalid repository format. Expected format: "username/reponame"^0') end
 
@@ -23,16 +23,16 @@ function VersionCheck.VersionChecker(repoPath)
         local latest = response.tag_name:match('%d+%.%d+%.%d+')
         if not latest then return Prints.Error(failure) end
 
-        if latest == version then return Prints.Error(('^2 %s is on the latest version.^0'):format(resource)) end
+        if latest == version then return print(('^2 %s is on the latest version.^0'):format(resource)) end
         local currentVersion, latestVersion = version:gsub('%D', ''), latest:gsub('%D', '')
 
         if currentVersion < latestVersion then
-            return Prints.Error(('^1An update is available for %s (current version: %s)\r\n - ^5Please download the latest version from the GitHub release page.^7\r\n%s'):format(resource, version, response.html_url))
+            return print(('^1An update is available for %s (current version: %s)\r\n - ^5Please download the latest version from the GitHub release page.^7\r\n%s'):format(resource, version, response.html_url))
         end
     end, 'GET')
 end
 
 AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
-    VersionCheck.VersionChecker("The-Order-Of-The-Sacred-Framework/community_bridge")
+    Utility.VersionChecker("The-Order-Of-The-Sacred-Framework/community_bridge")
 end)

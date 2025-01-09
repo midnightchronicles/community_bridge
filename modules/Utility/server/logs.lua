@@ -1,9 +1,9 @@
-Logger = {}
+Utility = Utility or {}
 
 local WebhookURL = BridgeServerConfig.WebhookURL
 local LogoForEmbed = BridgeServerConfig.WebhookImage
 
-Logger.SendLog = function(src, message)
+Utility.SendLog = function(src, message)
     if not src or not message then return end
     if BridgeServerConfig.LogSystem == "builtin" then
         PerformHttpRequest(WebhookURL, function(err, text, headers) end, 'POST', json.encode(
