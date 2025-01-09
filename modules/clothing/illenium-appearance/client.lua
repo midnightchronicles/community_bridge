@@ -14,7 +14,7 @@ Clothing.SetAppearance = function(clothingData)
     clothing.components = exports['illenium-appearance']:getPedComponents(cache.ped)
     clothing.props = exports['illenium-appearance']:getPedProps(cache.ped)
 
-    print(json.encode(clothingData, {indent = true}))
+    Prints.Debug(json.encode(clothingData, {indent = true}))
     StoredOldClothing = clothing
     exports['illenium-appearance']:setPedComponents(cache.ped, clothingData.components)
     exports['illenium-appearance']:setPedProp(cache.ped, clothingData.props)

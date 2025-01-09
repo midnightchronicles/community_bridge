@@ -1,4 +1,5 @@
-Prints = {}
+Prints = Prints or {}
+
 local function printMessage(level, color, message)
     if type(message) == 'table' then
         message = json.encode(message)
@@ -21,5 +22,3 @@ end
 Prints.Debug = function(message)
     printMessage('DEBUG', '^2', message)
 end
-
-return Prints

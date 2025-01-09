@@ -70,6 +70,6 @@ CreateThread(function()
         jobs = { 'leo' }
     }
     Dispatch.SendAlert(data)
-    print("Dispatched")
+    Prints.Debug("Dispatched")
 end)
 --]]

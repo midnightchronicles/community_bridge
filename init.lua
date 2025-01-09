@@ -11,22 +11,24 @@ PlayerJobGradeLevel = nil
 Bridge.Inventory = Inventory
 Bridge.Menu = Menu
 Bridge.Language = Language
-Bridge.Debugger = Debugger
 Bridge.Framework = Framework
 Bridge.Doorlock = Doorlock
 Bridge.Phone = Phone
 Bridge.Notify = Notify
 Bridge.Vehicle = Vehicle
+Bridge.Fuel = Fuel
 Bridge.Dispatch = Dispatch
 Bridge.Weather = Weather
 Bridge.Target = Target
 Bridge.Table = Table
+Bridge.Input = Input
+Bridge.Managment = Managment
 Bridge.Math = Math
+Bridge.VehicleKey = VehicleKey
 Bridge.Clothing = Clothing
 Bridge.Progressbar = Progressbar
 Bridge.Utility = Utility
 Bridge.Prints = Prints
-Bridge.Table = Table
 
 
 CreateThread(function()

@@ -21,9 +21,9 @@ Notify.SendNotify = function(message, type, time)
     elseif notifyType == 'lab' then
         return exports['swe-notify']:SendNotification(message, time, type)
     elseif notifyType == 'custom' then
-        return Prints.error("You have not set up a custom notify in community_bridge")
+        return Prints.Error("You have not set up a custom notify in community_bridge")
     else
-        return Prints.error("You have not configured a notify in community_bridge")
+        return Prints.Error("You have not configured a notify in community_bridge")
     end
 end
 
@@ -41,9 +41,9 @@ Notify.ShowHelpText = function(message, _position)
     elseif helptextType == 'lab' then
         return exports['lab-HintUI']:Show(message, "Hint Text")
     elseif helptextType == 'custom' then
-        return Prints.error("You have not set up a custom ShowHelpText in community_bridge")
+        return Prints.Error("You have not set up a custom ShowHelpText in community_bridge")
     else
-        return Prints.error("You have not configured a ShowHelpText in community_bridge")
+        return Prints.Error("You have not configured a ShowHelpText in community_bridge")
     end
 end
 
@@ -59,9 +59,9 @@ Notify.HideHelpText = function()
     elseif helptextType == 'lab' then
         return exports['lab-HintUI']:Hide()
     elseif helptextType == 'custom' then
-        return Prints.error("You have not set up a custom HideHelpText in community_bridge")
+        return Prints.Error("You have not set up a custom HideHelpText in community_bridge")
     else
-        return Prints.error("You have not configured a HideHelpText in community_bridge")
+        return Prints.Error("You have not configured a HideHelpText in community_bridge")
     end
 end
 
