@@ -9,50 +9,36 @@ local function registerModule(moduleName, moduleTable)
     Bridge[moduleName] = wrappedModule
 end
 
-function Bridge.RegisterModule(moduleName, moduleTable, useFrameworkFunctions)
+function Bridge.RegisterModule(moduleName, moduleTable, defaultsTable)
     if not moduleTable then
         moduleTable = Framework
         registerModule(moduleName, moduleTable)
         return
     end
+
     if Bridge[moduleName] then
         print("Module already registered:", moduleName)
         return
     end
-    if useFrameworkFunctions and Framework then
-        for functionName, func in pairs(Framework) do
+
+    if defaultsTable and type(defaultsTable) == "table" then
+        for functionName, func in pairs(defaultsTable) do
             if not moduleTable[functionName] then
                 moduleTable[functionName] = func
-                print(string.format("Added function '%s' from Framework to module '%s'", functionName, moduleName))
+                print(string.format("Added function '%s' from defaultsTable to module '%s'", functionName, moduleName))
             end
         end
     end
 
     registerModule(moduleName, moduleTable)
 end
+
 --TODO: Create a way to overide functions or create a new functions for module
--- local OverRide = function(module, key, value)
---     module[key] = value
--- end
 
--- RegisterCompatibility = function(moduleName, key, func)
---     local module = Bridge[moduleName] or {}
-
---     if not module[key] then
---         module[key] = func
---         print("Registered function for:", moduleName, key)
---     else
---         print("Key already exists for:", moduleName, key)
---     end
---     Bridge[moduleName] = module
---     Bridge[moduleName].OverRide = function(k, v)
---         OverRide(module, k, v)
---     end
--- end
--- exports('RegisterCompatibility', RegisterCompatibility)
+local DefaultInventory = Require("components/modules_defaults/inventory/defaults.lua")
 
 Bridge.RegisterModule("Framework", Framework)
-Bridge.RegisterModule("Inventory", Inventory, true)
+Bridge.RegisterModule("Inventory", Inventory, DefaultInventory)
 Bridge.RegisterModule("Notify", Notify)
 Bridge.RegisterModule("Utility", Utility)
 Bridge.RegisterModule("Progressbar", Progressbar)
@@ -69,6 +55,26 @@ Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Table", Table)
 Bridge.RegisterModule("Math", Math)
 Bridge.RegisterModule("Prints", Prints)
+
+
+CreateThread(function()
+    for moduleName, moduleFunction in pairs(Bridge) do
+        if type(moduleFunction) == 'table' then
+            exports(moduleName, function()
+                return moduleFunction
+            end)
+        else
+            exports(moduleName, moduleFunction)
+        end
+    end
+end)
+
+exports('Bridge', function()
+    return Bridge
+end)
+
+
+if IsDuplicityVersion() then return end
 
 -- Fill the bridge tables with player data.
 function FillBridgeTables()
@@ -87,19 +93,3 @@ function ClearClientSideVariables()
     PlayerJobGradeLevel = nil
     StoredOldClothing = {}
 end
-
-CreateThread(function()
-    for k, v in pairs(Bridge) do
-        if type(v) == 'table' then
-            exports(k, function()
-                return v
-            end)
-        else
-            exports(k, v)
-        end
-    end
-end)
-
-exports('Bridge', function()
-    return Bridge
-end)
