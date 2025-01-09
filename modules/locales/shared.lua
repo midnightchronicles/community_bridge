@@ -19,9 +19,9 @@ Language = {}
 function Language.Locale(str, ...)
     local resource = GetInvokingResource() or GetCurrentResourceName()
     assert(resource, "Resource name not found")
-    print(resource, "locales/" .. Lang .. ".json")
+    --print(resource, "locales/" .. Lang .. ".json")
     local locales = LoadResourceFile(resource, "locales/" .. Lang .. ".json")
-    print(locales, Lang)
+    --print(locales, Lang)
     locales = locales and json.decode(locales) or {}
     local locale = locales[str]
 
@@ -46,8 +46,8 @@ if BridgeSharedConfig.DebugLevel == 3 then
     -- Files must be stored in "locales" folder, within the resource.
     -- Instead of using Require you can also import it via the manifest.
     -- The Lang variable is available globally, which tells you what the server is using.
-    print("Language: ", Lang)
-    print("Locale: ", Language.Locale("locale-unit-test"))
+    --print("Language: ", Lang)
+    --print("Locale: ", Language.Locale("locale-unit-test"))
 
     -- Example outside community bridge resource:
 
