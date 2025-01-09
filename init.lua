@@ -9,7 +9,7 @@ local function registerModule(moduleName, moduleTable)
     Bridge[moduleName] = wrappedModule
 end
 
-function Bridge.RegisterModule(moduleName, moduleTable)
+function Bridge.RegisterModule(moduleName, moduleTable, useFrameworkFunctions)
     if not moduleTable then
         moduleTable = Framework
         registerModule(moduleName, moduleTable)
@@ -19,6 +19,15 @@ function Bridge.RegisterModule(moduleName, moduleTable)
         print("Module already registered:", moduleName)
         return
     end
+    if useFrameworkFunctions and Framework then
+        for functionName, func in pairs(Framework) do
+            if not moduleTable[functionName] then
+                moduleTable[functionName] = func
+                print(string.format("Added function '%s' from Framework to module '%s'", functionName, moduleName))
+            end
+        end
+    end
+
     registerModule(moduleName, moduleTable)
 end
 --TODO: Create a way to overide functions or create a new functions for module
@@ -42,8 +51,8 @@ end
 -- end
 -- exports('RegisterCompatibility', RegisterCompatibility)
 
-Bridge.RegisterModule("Inventory", Inventory)
 Bridge.RegisterModule("Framework", Framework)
+Bridge.RegisterModule("Inventory", Inventory, true)
 Bridge.RegisterModule("Notify", Notify)
 Bridge.RegisterModule("Utility", Utility)
 Bridge.RegisterModule("Progressbar", Progressbar)
