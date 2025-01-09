@@ -1,4 +1,6 @@
-function InternalNotify(message, type, time)
+Notify = Notify or {}
+
+Notify.SendNotify = function(message, type, time)
     if BridgeClientConfig == nil or BridgeClientConfig.NotifySystem == nil then return Prints.error("You have not configured a compatable notify in community_bridge") end
     local notifyType = BridgeClientConfig.NotifySystem
     time = time or 3000
@@ -19,31 +21,33 @@ function InternalNotify(message, type, time)
     elseif notifyType == 'lab' then
         return exports['swe-notify']:SendNotification(message, time, type)
     elseif notifyType == 'custom' then
-        return Prints.error("You have not set up a custom notify in community_bridge")
+        return Prints.Error("You have not set up a custom notify in community_bridge")
     else
-        return Prints.error("You have not configured a notify in community_bridge")
+        return Prints.Error("You have not configured a notify in community_bridge")
     end
 end
 
-function InternalShowHelpText(message, position)
+Notify.ShowHelpText = function(message, _position)
     if BridgeClientConfig == nil or BridgeClientConfig.ShowHelpText == nil then return Prints.error("You have not configured a compatable helptext in community_bridge") end
     local helptextType = BridgeClientConfig.ShowHelpText
     if helptextType == 'ox' then
-        return exports.ox_lib:showTextUI(message, { position = 'left-center' })
+        if _position == nil then _position = 'left-center' end
+        return exports.ox_lib:showTextUI(message, { position = _position })
     elseif helptextType == 'jg' then
         return exports['jg-textui']:DrawText(message)
     elseif helptextType == 'qb' then
+        if _position == nil then _position = 'left' end
         return exports['qb-core']:DrawText(message, 'left')
     elseif helptextType == 'lab' then
         return exports['lab-HintUI']:Show(message, "Hint Text")
     elseif helptextType == 'custom' then
-        return Prints.error("You have not set up a custom ShowHelpText in community_bridge")
+        return Prints.Error("You have not set up a custom ShowHelpText in community_bridge")
     else
-        return Prints.error("You have not configured a ShowHelpText in community_bridge")
+        return Prints.Error("You have not configured a ShowHelpText in community_bridge")
     end
 end
 
-function InternalHideHelpText()
+Notify.HideHelpText = function()
     if BridgeClientConfig == nil or BridgeClientConfig.ShowHelpText == nil then return Prints.error("You have not configured a compatable helptext in community_bridge") end
     local helptextType = BridgeClientConfig.ShowHelpText
     if helptextType == 'ox' then
@@ -55,12 +59,12 @@ function InternalHideHelpText()
     elseif helptextType == 'lab' then
         return exports['lab-HintUI']:Hide()
     elseif helptextType == 'custom' then
-        return Prints.error("You have not set up a custom HideHelpText in community_bridge")
+        return Prints.Error("You have not set up a custom HideHelpText in community_bridge")
     else
-        return Prints.error("You have not configured a HideHelpText in community_bridge")
+        return Prints.Error("You have not configured a HideHelpText in community_bridge")
     end
 end
 
-RegisterNetEvent('community_bridge:Client:Notify', function(message, type, time)
-    InternalNotify(message, type, time)
+RegisterNetEvent('community_bridge:Client:Notify', function(message, _type, time)
+    Notify.SendNotify(message, _type, time)
 end)

@@ -179,8 +179,8 @@ end
 
 --Open menu
 
-function Input.Open(title, data, isQB, submitText)
-    if isQB then
+function Input.Open(title, data, isQBFormat, submitText)
+    if isQBFormat then
         local inputs = data.inputs
         if BridgeClientConfig.InputSystem == "ox" then
             return lib.inputDialog(title, QBToOxInput(inputs))
