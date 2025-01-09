@@ -1,7 +1,8 @@
 if GetResourceState('origen_inventory') ~= 'started' then return end
-local origen_inventory = exports.origen_inventory
 
 Inventory = Inventory or {}
+
+local origen_inventory = exports.origen_inventory
 
 Inventory.GetItemInfo = function(item)
     local itemData = origen_inventory:Items(item)

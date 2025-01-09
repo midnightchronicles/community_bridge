@@ -1,7 +1,8 @@
 if GetResourceState('origen_inventory') ~= 'started' then return end
-local origen_inventory = exports.origen_inventory
 
 Inventory = Inventory or {}
+
+local origen_inventory = exports.origen_inventory
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
     if not origen_inventory:CanCarryItem(src, item, count) then
