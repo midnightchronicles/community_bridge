@@ -1,79 +1,65 @@
-Bridge = {
-    modules = {},
-}
-PlayerLoaded = false
-PlayerIdentifier = nil
-PlayerJobName = nil
-PlayerJobLabel = nil
-PlayerJobGradeName = nil
-PlayerJobGradeLevel = nil
+Bridge = {}
 
-Bridge.Inventory = Inventory
-Bridge.Menu = Menu
-Bridge.Language = Language
-Bridge.Framework = Framework
-Bridge.Doorlock = Doorlock
-Bridge.Phone = Phone
-Bridge.Notify = Notify
-Bridge.Fuel = Fuel
-Bridge.Dispatch = Dispatch
-Bridge.Weather = Weather
-Bridge.Target = Target
-Bridge.Table = Table
-Bridge.Input = Input
-Bridge.Managment = Managment
-Bridge.Math = Math
-Bridge.VehicleKey = VehicleKey
-Bridge.Clothing = Clothing
-Bridge.Progressbar = Progressbar
-Bridge.Utility = Utility
-Bridge.Prints = Prints
+function Bridge.RegisterModule(moduleName, moduleTable)
+    if not moduleTable then
+        print("No moduleTable provided for module and no defaultsTable found: ", moduleName)
+        return
+    end
+    if Bridge[moduleName] then
+        print("Module already registered:", moduleName)
+        return
+    end
+
+    local wrappedModule = {}
+    for functionName, func in pairs(moduleTable) do
+        wrappedModule[functionName] = func
+    end
+    print("Registering module:", moduleName)
+    Bridge[moduleName] = wrappedModule
+end
+
+--TODO: Create a way to overide functions or create a new functions for module
+
+Bridge.RegisterModule("Framework", Framework)
+Bridge.RegisterModule("Inventory", Inventory)
+Bridge.RegisterModule("Notify", Notify)
+Bridge.RegisterModule("Utility", Utility)
+Bridge.RegisterModule("Progressbar", Progressbar)
+Bridge.RegisterModule("Clothing", Clothing)
+Bridge.RegisterModule("Menu", Menu)
+Bridge.RegisterModule("Language", Language)
+Bridge.RegisterModule("Debugger", Debugger)
+Bridge.RegisterModule("Doorlock", Doorlock)
+Bridge.RegisterModule("Phone", Phone)
+Bridge.RegisterModule("Vehicle", Vehicle)
+Bridge.RegisterModule("Dispatch", Dispatch)
+Bridge.RegisterModule("Weather", Weather)
+Bridge.RegisterModule("Target", Target)
+Bridge.RegisterModule("Table", Table)
+Bridge.RegisterModule("Math", Math)
+Bridge.RegisterModule("Prints", Prints)
+
 
 CreateThread(function()
-    for k, v in pairs(Bridge) do
-        if type(v) == 'table' then
-            exports(k, function()
-                return v
+    for moduleName, moduleFunction in pairs(Bridge) do
+        if type(moduleFunction) == 'table' then
+            exports(moduleName, function()
+                return moduleFunction
             end)
-            v.__index = function(key, value)
-                IndexingFallback(v, key, value)
-            end
         else
-            exports(k, v)
+            exports(moduleName, moduleFunction)
         end
     end
 end)
-
-function IndexingFallback(module, k, v)
-    if not module[k] then
-        local func = Framework[k] and type(Framework[k]) == 'function' and Framework[k] or nil
-        return function(...)
-            return func(...)
-        end
-    end
-    return module[k]
-end
-
-OverRide = function(module, key, value)
-    module[key] = value
-end
-
-RegisterCompatibility = function(key, module)
-    module = module or {}
-    module.__index = IndexingFallback
-    module.OverRide = function(key, value)
-        OverRide(module, key, value)
-    end
-    Bridge[key] = module
-end
-exports('RegisterCompatibility', RegisterCompatibility)
 
 exports('Bridge', function()
     return Bridge
 end)
 
+
 if IsDuplicityVersion() then return end
 
+-- Fill the bridge tables with player data.
 function FillBridgeTables()
     PlayerLoaded = true
     PlayerIdentifier = Framework.GetPlayerIdentifier()

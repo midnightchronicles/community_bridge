@@ -1,6 +1,7 @@
 Inventory = Inventory or {}
 
 Inventory.GetItemInfo = function(item)
+    print('client funct')
     return Framework.GetItemInfo(item)
 end
 
