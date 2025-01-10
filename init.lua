@@ -24,16 +24,11 @@ Bridge.RegisterModule("Framework", Framework)
 Bridge.RegisterModule("Inventory", Inventory)
 Bridge.RegisterModule("Notify", Notify)
 Bridge.RegisterModule("Utility", Utility)
-Bridge.RegisterModule("Progressbar", Progressbar)
 Bridge.RegisterModule("Clothing", Clothing)
 Bridge.RegisterModule("Menu", Menu)
 Bridge.RegisterModule("Language", Language)
-Bridge.RegisterModule("Debugger", Debugger)
 Bridge.RegisterModule("Doorlock", Doorlock)
 Bridge.RegisterModule("Phone", Phone)
-Bridge.RegisterModule("Vehicle", Vehicle)
-Bridge.RegisterModule("Dispatch", Dispatch)
-Bridge.RegisterModule("Weather", Weather)
 Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Table", Table)
 Bridge.RegisterModule("Math", Math)
@@ -58,6 +53,13 @@ end)
 
 
 if IsDuplicityVersion() then return end
+
+Bridge.RegisterModule("Dispatch", Dispatch)
+Bridge.RegisterModule("Fuel", Fuel)
+Bridge.RegisterModule("Input", Input)
+Bridge.RegisterModule("Progressbar", Progressbar)
+Bridge.RegisterModule("VehicleKey", VehicleKey)
+Bridge.RegisterModule("Weather", Weather)
 
 -- Fill the bridge tables with player data.
 function FillBridgeTables()

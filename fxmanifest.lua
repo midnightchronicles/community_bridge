@@ -10,6 +10,7 @@ shared_scripts {
     'settings/sharedConfig.lua',
     'use/*.lua',
     'modules/Utility/shared/*.lua',
+    'modules/Math/*.lua',
     'modules/locales/*.lua',
 }
 
@@ -44,7 +45,6 @@ client_scripts {
     'modules/Progressbar/**/client.lua',
     'modules/Clothing/**/client.lua',
     'modules/Input/client.lua',
-    'modules/math/*.lua',
     'modules/menu/client.lua',
     'init.lua',
 }
