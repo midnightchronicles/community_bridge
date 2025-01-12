@@ -245,3 +245,8 @@ end
 Framework.RegisterUsableItem = function(item, cb)
     QBCore.Functions.CreateUseableItem(item, cb)
 end
+
+Framework.Commands = {}
+Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
+    QBCore.Commands.Add(name, help, arguments, argsrequired, callback, permission, ...)
+end

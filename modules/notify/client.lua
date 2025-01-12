@@ -13,7 +13,7 @@ Notify.SendNotify = function(message, type, time)
     elseif notifyType == 'esx_notify' then
         return ESX.ShowNotification(message, type, time)
     elseif notifyType == 'ox' then
-        return exports.ox_lib:notify({ description = message, type = type, position = 'top' })
+        return exports.ox_lib:notify({ description = message, type = type, position = 'center-left' })
     elseif notifyType == 't-notify' then
         return exports['t-notify']:Alert({ style = 'info', message = message, duration = time, })
     elseif notifyType == 'wasabi_notify' then
