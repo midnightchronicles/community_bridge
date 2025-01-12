@@ -201,3 +201,13 @@ end
 Framework.RegisterUsableItem = function(item, cb)
     ESX.RegisterUsableItem(item, cb)
 end
+
+Framework.Commands = {}
+Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
+    ESX.RegisterCommand(name, permission, function(xPlayer, args, showError)
+        callback(xPlayer, args)
+    end, false, {
+        help = help,
+        arguments = arguments
+    })
+end
