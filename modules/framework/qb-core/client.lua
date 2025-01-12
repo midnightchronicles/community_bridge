@@ -49,6 +49,8 @@ Framework.GetIsPlayerDead = function()
     return QBCore.Functions.GetPlayerData().metadata["isdead"] or QBCore.GetPlayerData().metadata["inlaststand"]
 end
 
+Framework.Shared = QBCore.Shared
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(1500)
     FillBridgeTables()
@@ -65,5 +67,13 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(data)
     PlayerJobLabel = data.label
     PlayerJobGradeName = data.grade.name
     PlayerJobGradeLevel = data.grade.level
-    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate',PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel)
+    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate', PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel)
+end)
+
+RegisterNetEvent('QBCore:Client:OnGangUpdate', function(data)
+    PlayerJobName = data.name
+    PlayerJobLabel = data.label
+    PlayerJobGradeName = data.grade.name
+    PlayerJobGradeLevel = data.grade.level
+    TriggerEvent('community_bridge:Client:OnPlayerGangUpdate', PlayerGangName, PlayerGangLabel, PlayerGangGradeName, PlayerGangGradeLevel)
 end)
