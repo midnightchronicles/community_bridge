@@ -1,6 +1,6 @@
 # community_bridge
 
-## By The Order of the Sacred Bridge
+## By The Order of the Sacred Framework
 
 The **Order of the Sacred Framework**, a fellowship born of noble intention and quiet passion, has crafted a bridge to simplify the journey of all who dare venture into the world of development. This bridge, much like a well-worn path through the woods, is modular in design, offering an array of systems and tools that serve the wanderer and the scholar alike:
 
