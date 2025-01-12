@@ -151,7 +151,14 @@ end
 Framework.SetPlayerJob = function(src, name, grade)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not ESX.DoesJobExist(name, grade) then lib.print.error("Job Does Not Exsist In Framework :NAME "..name.." Grade:"..grade) return end
-    return xPlayer.setJob(name, grade)
+    return xPlayer.setJob(name, grade, true)
+end
+
+Framework.ToggleDuty = function(src, status)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    local name = xPlayer.getJob().name
+    local grade = xPlayer.getJob().grade
+    xPlayer.setJob(name, grade, status)
 end
 
 -- Framework.AddAccountBalance(src, _type, amount)

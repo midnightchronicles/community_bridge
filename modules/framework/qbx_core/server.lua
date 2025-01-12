@@ -181,6 +181,11 @@ Framework.SetPlayerJob = function(src, name, grade)
     return player.Functions.SetJob(name, grade)
 end
 
+Framework.ToggleDuty = function(src, status)
+    local playerData = QBox:GetPlayer(src).PlayerData
+    QBox:SetJobDuty(playerData.citizenid, status)
+end
+
 -- Framework.AddAccountBalance(src, _type, amount)
 -- Adds the specified amount to the player's account balance of the specified type.
 Framework.AddAccountBalance = function(src, _type, amount)
