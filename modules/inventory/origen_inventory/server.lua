@@ -6,7 +6,7 @@ local origen_inventory = exports.origen_inventory
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
     if not origen_inventory:CanCarryItem(src, item, count) then
-        return Bridge.Notify.SendNotify(src, "Inventory Full", "error", 5000)
+        return Bridge.notify.SendNotify(src, "Inventory Full", "error", 5000)
     end
     return origen_inventory:AddItem(src, item, count, nil, nil, metadata)
 end
