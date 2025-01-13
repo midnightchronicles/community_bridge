@@ -182,6 +182,12 @@ Framework.SetPlayerJob = function(src, name, grade)
     return player.Functions.SetJob(name, grade)
 end
 
+Framework.ToggleDuty = function(src, status)
+    local player = QBCore.Functions.GetPlayer(src)
+    player.Functions.SetJobDuty(status)
+    TriggerEvent('QBCore:Server:SetDuty', src, player.PlayerData.job.onduty)
+end
+
 -- Framework.AddAccountBalance(src, _type, amount)
 -- Adds the specified amount to the player's account balance of the specified type.
 Framework.AddAccountBalance = function(src, _type, amount)

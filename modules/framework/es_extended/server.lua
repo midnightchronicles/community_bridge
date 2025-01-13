@@ -151,7 +151,14 @@ end
 Framework.SetPlayerJob = function(src, name, grade)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not ESX.DoesJobExist(name, grade) then lib.print.error("Job Does Not Exsist In Framework :NAME "..name.." Grade:"..grade) return end
-    return xPlayer.setJob(name, grade)
+    return xPlayer.setJob(name, grade, true)
+end
+
+Framework.ToggleDuty = function(src, status)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    local name = xPlayer.getJob().name
+    local grade = xPlayer.getJob().grade
+    xPlayer.setJob(name, grade, status)
 end
 
 -- Framework.AddAccountBalance(src, _type, amount)
@@ -193,4 +200,14 @@ end
 -- Registers a usable item with a callback function.
 Framework.RegisterUsableItem = function(item, cb)
     ESX.RegisterUsableItem(item, cb)
+end
+
+Framework.Commands = {}
+Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
+    ESX.RegisterCommand(name, permission, function(xPlayer, args, showError)
+        callback(xPlayer, args)
+    end, false, {
+        help = help,
+        arguments = arguments
+    })
 end
