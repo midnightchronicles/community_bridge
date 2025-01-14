@@ -4,13 +4,13 @@ lua54 'yes'
 use_experimental_fxv2_oal 'yes'
 author 'The Order of the Sacred Framework'
 description 'A bridge made for the community to use as a base for their own projects. This bridge will allow a single format to work with nearly all commonly used systems while still offering expandability.'
-version '0.1.3'
+version '0.1.4'
 
 shared_scripts {
     'settings/sharedConfig.lua',
     'use/*.lua',
-    'modules/Utility/shared/*.lua',
-    'modules/Math/*.lua',
+    'modules/utility/shared/*.lua',
+    'modules/math/*.lua',
     'modules/locales/*.lua',
 }
 
@@ -18,34 +18,34 @@ server_scripts {
     '@oxmysql/lib/MySQL.lua',
     'settings/serverConfig.lua',
     'modules/locales/shared.lua',
-    'modules/Utility/server/*.lua',
-    'modules/Framework/**/server.lua',
-    'modules/Inventory/**/server.lua',
-    'modules/Doorlock/**/server.lua',
-    'modules/Phone/**/server.lua',
-    'modules/Notify/server.lua',
-    'modules/Managment/**/server.lua',
+    'modules/utility/server/*.lua',
+    'modules/framework/**/server.lua',
+    'modules/inventory/**/server.lua',
+    'modules/doorlock/**/server.lua',
+    'modules/phone/**/server.lua',
+    'modules/notify/server.lua',
+    'modules/managment/**/server.lua',
     'init.lua',
 }
 
 client_scripts {
     'settings/clientConfig.lua',
     'modules/locales/shared.lua',
-    'modules/Utility/client/*.lua',
-    'modules/Framework/**/client.lua',
-    'modules/Inventory/**/client.lua',
-    'modules/Doorlock/**/client.lua',
-    'modules/Phone/**/client.lua',
-    'modules/Notify/client.lua',
-    'modules/Weather/**/client.lua',
-    'modules/VehicleKey/**/client.lua',
-    'modules/Fuel/**/client.lua',
-    'modules/Target/**/client.lua',
-    'modules/Dispatch/**/client.lua',
-    'modules/Progressbar/**/client.lua',
-    'modules/Clothing/**/client.lua',
-    'modules/Input/client.lua',
-    'modules/menu/client.lua',
+    'modules/utility/client/*.lua',
+    'modules/framework/**/client.lua',
+    'modules/inventory/**/client.lua',
+    'modules/doorlock/**/client.lua',
+    'modules/phone/**/client.lua',
+    'modules/notify/client.lua',
+    'modules/weather/**/client.lua',
+    'modules/vehicleKey/**/client.lua',
+    'modules/fuel/**/client.lua',
+    'modules/target/**/client.lua',
+    'modules/dispatch/**/client.lua',
+    'modules/progressbar/**/client.lua',
+    'modules/clothing/**/client.lua',
+    'modules/input/*.lua',
+    'modules/menu/*.lua',
     'init.lua',
 }
 

@@ -33,6 +33,7 @@ Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Table", Table)
 Bridge.RegisterModule("Math", Math)
 Bridge.RegisterModule("Prints", Prints)
+Bridge.RegisterModule("Callback", Callback)
 
 
 CreateThread(function()
