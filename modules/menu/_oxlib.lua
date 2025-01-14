@@ -47,5 +47,6 @@ OpenMenu = function(id, data, useQBinput)
     if useQBinput then 
         data = QBToOxMenu(id, data)
     end 
-    return exports['qb-menu']:openMenu(data)
+    exports['qb-menu']:openMenu(data)
+    return data
 end

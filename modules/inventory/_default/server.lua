@@ -1,11 +1,12 @@
 Inventory = Inventory or {}
 
-Inventory.AddItem = function(src, item, count, slot, metadata)
+Inventory.AddItem = function(src, item, count, slot, metadata)    
     return Framework.AddItem(src, item, count, slot, metadata)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
-    return Framework.RemoveItem(src, item.name, count, slot, metadata)
+    item = type(item) == "table" and item.name or item
+    return Framework.RemoveItem(src, item, count, slot, metadata)
 end
 
 Inventory.GetItemInfo = function(item)
