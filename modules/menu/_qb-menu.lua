@@ -1,4 +1,4 @@
-if GetResourceState('qb-menu') ~= 'started' then return end
+if GetResourceState('qb-menu') ~= 'started' and (BridgeClientConfig.MenuSystem ~= "qb" or BridgeClientConfig.MenuSystem ~= "auto") then return end
 --- Converts an Ox menu to a QB menu.
 ---@param id string The menu ID.
 ---@param menu table The Ox menu data.

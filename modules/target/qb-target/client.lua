@@ -15,7 +15,7 @@ Target = {}
 
 Target.AddGlobalPlayer = function(options)
     for k, v in pairs(options) do
-        options[k].action = v.onSelect
+        options[k].action = v.action or v.onSelect
     end
     exports['qb-target']:AddGlobalPlayer({
         options = options,
@@ -25,7 +25,7 @@ end
 
 Target.AddLocalEntity = function(entities, options)
     for k, v in pairs(options) do
-        options[k].action = v.onSelect
+        options[k].action =  v.action or v.onSelect
     end
     exports['qb-target']:AddTargetEntity(entities, {
         options = options,
@@ -35,7 +35,7 @@ end
 
 Target.AddModel = function(models, options)
     for k, v in pairs(options) do
-        options[k].action = v.onSelect
+        options[k].action = v.action or v.onSelect
     end
     exports['qb-target']:AddTargetModel(models, {
         options = options,
@@ -45,7 +45,7 @@ end
 
 Target.AddBoxZone = function(name, coords, size, heading, options)
     for k, v in pairs(options) do
-        options[k].action = v.onSelect
+        options[k].action = v.action or v.onSelect
     end
     exports['qb-target']:AddBoxZone(name, coords, size.x, size.y, {
         name = name,

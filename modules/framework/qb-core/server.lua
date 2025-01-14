@@ -248,8 +248,13 @@ end
 
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
-Framework.RegisterUsableItem = function(item, cb)
-    QBCore.Functions.CreateUseableItem(item, cb)
+Framework.RegisterUsableItem = function(itemName, cb)
+    local func = function(src, item, itemData)
+        itemData = itemData or item
+        itemData.metadata = itemData.metadata or itemData.info or {}
+        cb(src, itemName, itemData)
+    end
+    QBCore.Functions.CreateUseableItem(itemName, func)
 end
 
 Framework.Commands = {}
