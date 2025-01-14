@@ -216,3 +216,5 @@ Framework.Commands.Add = function(name, help, arguments, argsrequired, callback,
         arguments = arguments
     })
 end
+
+-- test
