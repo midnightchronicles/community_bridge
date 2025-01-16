@@ -1,5 +1,5 @@
 if GetResourceState('ox_lib') ~= 'started' and (BridgeClientConfig.MenuSystem ~= "ox" or BridgeClientConfig.MenuSystem ~= "auto") then return end
-
+Menus = Menus or {}
 --- Converts a QB menu to an Ox menu.
 ---@param id string The menu ID.
 ---@param menu table The QB menu data.
@@ -47,6 +47,9 @@ OpenMenu = function(id, data, useQBinput)
     if useQBinput then 
         data = QBToOxMenu(id, data)
     end 
-    exports['qb-menu']:openMenu(data)
+    if not Menus[id] then
+        lib.registerContext(data)
+    end
+    lib.showContext(id)
     return data
 end
