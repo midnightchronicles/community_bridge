@@ -1,4 +1,4 @@
-local Menus = {}
+Menus = Menus or {}
 Menu = {}
 
 if GetResourceState('ox_lib') ~= 'started' and GetResourceState('qb-menu') ~= 'started' then return end
