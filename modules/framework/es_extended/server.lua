@@ -198,8 +198,13 @@ end
 
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
-Framework.RegisterUsableItem = function(item, cb)
-    ESX.RegisterUsableItem(item, cb)
+Framework.RegisterUsableItem = function(itemName, cb)
+    local func = function(src, item, itemData)
+        itemData = itemData or item
+        itemData.metadata = itemData.metadata or itemData.info or {}
+        cb(src, itemName, itemData)
+    end
+    ESX.RegisterUsableItem(itemName, func)
 end
 
 Framework.Commands = {}
@@ -211,3 +216,5 @@ Framework.Commands.Add = function(name, help, arguments, argsrequired, callback,
         arguments = arguments
     })
 end
+
+-- test

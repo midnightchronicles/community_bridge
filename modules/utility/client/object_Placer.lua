@@ -13,7 +13,7 @@ local placementText = {
 }
 
 local function finishPlacing()
-    Bridge.notify.HideHelpText()
+    Bridge.Notify.HideHelpText()
     if activePlacementProp == nil then return end
     DeleteObject(activePlacementProp)
     activePlacementProp = nil
@@ -37,7 +37,7 @@ Utility.PlaceObject = function(object, distance, snapToGround, allowedMats, offs
     SetEntityInvincible(activePlacementProp, true)
     FreezeEntityPosition(activePlacementProp, true)
 
-    Bridge.notify.ShowHelpText(type(placementText) == 'table' and table.concat(placementText) or placementText, {
+    Bridge.Notify.ShowHelpText(type(placementText) == 'table' and table.concat(placementText) or placementText, {
         position = "left-center",
     })
 

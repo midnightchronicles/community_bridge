@@ -15,18 +15,30 @@ local targetZones = {}
 Target = {}
 
 Target.AddGlobalPlayer = function(options)
+    for k, v in pairs(options) do
+        options[k].onSelect = v.onSelect or v.action
+    end
     ox_target:addGlobalPlayer(options)
 end
 
 Target.AddLocalEntity = function(entities, options)
+    for k, v in pairs(options) do
+        options[k].onSelect = v.onSelect or v.action
+    end
     ox_target:addLocalEntity(entities, options)
 end
 
 Target.AddModel = function(models, options)
+    for k, v in pairs(options) do
+        options[k].onSelect = v.onSelect or v.action
+    end
     ox_target:addModel(models, options)
 end
 
 Target.AddBoxZone = function(name, coords, size, heading, options)
+    for k, v in pairs(options) do
+        options[k].onSelect = v.onSelect or v.action
+    end
     local target = ox_target:addBoxZone({
         coords = coords,
         size = size,
