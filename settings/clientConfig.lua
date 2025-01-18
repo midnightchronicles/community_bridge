@@ -7,5 +7,4 @@ BridgeClientConfig.ProgressBar     = "ox"         -- Change this to your preferr
 BridgeClientConfig.DebugLevel      = 3            -- Change this to your Debug level, 1 for none, 2 for some, 3 for all data
 BridgeClientConfig.ShowHelpText    = "ox"         --
 
-Require("init.lua", "ox_lib")
 return BridgeClientConfig
