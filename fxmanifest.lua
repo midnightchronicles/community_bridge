@@ -7,6 +7,7 @@ description 'A bridge made for the community to use as a base for their own proj
 version '0.1.4'
 
 shared_scripts {
+    '@ox_lib/init.lua',
     'settings/sharedConfig.lua',
     'use/*.lua',
     'modules/utility/shared/*.lua',
