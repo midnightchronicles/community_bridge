@@ -68,3 +68,11 @@ end
 RegisterNetEvent('community_bridge:Client:Notify', function(message, _type, time)
     Notify.SendNotify(message, _type, time)
 end)
+
+RegisterNetEvent('community_bridge:Client:ShowHelpText', function(message, position)
+    Notify.ShowHelpText(message, position)
+end)
+
+RegisterNetEvent('community_bridge:Client:HideHelpText', function()
+    Notify.HideHelpText()
+end)

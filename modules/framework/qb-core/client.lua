@@ -71,9 +71,12 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(data)
 end)
 
 RegisterNetEvent('QBCore:Client:OnGangUpdate', function(data)
+    -- Unsure what data is passed in this, but considering the gang data isnt updating I doubt this was tested.
+    --[[
     PlayerJobName = data.name
     PlayerJobLabel = data.label
     PlayerJobGradeName = data.grade.name
     PlayerJobGradeLevel = data.grade.level
     TriggerEvent('community_bridge:Client:OnPlayerGangUpdate', PlayerGangName, PlayerGangLabel, PlayerGangGradeName, PlayerGangGradeLevel)
+    --]]
 end)

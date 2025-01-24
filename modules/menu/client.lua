@@ -1,12 +1,6 @@
 Menus = Menus or {}
 Menu = {}
 
-if GetResourceState('ox_lib') ~= 'started' and GetResourceState('qb-menu') ~= 'started' then return end
-
-
-
-
-
 --- Opens a menu based on the configuration.
 ---@param data table The menu data.
 ---@param useQb boolean Whether to use QB menu syntax.
