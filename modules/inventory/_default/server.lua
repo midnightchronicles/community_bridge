@@ -1,6 +1,6 @@
 Inventory = Inventory or {}
 
-Inventory.AddItem = function(src, item, count, slot, metadata)    
+Inventory.AddItem = function(src, item, count, slot, metadata)
     return Framework.AddItem(src, item, count, slot, metadata)
 end
 
