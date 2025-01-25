@@ -1,4 +1,5 @@
 --local NDCore = exports["ND_Core"]:GetCoreObject()
+if GetResourceState('ND_Core') ~= 'started' then return end
 local NDCore = exports["ND_Core"]
 
 Framework = {}
