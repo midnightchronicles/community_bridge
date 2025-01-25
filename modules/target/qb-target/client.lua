@@ -23,6 +23,17 @@ Target.AddGlobalPlayer = function(options)
     })
 end
 
+
+Target.AddGlobalVehicle = function(options)
+    for k, v in pairs(options) do
+        options[k].action = v.action or v.onSelect
+    end
+    exports['qb-target']:AddGlobalVehicle({
+        options = options,
+        distance = options.distance or 1.5
+    })
+end
+
 Target.AddLocalEntity = function(entities, options)
     for k, v in pairs(options) do
         options[k].action =  v.action or v.onSelect
