@@ -21,6 +21,13 @@ Target.AddGlobalPlayer = function(options)
     ox_target:addGlobalPlayer(options)
 end
 
+Target.AddGlobalVehicle = function(options)
+    for k, v in pairs(options) do
+        options[k].onSelect = v.onSelect or v.action
+    end
+    ox_target:addGlobalVehicle(options)
+end
+
 Target.AddLocalEntity = function(entities, options)
     for k, v in pairs(options) do
         options[k].onSelect = v.onSelect or v.action
