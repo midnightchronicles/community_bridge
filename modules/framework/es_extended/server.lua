@@ -202,7 +202,7 @@ Framework.RegisterUsableItem = function(itemName, cb)
     local func = function(src, item, itemData)
         itemData = itemData or item
         itemData.metadata = itemData.metadata or itemData.info or {}
-        cb(src, itemData)
+        cb(src, itemName, itemData)
     end
     ESX.RegisterUsableItem(itemName, func)
 end
