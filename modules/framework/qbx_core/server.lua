@@ -241,5 +241,5 @@ Framework.RegisterUsableItem = function(itemName, cb)
         itemData.metadata = itemData.metadata or itemData.info or {}
         cb(src, itemName, itemData)
     end
-    return QBox:CreateUseableItem(itemName, cb)
+    return QBox:CreateUseableItem(itemName, func)
 end
