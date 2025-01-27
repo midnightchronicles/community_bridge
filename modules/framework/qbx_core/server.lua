@@ -233,6 +233,10 @@ Framework.SetMetadata = function(src, item, slot, metadata)
     return player.Functions.AddItem(item, 1, slot, metadata)
 end
 
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
+end)
+
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
 Framework.RegisterUsableItem = function(itemName, cb)

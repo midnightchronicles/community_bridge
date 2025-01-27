@@ -257,6 +257,10 @@ Framework.RegisterUsableItem = function(itemName, cb)
     QBCore.Functions.CreateUseableItem(itemName, func)
 end
 
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
+end)
+
 Framework.Commands = {}
 Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
     QBCore.Commands.Add(name, help, arguments, argsrequired, callback, permission, ...)

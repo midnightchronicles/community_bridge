@@ -177,6 +177,10 @@ Framework.GetAccountBalance = function(src, _type)
     return player.getData(_type)
 end
 
+RegisterNetEvent("ND:characterUnloaded", function()
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
+end)
+
 Framework.RegisterUsableItem = function(itemName, cb)
     exports(itemName, function(event, item, inventory, slot, data)
         local slotData = exports.ox_inventory:GetSlot(inventory.id, slot)

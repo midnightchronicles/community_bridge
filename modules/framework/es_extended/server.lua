@@ -207,6 +207,10 @@ Framework.RegisterUsableItem = function(itemName, cb)
     ESX.RegisterUsableItem(itemName, func)
 end
 
+RegisterNetEvent("esx:playerLogout", function()
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
+end)
+
 Framework.Commands = {}
 Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
     ESX.RegisterCommand(name, permission, function(xPlayer, args, showError)
