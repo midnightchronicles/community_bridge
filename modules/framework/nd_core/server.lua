@@ -181,7 +181,7 @@ Framework.RegisterUsableItem = function(itemName, cb)
     exports(itemName, function(event, item, inventory, slot, data)
         local slotData = exports.ox_inventory:GetSlot(inventory.id, slot)
         if event == 'usingItem' then
-            cb(inventory.id, item, slotData)
+            cb(inventory.id, slotData)
             return false
         end
     end)
