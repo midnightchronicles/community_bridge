@@ -181,6 +181,11 @@ RegisterNetEvent("ND:characterUnloaded", function()
     TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
 end)
 
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
 Framework.RegisterUsableItem = function(itemName, cb)
     exports(itemName, function(event, item, inventory, slot, data)
         local slotData = exports.ox_inventory:GetSlot(inventory.id, slot)

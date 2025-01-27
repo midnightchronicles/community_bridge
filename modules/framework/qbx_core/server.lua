@@ -237,6 +237,11 @@ RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
     TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
 end)
 
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
 Framework.RegisterUsableItem = function(itemName, cb)

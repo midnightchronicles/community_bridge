@@ -211,6 +211,11 @@ RegisterNetEvent("esx:playerLogout", function()
     TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
 end)
 
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
 Framework.Commands = {}
 Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
     ESX.RegisterCommand(name, permission, function(xPlayer, args, showError)

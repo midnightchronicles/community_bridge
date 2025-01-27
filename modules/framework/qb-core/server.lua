@@ -261,6 +261,11 @@ RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
     TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
 end)
 
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
 Framework.Commands = {}
 Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
     QBCore.Commands.Add(name, help, arguments, argsrequired, callback, permission, ...)
