@@ -40,7 +40,7 @@ function Language.Locale(str, ...)
     return locale
 end
 
-if BridgeSharedConfig.DebugLevel == 3 then
+if BridgeSharedConfig.DebugLevel == 2 then
     -- if outside this resource, use local whatever = Require("modules/locales/shared.lua")
     -- whatever.Locales("some-index-in-language-.json-file")
     -- Files must be stored in "locales" folder, within the resource.

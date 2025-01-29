@@ -7,16 +7,16 @@ Notify.SendNotify = function(message, type, time)
     if notifyType == 'qb' then
         return TriggerEvent('QBCore:Notify', message, 'primary', time)
     elseif notifyType == 'mythic_notify' then
-        return exports['mythic_notify']:SendAlert('inform', message, time)
+        return exports['mythic']:SendAlert('inform', message, time)
     elseif notifyType == 'pNotify' then
         return exports['pNotify']:SendNotification({ text = message, type = type, timeout = time, layout = 'centerRight' })
-    elseif notifyType == 'esx_notify' then
+    elseif notifyType == 'esx' then
         return ESX.ShowNotification(message, type, time)
     elseif notifyType == 'ox' then
         return exports.ox_lib:notify({ description = message, type = type, position = 'center-left' })
     elseif notifyType == 't-notify' then
         return exports['t-notify']:Alert({ style = 'info', message = message, duration = time, })
-    elseif notifyType == 'wasabi_notify' then
+    elseif notifyType == 'wasabi' then
         return exports.wasabi_notify:notify(type, message, time, type)
     elseif notifyType == 'lab' then
         return exports['swe-notify']:SendNotification(message, time, type)
