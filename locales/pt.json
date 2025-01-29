@@ -1,9 +1,8 @@
 {
     "locale-unit-test": "Isto é apenas uma string de teste",
-    "place_object": "-- Colocar Objeto --  \n",
     "place_object_place": "[E] Colocar  \n",
     "place_object_cancel": "[X] Cancelar  \n",
-    "place_object_scroll_up": "[SCROLL UP]   Direita\n",
+    "place_object_scroll_up": "[SCROLL UP] Direita\n",
     "place_object_scroll_down": "[SCROLL DOWN] Esquerda",
     "enter_text": "Inserir Texto",
     "no_prop_defined": "Não definiu nenhum objeto para colocar"
