@@ -6,8 +6,8 @@ Notify.SendNotify = function(message, type, time)
     time = time or 3000
     if notifyType == 'qb' then
         return TriggerEvent('QBCore:Notify', message, 'primary', time)
-    elseif notifyType == 'mythic_notify' then
-        return exports['mythic']:SendAlert('inform', message, time)
+    elseif notifyType == 'mythic' then
+        return exports['mythic_notify']:SendAlert('inform', message, time)
     elseif notifyType == 'pNotify' then
         return exports['pNotify']:SendNotification({ text = message, type = type, timeout = time, layout = 'centerRight' })
     elseif notifyType == 'esx' then
