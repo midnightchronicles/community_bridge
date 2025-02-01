@@ -25,7 +25,7 @@ Inventory.GetItemCount = function(src, item, metadata)
     return _item.amount or 0
 end
 
-Inventory.GetInventoryItems = function(src)
+Inventory.GetPlayerInventory = function(src)
     local inventory = tgiann:GetPlayerItems(src)
     local items = {}
     for _, v in pairs(inventory) do

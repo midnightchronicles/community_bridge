@@ -40,7 +40,7 @@ Inventory.GetItemCount = function(src, item, metadata)
     end
 end
 
-Inventory.GetInventoryItems = function(src)
+Inventory.GetPlayerInventory = function(src)
     local playerItems = origen_inventory:GetInventory(src)
     local repackedTable = {}
     for _, v in pairs(playerItems.inventory) do

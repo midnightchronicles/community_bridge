@@ -24,7 +24,7 @@ Inventory.GetItemCount = function(src, item, metadata)
     return ox_inventory:GetItemCount(src, item, metadata, false)
 end
 
-Inventory.GetInventoryItems = function(src)
+Inventory.GetPlayerInventory = function(src)
     return ox_inventory:GetInventoryItems(src, false)
 end
 

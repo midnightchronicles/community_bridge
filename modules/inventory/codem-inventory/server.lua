@@ -55,22 +55,22 @@ end
 Inventory.GetItemBySlot = function(src, slot)
     local slotData = codem:GetItemBySlot(src, slot)
     -- The keys are not documented, so this is a best guess
-    for _, item in pairs(slotData) do
+    for _, v in pairs(slotData) do
         return {
-            name = item.name,
-            label = item.name,
-            weight = item.weight,
-            slot = slot,
-            count = item.amount,
-            metadata = item.info,
-            stack = item.unique,
-            description = item.description
+            name = v.name,
+            label = v.name,
+            weight = v.weight,
+            slot = v.slot,
+            count = v.amount,
+            metadata = v.info,
+            stack = v.unique,
+            description = v.description
         }
     end
     return {}
 end
 
-Inventory.GetInventoryItems = function(src)
+Inventory.GetPlayerInventory = function(src)
     local items = codem:GetInventory(nil, src)
     local repackedTable = {}
     for _, v in pairs(items) do

@@ -17,7 +17,7 @@ Inventory.GetItemCount = function(src, item, metadata)
     return quasar:GetItemTotalAmount(src, item)
 end
 
-Inventory.GetInventoryItems = function(src)
+Inventory.GetPlayerInventory = function(src)
     local playerItems = quasar:GetInventory(src)
     local repackedTable = {}
     for _, v in pairs(playerItems) do
