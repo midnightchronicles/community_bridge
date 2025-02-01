@@ -5,6 +5,10 @@ QBCore = exports['qb-core']:GetCoreObject()
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qb-core'
+end
+
 Framework.GetPlayerData = function()
     return QBCore.Functions.GetPlayerData()
 end

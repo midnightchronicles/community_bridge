@@ -4,6 +4,10 @@ ESX = exports["es_extended"]:getSharedObject()
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'es_extended'
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)

@@ -4,6 +4,10 @@ ESX = exports["es_extended"]:getSharedObject()
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'es_extended'
+end
+
 Framework.GetPlayerData = function()
     return ESX.PlayerData
 end

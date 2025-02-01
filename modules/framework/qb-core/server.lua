@@ -5,6 +5,10 @@ QBCore = exports['qb-core']:GetCoreObject()
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qb-core'
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)

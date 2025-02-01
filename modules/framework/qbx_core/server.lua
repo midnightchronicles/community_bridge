@@ -4,6 +4,10 @@ local QBox = exports.qbx_core
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qbx_core'
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
