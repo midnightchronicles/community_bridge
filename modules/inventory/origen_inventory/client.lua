@@ -2,10 +2,10 @@ if GetResourceState('origen_inventory') ~= 'started' then return end
 
 Inventory = Inventory or {}
 
-local origen_inventory = exports.origen_inventory
+local origin = exports.origen_inventory
 
 Inventory.GetItemInfo = function(item)
-    local itemData = origen_inventory:Items(item)
+    local itemData = origin:Items(item)
     local repackedTable = {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",

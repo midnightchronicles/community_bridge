@@ -67,6 +67,26 @@ Framework.GetPlayerInventory = function(src)
     return repackedTable
 end
 
+Framework.GetItemBySlot = function(src, slot)
+    local playerItems = QBCore.Functions.GetPlayer(src).PlayerData.items
+    local repack = {}
+    for _, v in pairs(playerItems) do
+        if v.slot == slot then
+            return {
+                name = v.name,
+                label = v.label,
+                weight = v.weight,
+                count = v.amount,
+                metadata = v.info,
+                slot = v.slot,
+                stack = v.unique or false,
+                description = v.description or "none",
+            }
+        end
+    end
+    return repack
+end
+
 -- Framework.SetMetadata(src, metadata, value)
 -- Adds the specified metadata key and number value to the player's data.
 Framework.SetPlayerMetadata = function(src, metadata, value)

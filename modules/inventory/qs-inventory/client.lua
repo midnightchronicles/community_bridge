@@ -1,13 +1,14 @@
 if GetResourceState('qs-inventory') ~= 'started' then return end
+local quasar = exports["qs-inventory"]
 
 Inventory = Inventory or {}
 
 Inventory.OpenStash = function(id)
-    exports['qs-inventory']:RegisterStash(id, 50, 50000)
+    quasar:RegisterStash(id, 50, 50000)
 end
 
 Inventory.GetItemInfo = function(item)
-    local itemData = exports['qs-inventory']:GetItemList()
+    local itemData = quasar:GetItemList()
     if not itemData[item] then return {} end
     local repackedTable = {
         name = itemData.name or "Missing Name",
