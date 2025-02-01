@@ -5,7 +5,6 @@ lib.locale()
 
 -- Object placer --
 local placementText = {
-    locale('place_object'),
     locale('place_object_place'),
     locale('place_object_cancel'),
     locale('place_object_scroll_up'),

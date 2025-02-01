@@ -2,7 +2,7 @@ if GetResourceState('qb-target') ~= 'started' or GetResourceState('ox_target') =
 
 local targetDebug = false
 local function detectDebugEnabled()
-    if BridgeClientConfig.DebugLevel == 3 then
+    if BridgeClientConfig.DebugLevel == 2 then
         targetDebug = true
     end
 end
