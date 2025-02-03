@@ -176,6 +176,16 @@ Utility.NotifyText = function(text)
     DrawNotification(false, true)
 end
 
+Utility.RequestAnimDict = function(dict)
+    RequestAnimDict(dict)
+    local count = 0
+    while not HasAnimDictLoaded(dict) and count < 30000 do
+        Wait(0)
+        count = count + 1
+    end
+    return HasAnimDictLoaded(dict)
+end
+
 Utility.TeleportPlayer = function(coords, conditionFunction, afterTeleportFunction)
     if conditionFunction ~= nil then
         if not conditionFunction() then
