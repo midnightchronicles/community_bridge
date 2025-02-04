@@ -177,6 +177,17 @@ Framework.GetAccountBalance = function(src, _type)
     return player.getData(_type)
 end
 
+Framework.GetOwnedVehicles = function(src)
+    local player = NDCore:getPlayer(src)
+    local vehicles = NDCore:getVehicles(player.id)
+    local foundvehicles = {}
+    for i=1, #vehicles do
+        local veh = vehicles[i]
+        table.insert(foundvehicles, {vehicle = veh.properties.model, plate = veh.plate})
+    end
+	return foundvehicles
+end
+
 Framework.RegisterUsableItem = function(itemName, cb)
     exports(itemName, function(event, item, inventory, slot, data)
         local slotData = exports.ox_inventory:GetSlot(inventory.id, slot)
@@ -186,3 +197,12 @@ Framework.RegisterUsableItem = function(itemName, cb)
         end
     end)
 end
+
+RegisterNetEvent("ND:characterUnloaded", function()
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
+end)
+
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)

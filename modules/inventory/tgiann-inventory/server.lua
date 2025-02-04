@@ -1,16 +1,16 @@
 if GetResourceState('tgiann-inventory') ~= 'started' then return end
+
 local tgiann = exports["tgiann-inventory"]
 
 Inventory = Inventory or {}
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
     if not tgiann:CanCarryItem(src, item, count) then return false end
-    local action = tgiann:AddItem(src, item, count, metadata)
-    return (action.itemAddRemoveLog == 'added')
+    return tgiann:AddItem(src, item, count, slot, metadata, false)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
-    return tgiann:RemoveItem(src, item, count, nil, metadata)
+    return tgiann:RemoveItem(src, item, count, slot, metadata)
 end
 
 Inventory.GetItem = function(src, item, metadata)
@@ -25,8 +25,15 @@ Inventory.GetItemCount = function(src, item, metadata)
     return _item.amount or 0
 end
 
-Inventory.GetInventoryItems = function(src)
-    return tgiann:GetPlayerItems(src)
+Inventory.GetPlayerInventory = function(src)
+    local inventory = tgiann:GetPlayerItems(src)
+    local items = {}
+    for _, v in pairs(inventory) do
+        if tonumber(_) then
+            table.insert(items, {name = v.name, label = v.name, weight = 0, description = v.description, slot = v.slot, count = v.amount, metadata = v.info})
+        end
+    end
+    return items
 end
 
 Inventory.CanCarryItem = function(src, item, count)
@@ -35,6 +42,12 @@ end
 
 Inventory.RegisterStash = function(id, label, slots, weight, owner)
     return tgiann:CreateCustomStashWithItem(id, {})
+end
+
+Inventory.GetItemBySlot = function(src, slot)
+    local item = tgiann:GetItemBySlot(src, slot)
+    if not item then return {} end
+    return {name = item.name, label = item.label, weight = item.weight, slot = slot, count = item.amount, metadata = item.info, stack = item.unique or false, description = item.description}
 end
 
 Inventory.GetItemInfo = function(item)

@@ -1,20 +1,22 @@
 if GetResourceState('codem-inventory') ~= 'started' then return end
 
+local codem = exports['codem-inventory']
+
 Inventory = Inventory or {}
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
-    return exports['codem-inventory']:AddItem(src, item, count, slot, metadata)
+    return codem:AddItem(src, item, count, slot, metadata)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
     if metadata == nil then
-        return exports['codem-inventory']:RemoveItem(src, item, count, slot)
+        return codem:RemoveItem(src, item, count, slot)
     else
-        local items = exports['codem-inventory']:GetInventory(nil, src)
+        local items = codem:GetInventory(nil, src)
         for _, itemInfo in pairs(items) do
             if itemInfo.name == item then
                 if itemInfo.info == metadata then
-                    return exports['codem-inventory']:RemoveItem(src, item, count, itemInfo.slot)
+                    return codem:RemoveItem(src, item, count, itemInfo.slot)
                 end
             end
         end
@@ -22,7 +24,7 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
 end
 
 Inventory.GetItemInfo = function(item)
-    local itemData = exports['codem-inventory']:GetItemList()
+    local itemData = codem:GetItemList()
     if not itemData[item] then return {} end
     local repackedTable = {
         name = itemData.name or "Missing Name",
@@ -37,10 +39,10 @@ end
 
 Inventory.GetItemCount = function(src, item, metadata)
     if metadata == nil then
-        return exports['codem-inventory']:GetItemsTotalAmount(src, item)
+        return codem:GetItemsTotalAmount(src, item)
     else
         local count = 0
-        local items = exports['codem-inventory']:GetInventory(nil, src)
+        local items = codem:GetInventory(nil, src)
         for _, itemInfo in pairs(items) do
             if itemInfo.name == item and itemInfo.info == metadata then
                 count = count + itemInfo.amount
@@ -50,8 +52,26 @@ Inventory.GetItemCount = function(src, item, metadata)
     end
 end
 
-Inventory.GetInventoryItems = function(src)
-    local items = exports['codem-inventory']:GetInventory(nil, src)
+Inventory.GetItemBySlot = function(src, slot)
+    local slotData = codem:GetItemBySlot(src, slot)
+    -- The keys are not documented, so this is a best guess
+    for _, v in pairs(slotData) do
+        return {
+            name = v.name,
+            label = v.name,
+            weight = v.weight,
+            slot = v.slot,
+            count = v.amount,
+            metadata = v.info,
+            stack = v.unique,
+            description = v.description
+        }
+    end
+    return {}
+end
+
+Inventory.GetPlayerInventory = function(src)
+    local items = codem:GetInventory(nil, src)
     local repackedTable = {}
     for _, v in pairs(items) do
         table.insert(repackedTable, {
@@ -65,7 +85,7 @@ Inventory.GetInventoryItems = function(src)
 end
 
 Inventory.SetMetadata = function(src, item, slot, metadata)
-    exports['codem-inventory']:SetItemMetadata(src, slot, metadata)
+    codem:SetItemMetadata(src, slot, metadata)
 end
 
 Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)

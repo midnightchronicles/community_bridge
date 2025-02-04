@@ -5,14 +5,11 @@ Inventory = Inventory or {}
 local origen_inventory = exports.origen_inventory
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
-    if not origen_inventory:CanCarryItem(src, item, count) then
-        return Bridge.notify.SendNotify(src, "Inventory Full", "error", 5000)
-    end
-    return origen_inventory:AddItem(src, item, count, nil, nil, metadata)
+    return origen_inventory:AddItem(src, item, count, metadata, slot, true)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
-    return origen_inventory:RemoveItem(src, item, count, metadata)
+    return origen_inventory:removeItem(src, item, count, metadata, slot, true)
 end
 
 Inventory.GetItemInfo = function(item)
@@ -35,8 +32,8 @@ Inventory.GetItemCount = function(src, item, metadata)
         local items = origen_inventory:GetInventory(src)
         local count = 0
         for _, itemInfo in pairs(items) do
-            if itemInfo.name == item and itemInfo.info == metadata then
-                count = count + itemInfo.amount
+            if itemInfo.name == item and itemInfo.info == metadata or itemInfo.metadata == metadata then
+                count = count + itemInfo.count
             end
         end
         return count
@@ -46,15 +43,36 @@ end
 Inventory.GetPlayerInventory = function(src)
     local playerItems = origen_inventory:GetInventory(src)
     local repackedTable = {}
-    for _, v in pairs(playerItems) do
+    for _, v in pairs(playerItems.inventory) do
+        print(json.encode(v, { indent = true }))
         table.insert(repackedTable, {
             name = v.name,
-            count = v.amount,
-            metadata = v.info,
+            count = v.count,
+            metadata = v.metadata,
             slot = v.slot,
         })
     end
     return repackedTable
+end
+
+Inventory.GetItemBySlot = function(src, slot)
+    -- This inventory got rid of almost all the great exports they had =(
+    local slotData = Inventory.GetInventoryItems(src)
+    for _, item in pairs(slotData) do
+        if item.slot == slot then
+            return {
+                name = item.name,
+                label = item.name,
+                weight = item.weight,
+                slot = slot,
+                count = item.amount,
+                metadata = item.metadata,
+                stack = item.unique or false,
+                description = item.description
+            }
+        end
+    end
+    return {}
 end
 
 Inventory.CanCarryItem = function(src, item, count)
@@ -70,7 +88,8 @@ Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coo
 end
 
 Inventory.SetMetadata = function(src, item, slot, metadata)
-    origen_inventory:SetItemMetadata(src, item, slot, metadata)
+    Inventory.RemoveItem (src, item, 1, slot, nil)
+    Inventory.AddItem(src, item, 1, slot, metadata)
 end
 
 Inventory.GetImagePath = function(item)

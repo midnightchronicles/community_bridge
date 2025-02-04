@@ -16,6 +16,10 @@ Inventory.GetItem = function(src, item, metadata)
     return ox_inventory:GetItem(src, item, metadata, false)
 end
 
+Inventory.GetItemBySlot = function(src, slot)
+    return ox_inventory:GetSlot(src, slot)
+end
+
 Inventory.GetItemCount = function(src, item, metadata)
     return ox_inventory:GetItemCount(src, item, metadata, false)
 end

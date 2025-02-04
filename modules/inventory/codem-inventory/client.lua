@@ -1,8 +1,10 @@
 if GetResourceState('codem-inventory') ~= 'started' then return end
 Inventory = Inventory or {}
 
+local codem = exports['codem-inventory']
+
 Inventory.GetItemInfo = function(item)
-    local itemData = exports['codem-inventory']:GetItemList()
+    local itemData = codem:GetItemList()
     if not itemData[item] then return {} end
     local repackedTable = {
         name = itemData.name or "Missing Name",

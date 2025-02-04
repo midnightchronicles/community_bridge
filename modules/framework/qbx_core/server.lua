@@ -4,6 +4,10 @@ local QBox = exports.qbx_core
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qbx_core'
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
@@ -232,6 +236,27 @@ Framework.SetMetadata = function(src, item, slot, metadata)
     player.Functions.RemoveItem(item, 1, slot)
     return player.Functions.AddItem(item, 1, slot, metadata)
 end
+
+Framework.GetOwnedVehicles = function(src)
+    local citizenId = Framework.GetPlayerIdentifier(src)
+    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" .. citizenId .. "'")
+    local vehicles = {}
+    for i=1, #result do
+        local vehicle = result[i].vehicle
+        local plate = result[i].plate
+        table.insert(vehicles, {vehicle = vehicle, plate = plate})
+    end
+    return vehicles
+end
+
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
+end)
+
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
 
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.

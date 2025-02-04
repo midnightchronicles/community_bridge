@@ -17,8 +17,12 @@ Inventory.GetItemCount = function(src, item, metadata)
     return Framework.GetItemCount(src, item, metadata)
 end
 
-Inventory.GetInventoryItems = function(src)
+Inventory.GetPlayerInventory = function(src)
     return Framework.GetPlayerInventory(src)
+end
+
+Inventory.GetItemBySlot = function(src, slot)
+    return Framework.GetItemBySlot(src, slot)
 end
 
 Inventory.SetMetadata = function(src, item, slot, metadata)

@@ -5,6 +5,10 @@ QBCore = exports['qb-core']:GetCoreObject()
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qb-core'
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
@@ -65,6 +69,26 @@ Framework.GetPlayerInventory = function(src)
         })
     end
     return repackedTable
+end
+
+Framework.GetItemBySlot = function(src, slot)
+    local playerItems = QBCore.Functions.GetPlayer(src).PlayerData.items
+    local repack = {}
+    for _, v in pairs(playerItems) do
+        if v.slot == slot then
+            return {
+                name = v.name,
+                label = v.label,
+                weight = v.weight,
+                count = v.amount,
+                metadata = v.info,
+                slot = v.slot,
+                stack = v.unique or false,
+                description = v.description or "none",
+            }
+        end
+    end
+    return repack
 end
 
 -- Framework.SetMetadata(src, metadata, value)
@@ -246,6 +270,18 @@ Framework.SetMetadata = function(src, item, slot, metadata)
     return player.Functions.AddItem(item, 1, freeSlot, metadata)
 end
 
+Framework.GetOwnedVehicles = function(src)
+    local citizenId = Framework.GetPlayerIdentifier(src)
+    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" .. citizenId .. "'")
+    local vehicles = {}
+    for i=1, #result do
+        local vehicle = result[i].vehicle
+        local plate = result[i].plate
+        table.insert(vehicles, {vehicle = vehicle, plate = plate})
+    end
+    return vehicles
+end
+
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
 Framework.RegisterUsableItem = function(itemName, cb)
@@ -256,6 +292,15 @@ Framework.RegisterUsableItem = function(itemName, cb)
     end
     QBCore.Functions.CreateUseableItem(itemName, func)
 end
+
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
+end)
+
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
 
 Framework.Commands = {}
 Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)

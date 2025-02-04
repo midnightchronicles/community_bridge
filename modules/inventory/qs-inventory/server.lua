@@ -1,22 +1,24 @@
 if GetResourceState('qs-inventory') ~= 'started' then return end
 
+local quasar = exports['qs-inventory']
+
 Inventory = Inventory or {}
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
-    if not exports['qs-inventory']:CanCarryItem(src, item, count) then return false end
-    return exports['qs-inventory']:AddItem(src, item, count, slot, metadata)
+    if not quasar:CanCarryItem(src, item, count) then return false end
+    return quasar:AddItem(src, item, count, slot, metadata)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
-    return exports['qs-inventory']:RemoveItem(src, item, count, slot, metadata)
+    return quasar:RemoveItem(src, item, count, slot, metadata)
 end
 
 Inventory.GetItemCount = function(src, item, metadata)
-    return exports['qs-inventory']:GetItemTotalAmount(src, item)
+    return quasar:GetItemTotalAmount(src, item)
 end
 
 Inventory.GetPlayerInventory = function(src)
-    local playerItems = exports['qs-inventory']:GetInventory(src)
+    local playerItems = quasar:GetInventory(src)
     local repackedTable = {}
     for _, v in pairs(playerItems) do
         table.insert(repackedTable, {
@@ -29,8 +31,27 @@ Inventory.GetPlayerInventory = function(src)
     return repackedTable
 end
 
+Inventory.GetItemBySlot = function(src, slot)
+    local playerItems = quasar:GetInventory(src)
+    for _, item in pairs(playerItems) do
+        if item.slot == slot then
+            return {
+                name = item.name,
+                label = item.label,
+                weight = item.weight,
+                slot = slot,
+                count = item.amount,
+                metadata = item.info,
+                stack = item.unique or false,
+                description = item.description
+            }
+        end
+    end
+    return nil
+end
+
 Inventory.CanCarryItem = function(src, item, count)
-    return exports['qs-inventory']:CanCarryItem(src, item, count)
+    return quasar:CanCarryItem(src, item, count)
 end
 
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
@@ -43,7 +64,7 @@ Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coo
 end
 
 Inventory.GetItemInfo = function(item)
-    local itemData = exports['qs-inventory']:GetItemList()
+    local itemData = quasar:GetItemList()
     if not itemData[item] then return {} end
     local repackedTable = {
         name = itemData.name or "Missing Name",
@@ -57,7 +78,7 @@ Inventory.GetItemInfo = function(item)
 end
 
 Inventory.SetMetadata = function(src, item, slot, metadata)
-    return exports['qs-inventory']:SetItemMetadata(src, slot, metadata)
+    return quasar:SetItemMetadata(src, slot, metadata)
 end
 
 Inventory.GetImagePath = function(item)
