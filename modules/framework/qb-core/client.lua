@@ -46,7 +46,21 @@ Framework.GetPlayerJob = function()
 end
 
 Framework.GetPlayerInventory = function()
-    return QBCore.Functions.GetPlayerData().items
+    local items = {}
+    local frameworkInv = QBCore.Functions.GetPlayerData().items
+    for _, v in pairs(frameworkInv) do
+        table.insert(items, {
+            name = v.name,
+            label = v.label,
+            count = v.amount,
+            slot = v.slot,
+            metadata = v.info,
+            stack = v.unique,
+            close = v.useable,
+            weight = v.weight
+        })
+    end
+    return items
 end
 
 Framework.GetIsPlayerDead = function()

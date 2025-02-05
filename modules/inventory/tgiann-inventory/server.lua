@@ -6,10 +6,12 @@ Inventory = Inventory or {}
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
     if not tgiann:CanCarryItem(src, item, count) then return false end
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return tgiann:AddItem(src, item, count, slot, metadata, false)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
     return tgiann:RemoveItem(src, item, count, slot, metadata)
 end
 
