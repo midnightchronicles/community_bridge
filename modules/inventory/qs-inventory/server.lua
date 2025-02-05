@@ -6,10 +6,12 @@ Inventory = Inventory or {}
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
     if not quasar:CanCarryItem(src, item, count) then return false end
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return quasar:AddItem(src, item, count, slot, metadata)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
     return quasar:RemoveItem(src, item, count, slot, metadata)
 end
 

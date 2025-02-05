@@ -26,3 +26,22 @@ Inventory.GetImagePath = function(item)
     local imagePath = file and string.format("nui://qs-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
+
+Inventory.GetPlayerInventory = function()
+    local items = {}
+    local inventory = quasar:getUserInventory()
+    for _, v in pairs(inventory) do
+        table.insert(items, {
+            name = v.name,
+            label = v.label,
+            count = v.amount,
+            slot = v.slot,
+            metadata = v.info,
+            stack = v.unique,
+            close = v.useable,
+            weight = v.weight
+        })
+    end
+    return items
+end
+
