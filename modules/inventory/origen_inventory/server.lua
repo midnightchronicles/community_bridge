@@ -5,10 +5,12 @@ Inventory = Inventory or {}
 local origen_inventory = exports.origen_inventory
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return origen_inventory:AddItem(src, item, count, metadata, slot, true)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
     return origen_inventory:removeItem(src, item, count, metadata, slot, true)
 end
 

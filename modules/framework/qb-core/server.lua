@@ -240,6 +240,7 @@ end
 -- Adds the specified item to the player's inventory.
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local player = QBCore.Functions.GetPlayer(src)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = amount, slot = slot, metadata = metadata})
     return player.Functions.AddItem(item, amount, slot, metadata)
 end
 
@@ -247,6 +248,7 @@ end
 -- Removes the specified item from the player's inventory.
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local player = QBCore.Functions.GetPlayer(src)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = amount, slot = slot, metadata = metadata})
     return player.Functions.RemoveItem(item, amount, slot or nil)
 end
 

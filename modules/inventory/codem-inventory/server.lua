@@ -5,17 +5,21 @@ local codem = exports['codem-inventory']
 Inventory = Inventory or {}
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
+
     return codem:AddItem(src, item, count, slot, metadata)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
     if metadata == nil then
+        TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
         return codem:RemoveItem(src, item, count, slot)
     else
         local items = codem:GetInventory(nil, src)
         for _, itemInfo in pairs(items) do
             if itemInfo.name == item then
                 if itemInfo.info == metadata then
+                    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = itemInfo.slot, metadata = metadata})
                     return codem:RemoveItem(src, item, count, itemInfo.slot)
                 end
             end
