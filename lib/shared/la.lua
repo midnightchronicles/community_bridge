@@ -1,4 +1,5 @@
 LA = LA or {}
+
 --https://easings.net
 LA.Lerp = function(a, b, t)
   return a + (b - a) * t
@@ -355,6 +356,10 @@ LA.Circle = function(t, radius, center)
     return vector3(x, y, center.z)
 end
 
+LA.Clamp = function(value, min, max)
+    return math.min(math.max(value, min), max)
+end
+
 LA.CrossProduct = function(a, b)
     local x = a.y * b.z - a.z * b.y
     local y = a.z * b.x - a.x * b.z
@@ -397,6 +402,8 @@ LA.MultiplyMatrixByVector = function(m, v)
     return result
 end
 
+exports('LA', LA)
+return LA
 
 -- local easingTypes = {
 --     "linear",

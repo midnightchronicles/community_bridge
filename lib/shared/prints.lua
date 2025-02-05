@@ -1,4 +1,4 @@
-Prints = {}
+Prints = Prints or {}
 local function printMessage(level, color, message)
     if type(message) == 'table' then
         message = json.encode(message)
