@@ -7,75 +7,45 @@ Framework = {}
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.getIdentifier()
+    -- wip
 end
 
 -- Framework.GetPlayerName(src)
 -- Returns the first and last name of the player.
 Framework.GetPlayerName = function(src)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.variables.firstName, xPlayer.variables.lastName
+    -- wip
 end
 
 -- Framework.GetItem(src, item, metadata)
 -- Returns a table of items matching the specified name and if passed metadata from the player's inventory.
 -- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
 Framework.GetItem = function(src, item, _)
-    local playerItems = ESX.GetPlayerFromId(src).getInventory()
-    local repackedTable = {}
-    for _, v in pairs(playerItems) do
-        if v.name == item then
-            table.insert(repackedTable, {
-                name = v.name,
-                count = v.count,
-                --metadata = v.metadata,
-                --slot = v.slot,
-            })
-        end
-    end
-    return repackedTable
+    -- wip
 end
 
 -- Framework.GetItemCount(src, item, _)
 -- Returns the count of items matching the specified name and if passed metadata from the player's inventory.
 Framework.GetItemCount = function(src, item, _)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.getInventoryItem(item).count
+    -- wip
 end
 
 -- Framework.GetPlayerInventory(src)
 -- Returns the entire inventory of the player as a table.
 -- returns {name = v.name, count = v.amount, _, _}
 Framework.GetPlayerInventory = function(src)
-    local playerItems = ESX.GetPlayerFromId(src).getInventory()
-    local repackedTable = {}
-    for _, v in pairs(playerItems) do
-		if v.count > 0 then
-			table.insert(repackedTable, {
-				name = v.name,
-				count = v.count,
-				--metadata = v.metadata,
-				--slot = v.slot,
-			})
-		end
-    end
-    return repackedTable
+    -- wip
 end
 
 -- Framework.SetMetadata(src, metadata, value)
 -- Adds the specified metadata key and number value to the player's data.
 Framework.SetPlayerMetadata = function(src, metadata, value)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    xPlayer.setMeta(metadata, value, nil)
-    return true
+    -- wip
 end
 
 -- Framework.GetMetadata(src, metadata)
 -- Gets the specified metadata key and value to the player's data.
 Framework.GetPlayerMetadata = function(src, metadata)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.getMeta(metadata) or false
+    -- wip
 end
 
 -- defualt esx Available tables are
@@ -84,116 +54,85 @@ end
 -- skin, status, is_dead, id, disabled, last_property, created_at, last_seen, 
 -- phone_number, pincode
 Framework.GetStatus = function(src, column)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.get(column) or nil
+    -- wip
 end
 
 -- Framework.AddThirst(src, value)
 -- Adds the specified value from the player's thirst level.
 Framework.AddThirst = function(src, value)
-    local clampIT = Math.Clamp(value, 0, 200000)
-    local levelForEsx = clampIT * 2000
-    TriggerClientEvent('esx_status:add', src, 'thirst', levelForEsx)
-    return levelForEsx
+    -- wip
 end
 
 -- Framework.AddHunger(src, value)
 -- Adds the specified value from the player's hunger level.
 Framework.AddHunger = function(src, value)
-    local clampIT = Math.Clamp(value, 0, 200000)
-    local levelForEsx = clampIT * 2000
-    TriggerClientEvent('esx_status:add', src, 'hunger', levelForEsx)
-    return levelForEsx
+    -- wip
 end
 
 Framework.GetHunger = function(src)
-    local status = Framework.GetStatus(src, "status")
-    if not status then return 0 end
-    return status.hunger
+    -- wip
 end
 
 Framework.GetThirst = function(src)
-    local status = Framework.GetStatus(src, "status")
-    if not status then return 0 end
-    return status.thirst
+    -- wip
 end
 
 -- Framework.GetPlayerPhone(src)
 -- Returns the phone number of the player.
 Framework.GetPlayerPhone = function(src)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.get("phone_number")
+    -- wip
 end
 
 -- Framework.GetPlayerJob(src)
 -- Returns the job name, label, grade name, and grade level of the player.
 Framework.GetPlayerJob = function(src)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.getJob().name, xPlayer.getJob().label, xPlayer.getJob().grade_label, xPlayer.getJob().grade
+    -- wip
 end
 
 -- Framework.GetPlayersByJob(jobname)
 -- returns a table of player sources that have the specified job name.
 Framework.GetPlayersByJob = function(job)
-    local players = GetPlayers()
-    local playerList = {}
-    for _, src in pairs(players) do
-        local xPlayer = ESX.GetPlayerFromId(src)
-        if xPlayer.getJob().name == job then
-            table.insert(playerList, src)
-        end
-    end
-    return playerList
+    -- wip
 end
 
 -- Framework.SetPlayerJob(src, name, grade)
 -- Sets the player's job to the specified name and grade.
 Framework.SetPlayerJob = function(src, name, grade)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    if not ESX.DoesJobExist(name, grade) then lib.print.error("Job Does Not Exsist In Framework :NAME "..name.." Grade:"..grade) return end
-    return xPlayer.setJob(name, grade, true)
+    -- wip
 end
 
 Framework.ToggleDuty = function(src, status)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    local name = xPlayer.getJob().name
-    local grade = xPlayer.getJob().grade
-    xPlayer.setJob(name, grade, status)
+    -- wip
 end
 
 -- Framework.AddAccountBalance(src, _type, amount)
 -- Adds the specified amount to the player's account balance of the specified type.
 Framework.AddAccountBalance = function(src, _type, amount)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.addAccountMoney(_type, amount)
+    -- wip
 end
 
 -- Framework.RemoveAccountBalance(src, _type, amount)
 -- Removes the specified amount from the player's account balance of the specified type.
 Framework.RemoveAccountBalance = function(src, _type, amount)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.removeAccountMoney(_type, amount)
+    -- wip
 end
 
 -- Framework.GetAccountBalance(src, _type)
 -- Returns the player's account balance of the specified type.
 Framework.GetAccountBalance = function(src, _type)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.getAccount(_type).money
+    -- wip
 end
 
 -- Framework.AddItem(src, item, amount, _, _)
 -- Adds the specified item to the player's inventory.
 Framework.AddItem = function(src, item, amount, slot, metadata)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.addInventoryItem(item, amount)
+    -- wip
 end
 
 -- Framework.RemoveItem(src, item, amount, _, _)
 -- Removes the specified item from the player's inventory.
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    return xPlayer.removeInventoryItem(item, amount)
+    -- wip
 end
 
 -- Framework.RegisterUsableItem(item, cb)
@@ -205,14 +144,4 @@ Framework.RegisterUsableItem = function(itemName, cb)
             cb(inventory.id, item, slotData)
         end
     end)
-end
-
-Framework.Commands = {}
-Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
-    ESX.RegisterCommand(name, permission, function(xPlayer, args, showError)
-        callback(xPlayer, args)
-    end, false, {
-        help = help,
-        arguments = arguments
-    })
 end
