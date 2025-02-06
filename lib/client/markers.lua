@@ -21,6 +21,6 @@ function Marker.DrawMarker(data)
     )
 end
 
-exports("Makrer", Marker)
+exports("Marker", Marker)
 
 return Marker
