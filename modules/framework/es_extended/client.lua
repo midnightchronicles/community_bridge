@@ -16,6 +16,10 @@ Framework.GetPlayerMetaData = function(metadata)
     return ESX.GetPlayerData().metadata[metadata]
 end
 
+Framework.Notify = function(message, type, time)
+    return ESX.ShowNotification(message, type, time)
+end
+
 Framework.GetPlayerIdentifier = function()
     return ESX.GetPlayerData().identifier
 end

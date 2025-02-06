@@ -1,8 +1,6 @@
 
 if GetResourceState('qb-input') ~= 'started' or (BridgeClientConfig.InputSystem ~= "qb" and BridgeClientConfig.InputSystem ~= "auto") then return end
 
-
--- ox to Qb
 function OxTypeToQBType(_type)
     if _type == "input" then
         return "text"
@@ -65,5 +63,5 @@ function OpenInput(title, data, isQBFormat, submitText)
         header = title,
         submitText = submitText or "Submit",
         inputs = input
-    })    
+    })
 end

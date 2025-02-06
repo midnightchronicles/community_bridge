@@ -92,6 +92,16 @@ Utility.LoadModel = function(model)
     return HasModelLoaded(model)
 end
 
+Utility.RequestAnimDict = function(dict)
+    RequestAnimDict(dict)
+    local count = 0
+    while not HasAnimDictLoaded(dict) and count < 30000 do
+        Wait(0)
+        count = count + 1
+    end
+    return HasAnimDictLoaded(dict)
+end
+
 Utility.RemovePed = function(entity)
     local success = false
     DeleteEntity(entity)
@@ -135,15 +145,6 @@ Utility.SetEntitySkinData = function(entity, skinData)
         SetPedComponentVariation(entity, i, skinData.clothing[i][1], skinData.clothing[i][2], 0)
     end
     return true
-end
-
-Utility.NativeAlert = function(data)
-    local message = data.message or 'No message provided'
-    local coords = data.coords or GetEntityCoords(cache.ped)
-    local job = data.job
-    local scale = data.scale or 0.8
-    local sprite = data.sprite or 1
-    TriggerServerEvent('community_bridge:server:alert', {message = message, coords = coords, job = job, scale = scale, sprite = sprite})
 end
 
 Utility.ReloadSkin = function()
@@ -277,13 +278,6 @@ AddEventHandler('onResourceStop', function(resource)
             end
         end
     end
-end)
-
-RegisterNetEvent('community_bridge:client:alert', function(data)
-    local blip = Utility.CreateBlip(data.coords, data.sprite, 3, data.scale, data.message, true)
-    SetTimeout(40000, function()
-        Utility.RemoveBlip(blip)
-    end)
 end)
 
 exports('Utility', Utility)
