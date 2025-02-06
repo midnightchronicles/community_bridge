@@ -10,8 +10,6 @@ shared_scripts {
     '@ox_lib/init.lua',
     'lib/init.lua',
     'settings/sharedConfig.lua',
-    'use/*.lua',
-    'modules/utility/shared/*.lua',
     'modules/math/*.lua',
     'modules/locales/*.lua',
 }
@@ -37,7 +35,6 @@ server_scripts {
 client_scripts {
     'settings/clientConfig.lua',
     'modules/locales/shared.lua',
-    'modules/utility/client/*.lua',
     'modules/framework/**/client.lua',
     'modules/inventory/**/client.lua',
     'modules/doorlock/**/client.lua',
