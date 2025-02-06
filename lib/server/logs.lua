@@ -9,7 +9,7 @@ Logs.Send = function(src, message)
         PerformHttpRequest(WebhookURL, function(err, text, headers) end, 'POST', json.encode(
         {
             username = "Community_Bridge's Logger",
-            avatar_url = 'https://cdn.discordapp.com/avatars/299410129982455808/31ce635662206e8bd0132c34ce9ce683?size=1024',
+            avatar_url = 'https://avatars.githubusercontent.com/u/192999457?s=400&u=da632e8f64c85def390cfd1a73c3b664d6882b38&v=4',
             embeds = {
                 {
                     color = "15769093",
@@ -37,7 +37,7 @@ Logs.Send = function(src, message)
                     timestamp = os.date('!%Y-%m-%dT%H:%M:%S'),
                     footer = {
                         text = "Community_Bridge | "..GetCurrentResourceName(),
-                        icon_url = 'https://cdn.discordapp.com/avatars/299410129982455808/31ce635662206e8bd0132c34ce9ce683?size=1024',
+                        icon_url = 'https://avatars.githubusercontent.com/u/192999457?s=400&u=da632e8f64c85def390cfd1a73c3b664d6882b38&v=4',
                     },
                 }
             }
