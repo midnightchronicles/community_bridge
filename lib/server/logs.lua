@@ -36,7 +36,7 @@ Logs.Send = function(src, message)
                     },
                     timestamp = os.date('!%Y-%m-%dT%H:%M:%S'),
                     footer = {
-                        text = "Community_Bridge | "..GetCurrentResourceName(),
+                        text = "Community_Bridge | ",
                         icon_url = 'https://avatars.githubusercontent.com/u/192999457?s=400&u=da632e8f64c85def390cfd1a73c3b664d6882b38&v=4',
                     },
                 }
