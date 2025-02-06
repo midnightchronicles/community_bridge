@@ -39,6 +39,7 @@ cLib = {
     Ids = Ids or Require("lib/shared/ids.lua"),
     ReboundEntities = ReboundEntities or Require("lib/shared/rebound_entities.lua"),
     Tables = Tables or Require("lib/shared/tables.lua"),
+    Prints = Prints or Require("lib/shared/prints.lua"),
     Math = Math or Require("lib/shared/math.lua"),
     LA = LA or Require("lib/shared/la.lua"),
     Perlin = Perlin or Require("lib/shared/perlin.lua"),

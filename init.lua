@@ -48,7 +48,7 @@ Bridge.RegisterModule("Dispatch", Dispatch)
 Bridge.RegisterModule("VehicleKey", VehicleKey)
 Bridge.RegisterModule("Weather", Weather)
 --lib
-Bridge.RegisterModule("Table", cLib.Table)
+Bridge.RegisterModule("Tables", cLib.Tables)
 Bridge.RegisterModule("Math", cLib.Math)
 Bridge.RegisterModule("Prints", cLib.Prints)
 Bridge.RegisterModule("Callback", cLib.Callback)
