@@ -4,14 +4,14 @@ This project incorporates code from several libraries and resources licensed und
 
 ## r_bridge
 - **Purpose**: Code for codem-inventory bridging, targeting, and framework item registration.
-- **Modifications to the code**: Code was used for codem/tgian inventory bridge & targeting, the idea of native helper functions came from that entirely. Targeting code still remains as is and is used as well as the method of registering usables.
+- **Modifications to the code**: Code was used for codem/tgian inventory bridge & targeting, the idea of native helper functions came from that entirely. Targeting code has been altered to allow both formats, the item registration has been simplified to fit this use case.
 - **Credit**: **r_bridge** inventory bridging code for codem-inventory is used in this. Targeting code still remains as is and is used.
   [\[r_bridge\]](https://github.com/rumaier/r_bridge)
 
 ## clean_lib
-- **Purpose**: Vehicle fuel, vehicle key bridging and the loading and saving methods of json files.
+- **Purpose**: Vehicle fuel, vehicle key bridging.
 - **Modifications to the code**: None.
-- **Credit**: **clean_lib** code is used to manage vehicle fuel and keys, bridging these systems seamlessly.
+- **Credit**: **clean_lib** client side code is used to manage vehicle fuel and keys, bridging these systems.
   [\[clean_lib\]](https://github.com/Clean-Server-Pack/clean_lib)
 
 ## ox_lib
