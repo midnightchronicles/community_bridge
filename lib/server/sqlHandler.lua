@@ -8,12 +8,12 @@ function SQL.Create(tableName, columns)
     for i, column in pairs(columns) do
         table.insert(columnsList, string.format("%s %s", column.name, column.type))
     end
-    
+
     local query = string.format("CREATE TABLE IF NOT EXISTS %s (%s);",
         tableName,
         table.concat(columnsList, ", ")
     )
-    
+
     MySQL.query.await(query)
 end
 
