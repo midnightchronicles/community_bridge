@@ -1,6 +1,6 @@
 if GetResourceState('fivem-appearance') ~= 'started' then return end
 
-Clothing = {}
+Clothing = Clothing or {}
 
 StoredOldClothing = {}
 

@@ -1,6 +1,6 @@
 if GetResourceState('esx_skin') ~= 'started' then return end
 
-Clothing = {}
+Clothing = Clothing or {}
 
 StoredOldClothing = {}
 

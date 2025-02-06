@@ -1,6 +1,6 @@
 if GetResourceState('qb-clothing') ~= 'started' then return end
 
-Clothing = {}
+Clothing = Clothing or {}
 
 StoredOldClothing = {}
 

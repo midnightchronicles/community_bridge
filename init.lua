@@ -2,11 +2,15 @@ Bridge = {}
 
 function Bridge.RegisterModule(moduleName, moduleTable)
     if not moduleTable then
-        print("No moduleTable provided for module and no defaultsTable found: ", moduleName)
+        if BridgeSharedConfig.DebugLevel ~= 0 then
+            print("^6 No moduleTable provided for module: ", moduleName, "^0")
+        end
         return
     end
     if Bridge[moduleName] then
-        print("Module already registered:", moduleName)
+        if BridgeSharedConfig.DebugLevel ~= 0 then
+            print("^6Module already registered:", moduleName, "^0")
+        end
         return
     end
 
@@ -18,7 +22,9 @@ function Bridge.RegisterModule(moduleName, moduleTable)
     for functionName, func in pairs(moduleTable) do
         wrappedModule[functionName] = func
     end
-    print("Registering module:", moduleName)
+    if BridgeSharedConfig.DebugLevel ~= 0 then
+        print("^2 Registering module:", moduleName, "^0")
+    end
     Bridge[moduleName] = wrappedModule
     --trigger update object event
     TriggerEvent("Bridge:Refresh", moduleName, wrappedModule)
