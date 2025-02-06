@@ -1,5 +1,5 @@
 if GetResourceState('Renewed-Vehiclekeys') ~= 'started' then return end
-VehicleKey = {}
+VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(src, vehicle, plate)
     --wip

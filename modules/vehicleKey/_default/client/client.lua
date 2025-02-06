@@ -1,4 +1,4 @@
-VehicleKey = {}
+VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
 

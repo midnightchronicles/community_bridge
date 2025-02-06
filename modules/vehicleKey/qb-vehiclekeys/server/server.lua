@@ -1,6 +1,6 @@
 if GetResourceState('qb-vehiclekeys') ~= 'started' then return end
 if GetResourceState('qbx_vehiclekeys') == 'started' then return end
-VehicleKey = {}
+VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(src, vehicle, plate)
     --wip

@@ -241,7 +241,7 @@ Utility.RegisterPoint = function(pointCoords, pointDistance, pointOnEnter, point
             pointOnExit(self)
         end,
     })
-    local pointID = Utility.CreateUniqueId(nil, 5, nil)
+    local pointID = Bridge.Ids.RandomLower(nil, 8)
     ActivePoints[pointID] = enterZone
     return enterZone, pointID
 end

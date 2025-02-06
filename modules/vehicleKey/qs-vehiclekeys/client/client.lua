@@ -1,5 +1,5 @@
 if GetResourceState('qs-vehiclekeys') ~= 'started' then return end
-VehicleKey = {}
+VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
     local model = GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))

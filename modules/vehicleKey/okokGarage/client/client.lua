@@ -1,5 +1,5 @@
 if GetResourceState('okokGarage') ~= 'started' then return end
-VehicleKey = {}
+VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
     TriggerServerEvent('okokGarage:GiveKeys', plate)

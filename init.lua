@@ -7,12 +7,6 @@ function Bridge.RegisterModule(moduleName, moduleTable)
         end
         return
     end
-    if Bridge[moduleName] then
-        if BridgeSharedConfig.DebugLevel ~= 0 then
-            print("^6Module already registered:", moduleName, "^0")
-        end
-        return
-    end
 
     local wrappedModule = {}
     if type(moduleTable) == 'function' then
