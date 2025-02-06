@@ -1,7 +1,5 @@
 if GetResourceState('ox_lib') ~= 'started' or (BridgeClientConfig.InputSystem ~= "ox" and BridgeClientConfig.InputSystem ~= "auto") then return end
 
-
-
 function QBTypeToOxType(_type)
     if _type == "text" then
         return "input"
@@ -17,7 +15,6 @@ function QBTypeToOxType(_type)
         return "select"
     end
 end
-
 
 function QBToOxInput(data)
     local returnData = {}
@@ -43,7 +40,6 @@ function QBToOxInput(data)
     end
     return returnData
 end
-
 
 function OpenInput(title, data, isQBFormat, submitText)
     local inputs = data.inputs

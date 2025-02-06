@@ -78,14 +78,7 @@ if GetResourceState('ox_lib') ~= 'started' and GetResourceState('qb-menu') ~= 's
 -- "input", "number", "checkbox", "select", "multi-select", "slider", "color", "date", "date-range", "time",  "textarea",
 Input = {}
 
-
-
-
-
-
-
 -- qb to ox
-
 --Open menu
 
 function Input.Open(title, data, isQBFormat, submitText)
