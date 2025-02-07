@@ -12,7 +12,7 @@ function Require(modulePath, resourceName)
     local id = resourceName .. ":" .. modulePath
     if loadedModules[id] then
         if BridgeSharedConfig.DebugLevel ~= 0 then
-            print("Returning cached module [" .. id .. "]")
+            print("^2 Returning cached module [" .. id .. "] ^0")
         end
         return loadedModules[id]
     end
