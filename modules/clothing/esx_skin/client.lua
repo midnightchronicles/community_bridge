@@ -2,12 +2,6 @@ if GetResourceState('esx_skin') ~= 'started' then return end
 
 Clothing = Clothing or {}
 
-StoredOldClothing = {}
-
-RegisterNetEvent('community_bridge:client:updateStoredClothing', function(skindata)
-    StoredOldClothing = skindata
-end)
-
 local clothingData = {
     male = {
         components = {

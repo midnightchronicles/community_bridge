@@ -133,9 +133,11 @@ end
 
 Utility.GetEntitySkinData = function(entity)
     local skinData = {}
-    skinData.clothing = {}
     for i = 0, 11 do
         skinData.clothing[i] = {GetPedDrawableVariation(entity, i), GetPedTextureVariation(entity, i)}
+    end
+    for i = 0, 13 do
+        skinData.props[i] = {GetPedPropIndex(entity, i), GetPedPropTextureIndex(entity, i)}
     end
     return skinData
 end
@@ -143,6 +145,9 @@ end
 Utility.SetEntitySkinData = function(entity, skinData)
     for i = 0, 11 do
         SetPedComponentVariation(entity, i, skinData.clothing[i][1], skinData.clothing[i][2], 0)
+    end
+    for i = 0, 13 do
+        SetPedPropIndex(entity, i, skinData.props[i][1], skinData.props[i][2], 0)
     end
     return true
 end
@@ -158,10 +163,6 @@ Utility.ReloadSkin = function()
         end
     end
     return true
-end
-
-Utility.RestoreAppearance = function(data)
-    return Utility.SetEntitySkinData(cache.ped, data)
 end
 
 Utility.HelpText = function(text, duration)
