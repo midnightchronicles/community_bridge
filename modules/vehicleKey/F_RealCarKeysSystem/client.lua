@@ -1,12 +1,10 @@
-if GetResourceState('qs-fuelstations') ~= 'started' then return end
-Fuel = {}
+if GetResourceState('F_RealCarKeysSystem') ~= 'started' then return end
+VehicleKey = {}
 
-Fuel.GetFuel = function(vehicle)
-    if not DoesEntityExist(vehicle) then return 0.0 end
-    return exports['qs-fuelstations']:GetFuel(vehicle)
+VehicleKey.GiveKeys = function(vehicle, plate)
+    TriggerServerEvent('F_RealCarKeysSystem:generateVehicleKeys', plate)
 end
 
-Fuel.SetFuel = function(vehicle, fuel)
-    if not DoesEntityExist(vehicle) then return end
-    return exports['qs-fuelstations']:SetFuel(vehicle, fuel)
+VehicleKey.RemoveKeys = function(vehicle, plate)
+    return
 end
