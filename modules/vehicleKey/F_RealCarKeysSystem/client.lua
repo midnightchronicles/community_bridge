@@ -1,5 +1,5 @@
 if GetResourceState('F_RealCarKeysSystem') ~= 'started' then return end
-VehicleKey = {}
+VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
     TriggerServerEvent('F_RealCarKeysSystem:generateVehicleKeys', plate)
