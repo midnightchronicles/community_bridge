@@ -16,7 +16,7 @@ function Action.Fire(id, players, ...)
     TriggerClientEvent(GetCurrentResourceName() .. "client:Action", tonumber(players or -1), id, ...)
 end
 
-if IsDuplicityVersion() then return end
+if IsDuplicityVersion() then return Actions end
 ::client::
 
 function Action.Create(id, action)
@@ -43,5 +43,7 @@ RegisterNetEvent(GetCurrentResourceName() .. "client:Action", function(id, ...)
     action(...)
 end)
 
+exports("Action", Action)
+return Action
 
 
