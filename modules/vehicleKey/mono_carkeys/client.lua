@@ -1,6 +1,6 @@
 if GetResourceState('mono_carkeys') ~= 'started' then return end
 
-VehicleKey = {}
+VehicleKey = VehicleKey or {}
 VehicleKey.GiveKeys = function(vehicle, plate)
     if type(plate) ~= 'string' then return end
     TriggerServerEvent('mono_carkeys:CreateKey', plate)
