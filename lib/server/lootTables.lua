@@ -68,6 +68,7 @@ LootTable.GetRandomItemsWithLimit = function(name, tier, randomNumber)
     end
     return items
 end
+-- 
 
 exports('LootTable', LootTable)
 return LootTable
