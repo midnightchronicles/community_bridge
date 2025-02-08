@@ -14,38 +14,42 @@ local targetZones = {}
 
 Target = {}
 
-Target.AddGlobalPlayer = function(options)
+Target.FixOptions = function(options)
     for k, v in pairs(options) do
-        options[k].onSelect = v.onSelect or v.action
+        local action = v.onSelect or v.action
+        local select = function(entityOrData)
+            if type(entityOrData) == 'table' then
+                return action(entityOrData.entity)
+            end
+            return action(entityOrData)            
+        end
+        options[k].onSelect = action
     end
+    return options
+end
+
+Target.AddGlobalPlayer = function(options)
+    options = Target.FixOptions(options)
     ox_target:addGlobalPlayer(options)
 end
 
 Target.AddGlobalVehicle = function(options)
-    for k, v in pairs(options) do
-        options[k].onSelect = v.onSelect or v.action
-    end
+    options = Target.FixOptions(options)
     ox_target:addGlobalVehicle(options)
 end
 
 Target.AddLocalEntity = function(entities, options)
-    for k, v in pairs(options) do
-        options[k].onSelect = v.onSelect or v.action
-    end
+    options = Target.FixOptions(options)
     ox_target:addLocalEntity(entities, options)
 end
 
 Target.AddModel = function(models, options)
-    for k, v in pairs(options) do
-        options[k].onSelect = v.onSelect or v.action
-    end
+    options = Target.FixOptions(options)
     ox_target:addModel(models, options)
 end
 
 Target.AddBoxZone = function(name, coords, size, heading, options)
-    for k, v in pairs(options) do
-        options[k].onSelect = v.onSelect or v.action
-    end
+    options = Target.FixOptions(options)
     local target = ox_target:addBoxZone({
         coords = coords,
         size = size,

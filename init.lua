@@ -2,39 +2,68 @@ Bridge = {}
 
 function Bridge.RegisterModule(moduleName, moduleTable)
     if not moduleTable then
-        print("No moduleTable provided for module and no defaultsTable found: ", moduleName)
-        return
-    end
-    if Bridge[moduleName] then
-        print("Module already registered:", moduleName)
+        if BridgeSharedConfig.DebugLevel ~= 0 then
+            print("^6 No moduleTable provided for module: ", moduleName, "^0")
+        end
         return
     end
 
     local wrappedModule = {}
+    if type(moduleTable) == 'function' then
+        Bridge[moduleName] = wrappedModule
+        return
+    end
     for functionName, func in pairs(moduleTable) do
         wrappedModule[functionName] = func
     end
-    print("Registering module:", moduleName)
+    if BridgeSharedConfig.DebugLevel ~= 0 then
+        print("^2 Registering module:", moduleName, "^0")
+    end
     Bridge[moduleName] = wrappedModule
+    --trigger update object event
+    TriggerEvent("Bridge:Refresh", moduleName, wrappedModule)
 end
+exports("RegisterModule", Bridge.RegisterModule)
 
 --TODO: Create a way to overide functions or create a new functions for module
 
+function Bridge.RegisterModuleFunction(moduleName, functionName, func)
+    assert(moduleName and functionName and func, string.format("Bridge.RegisterModuleFunction(%s, %s, %s) - Invalid arguments", moduleName, functionName, func))
+    Bridge[moduleName] = Bridge[moduleName] or {}
+    Bridge[moduleName][functionName] = func
+    --trigger update object event
+    TriggerEvent("Bridge:Refresh", moduleName, Bridge[moduleName])
+end
+
+
+--Bridge
 Bridge.RegisterModule("Framework", Framework)
 Bridge.RegisterModule("Inventory", Inventory)
 Bridge.RegisterModule("Notify", Notify)
-Bridge.RegisterModule("Utility", Utility)
 Bridge.RegisterModule("Clothing", Clothing)
 Bridge.RegisterModule("Language", Language)
 Bridge.RegisterModule("Doorlock", Doorlock)
 Bridge.RegisterModule("Phone", Phone)
-Bridge.RegisterModule("Table", Table)
-Bridge.RegisterModule("Math", Math)
-Bridge.RegisterModule("Prints", Prints)
-Bridge.RegisterModule("Callback", Callback)
+Bridge.RegisterModule("Dispatch", Dispatch)
+Bridge.RegisterModule("VehicleKey", VehicleKey)
+Bridge.RegisterModule("Weather", Weather)
+--lib
+Bridge.RegisterModule("Tables", cLib.Tables)
+Bridge.RegisterModule("Math", cLib.Math)
+Bridge.RegisterModule("Prints", cLib.Prints)
+Bridge.RegisterModule("Callback", cLib.Callback)
+
+--new
+Bridge.RegisterModule("Require", Require)
+Bridge.RegisterModule("Ids", cLib.Ids)
+Bridge.RegisterModule("ReboundEntities", cLib.ReboundEntities)
+Bridge.RegisterModule("LA", cLib.LA)
+Bridge.RegisterModule("Perlin", cLib.Perlin)
+Bridge.RegisterModule("Actions", cLib.Actions)
 
 
 CreateThread(function()
+    Wait(100)
     for moduleName, moduleFunction in pairs(Bridge) do
         if type(moduleFunction) == 'table' then
             exports(moduleName, function()
@@ -50,17 +79,35 @@ exports('Bridge', function()
     return Bridge
 end)
 
+-- ▄▀▀ ██▀ █▀▄ █ █ ██▀ █▀▄ 
+-- ▄█▀ █▄▄ █▀▄ ▀▄▀ █▄▄ █▀▄ 
+if not IsDuplicityVersion() then goto client end
 
+Bridge.RegisterModule("SQL", cLib.SQL)
+Bridge.RegisterModule("Logs", cLib.Logs)
+Bridge.RegisterModule("LootTables", cLib.LootTables)
+
+
+--    ▄▀▀ █   █ ██▀ █▄ █ ▀█▀ 
+--    ▀▄▄ █▄▄ █ █▄▄ █ ▀█  █  
 if IsDuplicityVersion() then return end
+::client::
 
-Bridge.RegisterModule("Dispatch", Dispatch)
+
 Bridge.RegisterModule("Fuel", Fuel)
 Bridge.RegisterModule("Input", Input)
 Bridge.RegisterModule("Progressbar", Progressbar)
-Bridge.RegisterModule("VehicleKey", VehicleKey)
-Bridge.RegisterModule("Weather", Weather)
+
 Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
+Bridge.RegisterModule("Utility", cLib.Utility)
+Bridge.RegisterModule("Placeable", cLib.Placeable)
+--new
+-- Bridge.RegisterModule("Gizmo", cLib.Gizmo)
+-- Bridge.RegisterModule("Scaleform", cLib.Scaleform)
+-- Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
+--
+
 
 -- Fill the bridge tables with player data.
 function FillBridgeTables()

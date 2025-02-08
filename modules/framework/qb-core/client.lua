@@ -17,6 +17,18 @@ Framework.GetPlayerMetaData = function(metadata)
     return QBCore.Functions.GetPlayerData().metadata[metadata]
 end
 
+Framework.Notify = function(message, type, time)
+    TriggerEvent('QBCore:Notify', message, 'primary', time)
+end
+
+Framework.ShowHelpText = function(message, _position)
+    return exports['qb-core']:DrawText(message, _position)
+end
+
+Framework.HideHelpText = function()
+    return exports['qb-core']:HideText()
+end
+
 Framework.GetItemInfo = function(item)
     local itemData = QBCore.Shared.Items[item]
     if not itemData then return {} end

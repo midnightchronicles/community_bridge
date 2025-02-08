@@ -1,8 +1,5 @@
 if GetResourceState('illenium-appearance') ~= 'started' then return end
-
-Clothing = {}
-
-StoredOldClothing = {}
+Clothing = Clothing or {}
 
 Clothing.SetAppearance = function(clothingData)
     local clothing = {}
@@ -15,7 +12,7 @@ Clothing.SetAppearance = function(clothingData)
     clothing.props = exports['illenium-appearance']:getPedProps(cache.ped)
 
     Prints.Debug(json.encode(clothingData, {indent = true}))
-    StoredOldClothing = clothing
+    ClothingBackup = clothing
     exports['illenium-appearance']:setPedComponents(cache.ped, clothingData.components)
     exports['illenium-appearance']:setPedProp(cache.ped, clothingData.props)
     return true
@@ -35,8 +32,8 @@ Clothing.GetAppearance = function()
 end
 
 Clothing.RestoreAppearance = function()
-    exports['illenium-appearance']:setPedComponents(cache.ped, StoredOldClothing.components)
-    exports['illenium-appearance']:setPedProp(cache.ped, StoredOldClothing.props)
+    exports['illenium-appearance']:setPedComponents(cache.ped, ClothingBackup.components)
+    exports['illenium-appearance']:setPedProp(cache.ped, ClothingBackup.props)
     return true
 end
 

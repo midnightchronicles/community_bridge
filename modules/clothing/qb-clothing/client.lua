@@ -1,21 +1,16 @@
 if GetResourceState('qb-clothing') ~= 'started' then return end
 
-Clothing = {}
+Clothing = Clothing or {}
 
-StoredOldClothing = {}
-
-RegisterNetEvent('community_bridge:client:updateStoredClothing', function(skindata)
-    StoredOldClothing = skindata
-end)
-
-Clothing.SetAppearance = function(clothingData)
-    if GetEntityModel(cache.ped) == `mp_m_freemode_01` then
-        clothingData = clothingData.male
-    else
-        clothingData = clothingData.female
-    end
+Clothing.SetAppearance = function(data)
+    local clothingData = {}
     local repackedTable = {}
-    StoredOldClothing = Clothing.GetAppearance
+    if GetEntityModel(cache.ped) == `mp_m_freemode_01` then
+        clothingData = data.male
+    else
+        clothingData = data.female
+    end
+    ClothingBackup = Clothing.GetAppearance
     local componentMap = {
         [1] = 'mask',
         [3] = 'arms',
@@ -45,21 +40,21 @@ Clothing.SetAppearance = function(clothingData)
         face_id = 'face'
     }
 
-    for _, data in pairs(clothingData) do
-        if componentMap[data.component_id] then
-            repackedTable[componentMap[data.component_id]] = {drawable = data.drawable, texture = data.texture}
-        elseif propMap[data.prop_id] then
-            repackedTable[propMap[data.prop_id]] = {drawable = data.drawable, texture = data.texture}
-        elseif specialMap[data.eye_color_id] then
-            repackedTable[specialMap[data.eye_color_id]] = {drawable = data.drawable, texture = data.texture}
-        elseif specialMap[data.moles_id] then
-            repackedTable[specialMap[data.moles_id]] = {drawable = data.drawable, texture = data.texture}
-        elseif specialMap[data.ageing_id] then
-            repackedTable[specialMap[data.ageing_id]] = {drawable = data.drawable, texture = data.texture}
-        elseif specialMap[data.hair_id] then
-            repackedTable[specialMap[data.hair_id]] = {drawable = data.drawable, texture = data.texture}
-        elseif specialMap[data.face_id] then
-            repackedTable[specialMap[data.face_id]] = {drawable = data.drawable, texture = data.texture}
+    for _, v in pairs(clothingData) do
+        if componentMap[v.component_id] then
+            repackedTable[componentMap[v.component_id]] = {drawable = v.drawable, texture = v.texture}
+        elseif propMap[v.prop_id] then
+            repackedTable[propMap[v.prop_id]] = {drawable = v.drawable, texture = v.texture}
+        elseif specialMap[v.eye_color_id] then
+            repackedTable[specialMap[v.eye_color_id]] = {drawable = v.drawable, texture = v.texture}
+        elseif specialMap[v.moles_id] then
+            repackedTable[specialMap[v.moles_id]] = {drawable = v.drawable, texture = v.texture}
+        elseif specialMap[v.ageing_id] then
+            repackedTable[specialMap[v.ageing_id]] = {drawable = v.drawable, texture = v.texture}
+        elseif specialMap[v.hair_id] then
+            repackedTable[specialMap[v.hair_id]] = {drawable = v.drawable, texture = v.texture}
+        elseif specialMap[v.face_id] then
+            repackedTable[specialMap[v.face_id]] = {drawable = v.drawable, texture = v.texture}
         end
     end
     TriggerEvent('qb-clothing:client:loadOutfit', repackedTable)
@@ -67,12 +62,12 @@ Clothing.SetAppearance = function(clothingData)
 end
 
 Clothing.GetAppearance = function()
-    StoredOldClothing = Utility.GetEntitySkinData(cache.ped)
+    ClothingBackup = Utility.GetEntitySkinData(cache.ped)
     return Utility.GetEntitySkinData(cache.ped)
 end
 
 Clothing.RestoreAppearance = function()
-    return Utility.SetEntitySkinData(cache.ped, StoredOldClothing)
+    return Utility.SetEntitySkinData(cache.ped, ClothingBackup)
 end
 
 Clothing.ReloadSkin = function()

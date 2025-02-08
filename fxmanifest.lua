@@ -4,13 +4,12 @@ lua54 'yes'
 use_experimental_fxv2_oal 'yes'
 author 'The Order of the Sacred Framework'
 description 'A bridge made for the community to use as a base for their own projects. This bridge will allow a single format to work with nearly all commonly used systems while still offering expandability.'
-version '0.2.2'
+version '0.2.6'
 
 shared_scripts {
     '@ox_lib/init.lua',
+    'lib/init.lua',
     'settings/sharedConfig.lua',
-    'use/*.lua',
-    'modules/utility/shared/*.lua',
     'modules/math/*.lua',
     'modules/locales/*.lua',
 }
@@ -24,20 +23,22 @@ server_scripts {
     'modules/inventory/**/server.lua',
     'modules/doorlock/**/server.lua',
     'modules/phone/**/server.lua',
-    'modules/notify/server.lua',
     'modules/managment/**/server.lua',
+    'modules/dispatch/**/server.lua',
+    'modules/clothing/**/server.lua',
+    'modules/weather/**/server.lua',
+    'modules/vehicleKey/**/server.lua',
+    'modules/notify/**/server.lua',
     'init.lua',
 }
 
 client_scripts {
     'settings/clientConfig.lua',
     'modules/locales/shared.lua',
-    'modules/utility/client/*.lua',
     'modules/framework/**/client.lua',
     'modules/inventory/**/client.lua',
     'modules/doorlock/**/client.lua',
     'modules/phone/**/client.lua',
-    'modules/notify/client.lua',
     'modules/weather/**/client.lua',
     'modules/vehicleKey/**/client.lua',
     'modules/fuel/**/client.lua',
@@ -47,12 +48,16 @@ client_scripts {
     'modules/clothing/**/client.lua',
     'modules/input/*.lua',
     'modules/menu/*.lua',
+    'modules/notify/**/client.lua',
     'init.lua',
 }
 
 files {
     'locales/*.json',
-    'components/*.lua',
+    'lib/client/*.lua',
+    'lib/shared/*.lua',
+    'lib/server/*.lua',
+    'lib/init.lua',
 }
 
 dependencies {
