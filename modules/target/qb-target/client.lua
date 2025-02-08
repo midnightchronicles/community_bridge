@@ -22,7 +22,7 @@ Target.FixOptions = function(options)
             end
             return action(entityOrData)            
         end
-        options[k].onSelect = action
+        options[k].action = select
     end
     return options
 end

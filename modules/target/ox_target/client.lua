@@ -21,9 +21,9 @@ Target.FixOptions = function(options)
             if type(entityOrData) == 'table' then
                 return action(entityOrData.entity)
             end
-            return action(entityOrData)            
+            return action(entityOrData)
         end
-        options[k].onSelect = action
+        options[k].onSelect = select
     end
     return options
 end
