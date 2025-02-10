@@ -39,4 +39,6 @@ This bridge will **not fall victim to the ego of any single individual**, for it
 The aim, much like the hobbits' journey to Morridor, is to create a **free, open, community-driven bridge**, one that serves the needs of the many and welcomes all who wish to add their mark to the map.
 
 
-**Docs available at** https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework
+**Docs available At** https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework
+
+**Join The Discord At** https://discord.gg/MukwBuJjP7
