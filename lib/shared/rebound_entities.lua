@@ -226,7 +226,8 @@ function ReboundEntities.GetAccessibleList(src)
     return list
 end
 
-RegisterNetEvent("playerJoining", function(src, _)
+RegisterNetEvent("playerJoining", function()
+    local src = source
     ReboundEntities.Refresh(src)
 end)
 

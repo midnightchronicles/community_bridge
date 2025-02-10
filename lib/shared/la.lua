@@ -402,6 +402,92 @@ LA.MultiplyMatrixByVector = function(m, v)
     return result
 end
 
+--Slines
+LA.SplineLerp = function(nodes, start, endPos, t)
+  -- Ensure t is clamped between 0 and 1
+  t = LA.Clamp(t, 0, 1)
+
+  -- Find the two closest nodes around t
+  local prevNode, nextNode = nil, nil
+  for i = 1, #nodes - 1 do
+      if nodes[i].time <= t and nodes[i + 1].time >= t then
+          prevNode, nextNode = nodes[i], nodes[i + 1]
+          break
+      end
+  end
+
+  -- Edge cases: If t is before or after the defined range
+  if not prevNode then return start end
+  if not nextNode then return endPos end
+
+  -- Normalize t within the segment
+  local segmentT = (t - prevNode.time) / (nextNode.time - prevNode.time)
+
+  -- Interpolate the value (y-axis)
+  local smoothedT = LA.Lerp(prevNode.value, nextNode.value, segmentT)
+
+  -- Perform final Lerp using the interpolated smoothing factor
+  return LA.Lerp(start, endPos, smoothedT)
+end
+
+LA.SplineSmooth = function(nodes, points, t)
+  -- Ensure valid input
+  if #points < 2 then return points end
+  t = LA.Clamp(t, 0, 1)
+
+  local smoothedPoints = {}
+
+  for i = 1, #points - 1 do
+      local smoothedPos = LA.SplineLerp(nodes, points[i], points[i + 1], t)
+      table.insert(smoothedPoints, smoothedPos)
+  end
+
+  -- Ensure last point remains unchanged
+  table.insert(smoothedPoints, points[#points])
+
+  return smoothedPoints
+end
+
+LA.Spline = function(points, resolution)
+  -- Ensure valid input
+  if #points < 2 then return points end
+
+  -- Create a list of nodes
+  local nodes = {}
+  for i = 1, #points do
+      table.insert(nodes, { time = i / (#points - 1), value = i })
+  end
+
+  -- Smooth the points
+  local smoothedPoints = {}
+  for i = 0, 1, resolution do
+      local smoothedPos = LA.SplineSmooth(nodes, points, i)
+      table.insert(smoothedPoints, smoothedPos)
+  end
+
+  return smoothedPoints
+end
+
+LA.SplineCatmullRom = function(points, resolution)
+  -- Ensure valid input
+  if #points < 4 then return points end
+
+  -- Create a list of nodes
+  local nodes = {}
+  for i = 1, #points do
+      table.insert(nodes, { time = i / (#points - 1), value = i })
+  end
+
+  -- Smooth the points
+  local smoothedPoints = {}
+  for i = 0, 1, resolution do
+      local smoothedPos = LA.SplineSmooth(nodes, points, i)
+      table.insert(smoothedPoints, smoothedPos)
+  end
+
+  return smoothedPoints
+end
+
 exports('LA', LA)
 return LA
 
