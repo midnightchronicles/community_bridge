@@ -8,7 +8,7 @@ Dispatch.SendAlert = function(data)
             description = data.message or "Alert",
             isImportant = 0,
             recipientList = data.jobs or {'police'},
-            length = (data.alertTime * 1000) or '10000',
+            length = data.time or '10000',
             infoM = data.icon or 'fas fa-question',
             info = data.message or "Alert"
         },
