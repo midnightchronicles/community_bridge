@@ -24,28 +24,3 @@ RegisterNetEvent('community_bridge:Client:DispatchAlert', function(alert)
 	Wait(alert.time)
     Bridge.Utility.RemoveBlip(blip)
 end)
-
---[[
-RegisterCommand('testalert', function(source, args)
-    print('sending alert')
-    local ped = cache.ped
-    local vehicle = cache.vehicle
-    Dispatch.SendAlert({
-        vehicle = vehicle or nil,
-        plate = vehicle and GetVehicleNumberPlateText(vehicle) or nil,
-        ped = ped,
-        pedCoords = ped and GetEntityCoords(ped),
-        coords = GetEntityCoords(ped),
-        blipData = {
-            sprite = 161,
-            color = 1,
-            scale = 0.8,
-        },
-        message = "Vehicle is being stolen",
-        code = '10-80',
-        icon = 'fas fa-question',
-        jobs = {'police'},
-        alertTime = 10
-    })
-end, false)
---]]
