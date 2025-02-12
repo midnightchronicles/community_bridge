@@ -20,6 +20,7 @@ local function finishPlacing()
 end
 
 Placeable.PlaceObject = function(object, distance, snapToGround, allowedMats, offset)
+    distance = tonumber(distance or 10.0 ) 
     if activePlacementProp then return end
 
     if not object then Prints.Error('no_prop_defined') end
@@ -75,7 +76,6 @@ Placeable.PlaceObject = function(object, distance, snapToGround, allowedMats, of
             if IsControlJustReleased(0, 38) then
                 if not outLine and (not allowedMats or allowedMats[materialHash]) and distCheck < checkDist then
                     finishPlacing()
-
                     return coords, heading
                 end
             end

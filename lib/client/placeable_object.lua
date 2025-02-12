@@ -1,8 +1,10 @@
-Scaleform = Scaleform or Require("client/scaleform.lua")
-Utility = Utility or Require("client/utility.lua")
-Gizmo = Gizmo or Require("client/gizmo.lua")
+Scaleform = Scaleform or Require("lib/client/scaleform.lua")
+Utility = Utility or Require("lib/client/utility.lua")
+Gizmo = Gizmo or Require("lib/client/gizmo.lua")
+Raycast = Raycast or Require("lib/client/raycast.lua")
 
 PlaceableObject = PlaceableObject or {}
+
 local data = {
     entity = nil,
     placing = false,
@@ -21,6 +23,13 @@ function PlaceableObject.Eyetrace(depth, disableSphere)
     return target
 end
 
+function PlaceableObject.InBoundary(pos, boundary)
+    if not boundary then return false end
+    local x, y, z = table.unpack(pos)
+    local minX, minY, minZ = table.unpack(boundary.min)
+    local maxX, maxY, maxZ = table.unpack(boundary.max)
+    return x >= minX and x <= maxX and y >= minY and y <= maxY and z >= minZ and z <= maxZ
+end
 -- Creates a placeable object in the game world.
 -- @param model (string) The model of the object to create.
 -- @param onConfirm (function) [optional] The callback function to execute when the object is confirmed.
@@ -31,18 +40,21 @@ end
 --     - depthMax (number) The maximum depth for the object placement. Default is 10.0.
 --     - rotationStep (number) The rotation step for the object. Default is 15.0.
 --     - depthStep (number) The depth step for the object. Default is 1.0.
-function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, settings, config)
+function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, settings)
     local settings = settings or {}
     local depthMin = settings.depthMin or 2.0
     depthMax = settings.depthMax or 10.0
     rotationStep = settings.rotationStep or 15.0
     depthStep = settings.depthStep or 1.0
+    disableSphere = settings.useSphere and false or true
     local depth = settings.depth or 10.0
-    print(depth)
     data.placing = true
     data.paused = false
     local initialPos = nil
     local placeOnGround = true
+    local allowedMats = settings.allowedMats
+    local boundary = settings.boundary
+    local config = settings.config or {}
 
     --scaleform
     local scaleform = Scaleform.SetupInstructionalButtons({
@@ -58,39 +70,62 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
         {type = "DRAW_INSTRUCTIONAL_BUTTONS"},
         {type = "SET_BACKGROUND_COLOUR"},
     })
+    local heading = -GetEntityHeading(PlayerPedId())
+    
+    local pos = PlaceableObject.Eyetrace(depth, disableSphere)
+    if not data.spawned and model then
+        --get player heading
+        local obj = Utility.CreateProp(model, pos, vector3(0, 0, heading), nil)
+        data.spawned = obj
+    end
+    assert(data.spawned, "Failed to create object")
+    SetEntityCollision(data.spawned, false, false)
+    SetEntityAlpha(data.spawned, 150, false)
+    
+    SetPedConfigFlag(PlayerPedId(), 146, true)
+    SetCanClimbOnEntity(data.spawned, false)
+    SetEntityCompletelyDisableCollision(data.spawned, true, false)
+    SetEntityNoCollisionEntity(PlayerPedId(), data.spawned, false)
+    local inBounds = true
+    if allowedMats or boundary then
+        CreateThread(function()
+            while data.placing do
+                local hit, _, coords, _, materialHash = Raycast.FromCamera(1, 4)
+                if hit and hit ~=1 and (allowedMats?[materialHash] or PlaceableObject.InBoundary(GetEntityCoords(data.spawned), boundary)) then
+                    if not inBounds then
+                        inBounds = true
+                        SetEntityDrawOutlineColor(0, 255, 0, 255)
+                        SetEntityDrawOutline(data.spawned, true)
+                    end                    
+                elseif inBounds then
+                    inBounds = false
+                    SetEntityDrawOutline(data.spawned, false)
+                end
+                Wait(500)
+            end
+        end)
+    end
+
     CreateThread(function()
-        local heading = -GetEntityHeading(PlayerPedId())
-        
-        local pos = PlaceableObject.Eyetrace(depth)
-        if not data.spawned and model then
-            --get player heading
-            local obj = Utility.CreateProp(model, pos, vector3(0, 0, heading), nil)
-            data.spawned = obj
-        end
-        assert(data.spawned, "Failed to create object")
-        SetEntityCollision(data.spawned, false, false)
-        SetEntityAlpha(data.spawned, 150, false)
-
-        SetPedConfigFlag(PlayerPedId(), 146, true)
-        SetCanClimbOnEntity(data.spawned, false)
-        SetEntityCompletelyDisableCollision(data.spawned, true, false)
-        SetEntityNoCollisionEntity(PlayerPedId(), data.spawned, false)
-
         while data.placing do
             if data.paused then goto continue end
             DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 0)
             DisableControlAction(0, 24, true) -- Attack
             DisableControlAction(0, 25, true) -- Aim
             DisableControlAction(0, 36, true) -- INPUT_DUCK.
-
-            if IsControlJustPressed(0, 223) then -- left click
-                if onConfirm and type(onConfirm) == 'function' then onConfirm(data.spawned, pos, heading) end
-                data.placing  = false
+            
+            if IsDisabledControlJustPressed(0, 223) then -- left click
+                if not inBounds then 
+                    Notify.SendNotify("You can't place this object here", "error", 5000)
+                elseif onConfirm then 
+                    onConfirm(data.spawned, pos, heading) 
+                    data.placing  = false
+                end
             end
 
-            if IsControlJustPressed(0, 222) then -- right click
+            if IsDisabledControlJustPressed(0, 25) then -- right click
                 data.placing  = false
-                if onCancel and type(onCancel) == 'function' then
+                if onCancel then
                     onCancel(data.spawned, pos, heading)
                 else
                     DeleteEntity(data.spawned)
@@ -98,13 +133,13 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
                 return
             end
 
-            if IsControlPressed(0,19) then
-                placeOnGround = not (placeOnGround or false)
+            if IsControlJustPressed(0,19) then
+                placeOnGround = not placeOnGround
             end
 
             if IsControlJustPressed(0, 38) then -- TAB key to switch to gizmo
                 data.placing = false                
-                return Gizmo.UseGizmo(data.spawned, onConfirm, onUpdate, onCancel)
+                return Gizmo.UseGizmo(data.spawned, onConfirm, onUpdate, onCancel, settings)
             end
 
             if IsControlPressed(0,224) then -- left ctrl
@@ -136,7 +171,7 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
                 end
             end
 
-            pos = PlaceableObject.Eyetrace(depth)
+            pos = PlaceableObject.Eyetrace(depth, disableSphere)
             if data.spawned then
                 SetEntityCoords(data.spawned, pos.x, pos.y, pos.z)
                 SetEntityHeading(data.spawned, heading)
@@ -155,14 +190,6 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
     end)
 end
 
+return PlaceableObject
 
 
-RegisterCommand("testers", function()
-    PlaceableObject.Create({}, "prop_beachflag_01", function(entity, pos, heading)
-      
-    end, function(entity, pos, heading)
-      
-    end, function(entity, pos, heading)
-     
-    end)
-end)

@@ -61,6 +61,8 @@ function SQL.Delete(tableName, where)
     MySQL.query.await(query)
 end
 
-exports('SQL', SQL)
+exports('SQL', function()
+    return SQL
+end)
 
 return SQL

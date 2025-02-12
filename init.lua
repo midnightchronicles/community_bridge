@@ -103,10 +103,11 @@ Bridge.RegisterModule("Menu", Menu)
 Bridge.RegisterModule("Utility", cLib.Utility)
 Bridge.RegisterModule("Placeable", cLib.Placeable)
 --new
--- Bridge.RegisterModule("Gizmo", cLib.Gizmo)
--- Bridge.RegisterModule("Scaleform", cLib.Scaleform)
--- Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
---
+Bridge.RegisterModule("Gizmo", cLib.Gizmo)
+Bridge.RegisterModule("Scaleform", cLib.Scaleform)
+Bridge.RegisterModule("Raycast", cLib.Raycast)
+Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
+
 
 
 -- Fill the bridge tables with player data.
