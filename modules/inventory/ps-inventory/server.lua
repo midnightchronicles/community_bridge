@@ -23,3 +23,15 @@ Inventory.GetItemBySlot = function(src, slot)
     if not slotData then return {} end
     return {name = slotData.name, label = slotData.name, weight = slotData.weight, slot = slot, count = slotData.amount, metadata = slotData.info, stack = slotData.unique, description = slotData.description}
 end
+
+Inventory.AddItem = function(src, item, amount, slot, metadata)
+    TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add')
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = amount, slot = slot, metadata = metadata})
+    return exports['ps-inventory']:AddItem(src, item, amount, slot, metadata, 'community_bridge')
+end
+
+Inventory.RemoveItem = function(src, item, amount, slot, metadata)
+    TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove')
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = amount, slot = slot, metadata = metadata})
+    return exports['ps-inventory']:RemoveItem(src, item, amount, slot, 'community_bridge')
+end
