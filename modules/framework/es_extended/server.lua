@@ -225,7 +225,8 @@ Framework.RegisterUsableItem = function(itemName, cb)
 end
 
 RegisterNetEvent("esx:playerLogout", function()
-    TriggerEvent("community_bridge:Server:OnPlayerUnload", source)
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
 
 AddEventHandler("playerDropped", function()

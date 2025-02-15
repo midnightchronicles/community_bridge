@@ -45,7 +45,7 @@ cLib = {
     Math = Math or Require("lib/shared/math.lua"),
     LA = LA or Require("lib/shared/la.lua"),
     Perlin = Perlin or Require("lib/shared/perlin.lua"),
-    Actions = Actions or Require("lib/shared/actions.lua"),
+    -- Actions = Actions or Require("lib/shared/actions.lua"),
 }
 
 exports('cLib', cLib)
@@ -59,11 +59,11 @@ cLib.LootTables = LootTables or Require("lib/server/lootTables.lua")
 if IsDuplicityVersion() then return cLib end
 ::client::
 
--- cLib.Gizmo = Gizmo or Require("lib/client/gizmo.lua")
--- cLib.Scaleform = Scaleform or Require("lib/client/scaleform.lua")
+cLib.Gizmo = Gizmo or Require("lib/client/gizmo.lua")
+cLib.Scaleform = Scaleform or Require("lib/client/scaleform.lua")
 cLib.Placeable = Placeable or Require("lib/client/object_placer.lua")
 cLib.Utility = Utility or Require("lib/client/utility.lua")
--- cLib.PlaceableObject = PlaceableObject or Require("lib/client/object_placer.lua")
-
+cLib.PlaceableObject = PlaceableObject or Require("lib/client/placeable_object.lua")
+cLib.Raycast = Raycast or Require("lib/client/raycast.lua")
 
 return cLib

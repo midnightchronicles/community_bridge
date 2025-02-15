@@ -19,7 +19,16 @@ local function finishPlacing()
     activePlacementProp = nil
 end
 
+--[[
+
+RegisterCommand('testplacement', function()
+    Placeable.PlaceObject("prop_cs_cardbox_01", 10, true, nil, 0.0)
+end, false)
+
+--]]
+
 Placeable.PlaceObject = function(object, distance, snapToGround, allowedMats, offset)
+    distance = tonumber(distance or 10.0 )
     if activePlacementProp then return end
 
     if not object then Prints.Error('no_prop_defined') end
@@ -37,9 +46,7 @@ Placeable.PlaceObject = function(object, distance, snapToGround, allowedMats, of
     SetEntityInvincible(activePlacementProp, true)
     FreezeEntityPosition(activePlacementProp, true)
 
-    Bridge.Notify.ShowHelpText(type(placementText) == 'table' and table.concat(placementText) or placementText, {
-        position = "left-center",
-    })
+    Bridge.Notify.ShowHelpText(type(placementText) == 'table' and table.concat(placementText))
 
     local outLine = false
 
@@ -75,7 +82,6 @@ Placeable.PlaceObject = function(object, distance, snapToGround, allowedMats, of
             if IsControlJustReleased(0, 38) then
                 if not outLine and (not allowedMats or allowedMats[materialHash]) and distCheck < checkDist then
                     finishPlacing()
-
                     return coords, heading
                 end
             end

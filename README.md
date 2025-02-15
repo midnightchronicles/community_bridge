@@ -37,3 +37,8 @@ Crafted with care, the bridge is as **user-friendly** as a friendly hobbit’s h
 This bridge will **not fall victim to the ego of any single individual**, for its foundation lies in the belief that any contribution of value to the community, if it adheres to the simple philosophy of **simplicity**, and ensures an easy path for all, is **welcome**.
 
 The aim, much like the hobbits' journey to Morridor, is to create a **free, open, community-driven bridge**, one that serves the needs of the many and welcomes all who wish to add their mark to the map.
+
+
+**Docs available At** https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework
+
+**Join The Discord At** https://discord.gg/MukwBuJjP7
