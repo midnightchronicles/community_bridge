@@ -2,7 +2,7 @@ if GetResourceState('MrNewbVehicleKeys') ~= 'started' then return end
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
-    if not DoesEntityExist(vehicle) then return false end
+    if not DoesEntityExist(vehicle) and not plate then return false end
     return exports.MrNewbVehicleKeys:GiveKeys(vehicle)
 end
 
