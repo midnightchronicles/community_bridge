@@ -76,3 +76,15 @@ Inventory.GetImagePath = function(item)
     local imagePath = pngPath and string.format("nui://inventory_images/html/images/%s.png", item) or webpPath and string.format("nui://inventory_images/html/images/%s.webp", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
+
+Inventory.UpdatePlate = function(oldplate, newplate)
+    local queries = {
+        'UPDATE tgiann_inventory_trunkitems SET plate = @newplate WHERE plate = @oldplate',
+        'UPDATE tgiann_inventory_gloveboxitems SET plate = @newplate WHERE plate = @oldplate',
+    }
+    local values = { newplate = newplate, oldplate = oldplate }
+    MySQL.transaction.await(queries, values)
+    if GetResourceState('jg-mechanic') ~= 'started' then return true end
+    exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
+    return true
+end

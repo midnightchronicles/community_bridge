@@ -23,3 +23,15 @@ Inventory.GetItemBySlot = function(src, slot)
     if not slotData then return {} end
     return { name = slotData.name, label = slotData.label, weight = slotData.weight, slot = slot, count = slotData.amount, metadata = slotData.info, stack = slotData.unique, description = slotData.description }
 end
+
+Inventory.UpdatePlate = function(oldplate, newplate)
+    local queries = {
+        'UPDATE gloveboxitems SET plate = @newplate WHERE plate = @oldplate',
+        'UPDATE trunkitems SET plate = @newplate WHERE plate = @oldplate',
+    }
+    local values = { newplate = newplate, oldplate = oldplate }
+    MySQL.transaction.await(queries, values)
+    if GetResourceState('jg-mechanic') ~= 'started' then return true end
+    exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
+    return true
+end
