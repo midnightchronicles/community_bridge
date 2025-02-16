@@ -5,12 +5,28 @@ QBCore = exports['qb-core']:GetCoreObject()
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qb-core'
+end
+
 Framework.GetPlayerData = function()
     return QBCore.Functions.GetPlayerData()
 end
 
 Framework.GetPlayerMetaData = function(metadata)
     return QBCore.Functions.GetPlayerData().metadata[metadata]
+end
+
+Framework.Notify = function(message, type, time)
+    TriggerEvent('QBCore:Notify', message, 'primary', time)
+end
+
+Framework.ShowHelpText = function(message, _position)
+    return exports['qb-core']:DrawText(message, _position)
+end
+
+Framework.HideHelpText = function()
+    return exports['qb-core']:HideText()
 end
 
 Framework.GetItemInfo = function(item)
@@ -42,12 +58,28 @@ Framework.GetPlayerJob = function()
 end
 
 Framework.GetPlayerInventory = function()
-    return QBCore.Functions.GetPlayerData().items
+    local items = {}
+    local frameworkInv = QBCore.Functions.GetPlayerData().items
+    for _, v in pairs(frameworkInv) do
+        table.insert(items, {
+            name = v.name,
+            label = v.label,
+            count = v.amount,
+            slot = v.slot,
+            metadata = v.info,
+            stack = v.unique,
+            close = v.useable,
+            weight = v.weight
+        })
+    end
+    return items
 end
 
 Framework.GetIsPlayerDead = function()
     return QBCore.Functions.GetPlayerData().metadata["isdead"] or QBCore.GetPlayerData().metadata["inlaststand"]
 end
+
+Framework.Shared = QBCore.Shared
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(1500)
@@ -65,5 +97,16 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(data)
     PlayerJobLabel = data.label
     PlayerJobGradeName = data.grade.name
     PlayerJobGradeLevel = data.grade.level
-    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate',PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel)
+    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate', PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel)
+end)
+
+RegisterNetEvent('QBCore:Client:OnGangUpdate', function(data)
+    -- Unsure what data is passed in this, but considering the gang data isnt updating I doubt this was tested.
+    --[[
+    PlayerJobName = data.name
+    PlayerJobLabel = data.label
+    PlayerJobGradeName = data.grade.name
+    PlayerJobGradeLevel = data.grade.level
+    TriggerEvent('community_bridge:Client:OnPlayerGangUpdate', PlayerGangName, PlayerGangLabel, PlayerGangGradeName, PlayerGangGradeLevel)
+    --]]
 end)

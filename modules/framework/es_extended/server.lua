@@ -4,6 +4,10 @@ ESX = exports["es_extended"]:getSharedObject()
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'es_extended'
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
@@ -151,7 +155,14 @@ end
 Framework.SetPlayerJob = function(src, name, grade)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not ESX.DoesJobExist(name, grade) then lib.print.error("Job Does Not Exsist In Framework :NAME "..name.." Grade:"..grade) return end
-    return xPlayer.setJob(name, grade)
+    return xPlayer.setJob(name, grade, true)
+end
+
+Framework.ToggleDuty = function(src, status)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    local name = xPlayer.getJob().name
+    local grade = xPlayer.getJob().grade
+    xPlayer.setJob(name, grade, status)
 end
 
 -- Framework.AddAccountBalance(src, _type, amount)
@@ -189,8 +200,48 @@ Framework.RemoveItem = function(src, item, amount, slot, metadata)
     return xPlayer.removeInventoryItem(item, amount)
 end
 
+Framework.GetOwnedVehicles = function(src)
+    local citizenId = Framework.GetPlayerIdentifier(src)
+    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM owned_vehicles WHERE owner = '" .. citizenId .. "'")
+	local vehicles = {}
+    for i=1, #result do
+        local vehicle = result[i].vehicle
+        local plate = result[i].plate
+        local model = json.decode(vehicle).model
+        table.insert(vehicles, {vehicle = model, plate = plate})
+    end
+	return vehicles
+end
+
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
-Framework.RegisterUsableItem = function(item, cb)
-    ESX.RegisterUsableItem(item, cb)
+Framework.RegisterUsableItem = function(itemName, cb)
+    local func = function(src, item, itemData)
+        itemData = itemData or item
+        itemData.metadata = itemData.metadata or itemData.info or {}
+        cb(src, itemData)
+    end
+    ESX.RegisterUsableItem(itemName, func)
 end
+
+RegisterNetEvent("esx:playerLogout", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
+Framework.Commands = {}
+Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
+    ESX.RegisterCommand(name, permission, function(xPlayer, args, showError)
+        callback(xPlayer, args)
+    end, false, {
+        help = help,
+        arguments = arguments
+    })
+end
+
+-- test

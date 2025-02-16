@@ -1,17 +1,15 @@
 if GetResourceState('fivem-appearance') ~= 'started' then return end
+Clothing = Clothing or {}
 
-Clothing = {}
-
-StoredOldClothing = {}
-
-Clothing.SetAppearance = function(clothingData)
+Clothing.SetAppearance = function(data)
+    local clothing = {}
     if GetEntityModel(cache.ped) == `mp_m_freemode_01` then
-        clothingData = clothingData.male
+        clothing = data.male
     else
-        clothingData = clothingData.female
+        clothing = data.female
     end
-    StoredOldClothing = exports['fivem-appearance']:getPedAppearance(cache.ped)
-    exports['fivem-appearance']:setPedAppearance(cache.ped, clothingData)
+    ClothingBackup = exports['fivem-appearance']:getPedAppearance(cache.ped)
+    exports['fivem-appearance']:setPedAppearance(cache.ped, clothing)
     return true
 end
 
@@ -20,9 +18,14 @@ Clothing.GetAppearance = function()
 end
 
 Clothing.RestoreAppearance = function()
-    return exports['fivem-appearance']:setPedAppearance(cache.ped, StoredOldClothing)
+    if not next(ClothingBackup) then
+        return false
+    end
+    exports['fivem-appearance']:setPedAppearance(cache.ped, ClothingBackup)
+    return true
 end
 
 Clothing.ReloadSkin = function()
     TriggerEvent("fivem-appearance:client:reloadSkin", true)
+    return true
 end

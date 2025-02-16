@@ -4,6 +4,10 @@ QBox = exports.qbx_core
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qbx_core'
+end
+
 Framework.GetPlayerData = function()
     return QBox.GetPlayerData()
 end

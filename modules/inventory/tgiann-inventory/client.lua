@@ -27,3 +27,21 @@ Inventory.GetImagePath = function(item)
     local imagePath = pngPath and string.format("nui://inventory_images/html/images/%s.png", item) or webpPath and string.format("nui://inventory_images/html/images/%s.webp", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
+
+Inventory.GetPlayerInventory = function()
+    local items = {}
+    local inventory = tgiann:GetPlayerItems()
+    for _, v in pairs(inventory) do
+        table.insert(items, {
+            name = v.name,
+            label = v.label,
+            count = v.amount,
+            slot = v.slot,
+            metadata = v.info,
+            stack = v.unique,
+            close = v.useable,
+            weight = v.weight
+        })
+    end
+    return items
+end

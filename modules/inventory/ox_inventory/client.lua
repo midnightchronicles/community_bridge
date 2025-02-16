@@ -23,4 +23,8 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+Inventory.GetPlayerInventory = function()
+    return exports.ox_inventory:GetPlayerItems()
+end
+
 --Bridge.RegisterModule("Inventory", Inventory)

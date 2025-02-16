@@ -5,15 +5,21 @@ local ox_inventory = exports.ox_inventory
 Inventory = Inventory or {}
 
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return ox_inventory:AddItem(src, item, count, metadata)
 end
 
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
     return ox_inventory:RemoveItem(src, item, count, metadata, slot)
 end
 
 Inventory.GetItem = function(src, item, metadata)
     return ox_inventory:GetItem(src, item, metadata, false)
+end
+
+Inventory.GetItemBySlot = function(src, slot)
+    return ox_inventory:GetSlot(src, slot)
 end
 
 Inventory.GetItemCount = function(src, item, metadata)

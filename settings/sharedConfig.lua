@@ -1,5 +1,5 @@
 BridgeSharedConfig = {}
 BridgeSharedConfig.Lang          = "auto"        -- Change this to your preferred language (must match the locale file name ex. en or fr etc)
-BridgeSharedConfig.DebugLevel    = 3            -- Change this to your Debug level, 1 for none, 2 for some, 3 for all data
+BridgeSharedConfig.DebugLevel    = 2             -- Change this to your Debug level, 0 for none, 1 for some, 2 for all data
 
 return BridgeSharedConfig

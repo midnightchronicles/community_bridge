@@ -1,30 +1,114 @@
-Bridge = {
-    modules = {},
-}
-PlayerLoaded = false
-PlayerIdentifier = nil
-PlayerJobName = nil
-PlayerJobLabel = nil
-PlayerJobGradeName = nil
-PlayerJobGradeLevel = nil
+Bridge = {}
 
-Bridge.Inventory = Inventory
-Bridge.Menu = Menu
-Bridge.Language = Language
-Bridge.Debugger = Debugger
-Bridge.Framework = Framework
-Bridge.Doorlock = Doorlock
-Bridge.Phone = Phone
-Bridge.Notify = Notify
-Bridge.Vehicle = Vehicle
-Bridge.Dispatch = Dispatch
-Bridge.Weather = Weather
-Bridge.Target = Target
-Bridge.Table = Table
-Bridge.Math = Math
-Bridge.Clothing = Clothing
-Bridge.Progressbar = Progressbar
-Bridge.Helper = Helper
+function Bridge.RegisterModule(moduleName, moduleTable)
+    if not moduleTable then
+        if BridgeSharedConfig.DebugLevel ~= 0 then
+            print("^6 No moduleTable provided for module: ", moduleName, "^0")
+        end
+        return
+    end
+
+    local wrappedModule = {}
+    if type(moduleTable) == 'function' then
+        Bridge[moduleName] = wrappedModule
+        return
+    end
+    for functionName, func in pairs(moduleTable) do
+        wrappedModule[functionName] = func
+    end
+    if BridgeSharedConfig.DebugLevel ~= 0 then
+        print("^2 Registering module:", moduleName, "^0")
+    end
+    Bridge[moduleName] = wrappedModule
+    --trigger update object event
+    TriggerEvent("Bridge:Refresh", moduleName, wrappedModule)
+end
+exports("RegisterModule", Bridge.RegisterModule)
+
+--TODO: Create a way to overide functions or create a new functions for module
+
+function Bridge.RegisterModuleFunction(moduleName, functionName, func)
+    assert(moduleName and functionName and func, string.format("Bridge.RegisterModuleFunction(%s, %s, %s) - Invalid arguments", moduleName, functionName, func))
+    Bridge[moduleName] = Bridge[moduleName] or {}
+    Bridge[moduleName][functionName] = func
+    --trigger update object event
+    TriggerEvent("Bridge:Refresh", moduleName, Bridge[moduleName])
+end
+
+
+--Bridge
+Bridge.RegisterModule("Framework", Framework)
+Bridge.RegisterModule("Inventory", Inventory)
+Bridge.RegisterModule("Notify", Notify)
+Bridge.RegisterModule("Clothing", Clothing)
+Bridge.RegisterModule("Language", Language)
+Bridge.RegisterModule("Doorlock", Doorlock)
+Bridge.RegisterModule("Phone", Phone)
+Bridge.RegisterModule("Dispatch", Dispatch)
+Bridge.RegisterModule("VehicleKey", VehicleKey)
+Bridge.RegisterModule("Weather", Weather)
+--lib
+Bridge.RegisterModule("Tables", cLib.Tables)
+Bridge.RegisterModule("Math", cLib.Math)
+Bridge.RegisterModule("Prints", cLib.Prints)
+Bridge.RegisterModule("Callback", cLib.Callback)
+
+--new
+Bridge.RegisterModule("Require", Require)
+Bridge.RegisterModule("Ids", cLib.Ids)
+Bridge.RegisterModule("ReboundEntities", cLib.ReboundEntities)
+Bridge.RegisterModule("LA", cLib.LA)
+Bridge.RegisterModule("Perlin", cLib.Perlin)
+Bridge.RegisterModule("Actions", cLib.Actions)
+
+
+CreateThread(function()
+    Wait(100)
+    for moduleName, moduleFunction in pairs(Bridge) do
+        if type(moduleFunction) == 'table' then
+            exports(moduleName, function()
+                return moduleFunction
+            end)
+        else
+            exports(moduleName, moduleFunction)
+        end
+    end
+end)
+
+exports('Bridge', function()
+    return Bridge
+end)
+
+-- ▄▀▀ ██▀ █▀▄ █ █ ██▀ █▀▄ 
+-- ▄█▀ █▄▄ █▀▄ ▀▄▀ █▄▄ █▀▄ 
+if not IsDuplicityVersion() then goto client end
+
+Bridge.RegisterModule("SQL", cLib.SQL)
+Bridge.RegisterModule("Logs", cLib.Logs)
+Bridge.RegisterModule("LootTables", cLib.LootTables)
+
+
+--    ▄▀▀ █   █ ██▀ █▄ █ ▀█▀ 
+--    ▀▄▄ █▄▄ █ █▄▄ █ ▀█  █  
+if IsDuplicityVersion() then return end
+::client::
+
+
+Bridge.RegisterModule("Fuel", Fuel)
+Bridge.RegisterModule("Input", Input)
+Bridge.RegisterModule("Progressbar", Progressbar)
+
+Bridge.RegisterModule("Target", Target)
+Bridge.RegisterModule("Menu", Menu)
+Bridge.RegisterModule("Utility", cLib.Utility)
+Bridge.RegisterModule("Placeable", cLib.Placeable)
+--new
+Bridge.RegisterModule("Gizmo", cLib.Gizmo)
+Bridge.RegisterModule("Scaleform", cLib.Scaleform)
+Bridge.RegisterModule("Raycast", cLib.Raycast)
+Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
+
+
 
 -- Fill the bridge tables with player data.
 function FillBridgeTables()
@@ -43,46 +127,3 @@ function ClearClientSideVariables()
     PlayerJobGradeLevel = nil
     StoredOldClothing = {}
 end
-
-CreateThread(function()
-    for k, v in pairs(Bridge) do
-        if type(v) == 'table' then
-            exports(k, function()
-                return v
-            end)
-            v.__index = function(key, value)
-                IndexingFallback(v, key, value)
-            end
-        else
-            exports(k, v)
-        end
-    end
-end)
-
-function IndexingFallback(module, k, v)
-    if not module[k] then
-        local func = Framework[k] and type(Framework[k]) == 'function' and Framework[k] or nil
-        return function(...)
-            return func(...)
-        end
-    end
-    return module[k]
-end
-
-OverRide = function(module, key, value)
-    module[key] = value
-end
-
-RegisterCompatibility = function(key, module)
-    module = module or {}
-    module.__index = IndexingFallback
-    module.OverRide = function(key, value)
-        OverRide(module, key, value)
-    end
-    Bridge[key] = module
-end
-exports('RegisterCompatibility', RegisterCompatibility)
-
-exports('Bridge', function()
-    return Bridge
-end)

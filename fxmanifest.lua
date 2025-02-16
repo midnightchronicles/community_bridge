@@ -1,14 +1,16 @@
 fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
+use_experimental_fxv2_oal 'yes'
 author 'The Order of the Sacred Framework'
 description 'A bridge made for the community to use as a base for their own projects. This bridge will allow a single format to work with nearly all commonly used systems while still offering expandability.'
-version '0.0.8'
+version '0.2.8'
 
 shared_scripts {
+    '@ox_lib/init.lua',
+    'lib/init.lua',
     'settings/sharedConfig.lua',
-    'use/*.lua',
-    'modules/utilities/shared/*.lua',
+    'modules/math/*.lua',
     'modules/locales/*.lua',
 }
 
@@ -16,40 +18,46 @@ server_scripts {
     '@oxmysql/lib/MySQL.lua',
     'settings/serverConfig.lua',
     'modules/locales/shared.lua',
-    'modules/utilities/server/*.lua',
+    'modules/utility/server/*.lua',
     'modules/framework/**/server.lua',
     'modules/inventory/**/server.lua',
-    'modules/stashes/server.lua',
-    'modules/phones/**/server.lua',
+    'modules/doorlock/**/server.lua',
+    'modules/phone/**/server.lua',
     'modules/managment/**/server.lua',
-    'modules/notify/server.lua',
+    'modules/dispatch/**/server.lua',
+    'modules/clothing/**/server.lua',
+    'modules/weather/**/server.lua',
+    'modules/vehicleKey/**/server.lua',
+    'modules/notify/**/server.lua',
     'init.lua',
 }
 
 client_scripts {
     'settings/clientConfig.lua',
     'modules/locales/shared.lua',
-    'modules/input/client.lua',
-    'modules/utilities/client/*.lua',
     'modules/framework/**/client.lua',
     'modules/inventory/**/client.lua',
-    'modules/keys/**/client.lua',
+    'modules/doorlock/**/client.lua',
+    'modules/phone/**/client.lua',
+    'modules/weather/**/client.lua',
+    'modules/vehicleKey/**/client.lua',
     'modules/fuel/**/client.lua',
     'modules/target/**/client.lua',
-    'modules/menu/client.lua',
-    'modules/notify/client.lua',
     'modules/dispatch/**/client.lua',
-    'modules/progressbars/**/client.lua',
+    'modules/progressbar/**/client.lua',
     'modules/clothing/**/client.lua',
-    'modules/weather/**/client.lua',
-    'modules/points/*.lua',
-    'modules/math/*.lua',
+    'modules/input/*.lua',
+    'modules/menu/*.lua',
+    'modules/notify/**/client.lua',
     'init.lua',
 }
 
 files {
     'locales/*.json',
-    'components/*.lua',
+    'lib/client/*.lua',
+    'lib/shared/*.lua',
+    'lib/server/*.lua',
+    'lib/init.lua',
 }
 
 dependencies {

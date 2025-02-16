@@ -4,6 +4,10 @@ local QBox = exports.qbx_core
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qbx_core'
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
@@ -181,6 +185,11 @@ Framework.SetPlayerJob = function(src, name, grade)
     return player.Functions.SetJob(name, grade)
 end
 
+Framework.ToggleDuty = function(src, status)
+    local playerData = QBox:GetPlayer(src).PlayerData
+    QBox:SetJobDuty(playerData.citizenid, status)
+end
+
 -- Framework.AddAccountBalance(src, _type, amount)
 -- Adds the specified amount to the player's account balance of the specified type.
 Framework.AddAccountBalance = function(src, _type, amount)
@@ -209,6 +218,7 @@ end
 -- Adds the specified item to the player's inventory.
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local player = QBox:GetPlayer(src)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = amount, slot = slot, metadata = metadata})
     return player.Functions.AddItem(item, amount, slot, metadata)
 end
 
@@ -216,6 +226,7 @@ end
 -- Removes the specified item from the player's inventory.
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local player = QBox:GetPlayer(src)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = amount, slot = slot, metadata = metadata})
     return player.Functions.RemoveItem(item, amount, slot)
 end
 
@@ -228,8 +239,35 @@ Framework.SetMetadata = function(src, item, slot, metadata)
     return player.Functions.AddItem(item, 1, slot, metadata)
 end
 
+Framework.GetOwnedVehicles = function(src)
+    local citizenId = Framework.GetPlayerIdentifier(src)
+    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" .. citizenId .. "'")
+    local vehicles = {}
+    for i=1, #result do
+        local vehicle = result[i].vehicle
+        local plate = result[i].plate
+        table.insert(vehicles, {vehicle = vehicle, plate = plate})
+    end
+    return vehicles
+end
+
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
-Framework.RegisterUsableItem = function(item, cb)
-    return QBox:CreateUseableItem(item, cb)
+Framework.RegisterUsableItem = function(itemName, cb)
+    local func = function(src, item, itemData)
+        itemData = itemData or item
+        itemData.metadata = itemData.metadata or itemData.info or {}
+        cb(src, itemData)
+    end
+    return QBox:CreateUseableItem(itemName, func)
 end

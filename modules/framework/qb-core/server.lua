@@ -5,6 +5,10 @@ QBCore = exports['qb-core']:GetCoreObject()
 
 Framework = {}
 
+Framework.GetFrameworkName = function()
+    return 'qb-core'
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
@@ -65,6 +69,26 @@ Framework.GetPlayerInventory = function(src)
         })
     end
     return repackedTable
+end
+
+Framework.GetItemBySlot = function(src, slot)
+    local playerItems = QBCore.Functions.GetPlayer(src).PlayerData.items
+    local repack = {}
+    for _, v in pairs(playerItems) do
+        if v.slot == slot then
+            return {
+                name = v.name,
+                label = v.label,
+                weight = v.weight,
+                count = v.amount,
+                metadata = v.info,
+                slot = v.slot,
+                stack = v.unique or false,
+                description = v.description or "none",
+            }
+        end
+    end
+    return repack
 end
 
 -- Framework.SetMetadata(src, metadata, value)
@@ -182,6 +206,12 @@ Framework.SetPlayerJob = function(src, name, grade)
     return player.Functions.SetJob(name, grade)
 end
 
+Framework.ToggleDuty = function(src, status)
+    local player = QBCore.Functions.GetPlayer(src)
+    player.Functions.SetJobDuty(status)
+    TriggerEvent('QBCore:Server:SetDuty', src, player.PlayerData.job.onduty)
+end
+
 -- Framework.AddAccountBalance(src, _type, amount)
 -- Adds the specified amount to the player's account balance of the specified type.
 Framework.AddAccountBalance = function(src, _type, amount)
@@ -210,6 +240,7 @@ end
 -- Adds the specified item to the player's inventory.
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local player = QBCore.Functions.GetPlayer(src)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = amount, slot = slot, metadata = metadata})
     return player.Functions.AddItem(item, amount, slot, metadata)
 end
 
@@ -217,6 +248,7 @@ end
 -- Removes the specified item from the player's inventory.
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local player = QBCore.Functions.GetPlayer(src)
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = amount, slot = slot, metadata = metadata})
     return player.Functions.RemoveItem(item, amount, slot or nil)
 end
 
@@ -240,8 +272,40 @@ Framework.SetMetadata = function(src, item, slot, metadata)
     return player.Functions.AddItem(item, 1, freeSlot, metadata)
 end
 
+Framework.GetOwnedVehicles = function(src)
+    local citizenId = Framework.GetPlayerIdentifier(src)
+    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" .. citizenId .. "'")
+    local vehicles = {}
+    for i=1, #result do
+        local vehicle = result[i].vehicle
+        local plate = result[i].plate
+        table.insert(vehicles, {vehicle = vehicle, plate = plate})
+    end
+    return vehicles
+end
+
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
-Framework.RegisterUsableItem = function(item, cb)
-    QBCore.Functions.CreateUseableItem(item, cb)
+Framework.RegisterUsableItem = function(itemName, cb)
+    local func = function(src, item, itemData)
+        itemData = itemData or item
+        itemData.metadata = itemData.metadata or itemData.info or {}
+        cb(src, itemData)
+    end
+    QBCore.Functions.CreateUseableItem(itemName, func)
+end
+
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
+AddEventHandler("playerDropped", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
+Framework.Commands = {}
+Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
+    QBCore.Commands.Add(name, help, arguments, argsrequired, callback, permission, ...)
 end
