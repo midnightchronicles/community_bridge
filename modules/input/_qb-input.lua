@@ -54,14 +54,32 @@ function OxToQBInput(data)
 end
 
 function OpenInput(title, data, isQBFormat, submitText)
-    print("Opening input", json.encode(data))
     local input = data.inputs
     if not isQBFormat then
         input = OxToQBInput(data)
     end
-    return exports['qb-input']:ShowInput({
+    local returnData = exports['qb-input']:ShowInput({
         header = title,
         submitText = submitText or "Submit",
         inputs = input
     })
+    if not returnData then return end
+    if returnData[1] then return returnData end
+    --converting to standard format (ox)
+    local convertedData = {}
+    if isQBFormat then 
+        for i, v in pairs(input) do
+            for k, j in pairs(returnData) do
+                if k == v.text then
+                    convertedData[tonumber(i)] = j
+                end
+            end
+        end
+        return convertedData
+    end
+
+    for i, v in pairs(returnData) do
+        convertedData[tonumber(i)] = v
+    end
+    return convertedData
 end
