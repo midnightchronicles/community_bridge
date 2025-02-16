@@ -1,5 +1,6 @@
 Scaleform = {}
-local function SetupScaleform(scaleform, Buttons)
+
+function SetupScaleform(scaleform, Buttons)
     local scaleform = RequestScaleformMovie(scaleform)
     local timeout = 5000
     while not HasScaleformMovieLoaded(scaleform) and timeout > 0 do
@@ -46,7 +47,32 @@ function Scaleform.SetupInstructionalButtons(buttons)
         -- {type = "SET_BACKGROUND_COLOUR"},
     }
     local scaleform = SetupScaleform("instructional_buttons", buttons)
+
     return scaleform
+end
+
+
+local runningScaleform = nil
+function Scaleform.Run(scaleform, onUpdate)
+    if runningScaleform then return end
+    runningScaleform = scaleform
+    CreateThread(function()
+        while runningScaleform do 
+            DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 0)
+            if onUpdate then 
+                shouldQuit = onUpdate()
+                if shouldQuit then 
+                    Scaleform.Stop()
+                    break
+                end
+            end
+            Wait(2)
+        end    
+    end)  
+end
+
+function Scaleform.Stop()
+    runningScaleform = nil
 end
 
 exports("Scaleform", Scaleform)

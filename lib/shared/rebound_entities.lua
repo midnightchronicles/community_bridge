@@ -14,10 +14,9 @@ function ReboundEntities.RemoveFunction(id)
     registeredFunctions[id] = false
 end
 
-local function FireFunctions(...)
+function FireFunctions(...)
     for _, func in pairs(registeredFunctions) do
-        print(func)
-        if func then func(...) end
+        func(...)
     end
 end
 
@@ -25,7 +24,6 @@ function ReboundEntities.Register(entityData)
     assert(entityData and entityData.position, "Invalid entity data")
     entityData.id = entityData.id or Ids.CreateUniqueId(Entities)
     entityData.isServer = isServer
-    entityData.id = tostring(entityData.id)
     setmetatable(entityData, { __tostring = function() return entityData.id end })
     Entities[entityData.id] = entityData
     FireFunctions(entityData)
@@ -97,10 +95,12 @@ function ReboundEntities.Create(entityData, src)
     return entity
 end
 
+
 function ReboundEntities.SetCheckRestricted(entityData, cb)
     assert(type(cb) == "function", "Check restricted is not a function")
     entityData.restricted = cb
 end
+
 
 function ReboundEntities.CheckRestricted(src, entityData)
     return entityData.restricted and entityData.restricted(tonumber(src), entityData) or false
@@ -113,6 +113,15 @@ end
 function ReboundEntities.Delete(id)
     Unregister(id)
     TriggerClientEvent(GetCurrentResourceName() .. ":client:DeleteReboundEntity", -1, id)
+end
+
+function ReboundEntities.DeleteMultiple(entityDatas)
+    local ids = {}
+    for _, data in pairs(entityDatas) do
+        Unregister(data.id)
+        table.insert(ids, data.id)
+    end
+    TriggerClientEvent(GetCurrentResourceName() .. ":client:DeleteReboundEntities", -1, ids)
 end
 
 function ReboundEntities.CreateMultiple(entityDatas, src, restricted)
@@ -218,7 +227,8 @@ function ReboundEntities.SpawnLoop(distanceToCheck, waitTime)
         while spawnLoopRunning do
             for _, entity in pairs(Entities) do
                 local pos = GetEntityCoords(PlayerPedId())
-                local dist = #(pos - entity.position)
+                local position = vector3(entity.position.x, entity.position.y, entity.position.z)
+                local dist = #(pos - position)
                 if dist <= distanceToCheck and not entity.entity then
                     entity.entity, entity.inRange = ReboundEntities.Spawn(entity)
                 elseif dist > distanceToCheck and entity.entity then
@@ -292,7 +302,7 @@ RegisterNetEvent(GetCurrentResourceName() .. ":client:CreateReboundEntities", fu
 end)
 
 RegisterNetEvent(GetCurrentResourceName() .. ":client:DeleteReboundEntities", function(ids)
-    DeleteMultipleFromServer(ids)
+    ReboundEntities.DeleteMultipleClient(ids)
 end)
 
 RegisterNetEvent(GetCurrentResourceName() .. ":client:SetReboundSyncData", function(id, key, value)
