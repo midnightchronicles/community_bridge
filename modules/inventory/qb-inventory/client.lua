@@ -11,7 +11,7 @@ RegisterNetEvent('community_bridge:client:qb-inventory:openStash', function(id, 
 end)
 
 Inventory.HasItem = function(item)
-    return exports['qb-inventory']:HasItem(item)
+    return qb:HasItem(item)
 end
 
 Inventory.GetImagePath = function(item)
