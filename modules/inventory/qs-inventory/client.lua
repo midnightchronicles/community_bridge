@@ -21,6 +21,11 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+Inventory.HasItem = function(item)
+    local check = quasar:Search(item)
+    if check ~= 0 then return true else return false end -- if item count isn't 0, returns true, else return false
+end
+
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("qs-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://qs-inventory/html/images/%s.png", item)
