@@ -17,6 +17,12 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+Inventory.HasItem = function(item)
+    local itemList = codem:GetItemList()
+    local itemCheck = itemList and itemList[item] ~= nil
+    return itemCheck
+end
+
 Inventory.GetImagePath = function(item)
     local imagePath = string.format("nui://codem-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
