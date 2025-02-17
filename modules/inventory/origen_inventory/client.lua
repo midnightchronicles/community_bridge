@@ -17,6 +17,10 @@ Inventory.GetItemInfo = function(item)
     return repackedTable or {}
 end
 
+Inventory.HasItem = function(item)
+    return origin:HasItem(item)
+end
+
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("origen_inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://origen_inventory/html/images/%s.png", item)
