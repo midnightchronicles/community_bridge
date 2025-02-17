@@ -5,8 +5,7 @@ local qbInventory = exports['qb-inventory']
 Inventory = Inventory or {}
 
 local function getInventoryNewVersion()
-    local version = GetResourceMetadata("qb-inventory", "version", 0)
-    if version and tonumber(version) < 2.0 then
+    if tonumber(string.sub(GetResourceMetadata("qb-inventory", "version", 0), 1, 1)) >= 2 then
         return true
     else
         return false
@@ -40,6 +39,33 @@ Inventory.GetItemBySlot = function(src, slot)
         stack = slotData.unique,
         description = slotData.description
     }
+end
+
+Inventory.UpdatePlate = function(oldplate, newplate)
+    local newVersion = getInventoryNewVersion()
+    if newVersion then
+        local gloveboxInv = exports['qb-inventory']:GetInventory('glovebox-'..oldplate) or {slots = 5, maxweight = 10000, items = {}}
+        local storedGloveBox = Bridge.Tables.DeepClone(gloveboxInv, nil, nil)
+        local trunkInv = exports['qb-inventory']:GetInventory('trunk-'..oldplate) or {slots = 5, maxweight = 10000, items = {}}
+        local storedTrunk = Bridge.Tables.DeepClone(trunkInv, nil, nil)
+        exports['qb-inventory']:ClearStash('glovebox-'..oldplate)
+        exports['qb-inventory']:ClearStash('trunk-'..oldplate)
+        exports['qb-inventory']:CreateInventory('glovebox-'..newplate, {label = 'glovebox-'..newplate, slots = storedGloveBox.slots, maxweight = storedGloveBox.maxweight})
+        exports['qb-inventory']:SetInventory('glovebox-'..newplate, storedGloveBox.items, "Community Bridge Moving Items In GloveBox")
+        exports['qb-inventory']:CreateInventory('trunk-'..newplate, {label = 'trunk-'..newplate, slots = storedTrunk.slots, maxweight = storedTrunk.maxweight})
+        exports['qb-inventory']:SetInventory('trunk-'..newplate, storedTrunk.items, "Community Bridge Moving Items In Trunk")
+        return true
+    else
+        local queries = {
+            'UPDATE inventory_glovebox SET plate = @newplate WHERE plate = @oldplate',
+            'UPDATE inventory_trunk SET plate = @newplate WHERE plate = @oldplate',
+        }
+        local values = { newplate = newplate, oldplate = oldplate }
+        MySQL.transaction.await(queries, values)
+    end
+    if GetResourceState('jg-mechanic') ~= 'started' then return true end
+    exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
+    return true
 end
 
 Inventory.AddItem = function(src, item, amount, slot, metadata)

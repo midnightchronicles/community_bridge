@@ -47,9 +47,7 @@ OpenMenu = function(id, data, useQBinput)
     if useQBinput then 
         data = QBToOxMenu(id, data)
     end 
-    if not Menus[id] then
-        lib.registerContext(data)
-    end
+    lib.registerContext(data)
     lib.showContext(id)
     return data
 end

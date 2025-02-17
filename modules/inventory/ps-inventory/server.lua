@@ -35,3 +35,15 @@ Inventory.RemoveItem = function(src, item, amount, slot, metadata)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = amount, slot = slot, metadata = metadata})
     return exports['ps-inventory']:RemoveItem(src, item, amount, slot, 'community_bridge')
 end
+
+Inventory.UpdatePlate = function(oldplate, newplate)
+    local queries = {
+        'UPDATE gloveboxitems SET plate = @newplate WHERE plate = @oldplate',
+        'UPDATE trunkitems SET plate = @newplate WHERE plate = @oldplate',
+    }
+    local values = { newplate = newplate, oldplate = oldplate }
+    MySQL.transaction.await(queries, values)
+    if GetResourceState('jg-mechanic') ~= 'started' then return true end
+    exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
+    return true
+end

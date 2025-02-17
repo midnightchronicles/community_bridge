@@ -99,3 +99,15 @@ Inventory.GetImagePath = function(item)
     local imagePath = file and string.format("nui://origen_inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
+
+Inventory.UpdatePlate = function(oldplate, newplate)
+    local queries = {
+        'UPDATE gloveboxitems SET plate = @newplate WHERE plate = @oldplate',
+        'UPDATE trunkitems SET plate = @newplate WHERE plate = @oldplate',
+    }
+    local values = { newplate = newplate, oldplate = oldplate }
+    MySQL.transaction.await(queries, values)
+    if GetResourceState('jg-mechanic') ~= 'started' then return true end
+    exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
+    return true
+end

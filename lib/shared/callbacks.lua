@@ -113,7 +113,6 @@ function Callback.Trigger(name, func, ...)
             cbData[name] = nil
         end
     end)
-    print('Triggered')
     return Citizen.Await(p)
 end
 
