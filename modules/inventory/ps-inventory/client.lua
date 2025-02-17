@@ -1,6 +1,6 @@
 if GetResourceState('ps-inventory') ~= 'started' then return end
 
-local ps_inventory = exports['ps-inventory']
+local ps = exports['ps-inventory']
 
 Inventory = Inventory or {}
 
@@ -11,7 +11,7 @@ RegisterNetEvent('community_bridge:client:ps-inventory:openStash', function(id, 
 end)
 
 Inventory.HasItem = function(item)
-    return ps_inventory:HasItem(item)
+    return ps:HasItem(item)
 end
 
 Inventory.GetImagePath = function(item)
