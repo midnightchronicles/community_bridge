@@ -13,6 +13,10 @@ Framework.GetPlayerData = function()
     return QBCore.Functions.GetPlayerData()
 end
 
+Framework.HasItem = function(item)
+	return QBCore.Functions.HasItem(item)
+end
+
 Framework.GetPlayerMetaData = function(metadata)
     return QBCore.Functions.GetPlayerData().metadata[metadata]
 end
