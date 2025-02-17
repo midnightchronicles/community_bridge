@@ -1,5 +1,7 @@
 if GetResourceState('qb-inventory') ~= 'started' then return end
 
+local qb = exports['qb-inventory']
+
 Inventory = Inventory or {}
 
 RegisterNetEvent('community_bridge:client:qb-inventory:openStash', function(id, data)
@@ -7,6 +9,10 @@ RegisterNetEvent('community_bridge:client:qb-inventory:openStash', function(id, 
     TriggerEvent("inventory:client:SetCurrentStash", id)
     TriggerServerEvent('inventory:server:OpenInventory', 'stash', id, { maxweight = data.weight, slots = data.slots })
 end)
+
+Inventory.HasItem = function(item)
+    return exports['qb-inventory']:HasItem(item)
+end
 
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("qb-inventory", string.format("html/images/%s.png", item))
