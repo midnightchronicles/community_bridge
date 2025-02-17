@@ -34,7 +34,7 @@ Framework.GetPlayerJob = function()
     return playerData.job.name, playerData.job.label, playerData.job.grade_label, playerData.job.grade
 end
 
-Framework.HasItem = function()
+Framework.HasItem = function(item)
 	local hasItem = ESX.SearchInventory(item, true)
 	return hasItem > 0 and true or false
 end
