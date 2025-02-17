@@ -23,7 +23,7 @@ end
 
 Inventory.HasItem = function(item)
     local check = quasar:Search(item)
-    if check ~= 0 then return true else return false end -- if item count isn't 0, returns true, else return false
+    return check and true or false
 end
 
 Inventory.GetImagePath = function(item)
