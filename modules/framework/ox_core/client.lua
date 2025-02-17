@@ -29,6 +29,12 @@ Framework.GetPlayerJob = function()
     return group, title, title, grade
 end
 
+Framework.HasItem = function()
+	local itemCount = ox_inventory:Search('count', item)
+    local hasItem = itemCount ~= 0
+    return hasItem
+end
+
 Framework.GetPlayerInventory = function()
     return exports.ox_inventory:GetPlayerItems()
 end

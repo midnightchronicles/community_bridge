@@ -21,6 +21,10 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+Inventory.HasItem = function(item)
+    return tgiann:HasItem(item)
+end
+
 Inventory.GetImagePath = function(item)
     local pngPath = LoadResourceFile("inventory_images", string.format("html/images/%s.png", item))
     local webpPath = LoadResourceFile("inventory_images", string.format("html/images/%s.webp", item))

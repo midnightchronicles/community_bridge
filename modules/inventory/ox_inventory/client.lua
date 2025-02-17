@@ -17,6 +17,12 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+Inventory.HasItem = function(item)
+    local itemCount = ox_inventory:Search('count', item)
+    local hasItem = itemCount ~= 0
+    return hasItem
+end
+
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("ox_inventory", string.format("web/images/%s.png", item))
     local imagePath = file and string.format("nui://ox_inventory/web/images/%s.png", item)
