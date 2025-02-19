@@ -17,6 +17,7 @@ esxLang ~= "none" and esxLang or
 Language = {}
 
 function Language.Locale(str, ...)
+    print("Lang: ", GetInvokingResource(), GetCurrentResourceName())
     local resource = GetInvokingResource() or GetCurrentResourceName()
     assert(resource, "Resource name not found")
     
