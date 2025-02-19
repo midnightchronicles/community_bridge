@@ -7,7 +7,6 @@ Menu = {}
 ---@return id string The menu ID.
 function Menu.Open(data, useQb)
     local id = data.id or Ids.CreateUniqueId(Menus, nil, nil)
-    local menuExists = Menus[id]
     Menus[id] = OpenMenu(id, data, useQb)
     data.id = id
     return id
@@ -20,8 +19,8 @@ RegisterNetEvent('community_bridge:client:MenuCallback', function(_args)
     local id = _args.id
     local onSelect = _args.onSelect
     local args = _args.args
-    if not Menus[id] then return end
-    onSelect({number=_args.selected}, false, args)
+    Menus[id] = nil
+    onSelect(args)
 end)
 
 
