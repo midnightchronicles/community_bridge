@@ -1,6 +1,6 @@
-Utility = Utility or {}
+Version = Version or {}
 
-function Utility.VersionChecker(repoPath)
+function Version.VersionChecker(repoPath)
     local resource = repoPath:match("([^/]+)$")
     if not resource then return Prints.Error('^1Invalid repository format. Expected format: "username/reponame"^0') end
 
@@ -34,5 +34,5 @@ end
 
 AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
-    Utility.VersionChecker("The-Order-Of-The-Sacred-Framework/community_bridge")
+    Version.VersionChecker("The-Order-Of-The-Sacred-Framework/community_bridge")
 end)

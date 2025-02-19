@@ -57,6 +57,10 @@ Framework.GetPlayerJob = function()
     return playerData.job.name, playerData.job.label, playerData.job.grade.name, playerData.job.grade.level
 end
 
+Framework.HasItem = function(item)
+	return QBCore.Functions.HasItem(item)
+end
+
 Framework.GetPlayerInventory = function()
     local items = {}
     local frameworkInv = QBCore.Functions.GetPlayerData().items

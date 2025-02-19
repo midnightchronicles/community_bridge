@@ -1,5 +1,5 @@
 if GetResourceState('okokGasStation') ~= 'started' then return end
-Fuel = {}
+Fuel = Fuel or {}
 
 Fuel.GetFuel = function(vehicle)
     if not DoesEntityExist(vehicle) then return 0.0 end

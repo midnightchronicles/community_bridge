@@ -5,5 +5,11 @@
     "place_object_scroll_up": "[SCROLL UP] Turn right  \n",
     "place_object_scroll_down": "[SCROLL DOWN] Turn left",
     "enter_text": "Enter Text",
-    "no_prop_defined": "You didnt define any object to place"
+    "no_prop_defined": "You didnt define any object to place",
+    "UNITTEST": {
+        "UNITTESTA": "Im a %s %s",
+        "UNITTEST": {
+            "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
+        }
+    }    
 }

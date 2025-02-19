@@ -18,7 +18,7 @@ server_scripts {
     '@oxmysql/lib/MySQL.lua',
     'settings/serverConfig.lua',
     'modules/locales/shared.lua',
-    'modules/utility/server/*.lua',
+    'modules/version/server/*.lua',
     'modules/framework/**/server.lua',
     'modules/inventory/**/server.lua',
     'modules/doorlock/**/server.lua',
