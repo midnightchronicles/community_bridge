@@ -41,12 +41,10 @@ local function QBToOxMenu(id, menu)
     return oxMenu
 end
 
-
-
 OpenMenu = function(id, data, useQBinput)
-    if useQBinput then 
+    if useQBinput then
         data = QBToOxMenu(id, data)
-    end 
+    end
     lib.registerContext(data)
     lib.showContext(id)
     return data
