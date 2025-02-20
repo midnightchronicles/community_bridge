@@ -44,6 +44,14 @@ Target.AddGlobalVehicle = function(options)
     })
 end
 
+Target.RemoveGlobalVehicle = function(options)
+    local assembledLables = {}
+    for k, v in pairs(options) do
+        table.insert(assembledLables, v.label)
+    end
+    exports['qb-target']:RemoveGlobalVehicle(assembledLables)
+end
+
 Target.AddLocalEntity = function(entities, options)
     options = Target.FixOptions(options)
     exports['qb-target']:AddTargetEntity(entities, {

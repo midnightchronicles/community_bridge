@@ -1,5 +1,5 @@
 if GetResourceState('qb-menu') ~= 'started' or (BridgeClientConfig.MenuSystem ~= "qb" and BridgeClientConfig.MenuSystem ~= "auto") then return end
-print("Loading QB Menu")
+--print("Loading QB Menu")
 --- Converts an Ox menu to a QB menu.
 ---@param id string The menu ID.
 ---@param menu table The Ox menu data.
@@ -17,24 +17,24 @@ function OxToQBMenu(id, menu)
             txt = v.description,
             icon = v.icon,
         }
-        
+
         if v.onSelect then
             button.params = {
-                event = "community_bridge:client:MenuCallback",                
+                event = "community_bridge:client:MenuCallback",
                 args = {id = id, selected = i, args = v.args, onSelect = v.onSelect},
             }
         end
 
         table.insert(qbMenu, button)
     end
-   
+
     return qbMenu
 end
 
 OpenMenu = function(id, data, useQBinput)
-    if not useQBinput then 
+    if not useQBinput then
         data = OxToQBMenu(id, data)
-    end 
+    end
     exports['qb-menu']:openMenu(data)
     return data
 end

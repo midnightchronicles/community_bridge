@@ -23,7 +23,8 @@ function Version.VersionChecker(repoPath)
         local latest = response.tag_name:match('%d+%.%d+%.%d+')
         if not latest then return Prints.Error(failure) end
 
-        if latest == version then return print(('^2 %s is on the latest version.^0'):format(resource)) end
+        --if latest == version then return print(('^2 %s is on the latest version.^0'):format(resource)) end
+        if latest == version then return end
         local currentVersion, latestVersion = version:gsub('%D', ''), latest:gsub('%D', '')
 
         if currentVersion < latestVersion then

@@ -38,6 +38,14 @@ Target.AddGlobalVehicle = function(options)
     ox_target:addGlobalVehicle(options)
 end
 
+Target.RemoveGlobalVehicle = function(options)
+    local assembledLables = {}
+    for k, v in pairs(options) do
+        table.insert(assembledLables, v.name)
+    end
+    ox_target:removeGlobalVehicle(assembledLables)
+end
+
 Target.AddLocalEntity = function(entities, options)
     options = Target.FixOptions(options)
     ox_target:addLocalEntity(entities, options)
