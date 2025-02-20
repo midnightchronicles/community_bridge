@@ -14,7 +14,7 @@ Logs.Send = function(src, message)
                 {
                     color = "15769093",
                     title = GetCurrentResourceName(),
-                    url = 'https://discord.gg/wsPAK5mEPg',
+                    url = 'https://discord.gg/Gm6rYEXUsn',
                     --description = message,
                     thumbnail = { url = LogoForEmbed },
                     fields = {
