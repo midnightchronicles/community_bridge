@@ -49,10 +49,16 @@ client_scripts {
     'modules/input/*.lua',
     'modules/menu/*.lua',
     'modules/notify/**/client.lua',
+    'modules/dialogue/**/client/*.lua',
     'init.lua',
 }
 
+ui_page 'web/dist/index.html'
+
 files {
+    'web/dist/index.html',
+    'web/dist/assets/*.css',
+    'web/dist/assets/*.js',
     'locales/*.json',
     'lib/client/*.lua',
     'lib/shared/*.lua',

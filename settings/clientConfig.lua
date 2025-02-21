@@ -5,6 +5,7 @@ BridgeClientConfig.HelpTextSystem  = "auto"
 BridgeClientConfig.ShowHelpText    = "ox"         -- [ox | jg | qb | lab | custom ]
 BridgeClientConfig.InputSystem     = "auto"       -- [ auto | ox | qb ]
 BridgeClientConfig.MenuSystem      = "auto"       -- [ auto | ox | qb ]
+BridgeClientConfig.ProgressBarSystem = "auto"
 BridgeClientConfig.ZoneSystem      = "ox"         -- [ ox | poly ]
 BridgeClientConfig.ProgressBar     = "ox"         -- [ ox | qb ]
 
