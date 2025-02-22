@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { fetchNui } from './fetch'
 import './dialogue.css'
 
 function Dialogue() {
-  console.log("Dialogue component loaded")
   const [count, setCount] = useState(0)
   const [dialogueOptions, setDialogueOption] = useState([])
   const [currentText, setCurrentText] = useState("Welcome traveler! How can I help you today?")
@@ -11,11 +11,10 @@ function Dialogue() {
   const handleMessage = (event) => {
     var data = event.data;
 
-    if (data !== undefined && data.type === "hide") {
+    if (data !== undefined && data.type === "close") {
       document.getElementById('root').classList.add("hidden");
     }
     if (data !== undefined && data.type === "open") {
-      console.log("Received data: ", data.text)
       setDialogueOption(data.options);
       setCurrentText(data.text);
       setSpeakerName(data.name);
@@ -39,7 +38,7 @@ function Dialogue() {
             {dialogueOptions.map((option) => (
               <button 
                 key={option.id}
-                onClick={() => console.log(`Selected: ${option.label}`)}
+                onClick={() => fetchNui("dialogue:SelectOption", { name: speakerName, id: option.id })}
                 className="dialogue-button"
               >
                 {option.label}

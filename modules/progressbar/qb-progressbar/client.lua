@@ -65,7 +65,8 @@ ProgressBar = ProgressBar or {}
 
 local function convertFromOx(options)
     if not options then return options end
-    
+    local prop1 = options.prop[1] or options.prop or {}
+    local prop2 = options.prop[2] or {}
     return {
         name = options.label,
         duration = options.duration,
@@ -82,8 +83,18 @@ local function convertFromOx(options)
             animDict = options.anim?.dict,
             anim = options.anim?.clip
         },
-        prop = {},
-        propTwo = {}
+        prop = {
+            model = prop1.model,
+            bone = prop1.bone,
+            coords = prop1.pos, 
+            rotation = prop1.rot
+        },
+        propTwo = {
+            model = prop2.model,
+            bone = prop2.bone,
+            coords = prop2.pos, 
+            rotation = prop2.rot
+        }
     }
 end
 
@@ -110,7 +121,12 @@ RegisterCommand("progressbar", function()
         anim = {
             dict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
             clip = "machinic_loop_mechandplayer"
-        }
+        },
+        prop = {
+            model = "prop_ar_arrow_3",
+            pos = vector3(0.0, 0.0, 0.0),
+            rot = vector3(0.0, 0.0, 0.0)
+        },
     }, function(cancelled)
         print(cancelled and "Cancelled" or "Complete")
     end)

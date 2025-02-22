@@ -43,6 +43,23 @@ ProgressBar = ProgressBar or {}
 
 local function convertFromQB(options)
     if not options then return options end
+    local prop1 = options.prop or {}
+    local prop2 = options.propTwo or {}
+    local props = {
+        {
+            model = prop1.model,
+            bone = prop1.bone,
+            pos = prop1.coords,
+            rot = prop1.rotation,       
+        },
+        {
+            model = prop2.model,
+            bone = prop2.bone,
+            pos = prop2.coords,
+            rot = prop2.rotation,
+        }
+    }
+    
     
     return {
         duration = options.duration,
@@ -59,7 +76,8 @@ local function convertFromQB(options)
         anim = {
             dict = options.animation?.animDict,
             clip = options.animation?.anim
-        }
+        },
+        prop = props,
     }
 end
 
