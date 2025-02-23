@@ -89,62 +89,6 @@ function Dialogue.OpenDialogue( name, dialogue, characterOptions, dialogueOption
     promises[name] = wrappedFunction
 end
 
-RegisterCommand("dialogue", function()
-    local pos = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0, 2.0, 0)
-    local timeout = 500 
-    local model = `a_f_y_hipster_01`
-    RequestModel(model)
-    while not HasModelLoaded(model) do
-        Wait(0)
-        timeout = timeout - 1
-        if timeout == 0 then
-            print("Failed to load model")
-            return
-        end
-    end
-    local ped = CreatePed(0, model, pos.x, pos.y, pos.z, 0.0, false, false)
-
-    local characterData = {
-        entity = ped,
-        offset = vector3(0, 0, 0),
-        rotationOffset = vector3(0, 0, 0)
-    }
-    Wait(750)
-    Dialogue.OpenDialogue("Akmed", "Hello how are you doing my friend?", characterData, { 
-        {
-            label = "Trade with me",
-            id = 'something',
-        },
-        {
-            label = "Goodbye",
-            id = 'someotherthing',
-        },
-    },
-    function(selectedId)
-        if selectedId == 'something' then
-            Dialogue.OpenDialogue( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, { 
-                {
-                    label = "Fuck off",
-                    id = 'something',                       
-                },
-                {
-                    label = "Goodbye",
-                    id = 'someotherthing',
-                },
-            },
-            function(selectedId)
-                DeleteEntity(ped)
-                if selectedId == "something" then 
-                    print("You hate lucky charms")
-                else
-                    print("Thanks for keeping it civil")
-                end
-            end)
-        else
-            DeleteEntity(ped)
-        end
-    end)
-end)
 
 RegisterNuiCallback("dialogue:SelectOption", function(data)
     local promis = promises[data.name]
@@ -152,6 +96,62 @@ RegisterNuiCallback("dialogue:SelectOption", function(data)
     promis(data.id)
 end)
 
--- { label: 'Hello there! this is some long text that i am Dialogueing', id: '1' },
--- { label: 'Trade with me', id: '2' },
--- { label: 'Goodbye', id: '3' }
+-- Debug command
+if BridgeSharedConfig.DebugLevel  >= 1 then 
+    RegisterCommand("dialogue", function()
+        local pos = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0, 2.0, 0)
+        local timeout = 500 
+        local model = `a_f_y_hipster_01`
+        RequestModel(model)
+        while not HasModelLoaded(model) do
+            Wait(0)
+            timeout = timeout - 1
+            if timeout == 0 then
+                print("Failed to load model")
+                return
+            end
+        end
+        local ped = CreatePed(0, model, pos.x, pos.y, pos.z, 0.0, false, false)
+
+        local characterData = {
+            entity = ped,
+            offset = vector3(0, 0, 0),
+            rotationOffset = vector3(0, 0, 0)
+        }
+        Wait(750)
+        Dialogue.OpenDialogue("Akmed", "Hello how are you doing my friend?", characterData, { 
+            {
+                label = "Trade with me",
+                id = 'something',
+            },
+            {
+                label = "Goodbye",
+                id = 'someotherthing',
+            },
+        },
+        function(selectedId)
+            if selectedId == 'something' then
+                Dialogue.OpenDialogue( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, { 
+                    {
+                        label = "Fuck off",
+                        id = 'something',                       
+                    },
+                    {
+                        label = "Goodbye",
+                        id = 'someotherthing',
+                    },
+                },
+                function(selectedId)
+                    DeleteEntity(ped)
+                    if selectedId == "something" then 
+                        print("You hate lucky charms")
+                    else
+                        print("Thanks for keeping it civil")
+                    end
+                end)
+            else
+                DeleteEntity(ped)
+            end
+        end)
+    end)
+end
