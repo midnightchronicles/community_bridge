@@ -36,7 +36,8 @@ Framework.GetPlayerInventory = function()
 end
 
 Framework.GetIsPlayerDead = function()
-    return QBox.GetPlayerData().metadata["isdead"] or QBox.GetPlayerData().metadata["inlaststand"]
+    local platerData = QBox.GetPlayerData()
+    return platerData.metadata["isdead"] or platerData.metadata["inlaststand"]
 end
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()

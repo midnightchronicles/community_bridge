@@ -4,8 +4,7 @@ Inventory = Inventory or {}
 local codem = exports['codem-inventory']
 
 Inventory.GetItemInfo = function(item)
-    local itemData = codem:GetItemList()
-    if not itemData[item] then return {} end
+    local itemData = codem:GetItemList(item)
     local repackedTable = {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
@@ -14,12 +13,7 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description or "none",
         image = itemData.image or Inventory.GetImagePath(item),
     }
-    return repackedTable
-end
-
-Inventory.GetImagePath = function(item)
-    local imagePath = string.format("nui://codem-inventory/html/images/%s.png", item)
-    return imagePath or "https://avatars.githubusercontent.com/u/47620135"
+    return repackedTable or {}
 end
 
 Inventory.GetPlayerInventory = function()
@@ -38,4 +32,10 @@ Inventory.GetPlayerInventory = function()
         })
     end
     return items
+end
+
+Inventory.GetImagePath = function(item)
+    local file = LoadResourceFile("codem-inventory", string.format("html/images/%s.png", item))
+    local imagePath = file and string.format("nui://codem-inventory/html/images/%s.png", item)
+    return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
