@@ -80,7 +80,8 @@ Framework.GetPlayerInventory = function()
 end
 
 Framework.GetIsPlayerDead = function()
-    return QBCore.Functions.GetPlayerData().metadata["isdead"] or QBCore.GetPlayerData().metadata["inlaststand"]
+    local playerData = QBCore.Functions.GetPlayerData()
+    return playerData.metadata["isdead"] or playerData.metadata["inlaststand"]
 end
 
 Framework.Shared = QBCore.Shared
