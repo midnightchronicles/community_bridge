@@ -101,10 +101,10 @@ Bridge.RegisterModule("Progressbar", Progressbar)
 
 Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
-Bridge.RegisterModule("Utility", cLib.Utility)
+Bridge.RegisterModule("Dialogue", Dialogue)
 
-Bridge.RegisterModule("Placeable", cLib.Placeable)
---new
+Bridge.RegisterModule("Utility", cLib.Utility)
+Bridge.RegisterModule("Placeable", cLib.Placeable)--new
 Bridge.RegisterModule("Gizmo", cLib.Gizmo)
 Bridge.RegisterModule("Scaleform", cLib.Scaleform)
 Bridge.RegisterModule("Raycast", cLib.Raycast)
