@@ -21,7 +21,8 @@ Framework.Notify = function(message, type, time)
 end
 
 Framework.GetPlayerIdentifier = function()
-    return ESX.GetPlayerData().identifier
+    local playerData = ESX.GetPlayerData()
+    return playerData.identifier
 end
 
 Framework.GetPlayerName = function()
@@ -40,11 +41,13 @@ Framework.HasItem = function(item)
 end
 
 Framework.GetPlayerInventory = function()
-    return ESX.GetPlayerData().inventory
+    local playerData = ESX.GetPlayerData()
+    return playerData.inventory
 end
 
 Framework.GetIsPlayerDead = function()
-    return ESX.GetPlayerData().dead
+    local playerData = ESX.GetPlayerData()
+    return playerData.dead
 end
 
 RegisterNetEvent('esx:playerLoaded', function(xPlayer)
