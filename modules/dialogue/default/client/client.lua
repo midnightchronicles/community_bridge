@@ -36,7 +36,16 @@ end
 --- @param name string
 --- @param dialogue string
 --- @param options table example = {{  id = string, label = string}}
-function Dialogue.OpenDialogue(entity, name, dialogue, options, onSelected, onCancelled)
+function Dialogue.OpenDialogue( name, dialogue, characterOptions, dialogueOptions, onSelected)
+    assert(name, "Name is required")
+    assert(dialogue, "Dialogue is required")
+    assert(dialogueOptions, "Dialogue options are required")
+    assert(characterOptions, "CharacterOptions must be a number or table containing an entity")
+    local isCharacterATable = type(characterOptions) == "table"
+    local entity = isCharacterATable and characterOptions.entity or tonumber(characterOptions)
+    local offset = isCharacterATable and characterOptions.offset or vector3(0, 0, 0)
+    local rotationOffset = isCharacterATable and characterOptions.rotationOffset or vector3(0, 0, 0)
+
     -- Cancel any pending camera destroy
     pendingCameraDestroy = false
     activeDialogue = name
@@ -50,19 +59,17 @@ function Dialogue.OpenDialogue(entity, name, dialogue, options, onSelected, onCa
         local offsetY = math.cos(angleRad) * 1.5
         
         -- Get position in front of ped based on their heading
-        local endLocation = GetEntityCoords(entity) + vector3(offsetX, offsetY, 1.0)
+        local endLocation = GetEntityCoords(entity) + vector3(offsetX, offsetY, 0.5) + offset
       
         if not cam then cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1) end
         local camPos = GetCamCoord(cam)
         local dist = #(endLocation - camPos)
         local abs = cam and math.abs(dist)
-        if not abs or abs > 0.5 then 
-            print(abs)          
-            endLocation = GetEntityCoords(entity) + vector3(offsetX, offsetY, 1.0)
+        if not abs or abs > 0.5 then      
             local camAngle = (pedHeading + 180.0) % 360.0
-            SetCamRot(cam, 0.0, 0.0, camAngle, 2)
+            SetCamRot(cam, rotationOffset.x, rotationOffset.y, camAngle + rotationOffset.z, 2)
             SetCamCoord(cam, endLocation.x, endLocation.y, endLocation.z)
-            RenderScriptCams(true, 1, 1000, 1, 0)
+            RenderScriptCams(true, true, 1000, true, false)
             SetCamActive(cam, true)
         end      
     end
@@ -70,7 +77,7 @@ function Dialogue.OpenDialogue(entity, name, dialogue, options, onSelected, onCa
         type = "open",
         text =  dialogue,
         name = name,
-        options = options
+        options = dialogueOptions
     })
     SetNuiFocus(true, true)
  
@@ -95,43 +102,48 @@ RegisterCommand("dialogue", function()
             return
         end
     end
-    local prop = CreatePed(0, model, pos.x, pos.y, pos.z, 0.0, false, false)
+    local ped = CreatePed(0, model, pos.x, pos.y, pos.z, 0.0, false, false)
 
+    local characterData = {
+        entity = ped,
+        offset = vector3(0, 0, 0),
+        rotationOffset = vector3(0, 0, 0)
+    }
     Wait(750)
-    Dialogue.OpenDialogue( prop, "Akmed" , "Hello how are you doing my friend?", { 
-            {
-                label = "Trade with me",
-                id = 'something',
-            },
-            {
-                label = "Goodbye",
-                id = 'someotherthing',
-            },
+    Dialogue.OpenDialogue("Akmed", "Hello how are you doing my friend?", characterData, { 
+        {
+            label = "Trade with me",
+            id = 'something',
         },
-        function(selectedId)
-            if selectedId == 'something' then
-                Dialogue.OpenDialogue( prop, "Akmed" , "Thank you for wanting to purchase me lucky charms", { 
-                    {
-                        label = "Fuck off",
-                        id = 'something',                       
-                    },
-                    {
-                        label = "Goodbye",
-                        id = 'someotherthing',
-                    },
+        {
+            label = "Goodbye",
+            id = 'someotherthing',
+        },
+    },
+    function(selectedId)
+        if selectedId == 'something' then
+            Dialogue.OpenDialogue( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, { 
+                {
+                    label = "Fuck off",
+                    id = 'something',                       
                 },
-                function(selectedId)
-                    DeleteEntity(prop)
-                    if selectedId == "something" then 
-                        print("You hate lucky charms")
-                    else
-                        print("Thanks for keeping it civil")
-                    end
+                {
+                    label = "Goodbye",
+                    id = 'someotherthing',
+                },
+            },
+            function(selectedId)
+                DeleteEntity(ped)
+                if selectedId == "something" then 
+                    print("You hate lucky charms")
+                else
+                    print("Thanks for keeping it civil")
                 end
-            )
-            end
+            end)
+        else
+            DeleteEntity(ped)
         end
-    )
+    end)
 end)
 
 RegisterNuiCallback("dialogue:SelectOption", function(data)
