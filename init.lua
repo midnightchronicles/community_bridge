@@ -104,7 +104,7 @@ if IsDuplicityVersion() then return end
 
 Bridge.RegisterModule("Fuel", Fuel)
 Bridge.RegisterModule("Input", Input)
-Bridge.RegisterModule("Progressbar", Progressbar)
+Bridge.RegisterModule("ProgressBar", ProgressBar)
 
 Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
