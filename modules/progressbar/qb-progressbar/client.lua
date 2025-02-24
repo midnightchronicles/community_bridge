@@ -65,8 +65,8 @@ ProgressBar = ProgressBar or {}
 
 local function convertFromOx(options)
     if not options then return options end
-    local prop1 = options.prop[1] or options.prop or {}
-    local prop2 = options.prop[2] or {}
+    local prop1 = options.prop?[1] or options.prop or {}
+    local prop2 = options.prop?[2] or {}
     return {
         name = options.label,
         duration = options.duration,
