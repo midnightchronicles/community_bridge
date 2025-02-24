@@ -6,7 +6,7 @@ Dialogue = {}
 local cam = nil
 local npc = nil
 
-function Dialogue.CloseDialogue(name)
+function Dialogue.Close(name)
     -- Instead of destroying immediately, wait to see if new dialogue opens
     pendingCameraDestroy = true
     activeDialogue = nil
@@ -36,7 +36,7 @@ end
 --- @param name string
 --- @param dialogue string
 --- @param options table example = {{  id = string, label = string}}
-function Dialogue.OpenDialogue( name, dialogue, characterOptions, dialogueOptions, onSelected)
+function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSelected)
     assert(name, "Name is required")
     assert(dialogue, "Dialogue is required")
     assert(dialogueOptions, "Dialogue options are required")
@@ -83,7 +83,7 @@ function Dialogue.OpenDialogue( name, dialogue, characterOptions, dialogueOption
  
     local wrappedFunction = function(selected)                
         SetNuiFocus(false, false)
-        Dialogue.CloseDialogue(name)
+        Dialogue.Close(name)
         onSelected(selected)
     end
     promises[name] = wrappedFunction
@@ -119,7 +119,7 @@ if BridgeSharedConfig.DebugLevel  >= 1 then
             rotationOffset = vector3(0, 0, 0)
         }
         Wait(750)
-        Dialogue.OpenDialogue("Akmed", "Hello how are you doing my friend?", characterData, { 
+        Dialogue.Open("Akmed", "Hello how are you doing my friend?", characterData, { 
             {
                 label = "Trade with me",
                 id = 'something',
@@ -131,7 +131,7 @@ if BridgeSharedConfig.DebugLevel  >= 1 then
         },
         function(selectedId)
             if selectedId == 'something' then
-                Dialogue.OpenDialogue( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, { 
+                Dialogue.Open( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, { 
                     {
                         label = "Fuck off",
                         id = 'something',                       
