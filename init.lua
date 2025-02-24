@@ -11,6 +11,7 @@ function Bridge.RegisterModule(moduleName, moduleTable)
     local wrappedModule = {}
     if type(moduleTable) == 'function' then
         Bridge[moduleName] = wrappedModule
+        exports(moduleName, moduleTable)
         return
     end
     for functionName, func in pairs(moduleTable) do
@@ -20,6 +21,12 @@ function Bridge.RegisterModule(moduleName, moduleTable)
         print("^2 Registering module:", moduleName, "^0")
     end
     Bridge[moduleName] = wrappedModule
+
+
+    exports(moduleName, function()
+        return wrappedModule
+    end)
+
     --trigger update object event
     TriggerEvent("Bridge:Refresh", moduleName, wrappedModule)
 end
@@ -62,18 +69,18 @@ Bridge.RegisterModule("Perlin", cLib.Perlin)
 Bridge.RegisterModule("Actions", cLib.Actions)
 
 
-CreateThread(function()
-    Wait(100)
-    for moduleName, moduleFunction in pairs(Bridge) do
-        if type(moduleFunction) == 'table' then
-            exports(moduleName, function()
-                return moduleFunction
-            end)
-        else
-            exports(moduleName, moduleFunction)
-        end
-    end
-end)
+-- CreateThread(function()
+--     Wait(100)
+--     for moduleName, moduleFunction in pairs(Bridge) do
+--         if type(moduleFunction) == 'table' then
+--             exports(moduleName, function()
+--                 return moduleFunction
+--             end)
+--         else
+--             exports(moduleName, moduleFunction)
+--         end
+--     end
+-- end)
 
 exports('Bridge', function()
     return Bridge
