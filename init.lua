@@ -69,19 +69,6 @@ Bridge.RegisterModule("Perlin", cLib.Perlin)
 Bridge.RegisterModule("Actions", cLib.Actions)
 
 
--- CreateThread(function()
---     Wait(100)
---     for moduleName, moduleFunction in pairs(Bridge) do
---         if type(moduleFunction) == 'table' then
---             exports(moduleName, function()
---                 return moduleFunction
---             end)
---         else
---             exports(moduleName, moduleFunction)
---         end
---     end
--- end)
-
 exports('Bridge', function()
     return Bridge
 end)
