@@ -11,7 +11,7 @@ detectDebugEnabled()
 
 local targetZones = {}
 
-Target = {}
+Target = Target or {}
 
 Target.FixOptions = function(options)
     for k, v in pairs(options) do

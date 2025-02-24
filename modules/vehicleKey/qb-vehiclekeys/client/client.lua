@@ -1,14 +1,12 @@
-if GetResourceState('qb-vehiclekeys') ~= 'started' then return end
-if GetResourceState('qbx_vehiclekeys') == 'started' then return end
+if GetResourceState('qb-vehiclekeys') ~= 'started' and not GetResourceState("qbx_vehiclekeys") == "started" or (BridgeSharedConfig.VehicleKey ~= "qb-vehiclekeys" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
-    if plate == nil and vehicle and DoesEntityExist(vehicle) then
-        plate = GetVehicleNumberPlateText(vehicle)
-    end
-    TriggerServerEvent('qb-vehiclekeys:server:AcquireVehicleKeys', plate)
+    if not plate and vehicle then plate = GetVehicleNumberPlateText(vehicle) end
+    TriggerServerEvent("qb-vehiclekeys:server:AcquireVehicleKeys", plate)
 end
 
 VehicleKey.RemoveKeys = function(vehicle, plate)
-    TriggerEvent('qb-vehiclekeys:client:RemoveKeys', plate)
+    if not plate and vehicle then plate = GetVehicleNumberPlateText(vehicle) end
+    TriggerEvent("qb-vehiclekeys:client:RemoveKeys", plate)
 end

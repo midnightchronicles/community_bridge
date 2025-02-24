@@ -90,7 +90,7 @@ if not isServer then goto client end
 function ReboundEntities.Create(entityData, src)
     local entity = ReboundEntities.Register(entityData)
     assert(entity and entity.position, "Invalid entity data")
-    entity.rotation = entity.rotation or vector3(0, 0, 0)
+    entity.rotation = entity.rotation or vector3(0, 0, entityData.heading or 0)
     TriggerClientEvent(GetCurrentResourceName() .. ":client:CreateReboundEntity", src or -1, entity)
     return entity
 end
