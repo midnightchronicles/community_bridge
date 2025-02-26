@@ -1,4 +1,5 @@
-if GetResourceState('MrNewbVehicleKeys') ~= 'started' then return end
+if GetResourceState('MrNewbVehicleKeys') ~= 'started' or (BridgeSharedConfig.VehicleKey ~= "MrNewbVehicleKeys" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(src, vehicle, plate)

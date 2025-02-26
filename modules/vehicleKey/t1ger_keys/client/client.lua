@@ -1,4 +1,5 @@
-if GetResourceState('t1ger_keys') ~= 'started' then return end
+if GetResourceState('t1ger_keys') ~= 'started' or (BridgeSharedConfig.VehicleKey ~= "t1ger_keys" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
@@ -10,3 +11,7 @@ end
 VehicleKey.RemoveKeys = function(vehicle, plate)
 
 end
+
+RegisterNetEvent("community_bridge:vehicleKey:giveKeys", function(plate)
+    VehicleKey.GiveKeys(nil, plate)
+end)

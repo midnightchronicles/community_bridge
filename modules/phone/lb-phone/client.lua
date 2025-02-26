@@ -1,4 +1,5 @@
-if GetResourceState('lb-phone') ~= 'started' then return end
+if GetResourceState('lb-phone') ~= 'started' or (BridgeSharedConfig.Phone ~= "lb-phone" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+
 Phone = {}
 
 Phone.SendEmail = function(email, title, message)
