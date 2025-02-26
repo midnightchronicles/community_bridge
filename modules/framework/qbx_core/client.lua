@@ -12,6 +12,11 @@ Framework.GetPlayerData = function()
     return QBox.GetPlayerData()
 end
 
+Framework.GetPlayerDob = function()
+    local playerData = QBox.GetPlayerData()
+    return playerData.charinfo.birthdate
+end
+
 Framework.GetPlayerMetaData = function(metadata)
     local playerData = QBox.GetPlayerData()
     return playerData.metadata[metadata]

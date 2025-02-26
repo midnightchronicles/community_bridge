@@ -12,6 +12,12 @@ Framework.GetPlayerData = function()
     return ESX.PlayerData
 end
 
+Framework.GetPlayerDob = function()
+    local playerData = ESX.GetPlayerData()
+    local dob = playerData.dateofbirth
+    return dob
+end
+
 Framework.GetPlayerMetaData = function(metadata)
     return ESX.GetPlayerData().metadata[metadata]
 end
