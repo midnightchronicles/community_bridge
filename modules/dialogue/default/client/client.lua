@@ -81,12 +81,16 @@ function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSel
     })
     SetNuiFocus(true, true)
  
+
+    local prom = promise.new()
     local wrappedFunction = function(selected)                
         SetNuiFocus(false, false)
         Dialogue.Close(name)
-        onSelected(selected)
+        if onSelected then onSelected(selected) end
+        prom:resolve(selected)
     end
     promises[name] = wrappedFunction
+    return Citizen.Await(prom)
 end
 
 
