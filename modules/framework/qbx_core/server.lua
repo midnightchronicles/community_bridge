@@ -8,6 +8,11 @@ Framework.GetFrameworkName = function()
     return 'qbx_core'
 end
 
+Framework.GetPlayerDob = function(src)
+    local playerData = QBox:GetPlayer(src).PlayerData
+    return playerData.charinfo.birthdate
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)

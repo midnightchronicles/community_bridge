@@ -12,21 +12,32 @@ end
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
-    return QBCore.Functions.GetPlayer(src).PlayerData.citizenid
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    return playerData.citizenid
 end
 
 -- Framework.GetPlayerName(src)
 -- Returns the first and last name of the player.
 Framework.GetPlayerName = function(src)
-    local playerData = QBCore.Functions.GetPlayer(src).PlayerData
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
     return playerData.charinfo.firstname, playerData.charinfo.lastname
+end
+
+Framework.GetPlayerDob = function(src)
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    return playerData.charinfo.birthdate
 end
 
 -- Framework.GetItem(src, item, metadata)
 -- Returns a table of items matching the specified name and if passed metadata from the player's inventory.
 -- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
 Framework.GetItem = function(src, item, metadata)
-    local playerInventory = QBCore.Functions.GetPlayer(src).PlayerData.items
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    local playerInventory = playerData.items
     local repackedTable = {}
     for _, v in pairs(playerInventory) do
         if v.name == item and (not metadata or v.info == metadata) then
@@ -44,7 +55,9 @@ end
 -- Framework.GetItemCount(src, item, metadata)
 -- Returns the count of items matching the specified name and if passed metadata from the player's inventory.
 Framework.GetItemCount = function(src, item, metadata)
-    local playerInventory = QBCore.Functions.GetPlayer(src).PlayerData.items
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    local playerInventory = playerData.items
     local count = 0
     for _, v in pairs(playerInventory) do
         if v.name == item and (not metadata or v.info == metadata) then
@@ -58,9 +71,11 @@ end
 -- Returns the entire inventory of the player as a table.
 -- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
 Framework.GetPlayerInventory = function(src)
-    local playerItems = QBCore.Functions.GetPlayer(src).PlayerData.items
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    local playerInventory = playerData.items
     local repackedTable = {}
-    for _, v in pairs(playerItems) do
+    for _, v in pairs(playerInventory) do
         table.insert(repackedTable, {
             name = v.name,
             count = v.amount,
@@ -72,9 +87,11 @@ Framework.GetPlayerInventory = function(src)
 end
 
 Framework.GetItemBySlot = function(src, slot)
-    local playerItems = QBCore.Functions.GetPlayer(src).PlayerData.items
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    local playerInventory = playerData.items
     local repack = {}
-    for _, v in pairs(playerItems) do
+    for _, v in pairs(playerInventory) do
         if v.slot == slot then
             return {
                 name = v.name,
@@ -159,23 +176,26 @@ Framework.GetHunger = function(src)
 end
 
 Framework.GetThirst = function(src)
-    local player = QBCore.Functions.GetPlayer(src).PlayerData
-    local newThirst = (player.metadata.thirst or 0)
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    local newThirst = (playerData.metadata.thirst or 0)
     return newThirst
 end
 
 -- Framework.GetPlayerPhone(src)
 -- Returns the phone number of the player.
 Framework.GetPlayerPhone = function(src)
-    local playerData = QBCore.Functions.GetPlayer(src).PlayerData
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
     return playerData.charinfo.phone
 end
 
 -- Framework.GetPlayerGang(src)
 -- Returns the gang name of the player.
 Framework.GetPlayerGang = function(src)
-    local player = QBCore.Functions.GetPlayer(src).PlayerData
-    return player.gang.name
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    return playerData.gang.name
 end
 
 -- Framework.GetPlayersByJob(jobname)
@@ -195,8 +215,9 @@ end
 -- Framework.GetPlayerJob(src)
 -- Returns the job name, label, grade name, and grade level of the player.
 Framework.GetPlayerJob = function(src)
-    local player = QBCore.Functions.GetPlayer(src).PlayerData
-    return player.job.name, player.job.label, player.job.grade.name, player.job.grade.level
+    local player = QBCore.Functions.GetPlayer(src)
+    local playerData = player.PlayerData
+    return playerData.job.name, playerData.job.label, playerData.job.grade.name, playerData.job.grade.level
 end
 
 -- Framework.SetPlayerJob(src, name, grade)

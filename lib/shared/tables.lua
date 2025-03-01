@@ -63,7 +63,9 @@ end
 Table.FindFirstUnoccupiedSlot = function(tbl)
     local occupiedSlots = {}
     for _, v in pairs(tbl) do
-        occupiedSlots[v.slot] = true
+        if v.slot then 
+            occupiedSlots[v.slot] = true
+        end
     end
     for i = 1, BridgeServerConfig.MaxInventorySlots do
         if not occupiedSlots[i] then

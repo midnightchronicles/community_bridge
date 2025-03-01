@@ -8,6 +8,12 @@ Framework.GetFrameworkName = function()
     return 'es_extended'
 end
 
+Framework.GetPlayerDob = function(src)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    local dob = xPlayer.get("dateofbirth")
+    return dob
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)

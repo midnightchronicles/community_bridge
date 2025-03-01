@@ -13,6 +13,12 @@ Framework.GetPlayerData = function()
     return QBCore.Functions.GetPlayerData()
 end
 
+Framework.GetPlayerDob = function()
+    local player = QBCore.Functions.GetPlayerData()
+    local playerData = player.PlayerData
+    return playerData.charinfo.birthdate
+end
+
 Framework.GetPlayerMetaData = function(metadata)
     return QBCore.Functions.GetPlayerData().metadata[metadata]
 end
