@@ -52,8 +52,7 @@ Bridge.RegisterModule("Language", Language)
 Bridge.RegisterModule("Doorlock", Doorlock)
 Bridge.RegisterModule("Phone", Phone)
 Bridge.RegisterModule("Dispatch", Dispatch)
-Bridge.RegisterModule("VehicleKey", VehicleKey)
-Bridge.RegisterModule("Weather", Weather)
+
 --lib
 Bridge.RegisterModule("Tables", cLib.Tables)
 Bridge.RegisterModule("Math", cLib.Math)
@@ -92,6 +91,8 @@ if IsDuplicityVersion() then return end
 Bridge.RegisterModule("Fuel", Fuel)
 Bridge.RegisterModule("Input", Input)
 Bridge.RegisterModule("ProgressBar", ProgressBar)
+Bridge.RegisterModule("VehicleKey", VehicleKey)
+Bridge.RegisterModule("Weather", Weather)
 
 Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
