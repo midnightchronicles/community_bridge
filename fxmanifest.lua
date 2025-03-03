@@ -26,8 +26,6 @@ server_scripts {
     'modules/managment/**/server.lua',
     'modules/dispatch/**/server.lua',
     'modules/clothing/**/server.lua',
-    'modules/weather/**/server.lua',
-    'modules/vehicleKey/**/server.lua',
     'modules/notify/**/server.lua',
     'init.lua',
 }
