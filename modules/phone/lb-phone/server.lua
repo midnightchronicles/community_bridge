@@ -6,6 +6,12 @@ Phone.GetPlayerPhone = function(src)
     return exports["lb-phone"]:GetEquippedPhoneNumber(src) or false
 end
 
+---comment
+---@param src number
+---@param email string
+---@param title string
+---@param message string
+---@return boolean
 Phone.SendEmail = function(src, email, title, message)
     local numberNumber = exports["lb-phone"]:GetEquippedPhoneNumber(src)
     if not numberNumber then return false, Prints.Error("Could not Find Phone number") end

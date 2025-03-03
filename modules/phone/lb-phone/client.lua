@@ -2,6 +2,11 @@ if GetResourceState('lb-phone') ~= 'started' or (BridgeSharedConfig.Phone ~= "lb
 
 Phone = {}
 
+---comment
+---@param email string
+---@param title string
+---@param message string
+---@return nil
 Phone.SendEmail = function(email, title, message)
     TriggerServerEvent('community_bridge:Server:genericEmail', {email = email, title = title, message = message})
 end

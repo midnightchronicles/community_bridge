@@ -2,6 +2,11 @@ if GetResourceState('qs-smartphone') ~= 'started' or (BridgeSharedConfig.Phone ~
 
 Phone = {}
 
+---comment
+---@param email string
+---@param title string
+---@param message string
+---@return nil
 Phone.SendEmail = function(email, title, message)
     return TriggerServerEvent('qs-smartphone:server:sendNewMail', { sender = email, subject = title, message = message, button = {} })
 end
