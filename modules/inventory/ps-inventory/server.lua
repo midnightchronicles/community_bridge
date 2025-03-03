@@ -4,38 +4,85 @@ local sloth = exports['ps-inventory']
 
 Inventory = Inventory or {}
 
+
+---comment
+---@param id string||number
+---@param label string
+---@param slots number
+---@param weight number
+---@param owner string
+---@param groups table
+---@param coords table
+---@return boolean
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
     return true
 end
 
+---comment
+---@param src number
+---@param id string||number
+---@param label string
+---@param slots number
+---@param weight number
+---@param owner string
+---@param groups table
+---@param coords table
+---@return nil
 Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
     TriggerClientEvent('community_bridge:client:ps-inventory:openStash', src, id, { label = label, maxweight = weight, slots = slots, })
 end
 
+---comment
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("ps-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://ps-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---comment
+---@param src number
+---@param slot number
+---@return table
 Inventory.GetItemBySlot = function(src, slot)
     local slotData = sloth:GetItemBySlot(src, slot)
     if not slotData then return {} end
     return {name = slotData.name, label = slotData.name, weight = slotData.weight, slot = slot, count = slotData.amount, metadata = slotData.info, stack = slotData.unique, description = slotData.description}
 end
 
+---comment
+---@param src number
+---@param item string
+---@param amount number
+---@param slot number
+---@param metadata table
+---@return boolean
 Inventory.AddItem = function(src, item, amount, slot, metadata)
     TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add')
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = amount, slot = slot, metadata = metadata})
     return exports['ps-inventory']:AddItem(src, item, amount, slot, metadata, 'community_bridge')
 end
 
+
+---comment
+---@param src number
+---@param item string
+---@param amount number
+---@param slot number
+---@param metadata table
+---@return boolean
 Inventory.RemoveItem = function(src, item, amount, slot, metadata)
     TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove')
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = amount, slot = slot, metadata = metadata})
     return exports['ps-inventory']:RemoveItem(src, item, amount, slot, 'community_bridge')
 end
 
+
+---comment
+---@param oldplate string
+---@param newplate string
+---@return boolean
 Inventory.UpdatePlate = function(oldplate, newplate)
     local queries = {
         'UPDATE gloveboxitems SET plate = @newplate WHERE plate = @oldplate',

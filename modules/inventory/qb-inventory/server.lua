@@ -12,20 +12,48 @@ local function getInventoryNewVersion()
     end
 end
 
+---comment
+---@param id string
+---@param label string
+---@param slots number
+---@param weight number
+---@param owner string
+---@param groups table
+---@param coords table
+---@return boolean
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
     return true
 end
 
+---comment
+---@param src number
+---@param id number||string
+---@param label string
+---@param slots number
+---@param weight number
+---@param owner string
+---@param groups table
+---@param coords table
+---@return nil
 Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
     TriggerClientEvent('community_bridge:client:qb-inventory:openStash', src, id, { weight = weight, slots = slots })
 end
 
+
+---comment
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("qb-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://qb-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+
+---comment
+---@param src number
+---@param slot number
+---@return table
 Inventory.GetItemBySlot = function(src, slot)
     local slotData = qbInventory:GetItemBySlot(src, slot)
     if not slotData then return {} end
@@ -41,6 +69,11 @@ Inventory.GetItemBySlot = function(src, slot)
     }
 end
 
+
+---comment
+---@param oldplate string
+---@param newplate string
+---@return boolean
 Inventory.UpdatePlate = function(oldplate, newplate)
     local newVersion = getInventoryNewVersion()
     if newVersion then

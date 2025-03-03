@@ -3,10 +3,16 @@ local quasar = exports["qs-inventory"]
 
 Inventory = Inventory or {}
 
+---comment
+---@param id any
+---@return nil
 Inventory.OpenStash = function(id)
     quasar:RegisterStash(id, 50, 50000)
 end
 
+---comment
+---@param item string
+---@return table
 Inventory.GetItemInfo = function(item)
     local itemData = quasar:GetItemList()
     if not itemData[item] then return {} end
@@ -21,17 +27,25 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+---comment
+---@param item string
+---@return boolean
 Inventory.HasItem = function(item)
     local check = quasar:Search(item)
     return check and true or false
 end
 
+---comment
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("qs-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://qs-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---comment
+---@return table
 Inventory.GetPlayerInventory = function()
     local items = {}
     local inventory = quasar:getUserInventory()

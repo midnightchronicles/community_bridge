@@ -3,10 +3,14 @@ local tgiann = exports["tgiann-inventory"]
 
 Inventory = Inventory or {}
 
+---@param id any
+---@return nil
 Inventory.OpenStash = function(id)
     -- open stash export... not sure what it is yet. 
 end
 
+---@param item string
+---@return table
 Inventory.GetItemInfo = function(item)
     local itemData = tgiann:GetItemList()
     if not itemData[item] then return {} end
@@ -21,10 +25,14 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+---@param item string
+---@return boolean
 Inventory.HasItem = function(item)
     return tgiann:HasItem(item)
 end
 
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local pngPath = LoadResourceFile("inventory_images", string.format("html/images/%s.png", item))
     local webpPath = LoadResourceFile("inventory_images", string.format("html/images/%s.webp", item))
@@ -32,6 +40,7 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---@return table
 Inventory.GetPlayerInventory = function()
     local items = {}
     local inventory = tgiann:GetPlayerItems()

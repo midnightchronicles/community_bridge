@@ -4,12 +4,19 @@ Inventory = Inventory or {}
 
 local core = exports.core_inventory
 
+---comment
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("core_inventory", string.format("html/img/%s.png", item))
     local imagePath = file and string.format("nui://core_inventory/html/img/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---comment
+---@param oldplate string
+---@param newplate string
+---@return boolean
 Inventory.UpdatePlate = function(oldplate, newplate)
     -- have no clue if this will work but fingers crossed
     local queries = {

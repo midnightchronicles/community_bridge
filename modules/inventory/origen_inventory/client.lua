@@ -4,6 +4,9 @@ Inventory = Inventory or {}
 
 local origin = exports.origen_inventory
 
+---comment
+---@param item string
+---@return table
 Inventory.GetItemInfo = function(item)
     local itemData = origin:Items(item)
     local repackedTable = {
@@ -17,16 +20,24 @@ Inventory.GetItemInfo = function(item)
     return repackedTable or {}
 end
 
+---comment
+---@param item string
+---@return boolean
 Inventory.HasItem = function(item)
     return origin:HasItem(item)
 end
 
+---comment
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("origen_inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://origen_inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---comment
+---@return table
 Inventory.GetPlayerInventory = function()
     local items = {}
     local inventory = origin:GetInventory()
