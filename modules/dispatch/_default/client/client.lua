@@ -20,7 +20,7 @@ end
 
 RegisterNetEvent('community_bridge:Client:DispatchAlert', function(alert)
     Notify.SendNotify(alert.message, "success", 15000)
-    local blip = Bridge.Utility.CreateBlip(alert.coords, alert.blipData.sprite, alert.blipData.color, alert.blipData.scale, alert.code, true)
+    local blip = Bridge.Utility.CreateBlip(alert.coords, alert.sprite, alert.color, alert.scale, alert.code, true)
 	Wait(alert.time)
     Bridge.Utility.RemoveBlip(blip)
 end)
