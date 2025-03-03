@@ -1,4 +1,4 @@
-if GetResourceState('qs-vehiclekeys') ~= 'started' or (BridgeSharedConfig.VehicleKey ~= "qs-vehiclekeys" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+if GetResourceState('qs-vehiclekeys') ~= 'started' or (BridgeClientConfig.VehicleKey ~= "qs-vehiclekeys" and BridgeClientConfig.VehicleKey ~= "auto") then return end
 
 VehicleKey = VehicleKey or {}
 

@@ -1,4 +1,4 @@
-if GetResourceState('wasabi_carlock') ~= 'started' or (BridgeSharedConfig.VehicleKey ~= "wasabi_carlock" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+if GetResourceState('wasabi_carlock') ~= 'started' or (BridgeClientConfig.VehicleKey ~= "wasabi_carlock" and BridgeClientConfig.VehicleKey ~= "auto") then return end
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)

@@ -1,4 +1,4 @@
-if GetResourceState('cd_garage') ~= 'started' or (BridgeSharedConfig.VehicleKey ~= "cd_garage" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+if GetResourceState('cd_garage') ~= 'started' or (BridgeClientConfig.VehicleKey ~= "cd_garage" and BridgeClientConfig.VehicleKey ~= "auto") then return end
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
