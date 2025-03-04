@@ -1,4 +1,5 @@
-if GetResourceState('cdn-fuel') ~= 'started' then return end
+if GetResourceState('ox_fuel') ~= 'started' or (BridgeClientConfig.Fuel ~= "ox_fuel" and BridgeClientConfig.Fuel ~= "auto") then return end
+--if GetResourceState('ox_fuel') ~= 'started' then return end
 Fuel = Fuel or {}
 
 Fuel.GetFuel = function(vehicle)

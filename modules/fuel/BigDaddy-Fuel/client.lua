@@ -1,4 +1,6 @@
-if GetResourceState('BigDaddy-Fuel') ~= 'started' then return end
+if GetResourceState('BigDaddy-Fuel') ~= 'started' or (BridgeClientConfig.Fuel ~= "BigDaddy" and BridgeClientConfig.Fuel ~= "auto") then return end
+
+--if GetResourceState('BigDaddy-Fuel') ~= 'started' then return end
 Fuel = Fuel or {}
 
 Fuel.GetFuel = function(vehicle)

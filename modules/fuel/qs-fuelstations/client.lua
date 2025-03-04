@@ -1,4 +1,6 @@
-if GetResourceState('qs-fuelstations') ~= 'started' then return end
+if GetResourceState('qs-fuelstations') ~= 'started' or (BridgeClientConfig.Fuel ~= "qs-fuelstations" and BridgeClientConfig.Fuel ~= "auto") then return end
+
+--if GetResourceState('qs-fuelstations') ~= 'started' then return end
 Fuel = Fuel or {}
 
 Fuel.GetFuel = function(vehicle)

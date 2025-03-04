@@ -1,4 +1,6 @@
-if GetResourceState('esx-sna-fuel') ~= 'started' then return end
+if GetResourceState('esx-sna-fuel') ~= 'started' or (BridgeClientConfig.Fuel ~= "sna" and BridgeClientConfig.Fuel ~= "auto") then return end
+
+--if GetResourceState('esx-sna-fuel') ~= 'started' then return end
 Fuel = Fuel or {}
 
 Fuel.GetFuel = function(vehicle)
