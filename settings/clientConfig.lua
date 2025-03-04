@@ -1,7 +1,7 @@
 BridgeClientConfig = {}
 BridgeClientConfig.DebugLevel        = 0            -- Debug level, 0 for none, 1 for some, 2 for all data
 BridgeClientConfig.NotifySystem      = "ox"         -- [ ox | qb | esx | mythic | pNotify | t-notify | wasabi | lab | custom ]
-BridgeClientConfig.ShowHelpText      = "auto"       -- [ ox | qb | jg | okok | cd | lab | custom ]
+BridgeClientConfig.ShowHelpText      = "ox"         -- [ ox | qb | jg | okok | cd | lab | custom ]
 BridgeClientConfig.InputSystem       = "auto"       -- [ auto | ox | qb ]
 BridgeClientConfig.MenuSystem        = "auto"       -- [ auto | ox | qb ]
 BridgeClientConfig.ProgressBarSystem = "auto"       -- [ auto | ox | qb ]
