@@ -2,11 +2,11 @@ if GetResourceState('qb-vehiclekeys') ~= 'started' and not GetResourceState("qbx
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
-    if not plate and vehicle then plate = GetVehicleNumberPlateText(vehicle) end
+    if not plate then return false end
     TriggerServerEvent("qb-vehiclekeys:server:AcquireVehicleKeys", plate)
 end
 
 VehicleKey.RemoveKeys = function(vehicle, plate)
-    if not plate and vehicle then plate = GetVehicleNumberPlateText(vehicle) end
+    if not plate then return false end
     TriggerEvent("qb-vehiclekeys:client:RemoveKeys", plate)
 end

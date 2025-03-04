@@ -3,6 +3,7 @@ if GetResourceState('okokGarage') ~= 'started' or (BridgeClientConfig.VehicleKey
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
+    if not plate then return false end
     TriggerServerEvent('okokGarage:GiveKeys', plate)
 end
 

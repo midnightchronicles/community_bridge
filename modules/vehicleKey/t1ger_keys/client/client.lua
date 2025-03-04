@@ -11,7 +11,3 @@ end
 VehicleKey.RemoveKeys = function(vehicle, plate)
 
 end
-
-RegisterNetEvent("community_bridge:vehicleKey:giveKeys", function(plate)
-    VehicleKey.GiveKeys(nil, plate)
-end)
