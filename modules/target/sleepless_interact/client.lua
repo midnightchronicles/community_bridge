@@ -1,4 +1,7 @@
-if GetResourceState('sleepless_interact') ~= 'started' then return end
+if GetResourceState('sleepless_interact') ~= 'started' or (BridgeClientConfig.TargetSystem ~= "sleepless" and BridgeClientConfig.TargetSystem ~= "auto") then return end
+
+--if GetResourceState('sleepless_interact') ~= 'started' then return end
+-- This is only partially supported
 
 local sleepless = exports.sleepless_interact
 

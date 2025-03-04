@@ -1,7 +1,7 @@
 Target = Target or {}
 
 local function warnUser()
-    print("Currently Only Targeting Is Supported.")
+    print("Currently Only Targeting Is Supported By Community Bridge, You Are Using A Resource That Requires The Target Module To Be Used.")
 end
 
 Target.AddGlobalPlayer = function(options)

@@ -1,4 +1,4 @@
-if GetResourceState('ox_target') ~= 'started' then return end
+if GetResourceState('ox_target') ~= 'started' or (BridgeClientConfig.TargetSystem ~= "ox" and BridgeClientConfig.TargetSystem ~= "auto") then return end
 
 local targetDebug = false
 local function detectDebugEnabled()

@@ -1,4 +1,5 @@
-if GetResourceState('qb-target') ~= 'started' or GetResourceState('ox_target') == 'started' then return end
+if GetResourceState('qb-target') ~= 'started' or (BridgeClientConfig.TargetSystem ~= "qb" and BridgeClientConfig.TargetSystem ~= "auto") then return end
+if GetResourceState('ox_target') == 'started' then return end -- this is for older versions of ox that supported the backwards compatability. As its depricated we dont want to touch that.
 
 local targetDebug = false
 local function detectDebugEnabled()
