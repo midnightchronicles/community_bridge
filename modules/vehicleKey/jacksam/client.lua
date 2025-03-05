@@ -1,4 +1,7 @@
-if GetResourceState('jaksams_VehiclesKeys') ~= 'started' or (BridgeClientConfig.VehicleKey ~= "jaksam" and BridgeClientConfig.VehicleKey ~= "auto") then return end
+local resourceName = "jaksams_VehiclesKeys"
+local configValue = BridgeClientConfig.VehicleKey
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+
 
 VehicleKey = VehicleKey or {}
 

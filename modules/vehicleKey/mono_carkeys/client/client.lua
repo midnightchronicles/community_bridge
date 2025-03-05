@@ -1,4 +1,6 @@
-if GetResourceState('mono_carkeys') ~= 'started' or (BridgeClientConfig.VehicleKey ~= "mono_carkeys" and BridgeClientConfig.VehicleKey ~= "auto") then return end
+local resourceName = "mono_carkeys"
+local configValue = BridgeClientConfig.VehicleKey
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 VehicleKey = VehicleKey or {}
 VehicleKey.GiveKeys = function(vehicle, plate)

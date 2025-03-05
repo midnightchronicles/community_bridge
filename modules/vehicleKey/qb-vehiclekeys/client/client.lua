@@ -1,4 +1,7 @@
-if GetResourceState('qb-vehiclekeys') ~= 'started' and not GetResourceState("qbx_vehiclekeys") == "started" or (BridgeClientConfig.VehicleKey ~= "qb-vehiclekeys" and BridgeClientConfig.VehicleKey ~= "auto") then return end
+local resourceName = "qb-vehiclekeys"
+local configValue = BridgeClientConfig.VehicleKey
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
