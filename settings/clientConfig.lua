@@ -7,7 +7,7 @@ BridgeClientConfig.MenuSystem        = "auto"       -- [ auto | ox_lib | qb-menu
 BridgeClientConfig.ProgressBarSystem = "auto"       -- [ auto | ox | qb ]
 BridgeClientConfig.ZoneSystem        = "ox"         -- [ ox | poly ]
 BridgeClientConfig.VehicleKey        = "auto"       -- [ auto | qb-vehiclekeys | MrNewbVehicleKeys | wasabi | jaksam | qbx | cd | f_real | mk  | okok | qs | renewed | t1ger | mono ]
-BridgeClientConfig.Fuel              = "auto"       -- [ LegacyFuel | ox_fuel | ps-fuel | qs-fuelstations | Renewed-Fuel | ti_fuel | lc_fuel | x-fuel | okokGasStation | BigDaddy | cdn | sna |  ] 
+BridgeClientConfig.Fuel              = "auto"       -- [ LegacyFuel | ox_fuel | ps-fuel | qs-fuelstations | Renewed-Fuel | ti_fuel | lc_fuel | x-fuel | cdn-fuel | esx-sna-fuel | BigDaddy-Fuel | okokGasStation ] 
 BridgeClientConfig.TargetSystem      = "ox"         -- [ ox | qb | sleepless | auto ] -- sleepless is only partially supported and would need another system in place
 
 return BridgeClientConfig
