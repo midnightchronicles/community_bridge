@@ -1,4 +1,7 @@
-if GetResourceState('progressbar') ~= 'started' or (BridgeClientConfig.ProgressBarSystem ~= "qb" and BridgeClientConfig.ProgressBarSystem ~= "auto") then return end
+local resourceName = "progressbar"
+local configValue = BridgeClientConfig.ProgressBarSystem
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+
 ProgressBar = ProgressBar or {}
 
 local function convertFromOx(options)
