@@ -1,6 +1,7 @@
-if GetResourceState('qs-smartphone') ~= 'started' or (BridgeSharedConfig.Phone ~= "qs-smartphone" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
-Phone = {}
-
+local resourceName = "qs-smartphone"
+local configValue = BridgeSharedConfig.Phone
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+Phone = Phone or {}
 ---comment
 ---@param src number
 ---@return number||boolean
