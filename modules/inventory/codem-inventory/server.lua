@@ -60,6 +60,14 @@ Inventory.SetMetadata = function(src, item, slot, metadata)
     return codem:SetItemMetadata(src, slot, metadata)
 end
 
+---comment
+---@param src number
+---@param item string
+---@return boolean
+Inventory.HasItem = function(src, item)
+    return codem:HasItem(src, item, 1)
+end
+
 Inventory.GetItemBySlot = function(src, slot)
     local slotData = codem:GetItemBySlot(src, slot)
     if not slotData then return {} end
@@ -82,3 +90,4 @@ Inventory.GetImagePath = function(item)
     local imagePath = file and string.format("nui://codem-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
+

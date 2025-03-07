@@ -56,6 +56,15 @@ end
 
 ---comment
 ---@param src number
+---@param item string
+---@return boolean
+Inventory.HasItem = function(src, item)
+    local count = ox_inventory:GetItemCount(src, item, nil, false)
+    return count > 0
+end
+
+---comment
+---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
     return ox_inventory:GetInventoryItems(src, false)
@@ -142,4 +151,18 @@ Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("ox_inventory", string.format("web/images/%s.png", item))
     local imagePath = file and string.format("nui://ox_inventory/web/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
+end
+
+local registeredShops = {}
+
+Inventory.OpenShop = function(src, shopTitle)
+    TriggerClientEvent('ox_inventory:openInventory', src, 'shop', {type = shopTitle})
+end
+
+Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+    if registeredShops[shopTitle] then return true end
+    registeredShops[shopTitle] = true
+    ox_inventory:RegisterShop(shopTitle, { name = shopTitle, inventory = shopInventory, groups = shopGroups, })
+    --return Inventory.OpenShop(src, shopTitle)
+    return true
 end

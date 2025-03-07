@@ -4,6 +4,7 @@ local tgiann = exports["tgiann-inventory"]
 
 Inventory = Inventory or {}
 
+---This Will add the item if found and return boolean on success
 ---@param src number
 ---@param item string
 ---@param count number
@@ -16,6 +17,7 @@ Inventory.AddItem = function(src, item, count, slot, metadata)
     return tgiann:AddItem(src, item, count, slot, metadata, false)
 end
 
+---This Will remove the item if found and return boolean on success
 ---@param src number
 ---@param item string
 ---@param count number
@@ -27,6 +29,7 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
     return tgiann:RemoveItem(src, item, count, slot, metadata)
 end
 
+--
 ---@param src number
 ---@param item string
 ---@param metadata table
@@ -38,6 +41,15 @@ Inventory.GetItem = function(src, item, metadata)
     return item
 end
 
+---This will return a boolean if the player has the item in their inventory
+---@param src number
+---@param item string
+---@return boolean
+Inventory.HasItem = function(src, item)
+    return tgiann:HasItem(src, item, 1)
+end
+
+---This will return the count of the item in the players inventory
 ---@param src number
 ---@param item string
 ---@param metadata optional table
@@ -47,6 +59,7 @@ Inventory.GetItemCount = function(src, item, metadata)
     return _item.amount or 0
 end
 
+---This will return the players inventory in a table in the format ox_inventory uses
 ---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
@@ -60,7 +73,7 @@ Inventory.GetPlayerInventory = function(src)
     return items
 end
 
----comment
+---This will return a boolean if the player can carry the item
 ---@param src number
 ---@param item string
 ---@param count number
@@ -68,6 +81,7 @@ end
 Inventory.CanCarryItem = function(src, item, count)
     return tgiann:CanCarryItem(src, item, count)
 end
+
 ---comment
 ---@param id string or number
 ---@param label string
@@ -79,7 +93,7 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner)
     return tgiann:CreateCustomStashWithItem(id, {})
 end
 
----comment
+---This will return the item data in the slot the item is found
 ---@param src number
 ---@param slot number
 ---@return table
@@ -89,6 +103,7 @@ Inventory.GetItemBySlot = function(src, slot)
     return {name = item.name, label = item.label, weight = item.weight, slot = slot, count = item.amount, metadata = item.info, stack = item.unique or false, description = item.description}
 end
 
+---This will return a table of the item data including the image (very useful for menus etc)
 ---@param item string
 ---@return table
 Inventory.GetItemInfo = function(item)
@@ -105,6 +120,8 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+---This will update the item metadata for an item with the provided slot and metadata, its best to get the item first
+---And then set the metadata
 ---@param src number
 ---@param item string
 ---@param slot number
@@ -114,6 +131,7 @@ Inventory.SetMetadata = function(src, item, slot, metadata)
     tgiann:UpdateItemMetadata(src, item, slot, metadata)
 end
 
+---This will return the image path for the item
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
@@ -123,6 +141,7 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---This will update the plate to a vehicle in the inventory
 ---@param oldplate string
 ---@param newplate string
 ---@return boolean

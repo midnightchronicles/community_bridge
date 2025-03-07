@@ -4,6 +4,7 @@ local quasar = exports['qs-inventory']
 
 Inventory = Inventory or {}
 
+---This will add the item if found and return a boolean on success
 ---@param src number
 ---@param item string
 ---@param count number
@@ -16,6 +17,7 @@ Inventory.AddItem = function(src, item, count, slot, metadata)
     return quasar:AddItem(src, item, count, slot, metadata)
 end
 
+---This will remove the item if found and return a boolean on success
 ---@param src number
 ---@param item string
 ---@param count number
@@ -27,6 +29,7 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
     return quasar:RemoveItem(src, item, count, slot, metadata)
 end
 
+---This will return a number of the items count in the inventory
 ---@param src number
 ---@param item string
 ---@param metadata table
@@ -35,6 +38,7 @@ Inventory.GetItemCount = function(src, item, metadata)
     return quasar:GetItemTotalAmount(src, item)
 end
 
+---This will return the player inventory in a table following ox_inventory format
 ---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
@@ -51,6 +55,17 @@ Inventory.GetPlayerInventory = function(src)
     return repackedTable
 end
 
+---This will return a boolean of if the player has the item in the inventory
+---@param src number
+---@param item string
+---@return boolean
+Inventory.HasItem = function(src, item)
+    local count = quasar:GetItemTotalAmount(src, item)
+    if not count then return false end
+    return count > 0
+end
+
+---This will return the item data in the inventory based on the slot if not found will return nil
 ---@param src number
 ---@param slot number
 ---@return table | nil
@@ -73,6 +88,7 @@ Inventory.GetItemBySlot = function(src, slot)
     return nil
 end
 
+---This will return a boolean if the player can carry the item
 ---@param src number
 ---@param item string
 ---@param count number
@@ -107,6 +123,7 @@ Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coo
     TriggerClientEvent("inventory:client:SetCurrentStash",src, id)
 end
 
+---This will return the data to an item
 ---@param item string
 ---@return table
 Inventory.GetItemInfo = function(item)
@@ -122,6 +139,7 @@ Inventory.GetItemInfo = function(item)
     }
     return repackedTable
 end
+
 
 ---@param src number
 ---@param item string

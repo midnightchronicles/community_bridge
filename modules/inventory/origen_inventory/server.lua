@@ -14,6 +14,15 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
     return origen_inventory:removeItem(src, item, count, metadata, slot, true)
 end
 
+---comment
+---@param src number
+---@param item string
+---@return boolean
+Inventory.HasItem = function(src, item)
+    local count = origen_inventory:getItemCount(src , item)
+    return count > 0
+end
+
 Inventory.GetItemInfo = function(item)
     local itemData = origen_inventory:Items(item)
     local repackedTable = {

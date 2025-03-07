@@ -25,12 +25,14 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+---This will return a boolean if the player has the item in the inventory
 ---@param item string
 ---@return boolean
 Inventory.HasItem = function(item)
     return tgiann:HasItem(item)
 end
 
+-- This will return the image path, it is incredibley useful for menus etc
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
@@ -40,6 +42,7 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---This will return the player inventory in a table
 ---@return table
 Inventory.GetPlayerInventory = function()
     local items = {}

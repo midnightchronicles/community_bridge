@@ -72,6 +72,15 @@ Framework.GetItemCount = function(src, item, metadata)
     return count
 end
 
+---comment
+---@param src number
+---@param item string
+---@return boolean
+Framework.HasItem = function(src, item)
+    local getCount = Framework.GetItemCount(src, item, nil)
+    return getCount > 0
+end
+
 -- Framework.GetPlayerInventory(src)
 -- Returns the entire inventory of the player as a table.
 -- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
