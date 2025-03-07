@@ -10,7 +10,7 @@ function Dialogue.Close(name)
     -- Instead of destroying immediately, wait to see if new dialogue opens
     pendingCameraDestroy = true
     activeDialogue = nil
-    
+
     SetNuiFocus(false, false)
     SendNUIMessage({
         type = "close",
@@ -28,7 +28,7 @@ function Dialogue.Close(name)
             cam = nil
         end
     end)
-    
+
     promises[name] = nil
 end
 
@@ -50,17 +50,17 @@ function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSel
     pendingCameraDestroy = false
     activeDialogue = name
 
-    -- camera magic! 
-    if entity then        
+    -- camera magic!
+    if entity then
         local pedHeading = GetEntityHeading(entity)
         -- Convert heading to radians and calculate offset
         local angleRad = math.rad(pedHeading)
         local offsetX = math.sin(angleRad) * 1.5
         local offsetY = math.cos(angleRad) * 1.5
-        
+
         -- Get position in front of ped based on their heading
         local endLocation = GetEntityCoords(entity) + vector3(offsetX, offsetY, 0.5) + offset
-      
+
         if not cam then cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1) end
         local camPos = GetCamCoord(cam)
         local dist = #(endLocation - camPos)
@@ -71,7 +71,7 @@ function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSel
             SetCamCoord(cam, endLocation.x, endLocation.y, endLocation.z)
             RenderScriptCams(true, true, 1000, true, false)
             SetCamActive(cam, true)
-        end      
+        end
     end
     SendNUIMessage({
         type = "open",
@@ -80,10 +80,10 @@ function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSel
         options = dialogueOptions
     })
     SetNuiFocus(true, true)
- 
+
 
     local prom = promise.new()
-    local wrappedFunction = function(selected)                
+    local wrappedFunction = function(selected)
         SetNuiFocus(false, false)
         Dialogue.Close(name)
         if onSelected then onSelected(selected) end
@@ -101,7 +101,7 @@ RegisterNuiCallback("dialogue:SelectOption", function(data)
 end)
 
 -- Debug command
-if BridgeSharedConfig.DebugLevel  >= 1 then 
+if BridgeSharedConfig.DebugLevel  >= 1 then
     RegisterCommand("dialogue", function()
         local pos = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0, 2.0, 0)
         local timeout = 500 
@@ -123,7 +123,7 @@ if BridgeSharedConfig.DebugLevel  >= 1 then
             rotationOffset = vector3(0, 0, 0)
         }
         Wait(750)
-        Dialogue.Open("Akmed", "Hello how are you doing my friend?", characterData, { 
+        Dialogue.Open("Akmed", "Hello how are you doing my friend?", characterData, {
             {
                 label = "Trade with me",
                 id = 'something',
@@ -135,10 +135,10 @@ if BridgeSharedConfig.DebugLevel  >= 1 then
         },
         function(selectedId)
             if selectedId == 'something' then
-                Dialogue.Open( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, { 
+                Dialogue.Open( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, {
                     {
                         label = "Fuck off",
-                        id = 'something',                       
+                        id = 'something',
                     },
                     {
                         label = "Goodbye",
@@ -147,7 +147,7 @@ if BridgeSharedConfig.DebugLevel  >= 1 then
                 },
                 function(selectedId)
                     DeleteEntity(ped)
-                    if selectedId == "something" then 
+                    if selectedId == "something" then
                         print("You hate lucky charms")
                     else
                         print("Thanks for keeping it civil")
