@@ -4,7 +4,7 @@ local ox_inventory = exports.ox_inventory
 
 Inventory = Inventory or {}
 
----comment
+---This will add an item, and return true or false based on success
 ---@param src number
 ---@param item string
 ---@param count number
@@ -16,7 +16,7 @@ Inventory.AddItem = function(src, item, count, slot, metadata)
     return ox_inventory:AddItem(src, item, count, metadata)
 end
 
----comment
+---This will remove an item, and return true or false based on success
 ---@param src number
 ---@param item string
 ---@param count number
