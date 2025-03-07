@@ -4,7 +4,6 @@ local spawnedPeds = {}
 local ActivePoints = {}
 
 Utility.CreateProp = function(model, coords, heading, networked)
-    if networked == nil then networked = true end
     Utility.LoadModel(model)
     if not HasModelLoaded(model) then return Prints.Error("Model Has Not Loaded") end
     local propEntity = CreateObject(model, coords.x, coords.y, coords.z, networked, false, false)
@@ -14,30 +13,20 @@ Utility.CreateProp = function(model, coords, heading, networked)
 end
 
 Utility.CreateVehicle = function(model, coords, heading, networked)
-    if networked == nil then networked = true end
     Utility.LoadModel(model)
     if not HasModelLoaded(model) then return Prints.Error("Model Has Not Loaded") end
     local vehicle = CreateVehicle(model, coords.x, coords.y, coords.z, heading, networked, false)
     SetVehicleHasBeenOwnedByPlayer(vehicle, true)
     SetVehicleNeedsToBeHotwired(vehicle, false)
-    SetModelAsNoLongerNeeded(model)
     SetVehRadioStation(vehicle, "OFF")
+    SetModelAsNoLongerNeeded(model)
     return vehicle, { networkid = NetworkGetNetworkIdFromEntity(vehicle) or 0, coords = GetEntityCoords(vehicle), heading = GetEntityHeading(vehicle), }
 end
 
-Utility.CreatePed = function(model, coords, heading, networked, clothing)
-    if networked == nil then networked = true end
+Utility.CreatePed = function(model, coords, heading, networked, settings)
     Utility.LoadModel(model)
     if not HasModelLoaded(model) then return Prints.Error("Model Has Not Loaded") end
     local spawnedEntity = CreatePed(0, model, coords.x, coords.y, coords.z, heading, networked, false)
-    if clothing then
-        for componentID, v in pairs(clothing) do
-            SetPedComponentVariation(spawnedEntity, componentID, v[1], v[2], 0)
-        end
-    end
-    FreezeEntityPosition(spawnedEntity, true)
-    SetEntityInvincible(spawnedEntity, true)
-    SetBlockingOfNonTemporaryEvents(spawnedEntity, true)
     SetModelAsNoLongerNeeded(model)
     table.insert(spawnedPeds, spawnedEntity)
     return spawnedEntity
@@ -48,17 +37,23 @@ Utility.StartBusySpinner = function(text)
     BeginTextCommandBusyString(text)
     AddTextComponentSubstringPlayerName(text)
     EndTextCommandBusyString(0)
+    return true
 end
 
 Utility.StopBusySpinner = function()
-    if BusyspinnerIsOn() then BusyspinnerOff() end
+    if BusyspinnerIsOn() then
+        BusyspinnerOff()
+        return true
+    end
+    return false
 end
 
-Utility.CreateBlip = function(coords, sprite, color, scale, label, shortRange)
+Utility.CreateBlip = function(coords, sprite, color, scale, label, shortRange, displayType)
     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
     SetBlipSprite(blip, sprite or 8)
     SetBlipColour(blip, color or 3)
     SetBlipScale(blip, scale or 0.8)
+    SetBlipDisplay(blip, displayType or 2)
     SetBlipAsShortRange(blip, shortRange)
     AddTextEntry(label, label)
     BeginTextCommandSetBlipName(label)
@@ -71,7 +66,7 @@ Utility.RemoveBlip = function(blip)
     local success = false
     for i, storedBlip in ipairs(blipIDs) do
         if storedBlip == blip then
-            RemoveBlip(blip)
+            RemoveBlip(storedBlip)
             table.remove(blipIDs, i)
             success = true
             break
@@ -104,7 +99,9 @@ end
 
 Utility.RemovePed = function(entity)
     local success = false
-    DeleteEntity(entity)
+    if DoesEntityExist(entity) then
+        DeleteEntity(entity)
+    end
     for i, storedEntity in ipairs(spawnedPeds) do
         if storedEntity == entity then
             table.remove(spawnedPeds, i)
@@ -230,51 +227,58 @@ Utility.GetClosestPlayer = function(coords, distanceScope, includeMe)
     return closestPlayer, closestDistance, GetPlayerServerId(closestPlayer)
 end
 
--- register points
-Utility.RegisterPoint = function(pointCoords, pointDistance, pointOnEnter, pointOnExit)
-    local enterZone = lib.points.new({
-        coords   = pointCoords,
+---This function is used to register a point on the map, functions are fired when in the distance/exiting the area
+---@param pointID string
+---@param pointCoords table
+---@param pointDistance number
+---@param _onEnter function
+---@param _onExit function
+---@param _nearby function
+Utility.RegisterPoint = function(pointID, pointCoords, pointDistance, _onEnter, _onExit, _nearby)
+    ActivePoints[pointID] = lib.points.new({
+        coords = pointCoords,
         distance = pointDistance,
-        onEnter  = function(self)
-            pointOnEnter(self)
+        onEnter = function(self)
+            _onEnter(self)
         end,
-        onExit   = function(self)
-            pointOnExit(self)
+        onExit = function(self)
+            _onExit(self)
         end,
+        nearby = function(self)
+            _nearby(self)
+        end
     })
-    local pointID = Bridge.Ids.RandomLower(nil, 8)
-    ActivePoints[pointID] = enterZone
-    return enterZone, pointID
 end
 
--- Function to retrieve the enterZone using pointID
+-- Function to retrieve the zone by the pointID
+---@param pointID string
 Utility.GetPointById = function(pointID)
     return ActivePoints[pointID]
 end
 
+---@return table | nil
+Utility.GetActivePoints = function()
+    return ActivePoints
+end
+---Pass the point ID to remove the point from the map
+---@param pointID string
+---@return boolean
 Utility.RemovePoint = function(pointID)
-    local point = ActivePoints[pointID]
-    if point then
-        --print("Removing point with ID " .. pointID)
-        point:remove()  -- Call the remove method on the point (ensure this method stops all event listeners)
-        ActivePoints[pointID] = nil  -- Remove from ActivePoints table
-        --print("Point removed successfully.")
-        return true
-    else
-        --print("Point with ID " .. pointID .. " not found.")
-        return false
-    end
+    if not ActivePoints[pointID] then return false end
+    ActivePoints[pointID]:remove()
+    ActivePoints[pointID] = nil
+    return true
 end
 
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
         for _, blip in pairs(blipIDs) do
-            if DoesBlipExist(blip.id) then
-                RemoveBlip(blip.id)
+            if blip and DoesBlipExist(blip) then
+                RemoveBlip(blip)
             end
         end
         for _, ped in pairs(spawnedPeds) do
-            if DoesEntityExist(ped) then
+            if ped and DoesEntityExist(ped) then
                 DeleteEntity(ped)
             end
         end
