@@ -14,8 +14,9 @@ Shops.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return true
 end
 
-Shops.CompleteCheckout = function(src, shopName, item, paymentType)
-    if not src and not shopName and not item and not paymentType then return end
+Shops.CompleteCheckout = function(src, shopName, item, amount, paymentType)
+
+    if not src and not shopName and not item and not amount and not paymentType then return end
     local ilocale = Language.Locale
     local shopData = registeredShops[shopName]
     if not shopData then return end
@@ -29,16 +30,17 @@ Shops.CompleteCheckout = function(src, shopName, item, paymentType)
     if not itemData then return print("Player ID "..src.." Is Possibly A Cheater And Has Attempted To Purchase A "..item) end
     if not itemData.price then return end
     local balance = Framework.GetAccountBalance(src, paymentType)
-    if balance < itemData.price then return Notify.SendNotify(src, ilocale('Shops.NotEnoughMoney'), "error", 5000) end
-    if not Framework.RemoveAccountBalance(src, paymentType, itemData.price) then return end
-    Inventory.AddItem(src, itemData.name, 1)
+    local mathStuff = tonumber(itemData.price) * tonumber(amount)
+    if balance < mathStuff then return Notify.SendNotify(src, ilocale('Shops.NotEnoughMoney'), "error", 5000) end
+    if not Framework.RemoveAccountBalance(src, paymentType, mathStuff) then return end
+    Inventory.AddItem(src, itemData.name, amount)
     local itemLabel = Inventory.GetItemInfo(itemData.name).label
     Notify.SendNotify(src, ilocale('Shops.PurchasedItem')..itemLabel, "success", 5000)
 end
 
-RegisterNetEvent("community_bridge:completeCheckout", function(shopName, item, paymentType)
+RegisterNetEvent("community_bridge:completeCheckout", function(shopName, item, amount, paymentType)
     local src = source
     if not shopName and not item and not paymentType then return end
-    if not paymentType == "cash" or not paymentType == "bank" then return end
-    Shops.CompleteCheckout(src, shopName, item, paymentType)
+    if not paymentType == "money" or not paymentType == "bank" then return end
+    Shops.CompleteCheckout(src, shopName, item, amount, paymentType)
 end)
