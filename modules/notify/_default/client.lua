@@ -25,6 +25,8 @@ Notify.SendNotify = function(message, _type, time)
         return exports['t-notify']:Alert({ style = 'info', message = message, duration = time, })
     elseif notifyType == 'wasabi' then
         return exports.wasabi_notify:notify(_type, message, time, _type)
+    elseif notifyType == 'r_notify' then
+        return exports.r_notify:notify({title = 'Notification', content = message, type = _type, icon = "fas fa-check", duration = time, position = 'top-right', sound = false})
     elseif notifyType == 'custom' then
         return Prints.Error("You have not set up a custom notify in community_bridge")
     else
