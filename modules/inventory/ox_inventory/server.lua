@@ -118,7 +118,7 @@ Inventory.GetItemInfo = function(item)
         stack = itemData.stack or "true",
         weight = itemData.weight or "0",
         description = itemData.description or "none",
-        image = itemData.client.image or Inventory.GetImagePath(item),
+        image = itemData.client and itemData.client.image or Inventory.GetImagePath(item),
     }
     return repackedTable
 end

@@ -6,6 +6,7 @@
     "place_object_scroll_down": "[SCROLL DOWN] Turn left",
     "enter_text": "Enter Text",
     "no_prop_defined": "You didnt define any object to place",
+    "Shops": {"NotEnoughMoney": "You dont have enough money to buy this item", "PurchasedItem": "You Have Purchased ", "CurrencySymbol": "$", "Confirm":"Confirm Purchase","AreYouSure":"Are you sure you want to purchase a ", "PayByCash": "Pay by cash", "PayByCard": "Pay by card" },
     "UNITTEST": {
         "UNITTESTA": "Im a %s %s",
         "UNITTEST": {

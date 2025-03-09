@@ -52,6 +52,7 @@ Bridge.RegisterModule("Language", Language)
 Bridge.RegisterModule("Doorlock", Doorlock)
 Bridge.RegisterModule("Phone", Phone)
 Bridge.RegisterModule("Dispatch", Dispatch)
+Bridge.RegisterModule("Shops", Shops)
 
 --lib
 Bridge.RegisterModule("Tables", cLib.Tables)
