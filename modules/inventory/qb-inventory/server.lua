@@ -121,24 +121,30 @@ Inventory.RemoveItem = function(src, item, amount, slot, metadata)
 end
 
 local registeredShops = {}
+local v1ShopData = {}
 
 Inventory.OpenShop = function(src, shopTitle)
-    return exports['qb-inventory']:OpenShop(src, shopTitle)
+    local newVersion = getInventoryNewVersion()
+    if newVersion then
+        return exports['qb-inventory']:OpenShop(src, shopTitle)
+    else
+        local shopData = v1ShopData[shopTitle]
+        if not shopData then return false end
+        TriggerClientEvent("inventory:client:OpenInventory", src, "shop", shopTitle, shopData)
+    end
 end
 
 Inventory.CreateShop = function(src, shopTitle, shopInventory, shopCoords, shopGroups)
     if not shopTitle or not shopInventory or not shopCoords then return end
+    if registeredShops[shopTitle] then return true end
+    registeredShops[shopTitle] = true
     local newVersion = getInventoryNewVersion()
     if newVersion then
-        if registeredShops[shopTitle] then return true end
-        registeredShops[shopTitle] = true
         local repackedShopItems = {}
         for _, v in pairs(shopInventory) do
             table.insert(repackedShopItems, {name = v.name, price = v.price, amount = v.count or 1000})
         end
         exports['qb-inventory']:CreateShop({ name = shopTitle, label = shopTitle, coords = shopCoords, items = repackedShopItems, })
-        --exports['qb-inventory']:OpenShop(src, shopTitle)
-        --return Inventory.OpenShop(src, shopTitle)
         return true
     else
         local shopData = { label = shopTitle, items = {}, slots = 0 }
@@ -149,6 +155,7 @@ Inventory.CreateShop = function(src, shopTitle, shopInventory, shopCoords, shopG
 
         shopData.slots = #shopData.items
         TriggerClientEvent("inventory:client:OpenInventory", src, "shop", shopTitle, shopData)
+        v1ShopData[shopTitle] = shopData
         print("QB-INVENTORY: You are using an outdated version of qb-inventory, please update to the latest version. Stuff will still work but you are using litterally the most exploitable inventory in fivem.")
     end
 end
