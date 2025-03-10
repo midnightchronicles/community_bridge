@@ -1,5 +1,5 @@
 if GetResourceState('Renewed-Weathersync') ~= 'started' then return end
-Weather = {}
+Weather = Weather or {}
 
 ---comment
 ---@param toggle boolean

@@ -1,5 +1,5 @@
 if GetResourceState('qb-weathersync') ~= 'started' then return end
-Weather = {}
+Weather = Weather or {}
 
 ---comment
 ---@param toggle boolean

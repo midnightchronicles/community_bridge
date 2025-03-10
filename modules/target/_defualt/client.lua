@@ -4,10 +4,6 @@ local function warnUser()
     print("Currently Only Targeting Is Supported By Community Bridge, You Are Using A Resource That Requires The Target Module To Be Used.")
 end
 
-Target.ModuleName = function()
-    return "Defualt"
-end
-
 Target.AddGlobalPlayer = function(options)
     warnUser()
 end
