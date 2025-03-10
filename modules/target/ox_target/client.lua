@@ -17,6 +17,10 @@ local targetZones = {}
 
 Target = Target or {}
 
+Target.ModuleName = function()
+    return resourceName
+end
+
 Target.FixOptions = function(options)
     for k, v in pairs(options) do
         local action = v.onSelect or v.action
@@ -37,6 +41,10 @@ end
 Target.AddGlobalPlayer = function(options)
     options = Target.FixOptions(options)
     ox_target:addGlobalPlayer(options)
+end
+
+Target.DisableTargeting = function(bool)
+    ox_target:disableTargeting(bool)
 end
 
 ---comment

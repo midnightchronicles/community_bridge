@@ -9,6 +9,14 @@ local sleepless = exports.sleepless_interact
 
 Target = Target or {}
 
+Target.ModuleName = function()
+    return resourceName
+end
+
+Target.DisableTargeting = function(bool)
+    -- nothing to see here
+end
+
 Target.FixOptions = function(options)
     for k, v in pairs(options) do
         local action = v.onSelect or v.action
