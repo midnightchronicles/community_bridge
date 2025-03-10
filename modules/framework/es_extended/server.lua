@@ -23,6 +23,10 @@ Framework.GetPlayerIdentifier = function(src)
     return xPlayer.getIdentifier()
 end
 
+Framework.GetFrameworkJobs = function()
+    return ESX.GetJobs()
+end
+
 -- Framework.GetPlayerName(src)
 -- Returns the first and last name of the player.
 Framework.GetPlayerName = function(src)
@@ -272,6 +276,10 @@ end)
 AddEventHandler("playerDropped", function()
     local src = source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
+lib.callback.register('community_bridge:Callback:GetFrameworkJobs', function(source)
+	return Framework.GetFrameworkJobs() or {}
 end)
 
 Framework.Commands = {}

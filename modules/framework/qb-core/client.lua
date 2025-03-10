@@ -13,6 +13,18 @@ Framework.GetPlayerData = function()
     return QBCore.Functions.GetPlayerData()
 end
 
+Framework.GetFrameworkJobs = function()
+    local jobs = {}
+    for k, v in pairs(QBCore.Shared.Jobs) do
+        table.insert(jobs, {
+            name = k,
+            label = v.label,
+            grade = v.grades
+        })
+    end
+    return jobs
+end
+
 Framework.GetPlayerDob = function()
     local player = QBCore.Functions.GetPlayerData()
     local playerData = player.PlayerData

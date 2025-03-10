@@ -14,6 +14,11 @@ Framework.GetPlayerData = function()
     return ESX.PlayerData
 end
 
+Framework.GetFrameworkJobs = function()
+    local jobs = lib.callback.await('community_bridge:Callback:GetFrameworkJobs', false)
+    return jobs
+end
+
 ---comment
 ---@return string
 Framework.GetPlayerDob = function()

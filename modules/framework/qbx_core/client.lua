@@ -12,6 +12,10 @@ Framework.GetPlayerData = function()
     return QBox.GetPlayerData()
 end
 
+Framework.GetFrameworkJobs = function()
+    return QBox.GetJobs()
+end
+
 Framework.GetPlayerDob = function()
     local playerData = QBox.GetPlayerData()
     return playerData.charinfo.birthdate

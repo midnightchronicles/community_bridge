@@ -18,6 +18,18 @@ Framework.GetPlayerIdentifier = function(src)
     return playerData.citizenid
 end
 
+Framework.GetFrameworkJobs = function()
+    local jobs = {}
+    for k, v in pairs(QBCore.Shared.Jobs) do
+        table.insert(jobs, {
+            name = k,
+            label = v.label,
+            grade = v.grades
+        })
+    end
+    return jobs
+end
+
 -- Framework.GetPlayerName(src)
 -- Returns the first and last name of the player.
 Framework.GetPlayerName = function(src)

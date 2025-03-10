@@ -15,6 +15,10 @@ Framework.GetPlayerDob = function(src)
     return playerData.charinfo.birthdate
 end
 
+Framework.GetFrameworkJobs = function()
+    return QBox.GetJobs()
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
