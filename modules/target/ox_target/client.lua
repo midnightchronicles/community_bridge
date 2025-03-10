@@ -1,4 +1,7 @@
-if GetResourceState('ox_target') ~= 'started' then return end
+local resourceName = "ox_target"
+local configValue = BridgeClientConfig.TargetSystem
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+
 
 local targetDebug = false
 local function detectDebugEnabled()
@@ -28,16 +31,25 @@ Target.FixOptions = function(options)
     return options
 end
 
+---comment
+---@param options table
+---@return nil
 Target.AddGlobalPlayer = function(options)
     options = Target.FixOptions(options)
     ox_target:addGlobalPlayer(options)
 end
 
+---comment
+---@param options table
+---@return nil
 Target.AddGlobalVehicle = function(options)
     options = Target.FixOptions(options)
     ox_target:addGlobalVehicle(options)
 end
 
+---comment
+---@param options table
+---@return nil
 Target.RemoveGlobalVehicle = function(options)
     local assembledLables = {}
     for k, v in pairs(options) do
@@ -46,16 +58,31 @@ Target.RemoveGlobalVehicle = function(options)
     ox_target:removeGlobalVehicle(assembledLables)
 end
 
+---comment
+---@param entities table
+---@param options table
+---@return nil
 Target.AddLocalEntity = function(entities, options)
     options = Target.FixOptions(options)
     ox_target:addLocalEntity(entities, options)
 end
 
+---comment
+---@param models table
+---@param options table
+---@return nil
 Target.AddModel = function(models, options)
     options = Target.FixOptions(options)
     ox_target:addModel(models, options)
 end
 
+---comment
+---@param name string
+---@param coords table
+---@param size table
+---@param heading number
+---@param options table
+---@return number
 Target.AddBoxZone = function(name, coords, size, heading, options)
     options = Target.FixOptions(options)
     local target = ox_target:addBoxZone({
@@ -73,14 +100,23 @@ Target.RemoveGlobalPlayer = function()
     ox_target:removeGlobalPlayer()
 end
 
+---comment
+---@param entity number
+---@return nil
 Target.RemoveLocalEntity = function(entity)
     ox_target:removeLocalEntity(entity)
 end
 
+---comment
+---@param model string
+---@return nil
 Target.RemoveModel = function(model)
     ox_target:removeModel(model)
 end
 
+---comment
+---@param name string
+---@return nil
 Target.RemoveZone = function(name)
     for _, data in pairs(targetZones) do
         if data.name == name then

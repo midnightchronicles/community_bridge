@@ -1,4 +1,7 @@
-if GetResourceState('okokGasStation') ~= 'started' then return end
+local resourceName = "okokGasStation"
+local configValue = BridgeClientConfig.Fuel
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+--print("Fuel: Loading okokGasStation")
 Fuel = Fuel or {}
 
 Fuel.GetFuel = function(vehicle)

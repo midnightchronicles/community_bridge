@@ -1,4 +1,6 @@
-if GetResourceState('qb-menu') ~= 'started' or (BridgeClientConfig.MenuSystem ~= "qb" and BridgeClientConfig.MenuSystem ~= "auto") then return end
+local resourceName = "qb-menu"
+local configValue = BridgeClientConfig.MenuSystem
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 --print("Loading QB Menu")
 --- Converts an Ox menu to a QB menu.
 ---@param id string The menu ID.

@@ -106,13 +106,7 @@ function Callback.Trigger(name, func, ...)
     local p = promise.new()
     TriggerServerEvent(clientToServerName, name, ...)
     cbData[name] = {cb = func, p = p}
-    CreateThread(function()
-        Wait(5000)
-        if cbData[name] then
-            cbData[name].p:resolve()
-            cbData[name] = nil
-        end
-    end)
+    
     return Citizen.Await(p)
 end
 

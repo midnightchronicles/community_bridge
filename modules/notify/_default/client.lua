@@ -2,6 +2,11 @@ Notify = Notify or {}
 local notifyType = BridgeClientConfig.NotifySystem
 local helptextType = BridgeClientConfig.ShowHelpText
 
+---comment
+---@param message string
+---@param _type string
+---@param time number
+---@return nil
 Notify.SendNotify = function(message, _type, time)
     time = time or 3000
     if notifyType == 'qb' then
@@ -20,6 +25,8 @@ Notify.SendNotify = function(message, _type, time)
         return exports['t-notify']:Alert({ style = 'info', message = message, duration = time, })
     elseif notifyType == 'wasabi' then
         return exports.wasabi_notify:notify(_type, message, time, _type)
+    elseif notifyType == 'r_notify' then
+        return exports.r_notify:notify({title = 'Notification', content = message, type = _type, icon = "fas fa-check", duration = time, position = 'top-right', sound = false})
     elseif notifyType == 'custom' then
         return Prints.Error("You have not set up a custom notify in community_bridge")
     else
@@ -27,6 +34,10 @@ Notify.SendNotify = function(message, _type, time)
     end
 end
 
+---comment
+---@param message string
+---@param _position string
+---@return nil
 Notify.ShowHelpText = function(message, _position)
     if helptextType == 'ox' then
         if _position == nil then _position = 'left-center' end

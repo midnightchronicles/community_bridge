@@ -1,5 +1,5 @@
 if GetResourceState('Renewed-Banking') ~= 'started' then return end
-Managment = {}
+Managment = Managment or {}
 
 Managment.GetAccountMoney = function(account)
     return exports['Renewed-Banking']:getAccountMoney(account)

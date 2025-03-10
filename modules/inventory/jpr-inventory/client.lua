@@ -9,10 +9,16 @@ RegisterNetEvent('community_bridge:client:jpr-inventory:openStash', function(id,
     TriggerServerEvent('inventory:server:OpenInventory', 'stash', id, { maxweight = data.weight, slots = data.slots })
 end)
 
+---comment
+---@param item string
+---@return boolean
 Inventory.HasItem = function(item)
     return jpr:HasItem(item)
 end
 
+---comment
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("jpr-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://jpr-inventory/html/images/%s.png", item)

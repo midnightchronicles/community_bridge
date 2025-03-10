@@ -1,6 +1,8 @@
 if GetResourceState('Renewed-Weathersync') ~= 'started' then return end
 Weather = {}
 
+---comment
+---@param toggle boolean
 Weather.ToggleSync = function(toggle)
     LocalPlayer.state.syncWeather = toggle
 end

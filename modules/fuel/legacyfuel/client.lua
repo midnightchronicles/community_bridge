@@ -1,4 +1,8 @@
-if GetResourceState('LegacyFuel') ~= 'started' then return end
+local resourceName = "LegacyFuel"
+local configValue = BridgeClientConfig.Fuel
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+--print("Fuel: Loading LegacyFuel")
+
 Fuel = Fuel or {}
 
 Fuel.GetFuel = function(vehicle)

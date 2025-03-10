@@ -1,11 +1,21 @@
-if GetResourceState('gksphone') ~= 'started' or (BridgeSharedConfig.Phone ~= "gksphone" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+local resourceName = "gksphone"
+local configValue = BridgeSharedConfig.Phone
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+Phone = Phone or {}
 
-Phone = {}
-
+---comment
+---@param src number
+---@return number||boolean
 Phone.GetPlayerPhone = function(src)
     return exports["gksphone"]:GetPhoneBySource(src) or false
 end
 
+---comment
+---@param src number
+---@param email string
+---@param title string
+---@param message string
+---@return boolean
 Phone.SendEmail = function(src, email, title, message)
     local data = {}
     data.sender = email

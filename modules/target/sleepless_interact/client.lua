@@ -1,4 +1,9 @@
-if GetResourceState('sleepless_interact') ~= 'started' then return end
+local resourceName = "sleepless_interact"
+local configValue = BridgeClientConfig.TargetSystem
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+
+--if GetResourceState('sleepless_interact') ~= 'started' then return end
+-- This is only partially supported
 
 local sleepless = exports.sleepless_interact
 

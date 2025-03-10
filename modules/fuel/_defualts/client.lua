@@ -1,5 +1,5 @@
 Fuel = Fuel or {}
-
+----print("Fuel: Loading Defualt")
 Fuel.GetFuel = function(vehicle)
     if not DoesEntityExist(vehicle) then return 0.0 end
     return GetVehicleFuelLevel(vehicle)

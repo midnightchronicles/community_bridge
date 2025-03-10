@@ -1,7 +1,13 @@
-if GetResourceState('qs-smartphone') ~= 'started' or (BridgeSharedConfig.Phone ~= "qs-smartphone" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+local resourceName = "qs-smartphone"
+local configValue = BridgeSharedConfig.Phone
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+Phone = Phone or {}
 
-Phone = {}
-
+---comment
+---@param email string
+---@param title string
+---@param message string
+---@return nil
 Phone.SendEmail = function(email, title, message)
     return TriggerServerEvent('qs-smartphone:server:sendNewMail', { sender = email, subject = title, message = message, button = {} })
 end

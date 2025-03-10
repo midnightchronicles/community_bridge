@@ -1,5 +1,5 @@
 if GetResourceState('okokBanking') ~= 'started' then return end
-Managment = {}
+Managment = Managment or {}
 
 Managment.GetAccountMoney = function(account)
     return exports['okokBanking']:GetAccount(account)

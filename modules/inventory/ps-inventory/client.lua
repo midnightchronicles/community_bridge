@@ -10,10 +10,17 @@ RegisterNetEvent('community_bridge:client:ps-inventory:openStash', function(id, 
     TriggerServerEvent('ps-inventory:server:OpenInventory', 'stash', id, { maxweight = data.weight, slots = data.slots })
 end)
 
+
+---comment
+---@param item string
+---@return boolean
 Inventory.HasItem = function(item)
     return ps:HasItem(item)
 end
 
+---comment
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("ps-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://ps-inventory/html/images/%s.png", item)

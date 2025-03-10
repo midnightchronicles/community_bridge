@@ -1,11 +1,18 @@
-if GetResourceState('lb-phone') ~= 'started' or (BridgeSharedConfig.Phone ~= "lb-phone" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
-
-Phone = {}
+local resourceName = "lb-phone"
+local configValue = BridgeSharedConfig.Phone
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+Phone = Phone or {}
 
 Phone.GetPlayerPhone = function(src)
     return exports["lb-phone"]:GetEquippedPhoneNumber(src) or false
 end
 
+---comment
+---@param src number
+---@param email string
+---@param title string
+---@param message string
+---@return boolean
 Phone.SendEmail = function(src, email, title, message)
     local numberNumber = exports["lb-phone"]:GetEquippedPhoneNumber(src)
     if not numberNumber then return false, Prints.Error("Could not Find Phone number") end

@@ -3,6 +3,9 @@ Inventory = Inventory or {}
 
 local codem = exports['codem-inventory']
 
+---comment
+---@param item string
+---@return table
 Inventory.GetItemInfo = function(item)
     local itemData = codem:GetItemList(item)
     local repackedTable = {
@@ -16,6 +19,8 @@ Inventory.GetItemInfo = function(item)
     return repackedTable or {}
 end
 
+---comment
+---@return table
 Inventory.GetPlayerInventory = function()
     local items = {}
     local inventory = codem:getUserInventory()
@@ -34,6 +39,9 @@ Inventory.GetPlayerInventory = function()
     return items
 end
 
+---comment
+---@param item string
+---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("codem-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://codem-inventory/html/images/%s.png", item)

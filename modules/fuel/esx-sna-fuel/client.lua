@@ -1,4 +1,8 @@
-if GetResourceState('esx-sna-fuel') ~= 'started' then return end
+local resourceName = "esx-sna-fuel"
+local configValue = BridgeClientConfig.Fuel
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+--print("Fuel: Loading esx-sna-fuel")
+--if GetResourceState('esx-sna-fuel') ~= 'started' then return end
 Fuel = Fuel or {}
 
 Fuel.GetFuel = function(vehicle)

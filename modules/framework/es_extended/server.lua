@@ -10,6 +10,7 @@ end
 
 Framework.GetPlayerDob = function(src)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     local dob = xPlayer.get("dateofbirth")
     return dob
 end
@@ -18,6 +19,7 @@ end
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.getIdentifier()
 end
 
@@ -25,6 +27,7 @@ end
 -- Returns the first and last name of the player.
 Framework.GetPlayerName = function(src)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.variables.firstName, xPlayer.variables.lastName
 end
 
@@ -32,7 +35,9 @@ end
 -- Returns a table of items matching the specified name and if passed metadata from the player's inventory.
 -- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
 Framework.GetItem = function(src, item, _)
-    local playerItems = ESX.GetPlayerFromId(src).getInventory()
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
+    local playerItems = xPlayer.getInventory()
     local repackedTable = {}
     for _, v in pairs(playerItems) do
         if v.name == item then
@@ -51,14 +56,26 @@ end
 -- Returns the count of items matching the specified name and if passed metadata from the player's inventory.
 Framework.GetItemCount = function(src, item, _)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.getInventoryItem(item).count
+end
+
+---comment
+---@param src number
+---@param item string
+---@return boolean
+Framework.HasItem = function(src, item)
+    local getCount = Framework.GetItemCount(src, item, nil)
+    return getCount > 0
 end
 
 -- Framework.GetPlayerInventory(src)
 -- Returns the entire inventory of the player as a table.
 -- returns {name = v.name, count = v.amount, _, _}
 Framework.GetPlayerInventory = function(src)
-    local playerItems = ESX.GetPlayerFromId(src).getInventory()
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
+    local playerItems = xPlayer.getInventory()
     local repackedTable = {}
     for _, v in pairs(playerItems) do
 		if v.count > 0 then
@@ -77,6 +94,7 @@ end
 -- Adds the specified metadata key and number value to the player's data.
 Framework.SetPlayerMetadata = function(src, metadata, value)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     xPlayer.setMeta(metadata, value, nil)
     return true
 end
@@ -85,6 +103,7 @@ end
 -- Gets the specified metadata key and value to the player's data.
 Framework.GetPlayerMetadata = function(src, metadata)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.getMeta(metadata) or false
 end
 
@@ -95,6 +114,7 @@ end
 -- phone_number, pincode
 Framework.GetStatus = function(src, column)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.get(column) or nil
 end
 
@@ -132,6 +152,7 @@ end
 -- Returns the phone number of the player.
 Framework.GetPlayerPhone = function(src)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.get("phone_number")
 end
 
@@ -139,6 +160,7 @@ end
 -- Returns the job name, label, grade name, and grade level of the player.
 Framework.GetPlayerJob = function(src)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.getJob().name, xPlayer.getJob().label, xPlayer.getJob().grade_label, xPlayer.getJob().grade
 end
 
@@ -160,12 +182,14 @@ end
 -- Sets the player's job to the specified name and grade.
 Framework.SetPlayerJob = function(src, name, grade)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     if not ESX.DoesJobExist(name, grade) then lib.print.error("Job Does Not Exsist In Framework :NAME "..name.." Grade:"..grade) return end
     return xPlayer.setJob(name, grade, true)
 end
 
 Framework.ToggleDuty = function(src, status)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     local name = xPlayer.getJob().name
     local grade = xPlayer.getJob().grade
     xPlayer.setJob(name, grade, status)
@@ -175,6 +199,7 @@ end
 -- Adds the specified amount to the player's account balance of the specified type.
 Framework.AddAccountBalance = function(src, _type, amount)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.addAccountMoney(_type, amount)
 end
 
@@ -182,6 +207,7 @@ end
 -- Removes the specified amount from the player's account balance of the specified type.
 Framework.RemoveAccountBalance = function(src, _type, amount)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.removeAccountMoney(_type, amount)
 end
 
@@ -189,6 +215,7 @@ end
 -- Returns the player's account balance of the specified type.
 Framework.GetAccountBalance = function(src, _type)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.getAccount(_type).money
 end
 
@@ -196,6 +223,7 @@ end
 -- Adds the specified item to the player's inventory.
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.addInventoryItem(item, amount)
 end
 
@@ -203,6 +231,7 @@ end
 -- Removes the specified item from the player's inventory.
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
     return xPlayer.removeInventoryItem(item, amount)
 end
 

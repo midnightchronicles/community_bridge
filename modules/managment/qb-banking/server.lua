@@ -1,5 +1,5 @@
 if GetResourceState('qb-banking') ~= 'started' then return end
-Managment = {}
+Managment = Managment or {}
 
 Managment.GetAccountMoney = function(account)
     return exports['qb-banking']:GetAccountBalance(account)

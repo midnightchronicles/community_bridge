@@ -8,10 +8,14 @@ Framework.GetFrameworkName = function()
     return 'es_extended'
 end
 
+---comment
+---@return table
 Framework.GetPlayerData = function()
     return ESX.PlayerData
 end
 
+---comment
+---@return string
 Framework.GetPlayerDob = function()
     local playerData = ESX.GetPlayerData()
     local dob = playerData.dateofbirth
@@ -22,35 +26,57 @@ Framework.GetPlayerMetaData = function(metadata)
     return ESX.GetPlayerData().metadata[metadata]
 end
 
+---comment
+---@param message string
+---@param type string
+---@param time number
+---@return nil
 Framework.Notify = function(message, type, time)
     return ESX.ShowNotification(message, type, time)
 end
 
+---comment
+---@return string
 Framework.GetPlayerIdentifier = function()
     local playerData = ESX.GetPlayerData()
     return playerData.identifier
 end
 
+---comment
+---@return string
+---@return string
 Framework.GetPlayerName = function()
     local playerData = ESX.GetPlayerData()
     return playerData.firstName, playerData.lastName
 end
 
+---comment
+---@return string
+---@return string
+---@return string
+---@return string
 Framework.GetPlayerJob = function()
     local playerData = ESX.GetPlayerData()
     return playerData.job.name, playerData.job.label, playerData.job.grade_label, playerData.job.grade
 end
 
+---comment
+---@param item string
+---@return boolean
 Framework.HasItem = function(item)
 	local hasItem = ESX.SearchInventory(item, true)
 	return hasItem > 0 and true or false
 end
 
+---comment
+---@return table
 Framework.GetPlayerInventory = function()
     local playerData = ESX.GetPlayerData()
     return playerData.inventory
 end
 
+---comment
+---@return boolean
 Framework.GetIsPlayerDead = function()
     local playerData = ESX.GetPlayerData()
     return playerData.dead

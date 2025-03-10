@@ -1,14 +1,15 @@
-if GetResourceState('MrNewbVehicleKeys') ~= 'started' or (BridgeSharedConfig.VehicleKey ~= "MrNewbVehicleKeys" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+local resourceName = "MrNewbVehicleKeys"
+local configValue = BridgeClientConfig.VehicleKey
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 VehicleKey = VehicleKey or {}
 
 VehicleKey.GiveKeys = function(vehicle, plate)
-    if not DoesEntityExist(vehicle) and not plate then return false end
-    return exports.MrNewbVehicleKeys:GiveKeys(vehicle)
+    if not plate then return false end
+    return exports.MrNewbVehicleKeys:GiveKeysByPlate(plate)
 end
 
 VehicleKey.RemoveKeys = function(vehicle, plate)
-    if not vehicle and not plate then return false end
-    if not DoesEntityExist(vehicle) then return exports.MrNewbVehicleKeys:RemoveKeysByPlate(plate) end
-    return exports.MrNewbVehicleKeys:RemoveKeys(vehicle)
+    if not plate then return false end
+    return exports.MrNewbVehicleKeys:RemoveKeysByPlate(plate)
 end

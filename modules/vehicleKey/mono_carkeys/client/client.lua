@@ -1,12 +1,14 @@
-if GetResourceState('mono_carkeys') ~= 'started' or (BridgeSharedConfig.VehicleKey ~= "mono_carkeys" and BridgeSharedConfig.VehicleKey ~= "auto") then return end
+local resourceName = "mono_carkeys"
+local configValue = BridgeClientConfig.VehicleKey
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 VehicleKey = VehicleKey or {}
 VehicleKey.GiveKeys = function(vehicle, plate)
-    if type(plate) ~= 'string' then return end
+    if not plate then return false end
     TriggerServerEvent('mono_carkeys:CreateKey', plate)
 end
 
 VehicleKey.RemoveKeys = function(vehicle, plate)
-    if type(plate) ~= 'string' then return end
+    if not plate then return false end
     TriggerServerEvent('mono_carkeys:DeleteKey', 1, plate)
 end
