@@ -297,6 +297,11 @@ Framework.GetOwnedVehicles = function(src)
     return vehicles
 end
 
+RegisterNetEvent("QBCore:Server:OnPlayerLoaded", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerLoaded", src)
+end)
+
 RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
     local src = source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
