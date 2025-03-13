@@ -46,6 +46,14 @@ Table.TableContainsKey = function(tbl, search)
     return false
 end
 
+Table.TableGetKeys = function(tbl)
+    local keys = {}
+    for k ,_ in pairs(tbl) do
+        table.insert(keys,k)
+    end
+    return keys
+end
+
 Table.GetClosest = function(coords, tbl)
     local closestPoint = nil
     local dist = math.huge
