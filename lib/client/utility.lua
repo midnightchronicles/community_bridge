@@ -245,7 +245,9 @@ Utility.RegisterPoint = function(pointID, pointCoords, pointDistance, _onEnter, 
             _onExit(self)
         end,
         nearby = function(self)
-            _nearby(self)
+            if _nearby then
+                _nearby(self)
+            end
         end
     })
 end
