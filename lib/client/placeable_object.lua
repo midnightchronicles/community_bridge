@@ -71,7 +71,7 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
         {type = "SET_BACKGROUND_COLOUR"},
     })
     local heading = -GetEntityHeading(PlayerPedId())
-    
+
     local pos = PlaceableObject.Eyetrace(depth, disableSphere)
     if not data.spawned and model then
         --get player heading
@@ -81,7 +81,7 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
     assert(data.spawned, "Failed to create object")
     SetEntityCollision(data.spawned, false, false)
     SetEntityAlpha(data.spawned, 150, false)
-    
+
     SetPedConfigFlag(PlayerPedId(), 146, true)
     SetCanClimbOnEntity(data.spawned, false)
     SetEntityCompletelyDisableCollision(data.spawned, true, false)
@@ -96,7 +96,7 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
                         inBounds = true
                         SetEntityDrawOutlineColor(0, 255, 0, 255)
                         SetEntityDrawOutline(data.spawned, true)
-                    end                    
+                    end
                 elseif inBounds then
                     inBounds = false
                     SetEntityDrawOutline(data.spawned, false)
@@ -113,7 +113,7 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
             DisableControlAction(0, 24, true) -- Attack
             DisableControlAction(0, 25, true) -- Aim
             DisableControlAction(0, 36, true) -- INPUT_DUCK.
-            
+
             if IsDisabledControlJustPressed(0, 223) then -- left click
                 if not inBounds then 
                     Notify.SendNotify("You can't place this object here", "error", 5000)
@@ -191,5 +191,3 @@ function PlaceableObject.Create(data, model, onConfirm, onUpdate, onCancel, sett
 end
 
 return PlaceableObject
-
-

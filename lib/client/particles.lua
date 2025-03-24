@@ -1,4 +1,3 @@
-
 function CreateParticleFX(dict, ptfx, pos, rot, scale, color, looped, loopLength)
     CreateThread(function()
         local failed = 5
@@ -44,8 +43,6 @@ function CreateParticleFXOnEntityBone(dict, ptfx, entity, bone,  offset, rot, sc
     RemoveNamedPtfxAsset(ptfx)
     return bleh
 end
-
-
 
 function PlayParticleFX(dict, name, looped, x, y, z, rotX, rotY, rotZ, scale)
     RequestNamedPtfxAsset(dict)
