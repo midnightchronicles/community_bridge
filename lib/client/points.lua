@@ -97,6 +97,7 @@ function Point.CheckPointsInSameCell(point)
     return nearbyPoints
 end
 
+local insidePoints = {}
 ---Internal function that starts the loop. Do not call this function directly.
 function Point.StartLoop()
     if LoopStarted then return false end
@@ -140,11 +141,23 @@ function Point.StartLoop()
                                 print("Entered point: ", point.distance)
                                 point.inside = true
                                 point.onEnter(point)
+                                insidePoints[point.id] = point
                             end
                         elseif point.inside then
                             print("Exited point: ", point.id)
                             point.inside = false
                             point.onExit(point)
+                            insidePoints[point.id] = nil
+                        end
+                        for id, insidepoint in pairs(insidePoints) do
+                            local pos = insidepoint.coords and vector3(insidepoint.coords.x, insidepoint.coords.y, insidepoint.coords.z) or vector3(0, 0, 0)
+                            local dist = #(playerCoords - pos)
+                            if dist > insidepoint.distance then
+                                print("Exited point: ", insidepoint.id)
+                                insidepoint.inside = false
+                                insidepoint.onExit(insidepoint)
+                                insidePoints[insidepoint.id] = nil
+                            end
                         end
                         if point.onNearby then
                             point.onNearby(GridCells[cellKey]?.points, waitTime)
@@ -229,7 +242,9 @@ function Point.GetAll()
 end
 
 -- Usage example for checking nearby points
--- This is fucking hot. +20 points for crowley
+-- -- 
+-- ▀█▀ █▄█ █ ▄▀▀    █ ▄▀▀    █▀ █ █ ▄▀▀ █▄▀ █ █▄ █ ▄▀     █▄█ ▄▀▄ ▀█▀       █▀▄ ▄▀▄ █ █▄ █ ▀█▀ ▄▀▀    █▀ ▄▀▄ █▀▄    ▄▀▀ █▀▄ ▄▀▄ █   █ █   ██▀ ▀▄▀ 
+--  █  █ █ █ ▄█▀    █ ▄█▀    █▀ ▀▄█ ▀▄▄ █ █ █ █ ▀█ ▀▄█    █ █ ▀▄▀  █        █▀  ▀▄▀ █ █ ▀█  █  ▄█▀    █▀ ▀▄▀ █▀▄    ▀▄▄ █▀▄ ▀▄▀ ▀▄▀▄▀ █▄▄ █▄▄  █  
 --[[
 Point.Register("point1", vector3(100, 100, 30), 5.0, 
     function(point)
