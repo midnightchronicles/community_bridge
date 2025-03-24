@@ -54,6 +54,7 @@ if not IsDuplicityVersion() then goto client end
 
 cLib.SQL = SQL or Require("lib/server/sqlHandler.lua")
 cLib.Logs = Logs or Require("lib/server/logs.lua")
+cLib.ItemsBuilder = ItemsBuilder or Require("lib/server/ItemsBuilder.lua")
 cLib.LootTables = LootTables or Require("lib/server/lootTables.lua")
 
 if IsDuplicityVersion() then return cLib end

@@ -79,6 +79,7 @@ if not IsDuplicityVersion() then goto client end
 
 Bridge.RegisterModule("SQL", cLib.SQL)
 Bridge.RegisterModule("Logs", cLib.Logs)
+Bridge.RegisterModule("ItemsBuilder", cLib.ItemsBuilder)
 Bridge.RegisterModule("LootTables", cLib.LootTables)
 Bridge.RegisterModule("Version", Version)
 
