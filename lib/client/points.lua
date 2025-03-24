@@ -5,7 +5,7 @@ local GridCells = {}
 local LoopStarted = false
 
 -- Grid configuration
-local GRID_SIZE = 150.0 -- Size of each grid cell
+local GRID_SIZE = 500.0 -- Size of each grid cell
 local CELL_BUFFER = 1 -- Number of adjacent cells to check
 
 -- Consider adding these optimizations
@@ -130,8 +130,9 @@ function Point.StartLoop()
                             point.cellKey = Point.GetCellKey(point.coords)
                             Point.UpdateInGrid(point, oldCellKey)
                         end
-
-                        local distance = #(playerCoords - point.coords)
+                        local coords = point.coords and vector3(point.coords.x, point.coords.y, point.coords.z) or vector3(0, 0, 0)
+                        local distance = #(playerCoords - coords)
+                        --local distance = #(playerCoords - point.coords)
 
                         -- Check if player entered/exited the point
                         if distance < point.distance then
@@ -152,10 +153,12 @@ function Point.StartLoop()
                 end
             end
             --kills the loop if no targets exist
+            --[[
             if not targetsExist then
                 LoopStarted = false
                 break
             end
+            --]]
 
             Wait(waitTime) -- Faster updates when moving quickly
         end
