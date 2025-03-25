@@ -149,20 +149,22 @@ function Point.StartLoop()
                             point.onExit(point)
                             insidePoints[point.id] = nil
                         end
-                        for id, insidepoint in pairs(insidePoints) do
-                            local pos = insidepoint.coords and vector3(insidepoint.coords.x, insidepoint.coords.y, insidepoint.coords.z) or vector3(0, 0, 0)
-                            local dist = #(playerCoords - pos)
-                            if dist > insidepoint.distance then
-                                print("Exited point: ", insidepoint.id)
-                                insidepoint.inside = false
-                                insidepoint.onExit(insidepoint)
-                                insidePoints[insidepoint.id] = nil
-                            end
-                        end
+                        
                         if point.onNearby then
                             point.onNearby(GridCells[cellKey]?.points, waitTime)
                         end
                     end
+                end
+            end
+
+            for id, insidepoint in pairs(insidePoints) do
+                local pos = insidepoint.coords and vector3(insidepoint.coords.x, insidepoint.coords.y, insidepoint.coords.z) or vector3(0, 0, 0)
+                local dist = #(playerCoords - pos)
+                if dist > insidepoint.distance then
+                    print("Exited point: ", insidepoint.id)
+                    insidepoint.inside = false
+                    insidepoint.onExit(insidepoint)
+                    insidePoints[insidepoint.id] = nil
                 end
             end
             --kills the loop if no targets exist
