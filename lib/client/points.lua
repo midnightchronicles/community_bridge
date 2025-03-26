@@ -3,6 +3,8 @@ Point = {}
 local ActivePoints = {}
 local GridCells = {}
 local LoopStarted = false
+local insidePoints = {}
+local data = {} -- 👈 Move this outside the function
 
 -- Grid configuration
 local GRID_SIZE = 500.0 -- Size of each grid cell
@@ -97,12 +99,11 @@ function Point.CheckPointsInSameCell(point)
     return nearbyPoints
 end
 
-local insidePoints = {}
 ---Internal function that starts the loop. Do not call this function directly.
 function Point.StartLoop()
     if LoopStarted then return false end
     LoopStarted = true
-
+    -- Remove the "local data = {}" line from here
     CreateThread(function()
         while LoopStarted do
             local playerPed = PlayerPedId()
@@ -138,15 +139,18 @@ function Point.StartLoop()
                         -- Check if player entered/exited the point
                         if distance < point.distance then
                             if not point.inside then
-                                print("Entered point: ", point.distance)
                                 point.inside = true
-                                point.onEnter(point)
+                                data[point.id] = data[point.id] or point.args or {}
+                                data[point.id] = point.onEnter(point, data[point.id])
                                 insidePoints[point.id] = point
                             end
+                        -- Modified main loop exit handler
                         elseif point.inside then
-                            print("Exited point: ", point.id)
                             point.inside = false
-                            point.onExit(point)
+                            data[point.id] = data[point.id] or point.args or {}
+                            local result = point.onExit(point, data[point.id])
+                            data[point.id] = result ~= nil and result or data[point.id]  -- ← Use consistent fallback
+                            point.args = data[point.id]  -- ← Update point.args to match data[point.id]
                             insidePoints[point.id] = nil
                         end
                         
@@ -161,20 +165,14 @@ function Point.StartLoop()
                 local pos = insidepoint.coords and vector3(insidepoint.coords.x, insidepoint.coords.y, insidepoint.coords.z) or vector3(0, 0, 0)
                 local dist = #(playerCoords - pos)
                 if dist > insidepoint.distance then
-                    print("Exited point: ", insidepoint.id)
                     insidepoint.inside = false
-                    insidepoint.onExit(insidepoint)
+                    data[insidepoint.id] = data[insidepoint.id] or insidepoint.args or {}
+                    local result = insidepoint.onExit(insidepoint, data[insidepoint.id])
+                    data[insidepoint.id] = result ~= nil and result or data[insidepoint.id]
+                    insidepoint.args = data[insidepoint.id]  -- ← Keep data in sync
                     insidePoints[insidepoint.id] = nil
                 end
             end
-            --kills the loop if no targets exist
-            --[[
-            if not targetsExist then
-                LoopStarted = false
-                break
-            end
-            --]]
-
             Wait(waitTime) -- Faster updates when moving quickly
         end
     end)
@@ -190,11 +188,11 @@ end
 ---@param _onNearby function
 ---@param data self
 ---@return table
-function Point.Register(id, target, distance, _onEnter, _onExit, _onNearby, data)
+function Point.Register(id, target, distance, args, _onEnter, _onExit, _onNearby)
     local isEntity = type(target) == "number"
     local coords = isEntity and GetEntityCoords(target) or target
 
-    local self = data or {}
+    local self = {}
     self.id = id
     self.target = target -- Store entity ID or Vector3
     self.isEntity = isEntity
@@ -204,6 +202,7 @@ function Point.Register(id, target, distance, _onEnter, _onExit, _onNearby, data
     self.onExit = _onExit or function() end
     self.onNearby = _onNearby or function() end
     self.inside = false -- Track if player is inside
+    self.args = args or {}
 
     ActivePoints[id] = self
     Point.RegisterInGrid(self)
