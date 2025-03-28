@@ -8,11 +8,11 @@ This project incorporates code from several libraries and resources licensed und
 - **Credit**: **r_bridge** inventory bridging code for codem-inventory is used in this. Targeting code still remains as is and is used.
   [\[r_bridge\]](https://github.com/rumaier/r_bridge)
 
-## clean_lib
+## dirk_lib
 - **Purpose**: Vehicle fuel, vehicle key bridging.
 - **Modifications to the code**: None.
-- **Credit**: **clean_lib** client side code is used to manage vehicle fuel and keys, bridging these systems.
-  [\[clean_lib\]](https://github.com/Clean-Server-Pack/clean_lib)
+- **Credit**: **dirk_lib** client side code is used to manage vehicle fuel and keys, bridging these systems.
+  [\[dirk_lib\]](https://github.com/DirkDigglerz/dirk_lib)
 
 ## ox_lib
 - **Purpose**: Utility functions for printing raycasting and point registering.
