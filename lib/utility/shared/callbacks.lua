@@ -42,12 +42,8 @@ RegisterNetEvent(clientToServerName, function(name, cbId, ...)
     local toAll = data.toAll and -1 or src
     
     -- Create response handler
-    local cb = function(...)
-        TriggerClientEvent(clientToServerBackToClientName, toAll, name, cbId, ...)
-    end
-    
-    -- Call the callback
-    func(src, cb, ...)
+    local packed = table.pack(func(src, ...))
+    TriggerClientEvent(clientToServerBackToClientName, toAll, name, cbId, table.unpack(packed))
 end)
 
 -- Server to client trigger function - supports both callback and direct return
@@ -79,12 +75,15 @@ function Callback.Trigger(name, src, callbackOrArg, ...)
     end
     
     -- If no callback was provided, wait for the promise and return directly
-    if not hasCallback then
-        return Citizen.Await(p)
+
+    local result = Citizen.Await(p)
+    -- If there's only one value, return it directly
+    if #result == 1 then
+        return result[1]
+    else
+        return table.unpack(result or {})
     end
-    
-    -- Otherwise, return nothing (callback will handle it)
-    return nil
+
 end
 
 -- Handle responses to server requests
@@ -93,10 +92,10 @@ RegisterNetEvent(serverToClientBackToServerName, function(name, cbId, ...)
     if not data then return end
     
     -- Process callback if provided
+
     if data.cb then
-        data.cb(...)
+        data.cb({...})
     end
-    
     -- Always resolve the promise with all args for direct returns
     data.p:resolve({...})
     cbData[cbId] = nil
@@ -188,12 +187,7 @@ RegisterNetEvent(serverToClientName, function(name, cbId, ...)
     if not func then return end
     
     -- Create response handler
-    local cb = function(...)
-        TriggerServerEvent(serverToClientBackToServerName, name, cbId, ...)
-    end
-    
-    -- Execute the callback
-    func(cb, ...)
+    TriggerServerEvent(serverToClientBackToServerName, name, cbId, func(...))
 end)
 
 exports('RegisterCallback', Callback.Register)
