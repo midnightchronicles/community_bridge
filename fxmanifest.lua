@@ -60,9 +60,9 @@ files {
     'web/dist/assets/*.css',
     'web/dist/assets/*.js',
     'locales/*.json',
-    'lib/client/*.lua',
-    'lib/shared/*.lua',
-    'lib/server/*.lua',
+    'lib/**/client/*.lua',
+    'lib/**/shared/*.lua',
+    'lib/**/server/*.lua',
     'lib/init.lua',
 }
 

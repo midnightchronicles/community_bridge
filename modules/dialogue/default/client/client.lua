@@ -59,7 +59,7 @@ function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSel
         local offsetY = math.cos(angleRad) * 1.5
 
         -- Get position in front of ped based on their heading
-        local endLocation = GetEntityCoords(entity) + vector3(offsetX, offsetY, 0.5) + offset
+        local endLocation = GetEntityCoords(entity) + vector3(offsetX * offset.x, offsetY * offset.y, 0.5)
 
         if not cam then cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1) end
         local camPos = GetCamCoord(cam)

@@ -1,7 +1,7 @@
-Scaleform = Scaleform or Require("lib/client/scaleform.lua")
-Utility = Utility or Require("lib/client/utility.lua")
-Gizmo = Gizmo or Require("lib/client/gizmo.lua")
-Raycast = Raycast or Require("lib/client/raycast.lua")
+Scaleform = Scaleform or Require("lib/scaleform/client/scaleform.lua")
+Utility = Utility or Require("lib/utility/client/utility.lua")
+Gizmo = Gizmo or Require("lib/placers/client/gizmo.lua")
+Raycast = Raycast or Require("lib/raycast/client/raycast.lua")
 
 PlaceableObject = PlaceableObject or {}
 

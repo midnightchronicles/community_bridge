@@ -1,5 +1,5 @@
 Placeable = Placeable or {}
-Utility = Utility or Require("lib/client/utility.lua")
+Utility = Utility or Require("lib/utility/client/utility.lua")
 
 local activePlacementProp = nil
 lib.locale()

@@ -2,7 +2,7 @@
 -- CREDITS
 -- Andyyy7666: https://github.com/overextended/ox_lib/pull/453
 -- AvarianKnight: https://forum.cfx.re/t/allow-drawgizmo-to-be-used-outside-of-fxdk/5091845/8?u=demi-automatic
-local dataview = Require("lib/client/dataview.lua")
+local dataview = Require("lib/placers/client/dataview.lua")
 local enableScale = false -- allow scaling mode. doesnt scale collisions and resets when physics are applied it seems
 local gizmoEnabled = false
 local currentMode = 'translate'

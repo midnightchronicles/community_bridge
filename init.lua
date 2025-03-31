@@ -107,6 +107,7 @@ Bridge.RegisterModule("Scaleform", cLib.Scaleform)
 Bridge.RegisterModule("Raycast", cLib.Raycast)
 Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
 Bridge.RegisterModule("Point", cLib.Point)
+Bridge.RegisterModule("Object", cLib.Object)
 
 
 

@@ -369,7 +369,7 @@ RegisterNetEvent("QBCore:Server:OnPlayerLoaded", function()
     TriggerEvent("community_bridge:Server:OnPlayerLoaded", src)
 end)
 
-RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function(source)
     local src = source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
