@@ -3,12 +3,12 @@ Raycast = {}
 --Rework of oxs Raycast system
 function Raycast.GetForwardVector(rotation)
     local camRot = rotation or GetFinalRenderedCamRot(2)
-    
+
     -- Convert each component to radians
     local rx = math.rad(camRot.x)
     local ry = math.rad(camRot.y)
     local rz = math.rad(camRot.z)
-    
+
     -- Calculate sin and cos for each axis
     local sx = math.sin(rx)
     local cx = math.cos(rx)
@@ -16,12 +16,12 @@ function Raycast.GetForwardVector(rotation)
     local cy = math.cos(ry)
     local sz = math.sin(rz)
     local cz = math.cos(rz)
-    
+
     -- Create forward vector components
     local x = -sz * math.abs(cx)
     local y = cz * math.abs(cx)
     local z = sx
-    
+
     return vector3(x, y, z)
 end
 
@@ -34,7 +34,7 @@ function Raycast.ToCoords(startCoords, endCoords, flag, ignore)
         retval, entity, finalCoords, normals, material = GetShapeTestResultIncludingMaterial(probe)
         timeout = timeout - 1
         Wait(0)
-    end    
+    end
     return retval, entity, finalCoords, normals, material    
 end
 

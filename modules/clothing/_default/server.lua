@@ -1,3 +1,5 @@
+--[[This module is incomplete]]--
+
 Clothing = Clothing or {}
 
 Clothing.SetAppearance = function(src, data)
@@ -11,8 +13,6 @@ end
 Clothing.ReloadSkin = function(src)
     TriggerClientEvent('community_bridge:client:ReloadSkin', src)
 end
-
-
 
 
 RegisterNetEvent('community_bridge:client:SetAppearance', function(data)
