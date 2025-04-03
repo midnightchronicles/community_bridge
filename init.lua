@@ -99,6 +99,7 @@ Bridge.RegisterModule("Weather", Weather)
 Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
 Bridge.RegisterModule("Dialogue", Dialogue)
+Bridge.RegisterModule("Accessibility", Accessibility) -- new
 
 Bridge.RegisterModule("Utility", cLib.Utility)
 Bridge.RegisterModule("Placeable", cLib.Placeable)--new
