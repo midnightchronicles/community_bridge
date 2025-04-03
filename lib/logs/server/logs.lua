@@ -3,6 +3,10 @@ Logs = Logs or {}
 local WebhookURL = ""
 local LogoForEmbed = ""
 
+---This will send a log to the configured webhook or log system.
+---@param src number
+---@param message string
+---@return nil
 Logs.Send = function(src, message)
     if not src or not message then return end
     if BridgeServerConfig.LogSystem == "builtin" then

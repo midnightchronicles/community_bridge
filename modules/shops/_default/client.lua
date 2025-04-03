@@ -7,30 +7,7 @@ RegisterNetEvent('community_bridge:openShop', function(_type, _title, shopData)
     Shops.OpenShop(_title, shopData.inventory)
 end)
 
-Shops.FinalizeCheckOut = function(shopName, item, itemLabel, price)
-    if not shopName and not item and not itemLabel and not price then return end
-    local generatedID = Ids.CreateUniqueId()
-    local buildMenu = {
-        {
-            title = locale('Shops.PayByCash')..tostring(price),
-            description = locale('Shops.AreYouSure') .. itemLabel,
-            icon = "fa-solid fa-money-bill-wave",
-            onSelect = function(_, __, ___)
-                TriggerServerEvent('community_bridge:completeCheckout', shopName, item, "cash")
-            end
-        },
-        {
-            title = locale('Shops.PayByCard')..tostring(price),
-            description = locale('Shops.AreYouSure') .. itemLabel,
-            icon = "fa-solid fa-building-column",
-            onSelect = function(_, __, ___)
-                TriggerServerEvent('community_bridge:completeCheckout', shopName, item, "bank")
-            end
-        }
-    }
-    Bridge.Menu.Open({ id = generatedID, title = locale("Shops.Confirm"), options = buildMenu }, false)
-end
-
+---This is an internal event that is used to complete a transaction and offer cash/card pay
 Shops.FinalizeCheckOut = function(shopName, item, itemLabel, price, amount)
     if not shopName and not item and not itemLabel and not price then return end
     local mathStuff = tonumber(price) * tonumber(amount)
@@ -56,6 +33,11 @@ Shops.FinalizeCheckOut = function(shopName, item, itemLabel, price, amount)
     Menu.Open({ id = generatedID, title = locale("Shops.Input"), options = buildMenu }, false)
 end
 
+---This is an internal event that is used to open the amount select menu
+---@param shopName string
+---@param item string
+---@param itemLabel string
+---@param price number
 Shops.AmountSelect = function(shopName, item, itemLabel, price)
     if not shopName and not item and not itemLabel and not price then return end
     local numberOptions = {}
@@ -71,6 +53,11 @@ Shops.AmountSelect = function(shopName, item, itemLabel, price)
     end
 end
 
+---This will open a shop with the passed title and data. It will create a menu with the items in the shopData table. The items will be clickable and will open a checkout menu.
+---This also verifies the shop exsists and was made first server side. This will not work when only used client side and the server side verifies the item exsists in the table as well as the shop id.
+---@param title any
+---@param shopData any
+---@return nil
 Shops.OpenShop = function(title, shopData)
     if not title and not shopData and not title then return print("No Title Passed") end
     local generatedID = Ids.CreateUniqueId()

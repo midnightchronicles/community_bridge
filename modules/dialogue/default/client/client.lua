@@ -1,3 +1,6 @@
+--[[This module is incomplete]]--
+
+
 local promises = {}
 local activeDialogue = nil
 local pendingCameraDestroy = false

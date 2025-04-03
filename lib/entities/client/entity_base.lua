@@ -1,4 +1,3 @@
-
 -- Objects
 Utility = Utility or Require("lib/utility/client/utility.lua")
 Ids = Ids or Require("lib/utility/shared/ids.lua")
@@ -25,7 +24,7 @@ function BaseEntity.Create(id, model, coords, rotation, meta)
 
     self.Spawn = self.Spawn or function() end
     self.Remove = self.Remove or function() end
-    
+
     return Point.Register(self.id, self.coords, 50.0, self.Spawn, self.Remove, nil, self)
 end
 

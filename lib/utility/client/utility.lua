@@ -1,20 +1,43 @@
 Utility = Utility or {}
 local blipIDs = {}
 local spawnedPeds = {}
-local ActivePoints = {}
 
+---commentThis will create a prop with the passed model string at the coords and heading specified optionally networked or not.
+---@param model string | number
+---@param coords table
+---@param heading number
+---@param networked boolean
+---@return number | nil
 Utility.CreateProp = function(model, coords, heading, networked)
     Utility.LoadModel(model)
-    if not HasModelLoaded(model) then return Prints.Error("Model Has Not Loaded") end
+    if not HasModelLoaded(model) then return nil, Prints.Error("Model Has Not Loaded") end
     local propEntity = CreateObject(model, coords.x, coords.y, coords.z, networked, false, false)
     SetEntityHeading(propEntity, heading)
     SetModelAsNoLongerNeeded(model)
     return propEntity
 end
 
+---This will get the street name and crossing name at the specified coordinates.
+---@param coords table
+---@return string
+---@return string
+Utility.GetStreetNameAtCoords = function(coords)
+    local streetHash, crossingHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+    local streetName = GetStreetNameFromHashKey(streetHash)
+    local crossingName = GetStreetNameFromHashKey(crossingHash)
+    return streetName, crossingName
+end
+
+---This will create a vehicle with the passed model string at the coords and heading specified.
+---@param model string
+---@param coords table
+---@param heading number
+---@param networked boolean
+---@return number| nil
+---@return table
 Utility.CreateVehicle = function(model, coords, heading, networked)
     Utility.LoadModel(model)
-    if not HasModelLoaded(model) then return Prints.Error("Model Has Not Loaded") end
+    if not HasModelLoaded(model) then return nil, {}, Prints.Error("Model Has Not Loaded") end
     local vehicle = CreateVehicle(model, coords.x, coords.y, coords.z, heading, networked, false)
     SetVehicleHasBeenOwnedByPlayer(vehicle, true)
     SetVehicleNeedsToBeHotwired(vehicle, false)
@@ -23,15 +46,24 @@ Utility.CreateVehicle = function(model, coords, heading, networked)
     return vehicle, { networkid = NetworkGetNetworkIdFromEntity(vehicle) or 0, coords = GetEntityCoords(vehicle), heading = GetEntityHeading(vehicle), }
 end
 
+---This will create a ped with the passed model string at the coords and heading specified.
+---@param model string
+---@param coords table
+---@param heading number
+---@param networked boolean
+---@return number| nil
 Utility.CreatePed = function(model, coords, heading, networked, settings)
     Utility.LoadModel(model)
-    if not HasModelLoaded(model) then return Prints.Error("Model Has Not Loaded") end
+    if not HasModelLoaded(model) then return nil, Prints.Error("Model Has Not Loaded") end
     local spawnedEntity = CreatePed(0, model, coords.x, coords.y, coords.z, heading, networked, false)
     SetModelAsNoLongerNeeded(model)
     table.insert(spawnedPeds, spawnedEntity)
     return spawnedEntity
 end
 
+---This will display a busy spinner with the passed text.
+---@param text string
+---@return boolean
 Utility.StartBusySpinner = function(text)
     AddTextEntry(text, text)
     BeginTextCommandBusyString(text)
@@ -40,6 +72,8 @@ Utility.StartBusySpinner = function(text)
     return true
 end
 
+---This will stop a busy spinner if one is currently active.
+---@return boolean
 Utility.StopBusySpinner = function()
     if BusyspinnerIsOn() then
         BusyspinnerOff()
@@ -48,6 +82,15 @@ Utility.StopBusySpinner = function()
     return false
 end
 
+---comment Creates a blip at the specified coordinates with the specified parameters. If sprite/color/scale/label are not provided, default values will be used.
+---@param coords table
+---@param sprite number
+---@param color number
+---@param scale number
+---@param label string
+---@param shortRange boolean
+---@param displayType number
+---@return integer
 Utility.CreateBlip = function(coords, sprite, color, scale, label, shortRange, displayType)
     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
     SetBlipSprite(blip, sprite or 8)
@@ -62,6 +105,9 @@ Utility.CreateBlip = function(coords, sprite, color, scale, label, shortRange, d
     return blip
 end
 
+---This will remove a blip if it exists in the blipIDs table.
+---@param blip number
+---@return boolean
 Utility.RemoveBlip = function(blip)
     local success = false
     for i, storedBlip in ipairs(blipIDs) do
@@ -75,6 +121,9 @@ Utility.RemoveBlip = function(blip)
     return success
 end
 
+---Loads a model into memory. If the model is not valid or not in the game files, it will return false.
+---@param model string | number
+---@return boolean
 Utility.LoadModel = function(model)
     if type(model) ~= 'number' then model = joaat(model) end
     if not IsModelValid(model) and not IsModelInCdimage(model) then return false end
@@ -87,6 +136,9 @@ Utility.LoadModel = function(model)
     return HasModelLoaded(model)
 end
 
+---This function will request an animation dictionary and wait until it is loaded. If the dictionary is not valid, it will return false.
+---@param dict string
+---@return boolean
 Utility.RequestAnimDict = function(dict)
     RequestAnimDict(dict)
     local count = 0
@@ -97,6 +149,9 @@ Utility.RequestAnimDict = function(dict)
     return HasAnimDictLoaded(dict)
 end
 
+---This will remove a ped if it exists in the spawnedPeds table. It will also delete the entity if it exists.
+---@param entity number
+---@return boolean
 Utility.RemovePed = function(entity)
     local success = false
     if DoesEntityExist(entity) then
@@ -112,6 +167,10 @@ Utility.RemovePed = function(entity)
     return success
 end
 
+---This will use a native text input menu to allow the user to enter text. It will return the entered text or false if cancelled.
+---@param text string
+---@param length number
+---@return string
 Utility.NativeInputMenu = function(text, length)
     local maxLength = Math.Clamp(length, 1, 50)
     local menutText = text or 'enter text'
@@ -128,6 +187,9 @@ Utility.NativeInputMenu = function(text, length)
     return false
 end
 
+---This will get the current skin data of the entity passed. It will return a table with the clothing and props data.
+---@param entity number
+---@return table
 Utility.GetEntitySkinData = function(entity)
     local skinData = {}
     for i = 0, 11 do
@@ -139,6 +201,10 @@ Utility.GetEntitySkinData = function(entity)
     return skinData
 end
 
+---This will set the skin data of the entity passed. It will set the clothing and props data from the skinData table.
+---@param entity number
+---@param skinData table
+---@return boolean
 Utility.SetEntitySkinData = function(entity, skinData)
     for i = 0, 11 do
         SetPedComponentVariation(entity, i, skinData.clothing[i][1], skinData.clothing[i][2], 0)
@@ -149,6 +215,8 @@ Utility.SetEntitySkinData = function(entity, skinData)
     return true
 end
 
+---This will reload the skin data of the entity passed. It will set the clothing and props data from the skinData table and delete any attached objects.
+---@return boolean
 Utility.ReloadSkin = function()
     local skinData = Utility.GetEntitySkinData(cache.ped)
     Utility.SetEntitySkinData(cache.ped, skinData)
@@ -162,18 +230,27 @@ Utility.ReloadSkin = function()
     return true
 end
 
+---This will display a native help text on the screen. It will add a text entry and display it for the specified duration.
+---@param text string
+---@param duration number
 Utility.HelpText = function(text, duration)
     AddTextEntry(text, text)
     BeginTextCommandDisplayHelp(text)
     EndTextCommandDisplayHelp(0, false, true, duration or 5000)
 end
 
+---This will display a native help text on the screen. It will add a text entry and display it for the specified duration.
+---@param text string
 Utility.NotifyText = function(text)
     AddTextEntry(text, text)
     SetNotificationTextEntry(text)
     DrawNotification(false, true)
 end
 
+---This will teleport a player to the specified coordinates. If a condition function is passed it will verify that condition is met and then it will fade the screen out and in, freeze the player during the teleport to allow for collisions to load, and call the afterTeleportFunction if provided.
+---@param coords table
+---@param conditionFunction function | optional
+---@param afterTeleportFunction function | optional
 Utility.TeleportPlayer = function(coords, conditionFunction, afterTeleportFunction)
     if conditionFunction ~= nil then
         if not conditionFunction() then
@@ -200,11 +277,21 @@ Utility.TeleportPlayer = function(coords, conditionFunction, afterTeleportFuncti
     end
 end
 
+---This will get a model hash from a string or number.
+---@param model string | number
+---@return number
 Utility.GetEntityHashFromModel = function(model)
     if type(model) ~= 'number' then model = joaat(model) end
     return model
 end
 
+---commentThis will get the closest player, the distance to that player from the coords and the server ID of that player.
+---@param coords table
+---@param distanceScope number
+---@param includeMe boolean
+---@return integer
+---@return integer
+---@return integer
 Utility.GetClosestPlayer = function(coords, distanceScope, includeMe)
     local players = GetActivePlayers()
     local closestPlayer = 0
@@ -227,7 +314,7 @@ Utility.GetClosestPlayer = function(coords, distanceScope, includeMe)
     return closestPlayer, closestDistance, GetPlayerServerId(closestPlayer)
 end
 
----This function is used to register a point on the map, functions are fired when in the distance/exiting the area
+---This function is is deprecated and will be removed in the future. Please use Pont.Register instead.
 ---@param pointID string
 ---@param pointCoords table
 ---@param pointDistance number
@@ -235,41 +322,26 @@ end
 ---@param _onExit function
 ---@param _nearby function
 Utility.RegisterPoint = function(pointID, pointCoords, pointDistance, _onEnter, _onExit, _nearby)
-    ActivePoints[pointID] = lib.points.new({
-        coords = pointCoords,
-        distance = pointDistance,
-        onEnter = function(self)
-            _onEnter(self)
-        end,
-        onExit = function(self)
-            _onExit(self)
-        end,
-        nearby = function(self)
-            if _nearby then
-                _nearby(self)
-            end
-        end
-    })
+    return Point.Register(pointID, pointCoords, pointDistance, nil, _onEnter, _onExit, _nearby)
 end
 
--- Function to retrieve the zone by the pointID
+---This function is is deprecated and will be removed in the future. Please use Point.Get instead.
 ---@param pointID string
 Utility.GetPointById = function(pointID)
-    return ActivePoints[pointID]
+    return Point.Get(pointID)
 end
 
+---This function is is deprecated and will be removed in the future. Please use Point.GetAll instead.
 ---@return table | nil
 Utility.GetActivePoints = function()
-    return ActivePoints
+    return Point.GetAll()
 end
----Pass the point ID to remove the point from the map
+
+---This function is is deprecated and will be removed in the future. Please use Point.Remove instead.
 ---@param pointID string
----@return boolean
+---@return nil
 Utility.RemovePoint = function(pointID)
-    if not ActivePoints[pointID] then return false end
-    ActivePoints[pointID]:remove()
-    ActivePoints[pointID] = nil
-    return true
+    return Point.Remove(pointID)
 end
 
 AddEventHandler('onResourceStop', function(resource)

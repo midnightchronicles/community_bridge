@@ -2,7 +2,7 @@ Notify = Notify or {}
 local notifyType = BridgeClientConfig.NotifySystem
 local helptextType = BridgeClientConfig.ShowHelpText
 
----comment
+---This will send a notify message of the type and time passed
 ---@param message string
 ---@param _type string
 ---@param time number
@@ -34,7 +34,7 @@ Notify.SendNotify = function(message, _type, time)
     end
 end
 
----comment
+---This will show a help text message at the screen position passed
 ---@param message string
 ---@param _position string
 ---@return nil
@@ -61,6 +61,8 @@ Notify.ShowHelpText = function(message, _position)
     end
 end
 
+---This will hide the help text message on the screen
+---@return nil
 Notify.HideHelpText = function()
     if helptextType == 'ox' then
         return exports.ox_lib:hideTextUI()

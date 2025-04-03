@@ -2,7 +2,9 @@ ItemsBuilder = ItemsBuilder or {}
 
 ItemsBuilder = {}
 
-
+---This will generate the items in the formats of qb_core, qb_core_old and ox_inventory. It will then build a lua file in the generateditems folder of the community_bridge.
+---@param invoking string
+---@param itemsTable table
 ItemsBuilder.Generate = function(invoking, itemsTable)
     if not invoking or not itemsTable then return end
 

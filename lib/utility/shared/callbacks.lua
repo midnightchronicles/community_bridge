@@ -40,7 +40,7 @@ RegisterNetEvent(clientToServerName, function(name, cbId, ...)
     local func = data.callback
     if not func then return end
     local toAll = data.toAll and -1 or src
-    
+
     -- Create response handler
     local packed = table.pack(func(src, ...))
     TriggerClientEvent(clientToServerBackToClientName, toAll, name, cbId, table.unpack(packed))
@@ -49,22 +49,22 @@ end)
 -- Server to client trigger function - supports both callback and direct return
 function Callback.Trigger(name, src, callbackOrArg, ...)
     if src == nil then src = -1 end
-    
+
     -- Determine if the third parameter is a callback function or an argument
     local hasCallback = type(callbackOrArg) == 'function' or (type(callbackOrArg) == 'table' and rawget(callbackOrArg, '__cfx_functionReference'))
     local callback = hasCallback and callbackOrArg or nil
     -- Adjust args based on whether the callback is present
     local args = hasCallback and {...} or {callbackOrArg, ...}
-    
+
     local cbId = name .. '_' .. math.random(1000000, 9999999)
     local p = promise.new()
-    
+
     -- Store promise data
-    cbData[cbId] = { 
-        cb = callback, 
-        p = p 
+    cbData[cbId] = {
+        cb = callback,
+        p = p
     }
-    
+
     -- Trigger for single player or multiple players
     if type(src) == 'table' then
         for i, d in pairs(src) do
@@ -73,7 +73,7 @@ function Callback.Trigger(name, src, callbackOrArg, ...)
     else
         TriggerClientEvent(serverToClientName, tonumber(src), name, cbId, table.unpack(args))
     end
-    
+
     -- If no callback was provided, wait for the promise and return directly
 
     local result = Citizen.Await(p)
@@ -90,7 +90,7 @@ end
 RegisterNetEvent(serverToClientBackToServerName, function(name, cbId, ...)
     local data = cbData[cbId]
     if not data then return end
-    
+
     -- Process callback if provided
 
     if data.cb then
@@ -129,19 +129,19 @@ function Callback.Trigger(name, callbackOrArg, ...)
     local callback = hasCallback and callbackOrArg or nil
     -- Adjust args based on whether the callback is present
     local args = hasCallback and {...} or {callbackOrArg, ...}
-    
+
     local cbId = name .. '_' .. math.random(1000000, 9999999)
     local p = promise.new()
-    
+
     -- Store promise data
     cbData[cbId] = {
         cb = callback,
         p = p
     }
-    
+
     -- Trigger the server event
     TriggerServerEvent(clientToServerName, name, cbId, table.unpack(args))
-    
+
     -- If no callback was provided, wait for the promise and return directly
     if not hasCallback then
         local result = Citizen.Await(p)
@@ -152,7 +152,7 @@ function Callback.Trigger(name, callbackOrArg, ...)
             return table.unpack(result)
         end
     end
-    
+
     -- Otherwise, return nothing (callback will handle it)
     return nil
 end
@@ -164,16 +164,16 @@ RegisterNetEvent(clientToServerBackToClientName, function(name, cbId, ...)
     if clientRebound then
         clientRebound(...)
     end
-    
+
     -- Handle the specific callback instance
     local data = cbData[cbId]
     if not data then return end
-    
+
     -- Process callback if provided
     if data.cb then
         data.cb(...)
     end
-    
+
     -- Always resolve the promise with all args for direct returns
     data.p:resolve({...})
     cbData[cbId] = nil
@@ -185,7 +185,7 @@ RegisterNetEvent(serverToClientName, function(name, cbId, ...)
     if not data then return end
     local func = data.callback
     if not func then return end
-    
+
     -- Create response handler
     TriggerServerEvent(serverToClientBackToServerName, name, cbId, func(...))
 end)

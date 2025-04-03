@@ -1,3 +1,5 @@
+--[[This module is incomplete]]--
+
 Clothing = Clothing or {}
 
 ClothingBackup = {}
