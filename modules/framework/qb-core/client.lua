@@ -79,6 +79,20 @@ Framework.HasItem = function(item)
 	return QBCore.Functions.HasItem(item)
 end
 
+---comment
+---@param item string
+---@return number
+Framework.GetItemCount = function(item)
+    local frameworkInv = QBCore.Functions.GetPlayerData().items
+    local count = 0
+    for _, v in pairs(frameworkInv) do
+        if v.name == item then
+            count = count + v.amount
+        end
+    end
+    return count
+end
+
 Framework.GetPlayerInventory = function()
     local items = {}
     local frameworkInv = QBCore.Functions.GetPlayerData().items

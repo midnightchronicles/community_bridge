@@ -14,6 +14,10 @@ Inventory.HasItem = function(item)
     return Framework.HasItem(item)
 end
 
+Inventory.GetItemCount = function(item)
+    return Framework.GetItemCount(item)
+end
+
 ---comment
 ---@param item string
 ---@return string
