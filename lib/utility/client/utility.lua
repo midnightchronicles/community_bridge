@@ -239,6 +239,26 @@ Utility.HelpText = function(text, duration)
     EndTextCommandDisplayHelp(0, false, true, duration or 5000)
 end
 
+---This will display 3D help text at the specified coordinates.
+---@param coords table
+---@param text string
+---@param scale number
+Utility.Draw3DHelpText = function(coords, text, scale)
+    local onScreen, x, y = GetScreenCoordFromWorldCoord(coords.x, coords.y, coords.z)
+    if onScreen then
+        SetTextScale(scale or 0.35, scale or 0.35)
+        SetTextFont(4)
+        SetTextProportional(1)
+        SetTextColour(255, 255, 255, 215)
+        SetTextEntry("STRING")
+        SetTextCentre(1)
+        AddTextComponentString(text)
+        DrawText(x, y)
+        local factor = (string.len(text)) / 370
+        DrawRect(x, y + 0.0125, 0.015 + factor, 0.03, 41, 11, 41, 100)
+    end
+end
+
 ---This will display a native help text on the screen. It will add a text entry and display it for the specified duration.
 ---@param text string
 Utility.NotifyText = function(text)
