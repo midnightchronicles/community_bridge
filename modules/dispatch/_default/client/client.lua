@@ -1,5 +1,8 @@
 Dispatch = Dispatch or {}
 
+---This will send an alert to currently supported dispatch systems.
+---@param data table The data to send to the dispatch system.
+---@return nil
 Dispatch.SendAlert = function(data)
     TriggerServerEvent('community_bridge:Server:DispatchAlert', {
         sprite = data.blipData.sprite or 161,
