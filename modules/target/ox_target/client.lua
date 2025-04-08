@@ -17,6 +17,9 @@ local targetZones = {}
 
 Target = Target or {}
 
+---This is an internal function that is used to fix the options passed to fit alternative target systems, for example qb-ox or ox-qb etc.
+---@param options table
+---@return table
 Target.FixOptions = function(options)
     for k, v in pairs(options) do
         local action = v.onSelect or v.action
@@ -31,29 +34,34 @@ Target.FixOptions = function(options)
     return options
 end
 
----comment
+---This will add target options to players.
 ---@param options table
----@return nil
 Target.AddGlobalPlayer = function(options)
     options = Target.FixOptions(options)
     ox_target:addGlobalPlayer(options)
 end
 
+---This will remove target options from all players.
+Target.RemoveGlobalPlayer = function()
+---@diagnostic disable-next-line: missing-parameter
+    ox_target:removeGlobalPlayer()
+end
+
+---This will toggle the targeting system on or off. This is useful for when you want to disable the targeting system for a specific player entirely.
+---@param bool boolean
 Target.DisableTargeting = function(bool)
     ox_target:disableTargeting(bool)
 end
 
----comment
+---This will add taget options to all vehicles.
 ---@param options table
----@return nil
 Target.AddGlobalVehicle = function(options)
     options = Target.FixOptions(options)
     ox_target:addGlobalVehicle(options)
 end
 
----comment
+---This will remove target options from all vehicles. 
 ---@param options table
----@return nil
 Target.RemoveGlobalVehicle = function(options)
     local assembledLables = {}
     for k, v in pairs(options) do
@@ -62,31 +70,40 @@ Target.RemoveGlobalVehicle = function(options)
     ox_target:removeGlobalVehicle(assembledLables)
 end
 
----comment
----@param entities table
+---This will generate targets on non networked entites with the passed options.
+---@param entities number | table
 ---@param options table
----@return nil
 Target.AddLocalEntity = function(entities, options)
     options = Target.FixOptions(options)
     ox_target:addLocalEntity(entities, options)
 end
 
----comment
----@param models table
+---This will remove the target options from a local entity. This is useful for when you want to remove target options from a specific entity.
+---@param entity any
+Target.RemoveLocalEntity = function(entity)
+    ox_target:removeLocalEntity(entity)
+end
+
+---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
+---@param models number | table
 ---@param options table
----@return nil
 Target.AddModel = function(models, options)
     options = Target.FixOptions(options)
     ox_target:addModel(models, options)
 end
 
----comment
+---This will remove target options from all specified models.
+---@param model number
+Target.RemoveModel = function(model)
+    ox_target:removeModel(model)
+end
+
+---This will add a box zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
 ---@param coords table
 ---@param size table
 ---@param heading number
 ---@param options table
----@return number
 Target.AddBoxZone = function(name, coords, size, heading, options)
     options = Target.FixOptions(options)
     local target = ox_target:addBoxZone({
@@ -100,13 +117,11 @@ Target.AddBoxZone = function(name, coords, size, heading, options)
     return target
 end
 
----comment
+---This will add a circle zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
----@param coords vector3
+---@param coords table
 ---@param radius number
----@param heading number -- unused, but kept for compatibility
 ---@param options table
----@return number
 Target.AddSphereZone = function(name, coords, radius, heading, options)
     options = Target.FixOptions(options)
     local target = ox_target:addSphereZone({
@@ -120,28 +135,10 @@ Target.AddSphereZone = function(name, coords, radius, heading, options)
     return target
 end
 
-Target.RemoveGlobalPlayer = function()
-    ox_target:removeGlobalPlayer()
-end
-
----comment
----@param entity number
----@return nil
-Target.RemoveLocalEntity = function(entity)
-    ox_target:removeLocalEntity(entity)
-end
-
----comment
----@param model string
----@return nil
-Target.RemoveModel = function(model)
-    ox_target:removeModel(model)
-end
-
----comment
+---This will remove target options from a specific zone.
 ---@param name string
----@return nil
 Target.RemoveZone = function(name)
+    if not name then return end
     for _, data in pairs(targetZones) do
         if data.name == name then
             ox_target:removeZone(data.id)
@@ -152,12 +149,11 @@ Target.RemoveZone = function(name)
 end
 
 AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() then
-        for _, target in pairs(targetZones) do
-            if target.creator == resource then
-                ox_target:removeZone(target.id)
-            end
+    if resource ~= GetCurrentResourceName() then return end
+    for _, target in pairs(targetZones) do
+        if target.creator == resource then
+            ox_target:removeZone(target.id)
         end
-        targetZones = {}
     end
+    targetZones = {}
 end)
