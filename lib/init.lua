@@ -67,6 +67,7 @@ cLib.Utility = Utility or Require("lib/utility/client/utility.lua")
 cLib.PlaceableObject = PlaceableObject or Require("lib/placers/client/placeable_object.lua")
 cLib.Raycast = Raycast or Require("lib/raycast/client/raycast.lua")
 cLib.Point = Point or Require("lib/points/client/points.lua")
+cLib.Particle = Particle or Require("lib/particles/client/particles.lua")
 cLib.Object = Object or Require("lib/entities/client/entity_object.lua")
 
 return cLib

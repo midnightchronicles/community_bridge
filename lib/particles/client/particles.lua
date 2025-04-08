@@ -1,61 +1,53 @@
-function CreateParticleFX(dict, ptfx, pos, rot, scale, color, looped, loopLength)
-    CreateThread(function()
-        local failed = 5
-        while not HasNamedPtfxAssetLoaded(dict) and failed >= 0 do
-            RequestNamedPtfxAsset(ptfx)
-            failed = failed - 1
-            Wait(0)
-        end
+Particle = {}
+Particles = {}
 
-        UseParticleFxAssetNextCall(dict)
-        SetParticleFxNonLoopedColour(color.x, color.y, color.z)
-        if looped then
-            StartParticleFxLoopedAtCoord(ptfx, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, false, false, false, false)
-            Wait(loopLength)
-            RemoveParticleFxInRange(pos.x, pos.y, pos.z, 0.01)
-        else
-            StartParticleFxNonLoopedAtCoord(ptfx, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, false, false, false, false)
-        end
-        RemoveNamedPtfxAsset(ptfx)
-    end)
+
+--- Load a particle dictionary. This function will block until the dictionary is loaded.
+--- @param dict string -- The name of the particle dictionary to load.
+--- @return boolean -- Returns true if the dictionary was loaded successfully, false otherwise.
+--- @throws string -- Throws an error if the dictionary fails to load after 100 attempts.
+function Particle.LoadDict(dict)
+    RequestNamedPtfxAsset(dict)
+    local failed = 100
+    while not HasNamedPtfxAssetLoaded(dict) and failed >= 0 do
+        failed = failed - 1
+        Wait(50)
+    end
+    assert(failed >= 0, "Failed to load particle dictionary: " .. dict)
+    return true
 end
 
-function CreateParticleFXOnEntityBone(dict, ptfx, entity, bone,  offset, rot, scale, color, looped, loopLength)
-    local failed = 5
-    while not HasNamedPtfxAssetLoaded(dict) and failed >= 0 do
-        RequestNamedPtfxAsset(ptfx)
-        failed = failed - 1
-        Wait(0)
-    end
-
+--- Create a particle effect at the specified position and rotation.
+--- @param dict string
+--- @param ptfx string
+--- @param pos vector3
+--- @param rot vector3
+--- @param scale number
+--- @param color vector3
+--- @param looped boolean
+--- @param loopLength number|nil
+--- @return number|nil ptfxHandle -- The handle of the particle effect, or nil if it failed to create.
+function Particle.Create(dict, ptfx, pos, rot, scale, color, looped, loopLength)
+    if not Particle.LoadDict(dict) then return end
     UseParticleFxAssetNextCall(dict)
-    SetParticleFxNonLoopedColour(color.x, color.y, color.z)
-    local bleh = nil
+    local handle = nil
     if looped then
-        bleh = StartNetworkedParticleFxLoopedOnEntityBone(ptfx, entity, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, bone, scale, false, false, false)
+        handle = StartParticleFxLoopedAtCoord(ptfx, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, false, false, false, false)
+        SetParticleFxLoopedColour(handle, color.x, color.y, color.z, false)
         if loopLength then
             Wait(loopLength)
-            RemoveParticleFxFromEntity(entity)
+            StopParticleFxLooped(handle, 0)
+            RemoveParticleFx(handle, false)
         end
     else
-        bleh = StartNetworkedParticleFxNonLoopedOnEntityBone(ptfx, entity, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, bone, scale, false, false, false)
+        SetParticleFxNonLoopedColour(color.x, color.y, color.z)
+        handle = StartParticleFxNonLoopedAtCoord(ptfx, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, false, false, false)
+        RemoveParticleFx(handle, false)
     end
-    RemoveNamedPtfxAsset(ptfx)
-    return bleh
+    return handle
 end
 
-function PlayParticleFX(dict, name, looped, x, y, z, rotX, rotY, rotZ, scale)
-    RequestNamedPtfxAsset(dict)
-    while not HasNamedPtfxAssetLoaded(dict) do
-        Wait(0)
-    end
-    SetPtfxAssetNextCall(dict)
-    UseParticleFxAssetNextCall(dict)
-    local particle = nil
-    if looped then
-        particle = StartParticleFxLoopedAtCoord(name, x, y, z , rotX, rotY, rotZ, scale)
-    else
-        particle = StartParticleFxNonLoopedAtCoord(name, x, y, z, rotX, rotY, rotZ, scale, false, false, false)
-    end
-    return particle
-end
+-- need to add looping effects (regarless of if its a looped particle or not)
+
+
+return Particle
