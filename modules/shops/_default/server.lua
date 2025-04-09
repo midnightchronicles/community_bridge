@@ -2,20 +2,37 @@ Shops = Shops or {}
 
 local registeredShops = {}
 
+---commentThis can open a shop for the client
+---@param src number
+---@param shopTitle string
+---@return boolean
 Shops.OpenShop = function(src, shopTitle)
     if not shopTitle and not registeredShops[shopTitle] then return false end
     TriggerClientEvent('community_bridge:openShop', src, 'shop', shopTitle, registeredShops[shopTitle])
+    return true
 end
 
+---This will create a shop to use on the client side, shops must be registered server side and exsist in the shop inventory table to allow any purchases passed.
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
+---@return boolean
 Shops.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
-    if not shopTitle and not shopInventory and not shopCoords then return end
+    if not shopTitle and not shopInventory and not shopCoords then return false end
     if registeredShops[shopTitle] then return true end
     registeredShops[shopTitle] = {name = shopTitle, inventory = shopInventory, shopCoords = shopCoords, groups = shopGroups}
     return true
 end
 
+---This is an internal event to complete a shop transaction, it will verify pass items and amounts are registered to the created shop.
+---@param src number
+---@param shopName string
+---@param item string
+---@param amount number
+---@param paymentType string
+---@return nil
 Shops.CompleteCheckout = function(src, shopName, item, amount, paymentType)
-
     if not src and not shopName and not item and not amount and not paymentType then return end
     local ilocale = Language.Locale
     local shopData = registeredShops[shopName]

@@ -79,6 +79,7 @@ if not IsDuplicityVersion() then goto client end
 
 Bridge.RegisterModule("SQL", cLib.SQL)
 Bridge.RegisterModule("Logs", cLib.Logs)
+Bridge.RegisterModule("ItemsBuilder", cLib.ItemsBuilder)
 Bridge.RegisterModule("LootTables", cLib.LootTables)
 Bridge.RegisterModule("Version", Version)
 
@@ -98,6 +99,7 @@ Bridge.RegisterModule("Weather", Weather)
 Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
 Bridge.RegisterModule("Dialogue", Dialogue)
+Bridge.RegisterModule("Accessibility", Accessibility) -- new
 
 Bridge.RegisterModule("Utility", cLib.Utility)
 Bridge.RegisterModule("Placeable", cLib.Placeable)--new
@@ -105,6 +107,8 @@ Bridge.RegisterModule("Gizmo", cLib.Gizmo)
 Bridge.RegisterModule("Scaleform", cLib.Scaleform)
 Bridge.RegisterModule("Raycast", cLib.Raycast)
 Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
+Bridge.RegisterModule("Point", cLib.Point)
+Bridge.RegisterModule("Object", cLib.Object)
 
 
 

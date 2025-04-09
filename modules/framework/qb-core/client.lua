@@ -5,6 +5,8 @@ QBCore = exports['qb-core']:GetCoreObject()
 
 Framework = {}
 
+---This will get the name of the framework being used (if a supported framework).
+---@return string
 Framework.GetFrameworkName = function()
     return 'qb-core'
 end
@@ -13,12 +15,31 @@ Framework.GetPlayerData = function()
     return QBCore.Functions.GetPlayerData()
 end
 
+---This will return a table of all the jobs in the framework.
+---@return table
+Framework.GetFrameworkJobs = function()
+    local jobs = {}
+    for k, v in pairs(QBCore.Shared.Jobs) do
+        table.insert(jobs, {
+            name = k,
+            label = v.label,
+            grade = v.grades
+        })
+    end
+    return jobs
+end
+
+---This will get the players birth date
+---@return string
 Framework.GetPlayerDob = function()
     local player = QBCore.Functions.GetPlayerData()
     local playerData = player.PlayerData
     return playerData.charinfo.birthdate
 end
 
+---This will return the players metadata for the specified metadata key.
+---@param metadata table | string
+---@return table | string | number | boolean
 Framework.GetPlayerMetaData = function(metadata)
     return QBCore.Functions.GetPlayerData().metadata[metadata]
 end
@@ -49,15 +70,25 @@ Framework.GetItemInfo = function(item)
     return repackedTable
 end
 
+---This will get the players identifier (citizenid) etc.
+---@return string
 Framework.GetPlayerIdentifier = function()
     return QBCore.Functions.GetPlayerData().citizenid
 end
 
+---This will get the players name (first and last).
+---@return string
+---@return string
 Framework.GetPlayerName = function()
     local playerData = QBCore.Functions.GetPlayerData()
     return playerData.charinfo.firstname, playerData.charinfo.lastname
 end
 
+---This will return the players job name, job label, job grade name and job grade level.
+---@return string
+---@return string
+---@return string
+---@return string
 Framework.GetPlayerJob = function()
     local playerData = QBCore.Functions.GetPlayerData()
     return playerData.job.name, playerData.job.label, playerData.job.grade.name, playerData.job.grade.level
@@ -65,6 +96,20 @@ end
 
 Framework.HasItem = function(item)
 	return QBCore.Functions.HasItem(item)
+end
+
+---comment
+---@param item string
+---@return number
+Framework.GetItemCount = function(item)
+    local frameworkInv = QBCore.Functions.GetPlayerData().items
+    local count = 0
+    for _, v in pairs(frameworkInv) do
+        if v.name == item then
+            count = count + v.amount
+        end
+    end
+    return count
 end
 
 Framework.GetPlayerInventory = function()
@@ -85,6 +130,8 @@ Framework.GetPlayerInventory = function()
     return items
 end
 
+---This will get a players dead status.
+---@return boolean
 Framework.GetIsPlayerDead = function()
     local playerData = QBCore.Functions.GetPlayerData()
     return playerData.metadata["isdead"] or playerData.metadata["inlaststand"]

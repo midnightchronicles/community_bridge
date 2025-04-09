@@ -15,6 +15,10 @@ Framework.GetPlayerDob = function(src)
     return playerData.charinfo.birthdate
 end
 
+Framework.GetFrameworkJobs = function()
+    return QBox.GetJobs()
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
@@ -296,6 +300,11 @@ Framework.GetOwnedVehicles = function(src)
     end
     return vehicles
 end
+
+RegisterNetEvent("QBCore:Server:OnPlayerLoaded", function()
+    local src = source
+    TriggerEvent("community_bridge:Server:OnPlayerLoaded", src)
+end)
 
 RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
     local src = source

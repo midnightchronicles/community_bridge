@@ -14,6 +14,11 @@ Framework.GetPlayerData = function()
     return ESX.PlayerData
 end
 
+Framework.GetFrameworkJobs = function()
+    local jobs = lib.callback.await('community_bridge:Callback:GetFrameworkJobs', false)
+    return jobs
+end
+
 ---comment
 ---@return string
 Framework.GetPlayerDob = function()
@@ -73,6 +78,15 @@ end
 Framework.GetPlayerInventory = function()
     local playerData = ESX.GetPlayerData()
     return playerData.inventory
+end
+
+---comment
+---@param item string
+---@return number
+Framework.GetItemCount = function(item)
+    local inventory = Framework.GetPlayerInventory()
+    if not inventory then return 0 end
+    return inventory[item].count or 0
 end
 
 ---comment
