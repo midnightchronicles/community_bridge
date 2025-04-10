@@ -26,3 +26,17 @@ Inventory.GetImagePath = function(item)
     local imagePath = file and string.format("nui://ps-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
+
+Inventory.GetItemInfo = function(item)
+    local itemData = Framework.Shared.Items[item]
+    if not itemData then return {} end
+    local repackedTable = {
+        name = itemData.name,
+        label = itemData.label,
+        stack = itemData.unique,
+        weight = itemData.weight,
+        description = itemData.description,
+        image = Inventory.GetImagePath(itemData.name)
+    }
+    return repackedTable
+end
