@@ -18,6 +18,7 @@ function OxToQBMenu(id, menu)
             header = v.title,
             txt = v.description,
             icon = v.icon,
+            disabled = v.disabled,
         }
 
         if v.onSelect then

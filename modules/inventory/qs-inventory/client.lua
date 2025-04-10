@@ -45,6 +45,14 @@ Inventory.GetImagePath = function(item)
 end
 
 ---comment
+---@param item string
+---@return number
+Inventory.GetItemCount = function(item)
+    local searchItem = quasar:Search(item)
+    return searchItem or 0
+end
+
+---comment
 ---@return table
 Inventory.GetPlayerInventory = function()
     local items = {}

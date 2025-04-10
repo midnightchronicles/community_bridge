@@ -32,6 +32,7 @@ end
 
 -- Framework.GetPlayerName(src)
 -- Returns the first and last name of the player.
+---@return string, string
 Framework.GetPlayerName = function(src)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -39,6 +40,8 @@ Framework.GetPlayerName = function(src)
     return playerData.charinfo.firstname, playerData.charinfo.lastname
 end
 
+---This will get the players birth date
+---@return string
 Framework.GetPlayerDob = function(src)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -138,6 +141,7 @@ end
 
 -- Framework.SetMetadata(src, metadata, value)
 -- Adds the specified metadata key and number value to the player's data.
+---@return boolean | nil
 Framework.SetPlayerMetadata = function(src, metadata, value)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -156,6 +160,7 @@ end
 
 -- Framework.AddStress(src, value)
 -- Adds the specified value to the player's stress level and updates the client HUD.
+---@return number | nil
 Framework.AddStress = function(src, value)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -168,6 +173,7 @@ end
 
 -- Framework.RemoveStress(src, value)
 -- Removes the specified value from the player's stress level and updates the client HUD.
+---@return number | nil
 Framework.RemoveStress = function(src, value)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -180,6 +186,7 @@ end
 
 -- Framework.AddHunger(src, value)
 -- Adds the specified value from the player's hunger level.
+---@return number | nil
 Framework.AddHunger = function(src, value)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -192,6 +199,7 @@ end
 
 -- Framework.AddThirst(src, value)
 -- Adds the specified value from the player's thirst level.
+---@return number | nil
 Framework.AddThirst = function(src, value)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -202,6 +210,9 @@ Framework.AddThirst = function(src, value)
     return newThirst
 end
 
+---This will get the hunger of a player
+---@param src any
+---@return number | nil
 Framework.GetHunger = function(src)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -210,6 +221,10 @@ Framework.GetHunger = function(src)
     return newHunger
 end
 
+
+---This will get the thirst of a player
+---@param src any
+---@return number | nil
 Framework.GetThirst = function(src)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -236,8 +251,9 @@ Framework.GetPlayerGang = function(src)
     return playerData.gang.name
 end
 
--- Framework.GetPlayersByJob(jobname)
--- returns a table of player sources that have the specified job name.
+---This will get a table of player sources that have the specified job name.
+---@param job any
+---@return table
 Framework.GetPlayersByJob = function(job)
     local players = QBCore.Functions.GetPlayers()
     local playerList = {}
@@ -250,8 +266,12 @@ Framework.GetPlayersByJob = function(job)
     return playerList
 end
 
--- Framework.GetPlayerJob(src)
--- Returns the job name, label, grade name, and grade level of the player.
+---This will get the players job info
+---@param src number
+---@return string
+---@return string
+---@return string
+---@return string
 Framework.GetPlayerJob = function(src)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -259,14 +279,21 @@ Framework.GetPlayerJob = function(src)
     return playerData.job.name, playerData.job.label, playerData.job.grade.name, playerData.job.grade.level
 end
 
--- Framework.SetPlayerJob(src, name, grade)
 -- Sets the player's job to the specified name and grade.
+---@param src number
+---@param name string
+---@param grade string
+---@return nil
 Framework.SetPlayerJob = function(src, name, grade)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
     return player.Functions.SetJob(name, grade)
 end
 
+---This will toggle a players duty status
+---@param src number
+---@param status boolean
+---@return nil
 Framework.ToggleDuty = function(src, status)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -274,8 +301,12 @@ Framework.ToggleDuty = function(src, status)
     TriggerEvent('QBCore:Server:SetDuty', src, player.PlayerData.job.onduty)
 end
 
--- Framework.AddAccountBalance(src, _type, amount)
--- Adds the specified amount to the player's account balance of the specified type.
+
+---This will add money based on the type of account (money/bank)
+---@param src number
+---@param _type string
+---@param amount number
+---@return boolean | nil
 Framework.AddAccountBalance = function(src, _type, amount)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -283,8 +314,11 @@ Framework.AddAccountBalance = function(src, _type, amount)
     return player.Functions.AddMoney(_type, amount)
 end
 
--- Framework.RemoveAccountBalance(src, _type, amount)
--- Removes the specified amount from the player's account balance of the specified type.
+---This will remove money based on the type of account (money/bank)
+---@param src number
+---@param _type string
+---@param amount number
+---@return boolean | nil
 Framework.RemoveAccountBalance = function(src, _type, amount)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -292,8 +326,10 @@ Framework.RemoveAccountBalance = function(src, _type, amount)
     return player.Functions.RemoveMoney(_type, amount)
 end
 
--- Framework.GetAccountBalance(src, _type)
--- Returns the player's account balance of the specified type.
+---This will remove money based on the type of account (money/bank)
+---@param src number
+---@param _type string
+---@return string | nil
 Framework.GetAccountBalance = function(src, _type)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -341,6 +377,9 @@ Framework.SetMetadata = function(src, item, slot, metadata)
     return player.Functions.AddItem(item, 1, freeSlot, metadata)
 end
 
+---This will get all owned vehicles for the player
+---@param src number
+---@return table
 Framework.GetOwnedVehicles = function(src)
     local citizenId = Framework.GetPlayerIdentifier(src)
     local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" .. citizenId .. "'")

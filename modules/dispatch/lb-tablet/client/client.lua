@@ -13,6 +13,8 @@ local function getPriorityLevel(priority)
     end
 end
 
+---commentThis will send an alert to the passed jobs
+---@param data table
 Dispatch.SendAlert = function(data)
     local streetName, _ = Utility.GetStreetNameAtCoords(data.coords)
     local priority = getPriorityLevel(data.priority)

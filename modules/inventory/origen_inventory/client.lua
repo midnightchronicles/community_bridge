@@ -29,6 +29,18 @@ end
 
 ---comment
 ---@param item string
+---@return number
+Inventory.GetItemCount = function(item)
+    local searchItem = origin:Search('slots', item)
+    local count = 0
+    for _, v in pairs(searchItem) do
+        count = count + v.count
+    end
+    return count
+end
+
+---comment
+---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("origen_inventory", string.format("html/images/%s.png", item))

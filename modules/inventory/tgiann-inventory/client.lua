@@ -25,6 +25,14 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
+---comment
+---@param item string
+---@return number
+Inventory.GetItemCount = function(item)
+    local searchItem = tgiann:GetItemCount(item, nil, false)
+    return searchItem or 0
+end
+
 ---This will return a boolean if the player has the item in the inventory
 ---@param item string
 ---@return boolean

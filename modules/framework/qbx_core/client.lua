@@ -44,6 +44,14 @@ Framework.GetPlayerInventory = function()
     return QBox.GetPlayerData().items
 end
 
+---comment
+---@param item string
+---@return number
+Framework.GetItemCount = function(item)
+    -- This seems to be exclusively for ox_inventory, if other inventories are used, they need to be bridged in the inventory module. Until then we will return 0 and a print.
+    return 0, print("Community_bridge:WARN: GetItemCount is not implemented for this framework, please use the inventory module to get the item count. If you are using a diffrent inventory please let us know so we can bridge it and have less nonsense.")
+end
+
 Framework.GetIsPlayerDead = function()
     local platerData = QBox.GetPlayerData()
     return platerData.metadata["isdead"] or platerData.metadata["inlaststand"]

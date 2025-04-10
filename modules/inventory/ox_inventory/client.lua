@@ -31,6 +31,13 @@ end
 
 ---comment
 ---@param item string
+---@return number
+Inventory.GetItemCount = function(item)
+    return ox_inventory:GetItemCount(item, nil, false)
+end
+
+---comment
+---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
     local file = LoadResourceFile("ox_inventory", string.format("web/images/%s.png", item))

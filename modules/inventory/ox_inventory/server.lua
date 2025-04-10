@@ -37,7 +37,7 @@ Inventory.GetItem = function(src, item, metadata)
     return ox_inventory:GetItem(src, item, metadata, false)
 end
 
----comment
+---This will get the item from the specified slot.
 ---@param src number
 ---@param slot number
 ---@return table
@@ -63,14 +63,14 @@ Inventory.HasItem = function(src, item)
     return count > 0
 end
 
----comment
+---This wil return the players inventory.
 ---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
     return ox_inventory:GetInventoryItems(src, false)
 end
 
----comment
+---This is to get if there is available space in the inventory.
 ---@param src number
 ---@param item string
 ---@param count number
@@ -79,7 +79,7 @@ Inventory.CanCarryItem = function(src, item, count)
     return ox_inventory:CanCarryItem(src, item, count)
 end
 
----comment
+---This will register a stash
 ---@param id number||string
 ---@param label string
 ---@param slots number
@@ -106,7 +106,7 @@ Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coo
     TriggerClientEvent('ox_inventory:openInventory', src, 'stash', 'stash_' .. id)
 end
 
----comment
+---This will get the data about an item such as name, label, stack, weight, description and image.
 ---@param item string
 ---@return table
 Inventory.GetItemInfo = function(item)
@@ -123,7 +123,7 @@ Inventory.GetItemInfo = function(item)
     return repackedTable
 end
 
----comment
+---This will set the metadata of an item in the inventory.
 ---@param src number
 ---@param item string
 ---@param slot number
@@ -133,7 +133,7 @@ Inventory.SetMetadata = function(src, item, slot, metadata)
     ox_inventory:SetMetadata(src, slot, metadata)
 end
 
----comment
+---This will update the plate to the vehicle inside the inventory. (It will also update with jg-mechanic if using it)
 ---@param oldplate string
 ---@param newplate string
 ---@return boolean
@@ -144,7 +144,7 @@ Inventory.UpdatePlate = function(oldplate, newplate)
     return true
 end
 
----comment
+---This will get the image path for an item, it is an alternate option to GetItemInfo. If a image isnt found will revert to community_bridge logo (useful for menus)
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)

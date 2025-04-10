@@ -81,6 +81,15 @@ Framework.GetPlayerInventory = function()
 end
 
 ---comment
+---@param item string
+---@return number
+Framework.GetItemCount = function(item)
+    local inventory = Framework.GetPlayerInventory()
+    if not inventory then return 0 end
+    return inventory[item].count or 0
+end
+
+---comment
 ---@return boolean
 Framework.GetIsPlayerDead = function()
     local playerData = ESX.GetPlayerData()

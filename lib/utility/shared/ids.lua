@@ -1,5 +1,11 @@
 Ids = Ids or {}
--- for unique ids
+
+
+---This will generate a unique id.
+---@param tbl table
+---@param len number
+---@param pattern string
+---@return string
 Ids.CreateUniqueId = function(tbl, len, pattern) -- both optional
     tbl = tbl or {} -- table to check uniqueness. Ids to check against must be the key to the tables value
     len = len or 8
@@ -21,22 +27,43 @@ Ids.CreateUniqueId = function(tbl, len, pattern) -- both optional
     return id
 end
 
+
+---This will generate a unique id.
+---@param tbl table
+---@param len number
+---@return string
 Ids.RandomUpper = function(tbl, len)
     return Ids.CreateUniqueId(tbl, len, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 end
 
+---This will generate a unique id.
+---@param tbl table
+---@param len number
+---@return string
 Ids.RandomLower = function(tbl, len)
     return Ids.CreateUniqueId(tbl, len, "abcdefghijklmnopqrstuvwxyz")
 end
 
+---This will generate a unique id.
+---@param tbl table
+---@param len number
+---@return string
 Ids.RandomString = function(tbl, len)
     return Ids.CreateUniqueId(tbl, len, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 end
 
+---This will generate a unique id.
+---@param tbl table
+---@param len number
+---@return string
 Ids.RandomNumber = function(tbl, len)
     return Ids.CreateUniqueId(tbl, len, "0123456789")
 end
 
+---This will generate a unique id.
+---@param tbl table
+---@param len number
+---@return string
 Ids.Random = function(tbl, len)
     return Ids.CreateUniqueId(tbl, len)
 end

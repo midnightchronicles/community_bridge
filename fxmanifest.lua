@@ -50,6 +50,7 @@ client_scripts {
     'modules/notify/**/client.lua',
     'modules/dialogue/**/client/*.lua',
     'modules/shops/**/client.lua',
+    'modules/accessibility/client.lua',
     'init.lua',
 }
 
