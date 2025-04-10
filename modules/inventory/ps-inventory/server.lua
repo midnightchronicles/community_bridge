@@ -67,11 +67,10 @@ end
 ---@param metadata table
 ---@return boolean
 Inventory.AddItem = function(src, item, amount, slot, metadata)
-    TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add')
+    TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', amount)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = amount, slot = slot, metadata = metadata})
     return sloth:AddItem(src, item, amount, slot, metadata, 'community_bridge')
 end
-
 
 ---comment
 ---@param src number
@@ -81,11 +80,10 @@ end
 ---@param metadata table
 ---@return boolean
 Inventory.RemoveItem = function(src, item, amount, slot, metadata)
-    TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove')
+    TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove', amount)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = amount, slot = slot, metadata = metadata})
     return sloth:RemoveItem(src, item, amount, slot, 'community_bridge')
 end
-
 
 ---comment
 ---@param oldplate string
