@@ -39,14 +39,16 @@ function OxToQBInput(data)
         }
         if v.type == "select" then
             input.text = ""
-            input.options = {
-                {value = v.value, text = v.label}
-            }
+            input.options = {}
+            for k, j in pairs(v.options) do
+                table.insert(input.options, {value = j.value, text = j.label})
+            end
         elseif v.type == "checkbox" then
             input.text = ""
-            input.options = {
-                {value = v.value, text = v.label}
-            }
+            input.options = {}
+            for k, j in pairs(v.options) do
+                table.insert(input.options, {value = j.value, text = j.label})
+            end
         end
         table.insert(returnData, input)
     end
