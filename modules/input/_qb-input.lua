@@ -1,5 +1,6 @@
-
-if GetResourceState('qb-input') ~= 'started' or (BridgeClientConfig.InputSystem ~= "qb" and BridgeClientConfig.InputSystem ~= "auto") then return end
+local resourceName = "qb-input"
+local configValue = BridgeClientConfig.InputSystem
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 function OxTypeToQBType(_type)
     if _type == "input" then
@@ -69,7 +70,7 @@ function OpenInput(title, data, isQBFormat, submitText)
     if returnData[1] then return returnData end
     --converting to standard format (ox)
     local convertedData = {}
-    if isQBFormat then 
+    if isQBFormat then
         for i, v in pairs(input) do
             for k, j in pairs(returnData) do
                 if k == v.text then
