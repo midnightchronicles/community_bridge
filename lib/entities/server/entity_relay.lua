@@ -1,7 +1,5 @@
-
 -- Objects
 Ids = Ids or Require("lib/utility/shared/ids.lua")
-
 
 local Entities = {}
 EntityRelay = {}
@@ -46,20 +44,3 @@ function EntityRelay.LoadModel(model)
 end
 
 return EntityRelay
-
-
-    -- RegisterCommand("entityobj", function()
-    --     local entity = Bridge.Object.Create({
-    --         id = "something", -- optional
-    --         model = "prop_beach_fire",
-    --         coords = GetEntityCoords(PlayerPedId()),
-    --         rotation = vector3(0.0, 0.0, 0.0),
-    --     })
-    --     Bridge.Object.SetOnSpawn("something", function(self, coords, rotation)
-    --         print("Entity spawned")
-    --     end)
-    
-    --     Bridge.Object.SetOnRemove("something", function(self, entity)
-    --         print("Entity removed")
-    --     end)
-    -- end)
