@@ -59,7 +59,7 @@ end
 ---@param shopData any
 ---@return nil
 Shops.OpenShop = function(title, shopData)
-    if not title and not shopData and not title then return print("No Title Passed") end
+    if not title and not shopData and not title then return Prints.Error("No Title Passed") end
     local generatedID = Ids.CreateUniqueId()
     local buildMenu = {}
     for _, v in pairs(shopData) do
