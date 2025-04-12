@@ -71,6 +71,23 @@ Framework.GetItem = function(src, item, metadata)
     return repackedTable
 end
 
+---This will get the data about an item such as name, label, stack, weight, description and image.
+---@param item string
+---@return table
+Framework.GetItemInfo = function(item)
+    local itemData = QBCore.Shared.Items[item]
+    if not itemData then return {} end
+    local repackedTable = {
+        name = itemData.name,
+        label = itemData.label,
+        stack = itemData.unique,
+        weight = itemData.weight,
+        description = itemData.description,
+        image = itemData.image
+    }
+    return repackedTable
+end
+
 -- Framework.GetItemCount(src, item, metadata)
 -- Returns the count of items matching the specified name and if passed metadata from the player's inventory.
 Framework.GetItemCount = function(src, item, metadata)
@@ -255,8 +272,8 @@ end
 ---@param job any
 ---@return table
 Framework.GetPlayersByJob = function(job)
-    local players = QBCore.Functions.GetPlayers()
     local playerList = {}
+    local players = QBCore.Functions.GetPlayers()
     for _, src in pairs(players) do
         local player = QBCore.Functions.GetPlayer(src).PlayerData
         if player.job.name == job then

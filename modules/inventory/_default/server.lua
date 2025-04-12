@@ -1,36 +1,36 @@
 Inventory = Inventory or {}
 
----comment
+---This will fallback to framework add item functions when an inventory does not have the specifiec function.
 ---@param src number
 ---@param item string
 ---@param count number
 ---@param slot number
 ---@param metadata table
----@return boolean
+---@return boolean|nil
 Inventory.AddItem = function(src, item, count, slot, metadata)
     return Framework.AddItem(src, item, count, slot, metadata)
 end
 
----comment
+---This will fallback to framework add item functions when an inventory does not have the specifiec function.
 ---@param src number
 ---@param item string
 ---@param count number
 ---@param slot number
 ---@param metadata table
----@return boolean
+---@return boolean|nil
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
     item = type(item) == "table" and item.name or item
     return Framework.RemoveItem(src, item, count, slot, metadata)
 end
 
----comment
+---This will fallback to framework add item functions when an inventory does not have the specifiec function.
 ---@param item string
----@return boolean
+---@return table
 Inventory.GetItemInfo = function(item)
-    return false, print("This Inventory Has Not Been Bridged For An Item Info Feature.")
+    return Framework.GetItemInfo(item)
 end
 
----comment
+---This will fallback to framework add item functions when an inventory does not have the specifiec function.
 ---@param src number
 ---@param item string
 ---@param metadata table
@@ -39,14 +39,14 @@ Inventory.GetItemCount = function(src, item, metadata)
     return Framework.GetItemCount(src, item, metadata)
 end
 
----comment
+---This will fallback to framework add item functions when an inventory does not have the specifiec function.
 ---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
     return Framework.GetPlayerInventory(src)
 end
 
----comment
+---This will fallback to framework add item functions when an inventory does not have the specifiec function.
 ---@param src number
 ---@param slot number
 ---@return table
@@ -54,7 +54,7 @@ Inventory.GetItemBySlot = function(src, slot)
     return Framework.GetItemBySlot(src, slot)
 end
 
----comment
+---This will fallback to framework add item functions when an inventory does not have the specifiec function.
 ---@param src number
 ---@param item string
 ---@param slot number
@@ -64,7 +64,7 @@ Inventory.SetMetadata = function(src, item, slot, metadata)
     return Framework.SetMetadata(src, item, slot, metadata)
 end
 
----comment
+---This will fallback to framework add item functions when an inventory does not have the specifiec function.
 ---@param src number
 ---@param id string||number
 ---@param label string
@@ -75,10 +75,10 @@ end
 ---@param coords table
 ---@return boolean
 Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    return false, print("This Inventory Has Not Been Bridged For A Stash Feature.")
+    return false, Prints.Error("This Inventory Has Not Been Bridged For A Stash Feature.")
 end
 
----comment
+---This will provide a image of the community bridge logo if the inventory isnt bridged for the specific path.
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
