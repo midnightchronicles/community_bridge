@@ -24,7 +24,7 @@ Shops.FinalizeCheckOut = function(shopName, item, itemLabel, price, amount)
         {
             title = locale('Shops.PayByCard').." "..tostring(mathStuff),
             description = locale('Shops.AreYouSure') .. itemLabel,
-            icon = "fa-solid fa-building-column",
+            icon = "fa-solid fa-building-columns",
             onSelect = function(_, __, ___)
                 TriggerServerEvent('community_bridge:completeCheckout', shopName, item, amount, "bank")
             end

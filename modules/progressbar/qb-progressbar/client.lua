@@ -22,7 +22,8 @@ local function convertFromOx(options)
         },
         animation = {
             animDict = options.anim?.dict,
-            anim = options.anim?.clip
+            anim = options.anim?.clip,
+            flags = 49
         },
         prop = {
             model = prop1.model,
