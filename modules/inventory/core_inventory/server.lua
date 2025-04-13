@@ -35,3 +35,8 @@ Inventory.UpdatePlate = function(oldplate, newplate)
     exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
     return true
 end
+
+lib.callback.register('community_bridge:Callback:core_inventory', function(source)
+    local items = core:getItemsList()
+	return items or {}
+end)
