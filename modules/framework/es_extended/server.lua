@@ -35,6 +35,17 @@ Framework.GetPlayerName = function(src)
     return xPlayer.variables.firstName, xPlayer.variables.lastName
 end
 
+---This will return a table of all logged in players
+---@return table
+Framework.GetPlayers = function()
+    local players = ESX.GetExtendedPlayers()
+    local playerList = {}
+    for _, xPlayer in pairs(players) do
+        table.insert(playerList, xPlayer.source)
+    end
+    return playerList
+end
+
 -- Framework.GetItem(src, item, metadata)
 -- Returns a table of items matching the specified name and if passed metadata from the player's inventory.
 -- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}

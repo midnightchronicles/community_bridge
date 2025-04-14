@@ -133,6 +133,17 @@ Framework.GetPlayerInventory = function(src)
     return repackedTable
 end
 
+---This will return a table of all logged in players
+---@return table
+Framework.GetPlayers = function()
+    local players = QBCore.Functions.GetPlayers()
+    local playerList = {}
+    for _, src in pairs(players) do
+        table.insert(playerList, src)
+    end
+    return playerList
+end
+
 Framework.GetItemBySlot = function(src, slot)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end

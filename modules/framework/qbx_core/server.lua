@@ -29,6 +29,17 @@ Framework.GetPlayerIdentifier = function(src)
     return playerData.citizenid
 end
 
+---This will return a table of all logged in players
+---@return table
+Framework.GetPlayers = function()
+    local players = QBox:GetQBPlayers()
+    local playerList = {}
+    for src, _ in pairs(players) do
+        table.insert(playerList, src)
+    end
+    return playerList
+end
+
 -- Framework.GetPlayerName(src)
 -- Returns the first and last name of the player.
 Framework.GetPlayerName = function(src)
