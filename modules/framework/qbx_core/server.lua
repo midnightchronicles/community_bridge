@@ -287,11 +287,23 @@ end
 ---This will toggle the duty status of the player.
 ---@param src number
 ---@param status boolean
-Framework.ToggleDuty = function(src, status)
+Framework.SetPlayerDuty = function(src, status)
     local player = QBox:GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     QBox:SetJobDuty(playerData.citizenid, status)
+    TriggerEvent('QBCore:Server:SetDuty', src, player.PlayerData.job.onduty)
+end
+
+---Returns the players duty status.
+---@param src number
+---@return boolean | nil
+Framework.GetPlayerDuty = function(src)
+    local player = QBox:GetPlayer(src)
+    if not player then return end
+    local playerData = player.PlayerData
+    if not playerData.job.onduty then return false end
+    return true
 end
 
 ---Adds the specified amount to the player's account balance of the specified type.
