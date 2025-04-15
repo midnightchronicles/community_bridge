@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('qbx_core') ~= 'started' then return end
 
 QBox = exports.qbx_core
