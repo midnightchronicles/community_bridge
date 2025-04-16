@@ -5,7 +5,7 @@ if GetResourceState('qbx_core') == 'started' then return end
 QBCore = exports['qb-core']:GetCoreObject()
 
 Framework = {}
-
+Framework.Shared = QBCore.Shared
 Framework.GetFrameworkName = function()
     return 'qb-core'
 end
@@ -222,7 +222,9 @@ Framework.AddHunger = function(src, value)
     local playerData = player.PlayerData
     local newHunger = (playerData.metadata.hunger or 0) + value
     player.Functions.SetMetaData('hunger', Math.Clamp(newHunger, 0, 100))
+    TriggerClientEvent('hud:client:UpdateNeeds', src, newHunger, playerData.metadata.thirst)
     --TriggerClientEvent('hud:client:UpdateStress', src, newStress)
+    
     return newHunger
 end
 
@@ -235,6 +237,7 @@ Framework.AddThirst = function(src, value)
     local playerData = player.PlayerData
     local newThirst = (playerData.metadata.thirst or 0) + value
     player.Functions.SetMetaData('thirst', Math.Clamp(newThirst, 0, 100))
+    TriggerClientEvent('hud:client:UpdateNeeds', src, playerData.metadata.hunger, newThirst)
     --TriggerClientEvent('hud:client:UpdateStress', src, newStress)
     return newThirst
 end
@@ -412,8 +415,8 @@ Framework.SetMetadata = function(src, item, slot, metadata)
             end
         end
     end
-    player.Functions.RemoveItem(item, 1, itemSlot)
-    return player.Functions.AddItem(item, 1, freeSlot, metadata)
+    if not player.Functions.RemoveItem(item, 1, itemSlot) then return false end
+    return player.Functions.AddItem(item, 1, slot, metadata)
 end
 
 ---This will get all owned vehicles for the player
@@ -461,3 +464,4 @@ Framework.Commands = {}
 Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
     QBCore.Commands.Add(name, help, arguments, argsrequired, callback, permission, ...)
 end
+

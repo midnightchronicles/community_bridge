@@ -44,15 +44,19 @@ end
 ---@param options table
 ---@param cb any
 ---@param qbFormat boolean
----@return nil
+---@return success boolean
 function ProgressBar.Open(options, cb, qbFormat)
     if not exports['progressbar'] then return false end
 
     if not qbFormat then
         options = convertFromOx(options)
     end
-
-    exports['progressbar']:Progress(options, cb)
+    local prom = promise.new()
+    exports['progressbar']:Progress(options, function(cancelled)
+        if cb then cb(not cancelled) end
+        prom:resolve(not cancelled)
+    end)
+    return Citizen.Await(prom)
 end
 
 

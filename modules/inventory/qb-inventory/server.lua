@@ -40,10 +40,26 @@ Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coo
 end
 
 
+Inventory.GetItemInfo = function(item)
+    local itemData = Framework.Shared.Items[item]
+    if not itemData then return {} end
+    local repackedTable = {
+        name = itemData.name,
+        label = itemData.label,
+        stack = itemData.unique,
+        weight = itemData.weight,
+        description = itemData.description,
+        image = Inventory.GetImagePath(itemData.image or itemData.name)
+    }
+    return repackedTable
+end
+
 ---comment
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
+    -- check if contains.png and remove it if it does
+    item = Inventory.StripPNG(item)
     local file = LoadResourceFile("qb-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://qb-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
