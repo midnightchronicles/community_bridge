@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('es_extended') ~= 'started' then return end
 
 ESX = exports["es_extended"]:getSharedObject()
@@ -33,6 +34,17 @@ Framework.GetPlayerName = function(src)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not xPlayer then return end
     return xPlayer.variables.firstName, xPlayer.variables.lastName
+end
+
+---This will return a table of all logged in players
+---@return table
+Framework.GetPlayers = function()
+    local players = ESX.GetExtendedPlayers()
+    local playerList = {}
+    for _, xPlayer in pairs(players) do
+        table.insert(playerList, xPlayer.source)
+    end
+    return playerList
 end
 
 -- Framework.GetItem(src, item, metadata)
@@ -160,12 +172,41 @@ Framework.GetPlayerPhone = function(src)
     return xPlayer.get("phone_number")
 end
 
--- Framework.GetPlayerJob(src)
--- Returns the job name, label, grade name, and grade level of the player.
+
+---Returns the job name, label, grade name, and grade level of the player.
+---@param src number
+---@return string | nil
+---@return string | nil
+---@return string | nil
+---@return string | nil
 Framework.GetPlayerJob = function(src)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not xPlayer then return end
-    return xPlayer.getJob().name, xPlayer.getJob().label, xPlayer.getJob().grade_label, xPlayer.getJob().grade
+    local job = xPlayer.getJob()
+    return job.name, job.label, job.grade_label, job.grade
+end
+
+---Returns the players duty status.
+---@param src number
+---@return boolean
+Framework.GetPlayerDuty = function(src)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return false end
+    local job = xPlayer.getJob()
+    if not job.onDuty then return false end
+    return true
+end
+
+---Sets the players duty status.
+---@param src number
+---@param dutystatus boolean
+---@return boolean
+Framework.SetPlayerDuty = function(src, dutystatus)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return false end
+    local job = xPlayer.getJob()
+    if not job.onDuty then return false end
+    return xPlayer.setJob(job.name, job.grade, dutystatus)
 end
 
 -- Framework.GetPlayersByJob(jobname)
@@ -189,14 +230,6 @@ Framework.SetPlayerJob = function(src, name, grade)
     if not xPlayer then return end
     if not ESX.DoesJobExist(name, grade) then lib.print.error("Job Does Not Exsist In Framework :NAME "..name.." Grade:"..grade) return end
     return xPlayer.setJob(name, grade, true)
-end
-
-Framework.ToggleDuty = function(src, status)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    if not xPlayer then return end
-    local name = xPlayer.getJob().name
-    local grade = xPlayer.getJob().grade
-    xPlayer.setJob(name, grade, status)
 end
 
 -- Framework.AddAccountBalance(src, _type, amount)

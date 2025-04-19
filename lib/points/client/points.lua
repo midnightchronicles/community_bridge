@@ -242,25 +242,4 @@ function Point.GetAll()
     return ActivePoints
 end
 
--- Usage example for checking nearby points
--- -- 
--- ▀█▀ █▄█ █ ▄▀▀    █ ▄▀▀    █▀ █ █ ▄▀▀ █▄▀ █ █▄ █ ▄▀     █▄█ ▄▀▄ ▀█▀       █▀▄ ▄▀▄ █ █▄ █ ▀█▀ ▄▀▀    █▀ ▄▀▄ █▀▄    ▄▀▀ █▀▄ ▄▀▄ █   █ █   ██▀ ▀▄▀ 
---  █  █ █ █ ▄█▀    █ ▄█▀    █▀ ▀▄█ ▀▄▄ █ █ █ █ ▀█ ▀▄█    █ █ ▀▄▀  █ ██     █▀  ▀▄▀ █ █ ▀█  █  ▄█▀    █▀ ▀▄▀ █▀▄    ▀▄▄ █▀▄ ▀▄▀ ▀▄▀▄▀ █▄▄ █▄▄  █  
---[[
-Point.Register("point1", vector3(100, 100, 30), 5.0, 
-    function(point)
-        print("Entered point1")
-    end,
-    function(point)
-        print("Exited point1")
-    end,
-    function(nearbyPoints)
-        print("Point1 has nearby points:")
-        for id, point in pairs(nearbyPoints) do
-            print("- " .. id .. " at distance: " .. #(point.coords - ActivePoints["point1"].coords))
-        end
-    end
-)
---]]
-
 return Point

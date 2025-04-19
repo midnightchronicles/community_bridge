@@ -1,4 +1,6 @@
-if GetResourceState('ox_lib') ~= 'started' or (BridgeClientConfig.InputSystem ~= "ox" and BridgeClientConfig.InputSystem ~= "auto") then return end
+local resourceName = "ox_lib"
+local configValue = BridgeClientConfig.InputSystem
+if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 function QBTypeToOxType(_type)
     if _type == "text" then

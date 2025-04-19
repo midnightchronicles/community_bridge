@@ -44,7 +44,7 @@ Shops.CompleteCheckout = function(src, shopName, item, amount, paymentType)
             break
         end
     end
-    if not itemData then return print("Player ID "..src.." Is Possibly A Cheater And Has Attempted To Purchase A "..item) end
+    if not itemData then return Prints.Error("Player ID "..src.." Is Possibly A Cheater And Has Attempted To Purchase A "..item) end
     if not itemData.price then return end
     local balance = Framework.GetAccountBalance(src, paymentType)
     local mathStuff = tonumber(itemData.price) * tonumber(amount)

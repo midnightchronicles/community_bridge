@@ -8,6 +8,7 @@ local core = exports.core_inventory
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
+    item = Inventory.StripPNG(item)
     local file = LoadResourceFile("core_inventory", string.format("html/img/%s.png", item))
     local imagePath = file and string.format("nui://core_inventory/html/img/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
@@ -35,3 +36,8 @@ Inventory.UpdatePlate = function(oldplate, newplate)
     exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
     return true
 end
+
+lib.callback.register('community_bridge:Callback:core_inventory', function(source)
+    local items = core:getItemsList()
+	return items or {}
+end)

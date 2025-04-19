@@ -28,6 +28,7 @@ server_scripts {
     'modules/clothing/**/server.lua',
     'modules/shops/**/server.lua',
     'modules/notify/**/server.lua',
+    'modules/housing/**/server.lua',
     'init.lua',
 }
 
@@ -50,6 +51,7 @@ client_scripts {
     'modules/notify/**/client.lua',
     'modules/dialogue/**/client/*.lua',
     'modules/shops/**/client.lua',
+    'modules/housing/**/client.lua',
     'modules/accessibility/client.lua',
     'init.lua',
 }

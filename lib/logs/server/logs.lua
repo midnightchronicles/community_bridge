@@ -49,7 +49,7 @@ Logs.Send = function(src, message)
     elseif BridgeServerConfig.LogSystem == "qb" then
         return TriggerEvent('qb-log:server:CreateLog', GetCurrentResourceName(), GetCurrentResourceName(), 'green', message)
     elseif BridgeServerConfig.LogSystem == "ox" then
-        return exports.ox_lib:logger(src, GetCurrentResourceName(), message)
+        return lib.logger(src, GetCurrentResourceName(), message)
     end
 end
 

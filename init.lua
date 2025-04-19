@@ -53,6 +53,7 @@ Bridge.RegisterModule("Doorlock", Doorlock)
 Bridge.RegisterModule("Phone", Phone)
 Bridge.RegisterModule("Dispatch", Dispatch)
 Bridge.RegisterModule("Shops", Shops)
+Bridge.RegisterModule("Housing", Housing)
 
 --lib
 Bridge.RegisterModule("Tables", cLib.Tables)
@@ -109,7 +110,7 @@ Bridge.RegisterModule("Raycast", cLib.Raycast)
 Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
 Bridge.RegisterModule("Point", cLib.Point)
 Bridge.RegisterModule("Object", cLib.Object)
-
+Bridge.RegisterModule("Particle", cLib.Particle)
 
 
 -- Fill the bridge tables with player data.

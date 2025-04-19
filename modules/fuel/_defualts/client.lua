@@ -1,5 +1,11 @@
 Fuel = Fuel or {}
 
+
+---This will get the name of the Fuel being used (if a supported Fuel).
+---@return string
+Fuel.GetFuelName = function()
+    return 'default'
+end
 ---This will get the fuel level of the vehicle.
 ---@param vehicle number The vehicle entity ID.
 ---@return number fuel The fuel level of the vehicle.
