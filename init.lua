@@ -110,7 +110,7 @@ Bridge.RegisterModule("Raycast", cLib.Raycast)
 Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
 Bridge.RegisterModule("Point", cLib.Point)
 Bridge.RegisterModule("Object", cLib.Object)
-
+Bridge.RegisterModule("Particle", cLib.Particle)
 
 
 -- Fill the bridge tables with player data.
