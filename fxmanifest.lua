@@ -4,7 +4,7 @@ lua54 'yes'
 use_experimental_fxv2_oal 'yes'
 author 'The Order of the Sacred Framework'
 description 'A bridge made for the community to use as a base for their own projects. This bridge will allow a single format to work with nearly all commonly used systems while still offering expandability.'
-version '0.5.0'
+version '0.5.1'
 
 shared_scripts {
     '@ox_lib/init.lua',
@@ -28,6 +28,7 @@ server_scripts {
     'modules/clothing/**/server.lua',
     'modules/shops/**/server.lua',
     'modules/notify/**/server.lua',
+    'modules/housing/**/server.lua',
     'init.lua',
 }
 
@@ -50,6 +51,7 @@ client_scripts {
     'modules/notify/**/client.lua',
     'modules/dialogue/**/client/*.lua',
     'modules/shops/**/client.lua',
+    'modules/housing/**/client.lua',
     'modules/accessibility/client.lua',
     'init.lua',
 }

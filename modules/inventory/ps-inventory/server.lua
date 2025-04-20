@@ -36,6 +36,7 @@ end
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
+    item = Inventory.StripPNG(item)
     local file = LoadResourceFile("ps-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://ps-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"

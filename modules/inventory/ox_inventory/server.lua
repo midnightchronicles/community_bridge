@@ -16,6 +16,24 @@ Inventory.AddItem = function(src, item, count, slot, metadata)
     return ox_inventory:AddItem(src, item, count, metadata)
 end
 
+Inventory.GetItemInfo = function(item)
+    local itemData = ox_inventory:Items(item)
+    if not itemData then return {} end
+    local repackedTable = {
+        name = itemData.name or "Missing Name",
+        label = itemData.label or "Missing Label",
+        stack = itemData.stack or "true",
+        weight = itemData.weight or "0",
+        description = itemData.description or "none",
+        image = string.format("nui://ox_inventory/web/images/%s", itemData.client 
+            and itemData.client.image 
+            or string.format("%s.png", item)
+        ),
+    }
+    return repackedTable
+end
+-- string.format("nui://ox_inventory/web/images/%s.png", item)
+
 ---This will remove an item, and return true or false based on success
 ---@param src number
 ---@param item string
@@ -148,6 +166,7 @@ end
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
+    item = Inventory.StripPNG(item)
     local file = LoadResourceFile("ox_inventory", string.format("web/images/%s.png", item))
     local imagePath = file and string.format("nui://ox_inventory/web/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"

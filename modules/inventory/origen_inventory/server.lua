@@ -104,6 +104,7 @@ Inventory.SetMetadata = function(src, item, slot, metadata)
 end
 
 Inventory.GetImagePath = function(item)
+    item = Inventory.StripPNG(item)
     local file = LoadResourceFile("origen_inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://origen_inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"

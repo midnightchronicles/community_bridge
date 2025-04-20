@@ -84,3 +84,10 @@ end
 Inventory.GetImagePath = function(item)
     return "https://avatars.githubusercontent.com/u/47620135"
 end
+
+Inventory.StripPNG = function(item)
+    if string.find(item, ".png") then
+        item = string.gsub(item, ".png", "")
+    end
+    return item
+end

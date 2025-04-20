@@ -1,15 +1,28 @@
 local resourceName = "x-fuel"
 local configValue = BridgeClientConfig.Fuel
 if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
---print("Fuel: Loading x-fuel")
+
 Fuel = Fuel or {}
 
+---This will get the name of the Fuel being used (if a supported Fuel).
+---@return string
+Fuel.GetFuelName = function()
+    return resourceName
+end
+
+---This will get the fuel level of the vehicle.
+---@param vehicle number The vehicle entity ID.
+---@return number fuel The fuel level of the vehicle.
 Fuel.GetFuel = function(vehicle)
     if not DoesEntityExist(vehicle) then return 0.0 end
     local level, _ = exports["x-fuel"]:getFuel(vehicle)
     return level
 end
 
+---This will set the fuel level of the vehicle.
+---@param vehicle number The vehicle entity ID.
+---@param fuel number The fuel level to set.
+---@return nil
 Fuel.SetFuel = function(vehicle, fuel)
     if not DoesEntityExist(vehicle) then return end
     return exports['x-fuel']:SetFuel(vehicle, fuel)

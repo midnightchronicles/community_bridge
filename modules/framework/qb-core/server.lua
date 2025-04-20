@@ -1,10 +1,11 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('qb-core') ~= 'started' then return end
 if GetResourceState('qbx_core') == 'started' then return end
 
 QBCore = exports['qb-core']:GetCoreObject()
 
 Framework = {}
-
+Framework.Shared = QBCore.Shared
 Framework.GetFrameworkName = function()
     return 'qb-core'
 end
@@ -221,7 +222,9 @@ Framework.AddHunger = function(src, value)
     local playerData = player.PlayerData
     local newHunger = (playerData.metadata.hunger or 0) + value
     player.Functions.SetMetaData('hunger', Math.Clamp(newHunger, 0, 100))
+    TriggerClientEvent('hud:client:UpdateNeeds', src, newHunger, playerData.metadata.thirst)
     --TriggerClientEvent('hud:client:UpdateStress', src, newStress)
+    
     return newHunger
 end
 
@@ -234,6 +237,7 @@ Framework.AddThirst = function(src, value)
     local playerData = player.PlayerData
     local newThirst = (playerData.metadata.thirst or 0) + value
     player.Functions.SetMetaData('thirst', Math.Clamp(newThirst, 0, 100))
+    TriggerClientEvent('hud:client:UpdateNeeds', src, playerData.metadata.hunger, newThirst)
     --TriggerClientEvent('hud:client:UpdateStress', src, newStress)
     return newThirst
 end
@@ -307,6 +311,28 @@ Framework.GetPlayerJob = function(src)
     return playerData.job.name, playerData.job.label, playerData.job.grade.name, playerData.job.grade.level
 end
 
+---Returns the players duty status.
+---@param src number
+---@return boolean | nil
+Framework.GetPlayerDuty = function(src)
+    local player = QBCore.Functions.GetPlayer(src)
+    if not player then return end
+    local playerData = player.PlayerData
+    if not playerData.job.onduty then return false end
+    return true
+end
+
+---This will toggle a players duty status
+---@param src number
+---@param status boolean
+---@return nil
+Framework.SetPlayerDuty = function(src, status)
+    local player = QBCore.Functions.GetPlayer(src)
+    if not player then return end
+    player.Functions.SetJobDuty(status)
+    TriggerEvent('QBCore:Server:SetDuty', src, player.PlayerData.job.onduty)
+end
+
 -- Sets the player's job to the specified name and grade.
 ---@param src number
 ---@param name string
@@ -317,18 +343,6 @@ Framework.SetPlayerJob = function(src, name, grade)
     if not player then return end
     return player.Functions.SetJob(name, grade)
 end
-
----This will toggle a players duty status
----@param src number
----@param status boolean
----@return nil
-Framework.ToggleDuty = function(src, status)
-    local player = QBCore.Functions.GetPlayer(src)
-    if not player then return end
-    player.Functions.SetJobDuty(status)
-    TriggerEvent('QBCore:Server:SetDuty', src, player.PlayerData.job.onduty)
-end
-
 
 ---This will add money based on the type of account (money/bank)
 ---@param src number
@@ -401,8 +415,8 @@ Framework.SetMetadata = function(src, item, slot, metadata)
             end
         end
     end
-    player.Functions.RemoveItem(item, 1, itemSlot)
-    return player.Functions.AddItem(item, 1, freeSlot, metadata)
+    if not player.Functions.RemoveItem(item, 1, itemSlot) then return false end
+    return player.Functions.AddItem(item, 1, slot, metadata)
 end
 
 ---This will get all owned vehicles for the player
@@ -450,3 +464,4 @@ Framework.Commands = {}
 Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
     QBCore.Commands.Add(name, help, arguments, argsrequired, callback, permission, ...)
 end
+

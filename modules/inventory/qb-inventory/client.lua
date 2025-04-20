@@ -21,6 +21,7 @@ end
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
+    item = Inventory.StripPNG(item)
     local file = LoadResourceFile("qb-inventory", string.format("html/images/%s.png", item))
     local imagePath = file and string.format("nui://qb-inventory/html/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
@@ -35,7 +36,7 @@ Inventory.GetItemInfo = function(item)
         stack = itemData.unique,
         weight = itemData.weight,
         description = itemData.description,
-        image = Inventory.GetImagePath(itemData.name)
+        image = Inventory.GetImagePath(itemData.image or itemData.name)
     }
     return repackedTable
 end
