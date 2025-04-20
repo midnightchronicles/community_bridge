@@ -36,7 +36,7 @@ function OxToQBInput(data)
             name = i,
             type = OxTypeToQBType(v.type),
             isRequired = v.required,
-            placeholder = v.default,
+            default = v.default or "",
         }
         if v.type == "select" then
             input.text = ""
