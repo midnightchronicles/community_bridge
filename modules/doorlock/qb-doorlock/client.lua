@@ -2,6 +2,8 @@ if GetResourceState('qb-doorlock') ~= 'started' then return end
 
 Doorlock = Doorlock or {}
 
+---This will get the closest door to the ped
+---@return string | nil
 Doorlock.GetClosestDoor = function()
     local closestDoor = exports["qb-doorlock"]:GetClosestDoor()
     if Table.CheckPopulated(closestDoor) then return closestDoor end
