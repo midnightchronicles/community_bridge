@@ -5,65 +5,91 @@ ItemsBuilder = {}
 ---This will generate the items in the formats of qb_core, qb_core_old and ox_inventory. It will then build a lua file in the generateditems folder of the community_bridge.
 ---@param invoking string
 ---@param itemsTable table
-ItemsBuilder.Generate = function(invoking, itemsTable)
-    if not invoking or not itemsTable then return end
+ItemsBuilder.Generate = function(invoking, outputPrefix, itemsTable, useQB)
+    if not itemsTable then return end
+    invoking = invoking or GetInvokingResource() or GetCurrentResourceName() or "community_bridge"
 
-    local resourcePath = GetResourcePath(GetCurrentResourceName()) .. "/generateditems/"
+    local resourcePath = string.format("%s/%s/", GetResourcePath(invoking), outputPrefix or "generated_items")
 
-    local function fileExists(path)
-        local file = io.open(path, "r")
-        if file then
-            file:close()
-            return true
-        else
-            return false
+    -- remove any doubles slashes after initial double slash 
+    -- resourcePath = resourcePath:gsub("//", "/")
+    -- check if directory exists 
+    local folder = io.open(resourcePath, "r")
+    if not folder then
+        local createDirectoryCMD = string.format("if not exist \"%s\" mkdir \"%s\"", resourcePath, resourcePath)
+        local returned, err = io.popen(createDirectoryCMD)
+        if not returned then
+            print("🌮 Failed to create directory: ", err)
+            return
+        end
+        returned:close()
+        print("🌮 Created Directory: ", resourcePath)
+    else
+        folder:close()
+    end
+
+    local qbOld = {}
+    local qbNew = {}
+    local oxInventory = {}
+    if useQB then 
+        for key, item in pairs(itemsTable) do
+            qbOld[key] = string.format(
+                "['%s'] = {name = '%s', label = '%s', weight = %s, type = 'item', image = '%s', unique = %s, useable = %s, shouldClose = %s, description = '%s'},",
+                key, key, item.label, item.weight, item.image or key .. 'png', item.unique, item.useable, item.shouldClose, item.description
+            )
+            qbNew[key] = string.format(
+                "['%s'] = {['name'] = '%s', ['label'] = '%s', ['weight'] = %s, ['type'] = 'item',['image'] = '%s', ['unique'] = %s, ['useable'] = %s, ['shouldClose'] = %s, ['description'] = '%s'},",
+                key, key, item.label, item.weight, item.image or key .. 'png', item.unique, item.useable, item.shouldClose, item.description
+            )
+            oxInventory[key] = string.format(
+                [[
+                ["%s"] = {
+                    label = "%s",
+                    description = "%s",
+                    weight = %s, 
+                    stack = %s,
+                    close = %s,
+                    %s
+                }, ]], 
+                key, item.label, item.description, item.weight, not item.unique, item.shouldClose,
+                item.image and string.format("image = '%s'", item.image) or ""
+            )
+        end
+
+    else             
+        for key, item in pairs(itemsTable) do
+            --  ['peanut_butter'] = {['name'] = 'peanut_butter',['label'] = 'Peanut Butter',['weight'] = 1000,['type'] = 'item',['image'] = 'peanut_butter.png',['unique'] = false,['useable'] = false,['shouldClose'] = true,['combinable'] = nil,['description'] = 'A cooking ingredient'},
+            
+            qbOld[key] = string.format(
+                "['%s'] = {name = '%s', label = '%s', weight = %s, type = 'item', image = '%s', unique = %s, useable = %s, shouldClose = %s, description = '%s'},",
+                key, key, item.label, item.weight, item?.client?.image or key .. 'png', not item.stack, true, item.close, item.description
+            )
+            qbNew[key] = string.format(
+                "['%s'] = {['name'] = '%s', ['label'] = '%s', ['weight'] = %s, ['type'] = 'item', ['image'] = '%s', ['unique'] = %s, ['useable'] = %s, ['shouldClose'] = %s, ['description'] = '%s'},",
+                key, key, item.label, item.weight, item?.client?.image or key .. 'png', not item.stack, true, item.close, item.description
+            )
+            oxInventory[key] = string.format(
+                [[ 
+                ["%s"] = {
+                    label = "%s", 
+                    description = "%s",
+                    weight = %s, 
+                    stack = %s, 
+                    close = %s,
+                    %s
+                }, ]],
+                key, item.label, item.description, item.weight, item.stack, item.close,
+                item?.client?.image and string.format("image = '%s'", item.client.image) or ""
+            )
         end
     end
 
-    local qbOldFilePath = resourcePath .. invoking .. "_qb_core_old.lua"
-    local qbNewFilePath = resourcePath .. invoking .. "_qb_core_new.lua"
-    local oxInventoryFilePath = resourcePath .. invoking .. "_ox_inventory.lua"
-
-    if fileExists(qbOldFilePath) or fileExists(qbNewFilePath) or fileExists(oxInventoryFilePath) then return end
-
-    local qbOld = {}
-    for key, item in pairs(itemsTable) do
-        qbOld[key] = string.format(
-            "['%s'] = {label = '%s', weight = %d, stack = %s, close = %s, description = '%s'}",
-            key, item.label, item.weight, tostring(item.stack), tostring(item.close), item.description
-        )
-    end
-
-    local qbNew = {}
-    for key, item in pairs(itemsTable) do
-        qbNew[key] = string.format(
-            "%s = {label = '%s', weight = %d, stack = %s, close = %s, description = '%s'}",
-            key, item.label, item.weight, tostring(item.stack), tostring(item.close), item.description
-        )
-    end
-
-    local oxInventory = {}
-    for key, item in pairs(itemsTable) do
-        oxInventory[key] = {
-            label = item.label,
-            weight = item.weight,
-            stack = item.stack,
-            close = item.close
-        }
-    end
-
-    local function writeInlineFile(fileName, content, useBrackets)
+    local function write(fileName, content)
         local filePath = resourcePath .. fileName
         local file = io.open(filePath, "w")
         if file then
             for key, value in pairs(content) do
-                if useBrackets then
-                    -- For qb_core_old with brackets
-                    file:write(string.format("['%s'] = %s,\n", key, value))
-                else
-                    -- For qb_core_new without brackets
-                    file:write(string.format("%s = %s,\n", key, value))
-                end
+                file:write(string.format("%s\n", value))
             end
             file:close()
             print("🌮 Items File Created: " .. filePath)
@@ -72,28 +98,11 @@ ItemsBuilder.Generate = function(invoking, itemsTable)
         end
     end
 
-    local function writeSimplifiedFile(fileName, content)
-        local filePath = resourcePath .. fileName
-        local file = io.open(filePath, "w")
-        if file then
-            for key, item in pairs(content) do
-                file:write(string.format('["%s"] = {\n', key))
-                for k, v in pairs(item) do
-                    local formattedValue = type(v) == "string" and string.format('"%s"', v) or tostring(v)
-                    file:write(string.format("    %s = %s,\n", k, formattedValue))
-                end
-                file:write("},\n")
-            end
-            file:close()
-            print("🌮 Items File Created: " .. filePath)
-        else
-            print("🌮 Something Broke for: " .. filePath)
-        end
-    end
+   
 
-    writeInlineFile(invoking.."_".."qb_core_old.lua", qbOld, true)
-    writeInlineFile(invoking.."_".."qb_core_new.lua", qbNew, false)
-    writeSimplifiedFile(invoking.."_".."ox_inventory.lua", oxInventory)
+    write(invoking.."(".."qb_core_old).lua", qbOld)
+    write(invoking.."(".."qb_core_new).lua", qbNew)
+    write(invoking.."(".."ox_inventory).lua", oxInventory)
 end
 
 exports('ItemsBuilder', ItemsBuilder)
