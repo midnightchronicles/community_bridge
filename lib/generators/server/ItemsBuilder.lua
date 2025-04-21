@@ -41,6 +41,8 @@ ItemsBuilder.Generate = function(invoking, outputPrefix, itemsTable, useQB)
                 "['%s'] = {['name'] = '%s', ['label'] = '%s', ['weight'] = %s, ['type'] = 'item',['image'] = '%s', ['unique'] = %s, ['useable'] = %s, ['shouldClose'] = %s, ['description'] = '%s'},",
                 key, key, item.label, item.weight, item.image or key .. 'png', item.unique, item.useable, item.shouldClose, item.description
             )
+            imagewithoutpng = item?.image and item.image:gsub(".png", "")
+            shouldRenderImage = imagewithoutpng and imagewithoutpng ~= key
             oxInventory[key] = string.format(
                 [[
                 ["%s"] = {
@@ -52,7 +54,9 @@ ItemsBuilder.Generate = function(invoking, outputPrefix, itemsTable, useQB)
                     %s
                 }, ]], 
                 key, item.label, item.description, item.weight, not item.unique, item.shouldClose,
-                item.image and string.format("image = '%s'", item.image) or ""
+                shouldRenderImage and item.image and string.format([[client = {
+                        image = '%s'
+                    }]], item.image) or ""
             )
         end
 
@@ -68,6 +72,8 @@ ItemsBuilder.Generate = function(invoking, outputPrefix, itemsTable, useQB)
                 "['%s'] = {['name'] = '%s', ['label'] = '%s', ['weight'] = %s, ['type'] = 'item', ['image'] = '%s', ['unique'] = %s, ['useable'] = %s, ['shouldClose'] = %s, ['description'] = '%s'},",
                 key, key, item.label, item.weight, item?.client?.image or key .. 'png', not item.stack, true, item.close, item.description
             )
+            imagewithoutpng = item?.client?.image and item.client.image:gsub(".png", "")
+            shouldRenderImage = imagewithoutpng and imagewithoutpng ~= key
             oxInventory[key] = string.format(
                 [[ 
                 ["%s"] = {
@@ -79,7 +85,9 @@ ItemsBuilder.Generate = function(invoking, outputPrefix, itemsTable, useQB)
                     %s
                 }, ]],
                 key, item.label, item.description, item.weight, item.stack, item.close,
-                item?.client?.image and string.format("image = '%s'", item.client.image) or ""
+                shouldRenderImage and item?.client?.image and string.format( [[client = {
+                        image = '%s'
+                    }]], item.client.image) or ""
             )
         end
     end
