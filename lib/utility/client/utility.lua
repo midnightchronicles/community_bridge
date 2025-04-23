@@ -125,7 +125,7 @@ end
 ---@param model string | number
 ---@return boolean
 Utility.LoadModel = function(model)
-    if type(model) ~= 'number' then model = GetHashKey(model) end -- Use GetHashKey instead of joaat for client
+    if type(model) ~= 'number' then model = joaat(model) end -- Use GetHashKey instead of joaat for client
     if not IsModelValid(model) and not IsModelInCdimage(model) then return false end
     RequestModel(model)
     local count = 0
@@ -301,7 +301,7 @@ end
 ---@param model string | number
 ---@return number
 Utility.GetEntityHashFromModel = function(model)
-    if type(model) ~= 'number' then model = GetHashKey(model) end -- Use GetHashKey instead of joaat for client
+    if type(model) ~= 'number' then model = joaat(model) end -- Use GetHashKey instead of joaat for client
     return model
 end
 
