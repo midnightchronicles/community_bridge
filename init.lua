@@ -68,6 +68,7 @@ Bridge.RegisterModule("ReboundEntities", cLib.ReboundEntities)
 Bridge.RegisterModule("LA", cLib.LA)
 Bridge.RegisterModule("Perlin", cLib.Perlin)
 Bridge.RegisterModule("Actions", cLib.Actions)
+Bridge.RegisterModule("Cache", cLib.Cache)
 
 
 exports('Bridge', function()
@@ -83,6 +84,7 @@ Bridge.RegisterModule("Logs", cLib.Logs)
 Bridge.RegisterModule("ItemsBuilder", cLib.ItemsBuilder)
 Bridge.RegisterModule("LootTables", cLib.LootTables)
 Bridge.RegisterModule("Version", Version)
+Bridge.RegisterModule("ServerEntity", cLib.ServerEntity)
 
 
 --    ▄▀▀ █   █ ██▀ █▄ █ ▀█▀ 
@@ -111,7 +113,8 @@ Bridge.RegisterModule("PlaceableObject", cLib.PlaceableObject)
 Bridge.RegisterModule("Point", cLib.Point)
 Bridge.RegisterModule("Object", cLib.Object)
 Bridge.RegisterModule("Particle", cLib.Particle)
-
+Bridge.RegisterModule("ClientEntity", cLib.ClientEntity)
+Bridge.RegisterModule("ClientEntityActions", cLib.ClientEntityActions)
 
 -- Fill the bridge tables with player data.
 function FillBridgeTables()

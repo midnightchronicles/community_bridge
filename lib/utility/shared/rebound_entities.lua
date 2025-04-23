@@ -175,7 +175,7 @@ if isServer then return ReboundEntities end
 
 function ReboundEntities.LoadModel(model)
     assert(model, "Model is nil")
-    model = type(model) == "number" and model or GetHashKey(model)
+    model = type(model) == "number" and model or GetHashKey(model) -- Corrected to GetHashKey
     RequestModel(model)
     for i = 1, 100 do
         if HasModelLoaded(model) then return model end
