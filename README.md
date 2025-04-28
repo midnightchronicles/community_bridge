@@ -1,7 +1,7 @@
 # 🌉 Community Bridge  
 **By The Order of the Sacred Framework**
 
-Welcome to **Community Bridge**, a modular, beginner-friendly collection of tools and systems designed to simplify and unify development. Built with love and maintained by the community, this framework aims to make scripting easier, cleaner, and more accessible for everyone.
+Welcome to **Community Bridge**, a modular, beginner-friendly collection of tools and systems designed to simplify and unify development. Built with love and maintained by the community, this bridge aims to make scripting easier, cleaner, and more accessible for everyone.
 
 ---
 
