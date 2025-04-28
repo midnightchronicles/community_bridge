@@ -9,18 +9,20 @@ Framework.GetFrameworkName = function()
     return 'es_extended'
 end
 
----comment
+---This will return a table of the players data, this is an internal table and should not be used.
 ---@return table
 Framework.GetPlayerData = function()
     return ESX.PlayerData
 end
 
+---This will return a table of all the jobs in the framework.
+---@return table
 Framework.GetFrameworkJobs = function()
     local jobs = lib.callback.await('community_bridge:Callback:GetFrameworkJobs', false)
     return jobs
 end
 
----comment
+---This will return the players birth date
 ---@return string
 Framework.GetPlayerDob = function()
     local playerData = ESX.GetPlayerData()
@@ -28,11 +30,14 @@ Framework.GetPlayerDob = function()
     return dob
 end
 
+---This will return the players metadata for the specified metadata key.
+---@param metadata string
+---@return table | nil
 Framework.GetPlayerMetaData = function(metadata)
     return ESX.GetPlayerData().metadata[metadata]
 end
 
----comment
+---This will prompt the user with a notification message
 ---@param message string
 ---@param type string
 ---@param time number
@@ -41,14 +46,28 @@ Framework.Notify = function(message, type, time)
     return ESX.ShowNotification(message, type, time)
 end
 
----comment
+---Will Display the help text message on the screen
+---@param message string
+---@param _ unknown
+---@return nil
+Framework.ShowHelpText = function(message, _)
+    return exports['esx_textui']:TextUI(message, "info")
+end
+
+---This will hide the help text message on the screen
+---@return nil
+Framework.HideHelpText = function()
+    return exports['esx_textui']:HideUI()
+end
+
+---This will return the players identifier
 ---@return string
 Framework.GetPlayerIdentifier = function()
     local playerData = ESX.GetPlayerData()
     return playerData.identifier
 end
 
----comment
+---This will return the players first name, and the last name
 ---@return string
 ---@return string
 Framework.GetPlayerName = function()
@@ -56,7 +75,7 @@ Framework.GetPlayerName = function()
     return playerData.firstName, playerData.lastName
 end
 
----comment
+---This will return the players job name, job label, job grade label and job grade level
 ---@return string
 ---@return string
 ---@return string
@@ -66,7 +85,7 @@ Framework.GetPlayerJob = function()
     return playerData.job.name, playerData.job.label, playerData.job.grade_label, playerData.job.grade
 end
 
----comment
+---This will return a boolean if the player has the item in their inventory
 ---@param item string
 ---@return boolean
 Framework.HasItem = function(item)
@@ -74,14 +93,14 @@ Framework.HasItem = function(item)
 	return hasItem > 0 and true or false
 end
 
----comment
+---This will return a table of the players inventory
 ---@return table
 Framework.GetPlayerInventory = function()
     local playerData = ESX.GetPlayerData()
     return playerData.inventory
 end
 
----comment
+---This will return a number of the item in the players inventory
 ---@param item string
 ---@return number
 Framework.GetItemCount = function(item)
@@ -90,7 +109,7 @@ Framework.GetItemCount = function(item)
     return inventory[item].count or 0
 end
 
----comment
+---This will return a boolean if the player is dead
 ---@return boolean
 Framework.GetIsPlayerDead = function()
     local playerData = ESX.GetPlayerData()

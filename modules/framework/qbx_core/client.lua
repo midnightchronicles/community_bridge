@@ -22,6 +22,20 @@ Framework.GetPlayerDob = function()
     return playerData.charinfo.birthdate
 end
 
+---Will Display the help text message on the screen
+---@param message string
+---@param _ unknown
+---@return nil
+Framework.ShowHelpText = function(message, _)
+    return print("Community_bridge:WARN: ShowHelpText is not implemented for this framework, please set the helptext module to hide the help text.")
+end
+
+---This will hide the help text message on the screen
+---@return nil
+Framework.HideHelpText = function()
+    return print("Community_bridge:WARN: HideHelpText is not implemented for this framework, please set the helptext module to hide the help text.")
+end
+
 Framework.GetPlayerMetaData = function(metadata)
     local playerData = QBox.GetPlayerData()
     return playerData.metadata[metadata]
