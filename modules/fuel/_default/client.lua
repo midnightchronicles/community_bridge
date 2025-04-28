@@ -3,7 +3,7 @@ Fuel = Fuel or {}
 
 ---This will get the name of the Fuel being used (if a supported Fuel).
 ---@return string
-Fuel.GetFuelName = function()
+Fuel.GetResourceName = function()
     return 'default'
 end
 ---This will get the fuel level of the vehicle.
