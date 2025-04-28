@@ -5,7 +5,7 @@ if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (c
 
 local targetDebug = false
 local function detectDebugEnabled()
-    if BridgeClientConfig.DebugLevel == 2 then
+    if BridgeSharedConfig.DebugLevel == 2 then
         targetDebug = true
     end
 end

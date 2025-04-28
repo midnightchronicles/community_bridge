@@ -36,7 +36,7 @@ function OxToQBInput(data)
             name = i,
             type = OxTypeToQBType(v.type),
             isRequired = v.required,
-            placeholder = v.default,
+            default = v.default or "",
         }
         if v.type == "select" then
             input.text = ""
@@ -47,8 +47,12 @@ function OxToQBInput(data)
         elseif v.type == "checkbox" then
             input.text = ""
             input.options = {}
-            for k, j in pairs(v.options) do
-                table.insert(input.options, {value = j.value, text = j.label})
+            if v.options then -- Checks if options varible is valid so checkboxes are bundled together (not used by ox for each checkpoint)
+                for k, j in pairs(v.options) do
+                    table.insert(input.options, {value = j.value, text = j.label, checked = j.checked}) -- added checked option (used to show box as ticked or not)
+                end
+            else -- If options is not valid or people pass a single checkbox then it will be a single checkbox per entry
+                table.insert(input.options, {value = v.value, text = v.label, checked = v.checked}) -- Kept value just incase it's used for other stuffs
             end
         end
         table.insert(returnData, input)
