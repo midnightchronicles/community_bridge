@@ -1,6 +1,4 @@
 BridgeClientConfig = {}
-BridgeClientConfig.NotifySystem      = "ox"         -- [ ox | qb | esx | mythic | pNotify | t-notify | wasabi | lab | custom ]
-BridgeClientConfig.ShowHelpText      = "ox"         -- [ ox | qb | jg | okok | cd | lab | custom ]
 BridgeClientConfig.InputSystem       = "auto"       -- [ auto | ox | qb ]
 BridgeClientConfig.MenuSystem        = "auto"       -- [ auto | ox_lib | qb-menu ]
 BridgeClientConfig.ProgressBarSystem = "auto"       -- [ auto | ox_lib | progressbar ]

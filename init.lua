@@ -47,6 +47,7 @@ end
 Bridge.RegisterModule("Framework", Framework)
 Bridge.RegisterModule("Inventory", Inventory)
 Bridge.RegisterModule("Notify", Notify)
+Bridge.RegisterModule("HelpText", HelpText)
 Bridge.RegisterModule("Clothing", Clothing)
 Bridge.RegisterModule("Language", Language)
 Bridge.RegisterModule("Doorlock", Doorlock)
