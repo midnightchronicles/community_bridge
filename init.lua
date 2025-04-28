@@ -69,6 +69,7 @@ Bridge.RegisterModule("LA", cLib.LA)
 Bridge.RegisterModule("Perlin", cLib.Perlin)
 Bridge.RegisterModule("Actions", cLib.Actions)
 Bridge.RegisterModule("Cache", cLib.Cache)
+Bridge.RegisterModule("Skills", Skills)
 
 
 exports('Bridge', function()
