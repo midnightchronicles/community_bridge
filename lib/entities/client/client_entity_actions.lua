@@ -1,101 +1,135 @@
-local LA = LA or Require("lib/utility/shared/la.lua")
-local ActionThreads = {} -- Store running action threads { [entityId] = thread }
+
 
 ClientEntityActions = {}
+ClientEntityActions.ActionThreads = {} -- Store running action threads { [entityId] = thread }
+ClientEntityActions.ActionQueue = {} -- Stores pending actions { [entityId] = {{name="ActionName", args={...}}, ...} }
+ClientEntityActions.IsActionRunning  = {} -- Tracks if an action is currently running { [entityId] = boolean }
+ClientEntityActions.RegisteredActions  = {} -- New: Registry for action implementations { [actionName] = function(entityData, ...) }
+-- Forward declaration
 
---- Makes a ped entity walk to specified coordinates.
--- @param entityData table The entity data containing the spawned ped handle.
--- @param coords vector3 The target coordinates.
--- @param speed number Movement speed.
--- @param timeout number Timeout in ms.
-function ClientEntityActions.WalkTo(entityData, coords, speed, timeout)
-    local entity = entityData.spawned
-    if not entity or not DoesEntityExist(entity) or not IsEntityAPed(entity) then return end
 
-    -- Clear any existing task for this entity
-    if ActionThreads[entityData.id] then
-        -- Potentially stop the old thread if needed, depending on desired behavior
-        ClearPedTasks(entity)
+--- Processes the next action in the queue for a given entity.
+-- @param entityId string|number The ID of the entity.
+function ClientEntityActions.ProcessNextAction(entityId)
+    if ClientEntityActions.IsActionRunning [entityId] then return end -- Already running something
+    print(string.format("[ClientEntityActions] Processing next action for entity %s", entityId))
+    local queue = ClientEntityActions.ActionQueue[entityId]
+    if not queue or #queue == 0 then return end -- Queue is empty
+
+    local nextAction = table.remove(queue, 1) -- Dequeue (FIFO)
+    local entityData = ClientEntity.Get(entityId) -- Assumes ClientEntity is accessible
+    -- Check if entity is still valid and spawned before starting next action
+    if not entityData or not entityData.spawned or not DoesEntityExist(entityData.spawned) then
+        -- Entity despawned while idle, clear queue and do nothing
+        ClientEntityActions.ActionQueue[entityId] = nil
+        return
     end
 
-    local thread = CreateThread(function()
-        TaskGoToCoordAnyMeans(entity, coords.x, coords.y, coords.z, speed or 1.0, 0, false, 786603, timeout or -1)
-        -- Wait until task is completed or entity is despawned
-        while GetScriptTaskStatus(entity, 288358301) ~= 7 and entityData.spawned == entity and DoesEntityExist(entity) do
-            Wait(500)
-        end
-        ActionThreads[entityData.id] = nil -- Clear thread reference when done/stopped
-    end)
-    ActionThreads[entityData.id] = thread
+    -- Look up the action in the registry
+    local actionFunc = ClientEntityActions.RegisteredActions [nextAction.name]
+    print(string.format("[ClientEntityActions] Action '%s' dequeued for entity %s", nextAction.name, entityId))
+    if actionFunc then
+        -- print(string.format("[ClientEntityActions] Starting action '%s' for entity %s", nextAction.name, entityId))
+        ClientEntityActions.IsActionRunning [entityId] = true
+        -- Call the registered function
+        actionFunc(entityData, table.unpack(nextAction.args))
+    else
+        print(string.format("[ClientEntityActions] Unknown action '%s' dequeued for entity %s", nextAction.name, entityId))
+        -- Skip unknown action and try the next one immediately
+        ClientEntityActions.ProcessNextAction(entityId)
+    end
+end
+--- Registers a custom action implementation.
+-- The action function should handle its own logic, including threading if needed,
+-- and MUST call ClientEntityActions.ProcessNextAction(entityData.id) when it completes or fails,
+-- after setting ClientEntityActions.IsActionRunning [entityData.id] = false.
+-- @param actionName string The name used to trigger this action.
+-- @param actionFunc function The function to execute. Signature: function(entityData, ...)
+function ClientEntityActions.RegisterAction(actionName, actionFunc)
+    if ClientEntityActions.RegisteredActions [actionName] then
+        print(string.format("[ClientEntityActions] WARNING: Overwriting registered action '%s'", actionName))
+    end
+    assert(type(actionName) == "string", "actionName must be a string")
+    assert(type(actionFunc) == "function", "actionFunc must be a function")
+    print(string.format("[ClientEntityActions] Registered action: %s", actionName))
+    ClientEntityActions.RegisteredActions [actionName] = actionFunc
+    -- print(string.format("[ClientEntityActions] Registered action: %s", actionName))
 end
 
---- Lerps an entity's position over time.
--- @param entityData table The entity data containing the spawned entity handle.
--- @param targetCoords vector3 The target coordinates.
--- @param duration number Duration of the lerp in milliseconds.
--- @param easingType string (Optional) Easing function name from LA library (e.g., "linear", "sine").
--- @param easingDirection string (Optional) "in", "out", or "inout".
-function ClientEntityActions.LerpTo(entityData, targetCoords, duration, easingType, easingDirection)
-    local entity = entityData.spawned
-    if not entity or not DoesEntityExist(entity) then return end
-
-    local startCoords = GetEntityCoords(entity)
-    local startTime = GetGameTimer()
-    easingType = easingType or "linear"
-    easingDirection = easingDirection or "inout"
-
-    -- Clear any existing lerp for this entity
-    if ActionThreads[entityData.id] then
-        -- Stop the old thread if needed
+--- Queues an action for an entity. Starts processing if idle.
+-- @param entityData table The entity data.
+-- @param actionName string The name of the action.
+-- @param ... any Arguments for the action.
+function ClientEntityActions.QueueAction(entityData, actionName, ...)
+    local entityId = entityData.id
+    if not ClientEntityActions.ActionQueue[entityId] then
+        ClientEntityActions.ActionQueue[entityId] = {}
     end
 
-    local thread = CreateThread(function()
-        while GetGameTimer() < startTime + duration do
-            -- Check if entity still exists and is the same one we started with
-            if not entityData.spawned or entityData.spawned ~= entity or not DoesEntityExist(entity) then
-                break -- Stop if entity despawned or changed
-            end
+    local actionArgs = {...}
+    table.insert(ClientEntityActions.ActionQueue[entityId], { name = actionName, args = actionArgs })
+    -- print(string.format("[ClientEntityActions] Queued action '%s' for entity %s. Queue size: %d", actionName, entityId, #ClientEntityActions.ActionQueue[entityId]))
 
-            local elapsed = GetGameTimer() - startTime
-            local t = LA.Clamp(elapsed / duration, 0.0, 1.0)
-            local easedT = LA.EaseInOut(t, easingType) -- Default to EaseInOut if direction not specified or invalid
-
-            if easingDirection == "in" then
-                easedT = LA.EaseIn(t, easingType)
-            elseif easingDirection == "out" then
-                easedT = LA.EaseOut(t, easingType)
-            end
-
-            local currentPos = LA.LerpVector(startCoords, targetCoords, easedT)
-            SetEntityCoordsNoOffset(entity, currentPos.x, currentPos.y, currentPos.z, false, false, false)
-            Wait(0)
-        end
-
-        -- Ensure final position if completed fully
-        if entityData.spawned == entity and DoesEntityExist(entity) then
-             SetEntityCoordsNoOffset(entity, targetCoords.x, targetCoords.y, targetCoords.z, false, false, false)
-        end
-        ActionThreads[entityData.id] = nil -- Clear thread reference
-    end)
-    ActionThreads[entityData.id] = thread
+    -- If the entity isn't currently doing anything, start processing immediately
+    if not ClientEntityActions.IsActionRunning [entityId] then
+        ClientEntityActions.ProcessNextAction(entityId)
+    end
 end
-
---- Stops any ongoing action for a specific entity.
+--- Stops the current action and clears the queue for a specific entity.
 -- @param entityId string|number The ID of the entity.
 function ClientEntityActions.StopAction(entityId)
-    if ActionThreads[entityId] then
-        -- Stopping Lua threads directly isn't safe/possible.
-        -- Instead, rely on checks within the thread loops (e.g., entityData.spawned check)
-        -- For peds, we can clear tasks.
-        local entityData = ClientEntity.Get(entityId) -- Assumes ClientEntity is accessible or passed in
-        if entityData and entityData.spawned and DoesEntityExist(entityData.spawned) then
-            if IsEntityAPed(entityData.spawned) then
-                ClearPedTasks(entityData.spawned)
-            end
-            -- Other entity types might need different stop logic if applicable
-        end
-        ActionThreads[entityId] = nil -- Clear reference to let the thread terminate naturally
+    -- print(string.format("[ClientEntityActions] Stopping all actions for entity %s", entityId))
+    ClientEntityActions.ActionQueue[entityId] = nil -- Clear the queue
+    ClientEntityActions.IsActionRunning [entityId] = false -- Mark as not running (this will stop loops in threads)
+
+    -- Stop current task/thread if applicable
+    if ClientEntityActions.ActionThreads[entityId] then
+        -- Lua threads stop themselves based on ClientEntityActions.IsActionRunning  flag
+        ClientEntityActions.ActionThreads[entityId] = nil
     end
+
+    -- Specific task clearing for peds
+    local entityData = ClientEntity.Get(entityId)
+    if entityData and entityData.spawned and DoesEntityExist(entityData.spawned) then
+        if IsEntityAPed(entityData.spawned) then
+            ClearPedTasksImmediately(entityData.spawned) -- Use Immediately for forceful stop
+        end
+        -- Other entity types might need different stop logic
+    end
+end
+--- Skips the current action and starts the next one in the queue, if any.
+-- @param entityId string|number The ID of the entity.
+function ClientEntityActions.SkipAction(entityId)
+    if not ClientEntityActions.IsActionRunning [entityId] then
+        -- print(string.format("[ClientEntityActions] SkipAction called for %s, but no action running.", entityId))
+        return -- Nothing to skip
+    end
+    -- print(string.format("[ClientEntityActions] Skipping current action for entity %s", entityId))
+
+    ClientEntityActions.IsActionRunning [entityId] = false -- Mark as not running (this will stop loops in threads)
+
+    -- Stop current task/thread if applicable
+    if ClientEntityActions.ActionThreads[entityId] then
+        ClientEntityActions.ActionThreads[entityId] = nil
+    end
+
+    local entityData = ClientEntity.Get(entityId)
+    if entityData and entityData.spawned and DoesEntityExist(entityData.spawned) then
+        if IsEntityAPed(entityData.spawned) then
+            ClearPedTasksImmediately(entityData.spawned)
+        end
+    end
+
+    -- Immediately try to process the next action
+    ClientEntityActions.ProcessNextAction(entityId)
+end
+-- Add server-callable functions for Stop and Skip
+function ClientEntityActions.Stop(entityData)
+    ClientEntityActions.StopAction(entityData.id)
+end
+
+function ClientEntityActions.Skip(entityData)
+    ClientEntityActions.SkipAction(entityData.id)
 end
 
 return ClientEntityActions

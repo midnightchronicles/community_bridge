@@ -58,13 +58,15 @@ end
 -- @param entityId string|number The ID of the entity.
 -- @param actionName string The name of the action to trigger (must match a function in ClientEntityActions).
 -- @param ... any Additional arguments for the action function.
-function ServerEntity.TriggerAction(entityId, actionName, ...)
+function ServerEntity.TriggerAction(entityId, actionName, endPosition, ...)
+    print("Triggering action: ", entityId, actionName, ...)
     local entity = Entities[entityId]
     if not entity then
         print(string.format("[ServerEntity] Attempted to trigger action '%s' on non-existent entity %s", actionName, entityId))
         return
     end
-    TriggerClientEvent("community_bridge:client:TriggerEntityAction", -1, entityId, actionName, ...)
+    print(string.format("[ServerEntity] Triggering action '%s' for entity %s", actionName, entityId))
+    TriggerClientEvent("community_bridge:client:TriggerEntityAction", -1, entityId, actionName, endPosition, ...)
 end
 
 function ServerEntity.GetAll()

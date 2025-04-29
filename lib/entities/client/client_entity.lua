@@ -1,7 +1,7 @@
 Utility = Utility or Require("lib/utility/client/utility.lua")
 Ids = Ids or Require("lib/utility/shared/ids.lua")
 Point = Point or Require("lib/points/client/points.lua")
-ClientEntityActions = ClientEntityActions or Require("lib/entities/client/client_entity_actions.lua") -- Added
+ClientEntityActions = ClientEntityActions or Require("lib/entities/client/client_entity_actions_ext.lua") -- Added
 
 local Entities = {} -- Stores entity data received from server
 ClientEntity = {} -- Renamed from BaseEntity
@@ -52,7 +52,7 @@ local function RemoveEntity(entityData)
     entityData = entityData and entityData.args
     if not entityData then return end -- Added safety check
 
-    ClientEntityActions.StopAction(entityData.id) -- Stop any ongoing action before despawning
+    ClientEntityActions.StopAction(entityData.id) -- Stop any ongoing action AND clear queue before despawning
 
     if entityData.spawned and DoesEntityExist(entityData.spawned) then
         local entityHandle = entityData.spawned
@@ -75,6 +75,7 @@ function ClientEntity.Register(entityData)
     -- print(string.format("[ClientEntity] Registering %s entity %s", entityData.entityType, entityData.id))
 
     -- Use Point system for proximity checks
+    print(string.format("[ClientEntity] Registering entity %s at %s", entityData.id, json.encode(entityData)))
     Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, function() end)
 end
 
@@ -171,18 +172,21 @@ end)
 -- New handler for entity actions
 RegisterNetEvent("community_bridge:client:TriggerEntityAction", function(entityId, actionName, ...)
     local entityData = Entities[entityId]
-    -- Check if entity exists locally AND is currently spawned
-    if entityData and entityData.spawned and DoesEntityExist(entityData.spawned) then
-        local actionFunc = ClientEntityActions[actionName]
-        if actionFunc and type(actionFunc) == 'function' then
-            -- print(string.format("[ClientEntity] Executing action '%s' for entity %s", actionName, entityId))
-            actionFunc(entityData, ...) -- Pass entityData and any additional arguments
+    print("here", json.encode(entityData))
+    -- Check if entity exists locally (it doesn't need to be spawned to queue actions)
+    if entityData then
+        if actionName == "Stop" then
+            ClientEntityActions.StopAction(entityId)
+        elseif actionName == "Skip" then
+            ClientEntityActions.SkipAction(entityId)
         else
-            print(string.format("[ClientEntity] Received unknown action '%s' for entity %s", actionName, entityId))
+            print(string.format("[ClientEntity] Triggering action '%s' for entity %s", actionName, entityId))
+            local currentAction = ClientEntityActions.ActionQueue[entityId] and ClientEntityActions.ActionQueue[entityId][1]
+            ClientEntityActions.QueueAction(entityData, actionName, ...)
         end
     -- else
-        -- Optional: Log if action received but entity not spawned locally
-        -- print(string.format("[ClientEntity] Received action '%s' for entity %s, but entity not spawned locally.", actionName, entityId))
+        -- Optional: Log if action received but entity doesn't exist locally at all
+        -- print(string.format("[ClientEntity] Received action '%s' for non-existent entity %s.", actionName, entityId))
     end
 end)
 

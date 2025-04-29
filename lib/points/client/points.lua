@@ -236,6 +236,16 @@ function Point.Get(id)
     return ActivePoints[id]
 end
 
+function Point.UpdateCoords(id, coords)
+    local point = ActivePoints[id]
+    if point then
+        point.coords = coords
+        local oldCellKey = point.cellKey
+        point.cellKey = Point.GetCellKey(coords)
+        Point.UpdateInGrid(point, oldCellKey)
+    end
+end
+
 ---Returns all points
 ---@return table
 function Point.GetAll()
