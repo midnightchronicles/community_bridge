@@ -365,16 +365,15 @@ Utility.RemovePoint = function(pointID)
 end
 
 AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() then
-        for _, blip in pairs(blipIDs) do
-            if blip and DoesBlipExist(blip) then
-                RemoveBlip(blip)
-            end
+    if resource ~= GetCurrentResourceName() then return end
+    for _, blip in pairs(blipIDs) do
+        if blip and DoesBlipExist(blip) then
+            RemoveBlip(blip)
         end
-        for _, ped in pairs(spawnedPeds) do
-            if ped and DoesEntityExist(ped) then
-                DeleteEntity(ped)
-            end
+    end
+    for _, ped in pairs(spawnedPeds) do
+        if ped and DoesEntityExist(ped) then
+            DeleteEntity(ped)
         end
     end
 end)
