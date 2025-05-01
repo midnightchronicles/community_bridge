@@ -45,7 +45,7 @@ cLib = {
     Math = Math or Require("lib/utility/shared/math.lua"),
     LA = LA or Require("lib/utility/shared/la.lua"),
     Perlin = Perlin or Require("lib/utility/shared/perlin.lua"),
-    -- Actions = Actions or Require("lib/shared/actions.lua"),
+    -- Action = Action or Require("lib/entities/shared/actions.lua"),
 }
 
 exports('cLib', cLib)
@@ -56,6 +56,8 @@ cLib.SQL = SQL or Require("lib/sql/server/sqlHandler.lua")
 cLib.Logs = Logs or Require("lib/logs/server/logs.lua")
 cLib.ItemsBuilder = ItemsBuilder or Require("lib/generators/server/ItemsBuilder.lua")
 cLib.LootTables = LootTables or Require("lib/generators/server/lootTables.lua")
+cLib.Cache = Cache or Require("lib/cache/shared/cache.lua")
+cLib.ServerEntity = ServerEntity or Require("lib/entities/server/server_entity.lua")
 
 if IsDuplicityVersion() then return cLib end
 ::client::
@@ -68,6 +70,8 @@ cLib.PlaceableObject = PlaceableObject or Require("lib/placers/client/placeable_
 cLib.Raycast = Raycast or Require("lib/raycast/client/raycast.lua")
 cLib.Point = Point or Require("lib/points/client/points.lua")
 cLib.Particle = Particle or Require("lib/particles/client/particles.lua")
-cLib.Object = Object or Require("lib/entities/client/entity_object.lua")
+cLib.Cache = Cache or Require("lib/cache/client/cache.lua")
+cLib.ClientEntity = ClientEntity or Require("lib/entities/client/client_entity.lua")
+cLib.ClientEntityActions = ClientEntityActions or Require("lib/entities/client/client_entity_actions.lua")
 
 return cLib

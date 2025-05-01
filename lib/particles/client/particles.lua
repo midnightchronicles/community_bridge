@@ -27,20 +27,30 @@ end
 --- @return number|nil ptfxHandle -- The handle of the particle effect, or nil if it failed to create.
 function Particle.Create(dict, ptfx, pos, rot, scale, color, looped, loopLength)
     LoadPtfxAsset(dict)
-    CreateThread(function()
-        UseParticleFxAssetNextCall(dict)
-        SetParticleFxNonLoopedColour(color.x, color.y, color.z)
-        if looped then
-            StartParticleFxLoopedAtCoord(ptfx, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, false, false, false, false)
+    UseParticleFxAssetNextCall(dict)
+    SetParticleFxNonLoopedColour(color.x, color.y, color.z)
+    local particle = nil
+    if looped then
+        particle = StartParticleFxLoopedAtCoord(ptfx, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, false, false, false, false)
+        CreateThread(function()
             if loopLength then 
                 Wait(loopLength)
-                RemoveParticleFxInRange(pos.x, pos.y, pos.z, 0.01)
+                Particle.Remove(particle)
             end
-        else
-            StartParticleFxNonLoopedAtCoord(ptfx, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, false, false, false, false)
-        end
-        RemoveNamedPtfxAsset(ptfx)
-    end)
+        end)
+    else
+        particle = StartParticleFxNonLoopedAtCoord(ptfx, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, false, false, false, false)
+    end
+
+    return particle
+end
+
+function Particle.Remove(particle)
+    if not particle then return end
+    StopParticleFxLooped(particle, false)
+    RemoveParticleFx(particle, false)
+    RemoveNamedPtfxAsset(particle)
+
 end
 
 function Particle.CreateOnEntity(dict, ptfx, entity, offset, rot, scale, color, looped, loopLength)

@@ -125,7 +125,7 @@ end
 ---@param model string | number
 ---@return boolean
 Utility.LoadModel = function(model)
-    if type(model) ~= 'number' then model = joaat(model) end
+    if type(model) ~= 'number' then model = joaat(model) end -- Use GetHashKey instead of joaat for client
     if not IsModelValid(model) and not IsModelInCdimage(model) then return false end
     RequestModel(model)
     local count = 0
@@ -301,7 +301,7 @@ end
 ---@param model string | number
 ---@return number
 Utility.GetEntityHashFromModel = function(model)
-    if type(model) ~= 'number' then model = joaat(model) end
+    if type(model) ~= 'number' then model = joaat(model) end -- Use GetHashKey instead of joaat for client
     return model
 end
 
@@ -365,16 +365,15 @@ Utility.RemovePoint = function(pointID)
 end
 
 AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() then
-        for _, blip in pairs(blipIDs) do
-            if blip and DoesBlipExist(blip) then
-                RemoveBlip(blip)
-            end
+    if resource ~= GetCurrentResourceName() then return end
+    for _, blip in pairs(blipIDs) do
+        if blip and DoesBlipExist(blip) then
+            RemoveBlip(blip)
         end
-        for _, ped in pairs(spawnedPeds) do
-            if ped and DoesEntityExist(ped) then
-                DeleteEntity(ped)
-            end
+    end
+    for _, ped in pairs(spawnedPeds) do
+        if ped and DoesEntityExist(ped) then
+            DeleteEntity(ped)
         end
     end
 end)

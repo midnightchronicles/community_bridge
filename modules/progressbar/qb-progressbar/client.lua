@@ -45,6 +45,7 @@ end
 ---@param cb any
 ---@param qbFormat boolean
 ---@return success boolean
+---@diagnostic disable-next-line: duplicate-set-field
 function ProgressBar.Open(options, cb, qbFormat)
     if not exports['progressbar'] then return false end
 

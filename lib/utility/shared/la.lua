@@ -258,7 +258,7 @@ LA.EaseVector = function(inout, a, b, t, easingType)
   elseif inout == "inout" then
       return LA.EaseInOutVector(a, b, t, easingType)
   end
-  Assert(false, "Invalid type")
+  assert(false, "Invalid type")
 end
 
 LA.EaseOnAxis = function(inout, a, b, t, easingType, axis)
@@ -293,15 +293,15 @@ LA.DistanceCheck = function(pointA, pointB)
 end
 
 LA.Chance = function(chance)
-  Assert(chance, "Chance must be passed")
-  Assert(type(chance) == "number", "Chance must be a number")
-  Assert(chance >= 0 and chance <= 100, "Chance must be between 0 and 100")
+  assert(chance, "Chance must be passed")
+  assert(type(chance) == "number", "Chance must be a number")
+  assert(chance >= 0 and chance <= 100, "Chance must be between 0 and 100")
   return math.random(1, 100) <= chance
 end
 
 LA.Vector4To3 = function(vector4)
-  Assert(vector4, "Vector4 must be passed")
-  Assert(type(vector4) == "vector4", "Vector4 must be a vector4")
+  assert(vector4, "Vector4 must be passed")
+  assert(type(vector4) == "vector4", "Vector4 must be a vector4")
   return vector3(vector4.x, vector4.y, vector4.z), vector4.w
 end
 

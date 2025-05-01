@@ -5,7 +5,7 @@ if GetResourceState('ox_target') == 'started' then return end -- this is for old
 
 local targetDebug = false
 local function detectDebugEnabled()
-    if BridgeClientConfig.DebugLevel == 2 then
+    if BridgeSharedConfig.DebugLevel == 2 then
         targetDebug = true
     end
 end

@@ -1,44 +1,75 @@
-# community_bridge
+# 🌉 Community Bridge  
+**By The Order of the Sacred Framework**
 
-## By The Order of the Sacred Framework
+Welcome to **Community Bridge**, a modular, beginner-friendly collection of tools and systems designed to simplify and unify development. Built with love and maintained by the community, this bridge aims to make scripting easier, cleaner, and more accessible for everyone.
 
-The **Order of the Sacred Framework**, a fellowship born of noble intention and quiet passion, has crafted a bridge to simplify the journey of all who dare venture into the world of development. This bridge, much like a well-worn path through the woods, is modular in design, offering an array of systems and tools that serve the wanderer and the scholar alike:
+---
 
-- Clothing Systems
-- Dispatch Systems
-- Doorlock Systems
-- Frameworks
-- Fuel Systems
-- Input Systems
-- Inventory Systems
-- Locale Systems
-- Vehicle Key Systems
-- Management Systems
-- Math Library
-- Menu Systems
-- Notify Systems
-- Phone Systems
-- Progress Bars
-- Target Systems
-- Weather Systems
-- A vast trove of helpful functions
-- And many more...
+## 🔧 Features
 
-As with any grand creation, this bridge also includes utility functions, some of which may be of great use, while others may seem like hidden treasures, waiting to be discovered by those with keen eyes.
+This bridge includes a wide range of plug-and-play systems, built with maximum compatibility in mind:
 
-This bridge proudly incorporates snippets from the wide and varied community, some of which are crafted under the honorable **GPLv3** license. All contributions are duly credited in the **Attributions** file, ensuring we respect the deeds of those who came before us and maintain our adherence to the principles of the **GPLv3**.
+- **Inventory Module** – Designed to work with `ox_inventory`, `codem-inventory`, `core_inventory`, `jpr-inventory`, `origin_inventory`, `ps-inventory`, `qb-inventory`, `qs-inventory`, and `tgiann-inventory`. Includes an **item output generator** supporting `ox_inventory`, `qb-new`, and `qb-old` formats.
+- **Dispatch Module** – Compatible with `lb-tablet`, `ps-dispatch`, `qs-dispatch`, `redutzu-mdt`, `tk_dispatch`, `linden_outlawalert`, `cd_dispatch`, `bub_mdt`, and includes a built-in fallback to ensure notifications always get through.
+- **Doorlock Module** – Supports `ox_doorlock`, `qb-doorlock`, `rcore_doorlock`, and `jacksams-doorlock`.
+- **Framework Module** – Full support for `qb`, `qbox`, and `esx` with built-in fallbacks for maximum compatibility.
+- **Fuel System Module** – Works seamlessly with all major fuel systems.
+- **HelpText & Notify Modules** – Designed to support all popular systems with framework-level fallbacks.
+- **Input Module** – Compatible with both `qb-input` and `ox_lib` input methods.
+- **Management Module** – Works with most major management system variants.
+- **Menu Module** – Accepts both `qb` and `ox_lib` formats interchangeably.
+- **Phone Module** – Compatible with all major phone systems.
+- **Progress Bar Module** – Supports most commonly used progress bar resources.
+- **Shops Module** – An in-house shops system, simple to use and easy to expand.
+- **Skills Module** – Supports most skills systems in the ecosystem.
+- **Targeting Module** – Built to work with `qb-target`, `ox_target`, and `sleepless-interact`.
+- **Vehicle Key Module** – Compatible with all major vehicle key systems.
+- **Version Checker Module** – Built to handle version checks for both free and paid scripts across any setup.
+- **Weather Module** – Fully compatible with most weather control resources.
 
-A **labor of love** it has been, this bridge, forged with a deep **passion for scripts** and a desire to unite the scattered folk of the development world. In the spirit of cooperation, it seeks to bring together those with differing preferences and ideas, creating something that is **entry-level**, **versatile**, and filled with **compatibility wrappers** for all the major resources. It also lays the groundwork for future resources that wish to cross its sturdy spans.
+Also includes:
+- Locale support  
+- Math utilities  
+- A rich collection of helper functions  
+- And more...
 
-This bridge, a curious blend of its own **library** and a tool of great utility, is full of **helper functions** that will guide you on your journey, making the most complex tasks simpler and more straightforward, like a trusty map in a foreign land.
+Whether you're building a full framework or just need utility features, **Community Bridge** is designed to make your workflow easier and more efficient.
 
-Crafted with care, the bridge is as **user-friendly** as a friendly hobbit’s home, catering to both beginners and seasoned travelers. It is a bridge of great adaptability, easily modified to suit the needs of those who walk across it.
+---
 
-This bridge will **not fall victim to the ego of any single individual**, for its foundation lies in the belief that any contribution of value to the community, if it adheres to the simple philosophy of **simplicity**, and ensures an easy path for all, is **welcome**.
+## 🤝 Community-Driven
 
-The aim, much like the hobbits' journey to Morridor, is to create a **free, open, community-driven bridge**, one that serves the needs of the many and welcomes all who wish to add their mark to the map.
+This project includes contributions and snippets from across the development community. Some modules are under the **GPLv3 license**, with proper credit given in the `Attributions` file.
 
+Our mission: to promote open collaboration, reduce friction between systems, and create a unified foundation for all developers—regardless of framework or experience.
 
-**Docs available At** https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework
+---
 
-**Join The Discord At** https://discord.gg/MukwBuJjP7
+## 🧰 Why Use Community Bridge?
+
+- ✅ Easy for beginners  
+- 🔄 Highly modular and extendable  
+- 🔌 Compatible with all major scripts and systems  
+- 🔧 Built-in compatibility wrappers  
+- 📦 Future-proof and easy to expand  
+- 🤝 Built with community-first values
+
+---
+
+## 📚 Documentation
+
+Read the full documentation here:  
+👉 [Our Gitbook Here](https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework)
+
+---
+
+## 💬 Join the Community
+
+Have questions, suggestions, or want to contribute? Join us on Discord:  
+👉 [Our Discord Here](https://discord.gg/MukwBuJjP7)
+
+---
+
+> “A bridge built not for one, but for all — strong, simple, and open.”
+
+---

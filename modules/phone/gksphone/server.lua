@@ -5,7 +5,8 @@ Phone = Phone or {}
 
 ---comment
 ---@param src number
----@return number||boolean
+---@return number| boolean
+---@diagnostic disable-next-line: duplicate-set-field
 Phone.GetPlayerPhone = function(src)
     return exports["gksphone"]:GetPhoneBySource(src) or false
 end
@@ -16,6 +17,7 @@ end
 ---@param title string
 ---@param message string
 ---@return boolean
+---@diagnostic disable-next-line: duplicate-set-field
 Phone.SendEmail = function(src, email, title, message)
     local data = {}
     data.sender = email

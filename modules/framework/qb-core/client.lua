@@ -49,10 +49,16 @@ Framework.Notify = function(message, type, time)
     TriggerEvent('QBCore:Notify', message, 'primary', time)
 end
 
+---Will Display the help text message on the screen
+---@param message string
+---@param _position unknown
+---@return nil
 Framework.ShowHelpText = function(message, _position)
     return exports['qb-core']:DrawText(message, _position)
 end
 
+---This will hide the help text message on the screen
+---@return nil
 Framework.HideHelpText = function()
     return exports['qb-core']:HideText()
 end

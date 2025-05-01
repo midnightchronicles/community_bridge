@@ -124,23 +124,6 @@ Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coo
     TriggerClientEvent('ox_inventory:openInventory', src, 'stash', 'stash_' .. id)
 end
 
----This will get the data about an item such as name, label, stack, weight, description and image.
----@param item string
----@return table
-Inventory.GetItemInfo = function(item)
-    local itemData = ox_inventory:Items(item)
-    if not itemData then return {} end
-    local repackedTable = {
-        name = itemData.name or "Missing Name",
-        label = itemData.label or "Missing Label",
-        stack = itemData.stack or "true",
-        weight = itemData.weight or "0",
-        description = itemData.description or "none",
-        image = itemData.client and itemData.client.image or Inventory.GetImagePath(item),
-    }
-    return repackedTable
-end
-
 ---This will set the metadata of an item in the inventory.
 ---@param src number
 ---@param item string
@@ -167,6 +150,7 @@ end
 ---@return string
 Inventory.GetImagePath = function(item)
     item = Inventory.StripPNG(item)
+    print(item)
     local file = LoadResourceFile("ox_inventory", string.format("web/images/%s.png", item))
     local imagePath = file and string.format("nui://ox_inventory/web/images/%s.png", item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"

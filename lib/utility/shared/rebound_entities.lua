@@ -162,11 +162,10 @@ RegisterNetEvent("playerJoining", function()
 end)
 
 AddEventHandler('onResourceStart', function(resource)
-    if resource == GetCurrentResourceName() then
-        Wait(1000)
-        for _, src in pairs(GetPlayers()) do
-            ReboundEntities.Refresh(src)
-        end
+    if resource ~= GetCurrentResourceName() then return end
+    Wait(1000)
+    for _, src in pairs(GetPlayers()) do
+        ReboundEntities.Refresh(src)
     end
 end)
 
@@ -175,7 +174,7 @@ if isServer then return ReboundEntities end
 
 function ReboundEntities.LoadModel(model)
     assert(model, "Model is nil")
-    model = type(model) == "number" and model or GetHashKey(model)
+    model = type(model) == "number" and model or GetHashKey(model) -- Corrected to GetHashKey
     RequestModel(model)
     for i = 1, 100 do
         if HasModelLoaded(model) then return model end
@@ -307,20 +306,18 @@ end)
 
 RegisterNetEvent(GetCurrentResourceName() .. ":client:SetReboundSyncData", function(id, key, value)
     local entityData = ReboundEntities.GetById(id)
-    if entityData then
-        entityData[key] = value
-        if entityData.onSyncKeyChange then
-            entityData.onSyncKeyChange(entityData, key, value)
-        end
+    if not entityData then return end
+    entityData[key] = value
+    if entityData.onSyncKeyChange then
+        entityData.onSyncKeyChange(entityData, key, value)
     end
 end)
 
 AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() then
-        spawnLoopRunning = false
-        for _, entity in pairs(Entities) do
-            if entity.entity then DeleteEntity(tonumber(entity.entity)) end
-        end
+    if resource ~= GetCurrentResourceName() then return end
+    spawnLoopRunning = false
+    for _, entity in pairs(Entities) do
+        if entity.entity then DeleteEntity(tonumber(entity.entity)) end
     end
 end)
 

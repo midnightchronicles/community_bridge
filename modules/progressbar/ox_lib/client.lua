@@ -49,6 +49,7 @@ end
 ---@param cb any
 ---@param isQBInput boolean
 ---@return nil
+---@diagnostic disable-next-line: duplicate-set-field
 function ProgressBar.Open(options, cb, isQBInput)
     if isQBInput then
         options = convertFromQB(options)
