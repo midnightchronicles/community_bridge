@@ -245,7 +245,8 @@ end
 Framework.RemoveAccountBalance = function(src, _type, amount)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not xPlayer then return end
-    return xPlayer.removeAccountMoney(_type, amount)
+    xPlayer.removeAccountMoney(_type, amount)
+    return true
 end
 
 -- Framework.GetAccountBalance(src, _type)
