@@ -134,6 +134,12 @@ Framework.GetStatus = function(src, column)
     return xPlayer.get(column) or nil
 end
 
+Framework.GetIsPlayerDead = function(src)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
+    return xPlayer.get("is_dead") or false
+end
+
 -- Framework.AddThirst(src, value)
 -- Adds the specified value from the player's thirst level.
 Framework.AddThirst = function(src, value)

@@ -253,6 +253,13 @@ Framework.GetHunger = function(src)
     return newHunger
 end
 
+Framework.GetIsPlayerDead = function(src)
+    local player = QBCore.Functions.GetPlayer(src)
+    if not player then return end
+    local playerData = player.PlayerData
+    return playerData.metadata.isdead or false
+end
+
 
 ---This will get the thirst of a player
 ---@param src any
