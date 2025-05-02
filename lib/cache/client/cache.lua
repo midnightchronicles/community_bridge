@@ -1,5 +1,4 @@
-Cache = Cache or Require("lib/cache/shared/cache.lua")
-
+Cache = Require("lib/cache/shared/cache.lua")
 -- Comparison functions for client-side state
 local function GetPed()
     return PlayerPedId()
@@ -29,12 +28,9 @@ local function GetWeapon()
     return GetSelectedPedWeapon(ped)
 end
 
-AddEventHandler('onResourceStart', function(resource)
-    if resource ~= GetCurrentResourceName() then return end
-    Cache.Create("Ped", GetPed, 1000) -- Check ped every second (adjust as needed)
-    Cache.Create("Vehicle", GetVehicle, 500) -- Check vehicle every 500ms
-    Cache.Create("Seat", GetVehicleSeat, 500) -- Check if in vehicle every 500ms
-    Cache.Create("Weapon", GetWeapon, 250) -- Check weapon every 250ms
-end)
+Cache.Create("Ped", GetPed, 1000) -- Check ped every second (adjust as needed)
+Cache.Create("Vehicle", GetVehicle, 500) -- Check vehicle every 500ms
+Cache.Create("Seat", GetVehicleSeat, 500) -- Check if in vehicle every 500ms
+Cache.Create("Weapon", GetWeapon, 250) -- Check weapon every 250ms
 
 return Cache

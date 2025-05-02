@@ -1,7 +1,6 @@
-Cache = {}
-Cache.Caches = {}
-
-Cache.LoopRunning = false
+local Cache = {}
+Cache.Caches = Cache.Caches or {}
+Cache.LoopRunning = Cache.LoopRunning or false
 
 local max = 5000
 local function StartLoop()
@@ -54,6 +53,7 @@ function Cache.Create(name, compare, waitTime)
     for _, onChange in pairs(Cache.Caches[name].OnChange) do
         onChange(Cache.Caches[name].Value, nil)
     end
+    print("Cache created: " .. name .. " with initial value: " .. tostring(Cache.Caches[name].Value))
     return StartLoop()
 end
 
