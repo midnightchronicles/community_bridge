@@ -57,18 +57,18 @@ function Scaleform.Run(scaleform, onUpdate)
     if runningScaleform then return end
     runningScaleform = scaleform
     CreateThread(function()
-        while runningScaleform do 
+        while runningScaleform do
             DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 0)
-            if onUpdate then 
+            if onUpdate then
                 shouldQuit = onUpdate()
-                if shouldQuit then 
+                if shouldQuit then
                     Scaleform.Stop()
                     break
                 end
             end
             Wait(2)
-        end    
-    end)  
+        end
+    end)
 end
 
 function Scaleform.Stop()

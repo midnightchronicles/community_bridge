@@ -218,6 +218,13 @@ Framework.GetHunger = function(src)
     return newHunger
 end
 
+Framework.GetIsPlayerDead = function(src)
+    local player = QBox:GetPlayer(src)
+    if not player then return end
+    local playerData = player.PlayerData
+    return playerData.metadata.isdead or false
+end
+
 ---This will return the players thirst level.
 ---@param src number
 ---@return number
