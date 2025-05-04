@@ -257,7 +257,7 @@ Framework.GetIsPlayerDead = function(src)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
-    return playerData.metadata.isdead or false
+    return playerData.metadata.isdead or playerData.metadata.inlaststand or false
 end
 
 
