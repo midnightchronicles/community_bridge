@@ -1,5 +1,7 @@
 DefaultActions = {}
-ClientEntityActions = ClientEntityActions or Require("lib/entities/client/client_entity_actions.lua") -- Added
+ClientEntityActions = ClientEntityActions or Require("lib/entities/client/client_entity_actions.lua")
+LA = LA or Require("lib/utility/shared/la.lua")
+
 --- Internal implementation for walking. Registered via RegisterAction.
 function DefaultActions.WalkTo(entityData, coords, speed, timeout)
     print("[ClientEntityActions] WalkTo action called", coords, speed, timeout)
@@ -196,7 +198,8 @@ function DefaultActions.AttachProp(entityData, propModel, boneName, offsetPos, o
     offsetRot = offsetRot or vector3(0.0, 0.0, 0.0)
     print(string.format("[ClientEntityActions] Attaching prop '%s' to entity %s at bone %d", propModel, entityId, boneIndex))
     AttachEntityToEntity(prop, entity, boneIndex, offsetPos.x, offsetPos.y, offsetPos.z, offsetRot.x, offsetRot.y, offsetRot.z, false, useSoftPinning or false, collision or false, isPed or false, vertexIndex or 2, fixedRot == nil and true or fixedRot)
-
+    entityData.props = entityData.props or {} -- Ensure props table exists
+    table.insert(entityData.props, prop) -- Store the prop handle in the entity data
     -- Store the attached prop handle for later removal
     if not entityData.attachedProps then entityData.attachedProps = {} end
     entityData.attachedProps[propModel] = prop -- Store by model name/hash for easy lookup
@@ -226,8 +229,8 @@ function DefaultActions.DetachProp(entityData, propModel)
     end
 
     -- This action finishes immediately
-    ClientEntityActions.IsActionRunning[entityId] = false
-    ClientEntityActions.ProcessNextAction(entityId)
+    -- ClientEntityActions.IsActionRunning[entityId] = false
+    -- ClientEntityActions.ProcessNextAction(entityId)
 end
 
 function DefaultActions.GetInCar(entityData, vehicleData, seatIndex, timeout)
@@ -264,8 +267,93 @@ function DefaultActions.GetInCar(entityData, vehicleData, seatIndex, timeout)
     ClientEntityActions.ActionThreads[entityId] = thread
 end
 
+function DefaultActions.Freeze(entityData, freeze)
+    print("[ClientEntityActions] Freeze action called", freeze)
+    local entity = entityData.spawned
+    local entityId = entityData.id
+
+    if not entity or not DoesEntityExist(entity) then
+        ClientEntityActions.IsActionRunning[entityId] = false
+        ClientEntityActions.ProcessNextAction(entityId) -- Try next action if this one failed immediately
+        return
+    end
+
+    FreezeEntityPosition(entity, freeze or true)
+
+    -- This action finishes immediately
+    ClientEntityActions.IsActionRunning[entityId] = false
+    ClientEntityActions.ProcessNextAction(entityId)
+end
+
+function DefaultActions.PlaceOnGround(entityData)
+    local entity = entityData.spawned
+    local entityId = entityData.id
+
+    if not entity or not DoesEntityExist(entity) then
+        ClientEntityActions.IsActionRunning[entityId] = false
+        ClientEntityActions.ProcessNextAction(entityId) -- Try next action if this one failed immediately
+        return
+    end
+    PlaceObjectOnGroundProperly(entity)
+
+    -- This action finishes immediately
+    -- ClientEntityActions.IsActionRunning[entityId] = false
+    -- ClientEntityActions.ProcessNextAction(entityId)
+end
+
+function DefaultActions.BobUpAndDown(entityData, speed, height)
+    local entity = entityData.spawned
+    local entityId = entityData.id
+    if not entity or not DoesEntityExist(entity) then
+        ClientEntityActions.IsActionRunning[entityId] = false
+        ClientEntityActions.ProcessNextAction(entityId) -- Try next action if this one failed immediately
+        return
+    end
+    CreateThread(function()
+        local coords = GetEntityCoords(entity)
+        local originalZ = coords.z
+        while DoesEntityExist(entity) do
+            -- Calculate the new Z coordinate
+            local newZ = originalZ + math.sin(GetGameTimer() * (speed / 1000)) * height
+            -- Set the new coordinates
+            SetEntityCoords(entity, coords.x, coords.y, newZ)
+            -- Wait for 10 milliseconds
+            Wait(10)
+        end
+    end)
+    -- ClientEntityActions.IsActionRunning[entityId] = false
+    -- ClientEntityActions.ProcessNextAction(entityId) -- Try next action if this one failed immediately
+end
+
+function DefaultActions.Circle(entityData, radius, speed)
+    local entity = entityData.spawned
+    local entityId = entityData.id
+
+    if not entity or not DoesEntityExist(entity) then
+        ClientEntityActions.IsActionRunning[entityId] = false
+        ClientEntityActions.ProcessNextAction(entityId) -- Try next action if this one failed immediately
+        return
+    end
+
+    local coords = GetEntityCoords(entity)
+    local angle = 0.0
+    CreateThread(function()
+        while DoesEntityExist(entity) do
+            FreezeEntityPosition(entity, false)
+            local pos = LA.Circle(angle, radius, coords)
+            SetEntityCoords(entity, pos.x, pos.y, pos.z, false, false, false, false)
+            angle = angle + speed * GetFrameTime()
+            FreezeEntityPosition(entity, true)
+            Wait(0)
+        end
+    end)
+    -- ClientEntityActions.IsActionRunning[entityId] = false
+    -- ClientEntityActions.ProcessNextAction(entityId) -- Try next action if this one failed immediately
+end
+
 for name, func in pairs(DefaultActions) do
     ClientEntityActions.RegisterAction(name, func)
 end
+
 
 return ClientEntityActions

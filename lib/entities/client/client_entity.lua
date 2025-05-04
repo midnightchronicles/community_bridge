@@ -156,6 +156,10 @@ function ClientEntity.GetAll()
     return Entities
 end
 
+function ClientEntity.RegisterAction(name, func)
+    ClientEntityActions.RegisterAction(name, func)
+end
+
 -- Network Event Handlers
 RegisterNetEvent("community_bridge:client:CreateEntity", function(entityData)
     ClientEntity.Register(entityData)
@@ -187,6 +191,26 @@ RegisterNetEvent("community_bridge:client:TriggerEntityAction", function(entityI
     -- else
         -- Optional: Log if action received but entity doesn't exist locally at all
         -- print(string.format("[ClientEntity] Received action '%s' for non-existent entity %s.", actionName, entityId))
+    end
+end)
+
+RegisterNetEvent("community_bridge:client:TriggerEntityActions", function(entityId, actions, endPosition)
+    local entityData = Entities[entityId]
+    if entityData then
+        for _, actionData in pairs(actions) do 
+            local actionName = actionData.name
+            local actionParams = actionData.params
+            if actionName == "Stop" then
+                ClientEntityActions.StopAction(entityId)
+            elseif actionName == "Skip" then
+                ClientEntityActions.SkipAction(entityId)
+            else
+                local currentAction = ClientEntityActions.ActionQueue[entityId] and ClientEntityActions.ActionQueue[entityId][1]
+                ClientEntityActions.QueueAction(entityData, actionName, table.unpack(actionParams))
+            end
+        end
+    else
+        print(string.format("[ClientEntity] Received actions for non-existent entity %s.", entityId))
     end
 end)
 
