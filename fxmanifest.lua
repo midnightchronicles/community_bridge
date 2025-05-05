@@ -31,6 +31,7 @@ server_scripts {
     'modules/notify/**/server.lua',
     'modules/housing/**/server.lua',
     'modules/skills/**/server.lua',
+    "lib/**/server.lua",
     'init.lua',
 }
 
