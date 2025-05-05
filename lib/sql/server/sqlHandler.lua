@@ -2,6 +2,8 @@ SQL = {}
 
 Require("lib/MySQL.lua", "oxmysql")
 
+
+
 function SQL.Create(tableName, columns)
     assert(MySQL, "Tried using module SQL without MySQL being loaded")
     local columnsList = {}
@@ -26,7 +28,7 @@ function SQL.InsertOrUpdate(tableName, data)
 
     for column, value in pairs(data) do
         table.insert(columns, column)
-        table.insert(values, "'" .. value .. "'") -- Ensure values are properly quoted
+        table.insert(values, "'" .. value .. "'")                      -- Ensure values are properly quoted
         table.insert(updates, column .. " = VALUES(" .. column .. ")") -- Use VALUES() for update
     end
 
