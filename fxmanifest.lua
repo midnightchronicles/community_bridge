@@ -71,6 +71,7 @@ files {
     'lib/**/client/*.lua',
     'lib/**/shared/*.lua',
     'lib/**/server/*.lua',
+    'settings/*.lua',
     'lib/init.lua',
 }
 
