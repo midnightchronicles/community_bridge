@@ -1,8 +1,19 @@
 local Cache = {}
+local Config = Require("settings/sharedConfig.lua")
+local max = 5000
+local CreateThread = CreateThread
+local Wait = Wait
+local GetGameTimer = GetGameTimer
+
+
 Cache.Caches = Cache.Caches or {}
 Cache.LoopRunning = Cache.LoopRunning or false
 
-local max = 5000
+local function print(...)
+    if Config.DebugLevel == 0 then return end
+    print("^2[Cache]^0", ...)
+end
+
 local function StartLoop()
     if Cache.LoopRunning then return end
     Cache.LoopRunning = true
@@ -44,30 +55,65 @@ local function StartLoop()
 end
 
 function Cache.Create(name, compare, waitTime)
-    Cache.Caches[name] = Cache.Caches[name] or {}    
-    Cache.Caches[name].WaitTime = waitTime or max
-    Cache.Caches[name].Compare = compare
-    Cache.Caches[name].OnChange = Cache.Caches[name].OnChange or {}
-    Cache.Caches[name].Value = compare()
-    print("Cache created: " .. name .. " with initial value: " .. tostring(Cache.Caches[name].Value))
-    for _, onChange in pairs(Cache.Caches[name].OnChange) do
-        onChange(Cache.Caches[name].Value, nil)
+    assert(name, "Cache name is required.")
+    assert(compare, "Comparison function is required.")
+    assert(type(compare) == "function", "Comparison function must be a function.")
+    local _name = tostring(name) -- Ensure name is a string
+    local cache = Cache.Caches[_name]
+    if cache and cache.Compare == compare then
+        print(name .. " already exists with the same comparison function.")
+        return cache
     end
-    print("Cache created: " .. name .. " with initial value: " .. tostring(Cache.Caches[name].Value))
+    cache = nil                   -- clean variable, so we can use the same name for the new cache
+    local s, r = pcall(function() -- Try to create the cache and catch any errors
+        local _cache <const> = {
+            Name = _name,
+            Compare = compare,
+            WaitTime = waitTime or max,
+            LastChecked = nil,
+            OnChange = {},
+            Value = compare()
+        }
+        Cache.Caches[_name] = _cache
+        print(_name .. " created with initial value: " .. tostring(Cache.Caches[_name].Value))
+        for _, onChange in pairs(_cache.OnChange) do
+            onChange(_cache.Value, nil)
+        end
+    end)
+    if not s then
+        print("Error creating cache '" .. _name .. "': " .. tostring(r))
+        return nil
+    end
+
     return StartLoop()
 end
 
 function Cache.Get(name)
-    local cache = Cache.Caches[name]
+    assert(name, "Cache name is required.")
+    local _name = tostring(name)
+    local cache = Cache.Caches[_name]
     return cache and cache.Value or nil
 end
 
 function Cache.OnChange(name, onChange)
-    local cache = Cache.Caches[name]
-    assert(cache, "Cache with name '" .. name .. "' does not exist.")
-    table.insert(cache.OnChange, onChange)
+    assert(name, "Cache name is required.")
+    local _name = tostring(name) -- Ensure name is a string
+    local cache = Cache.Caches[_name]
+    assert(cache, "Cache with name '" .. _name .. "' does not exist.")
+    cache.OnChange[#cache.OnChange + 1] = onChange
+end
+
+function Cache.Remove(name)
+    assert(name, "Cache name is required.")
+    local _name = tostring(name) -- Ensure name is a string
+    local cache = Cache.Caches[_name]
+    if cache then
+        Cache.Caches[_name] = nil
+        print(_name .. " removed from cache.")
+        if next(Cache.Caches) == nil then
+            Cache.LoopRunning = false -- Stop the loop if no caches are left
+        end
+    end
 end
 
 return Cache
-
-

@@ -32,11 +32,16 @@ function ClientEntityActions.ProcessNextAction(entityId)
         -- print(string.format("[ClientEntityActions] Starting action '%s' for entity %s", nextAction.name, entityId))
         ClientEntityActions.IsActionRunning [entityId] = true
         -- Call the registered function
-        actionFunc(entityData, table.unpack(nextAction.args))
+        ClientEntityActions.ActionQueue[entityId] = actionFunc(entityData, table.unpack(nextAction.args))
+        if not ClientEntityActions.ActionQueue[entityId] then
+            -- If the action function doesn't return a queue, set it to nil
+            ClientEntityActions.IsActionRunning[entityId] = false
+            ClientEntityActions.ProcessNextAction(entityId) -- Try next action if this one failed immediately
+        end
     else
         print(string.format("[ClientEntityActions] Unknown action '%s' dequeued for entity %s", nextAction.name, entityId))
         -- Skip unknown action and try the next one immediately
-        ClientEntityActions.ProcessNextAction(entityId)
+        ClientEntityActions.ActionQueue[entityId]  = ClientEntityActions.ProcessNextAction(entityId)
     end
 end
 --- Registers a custom action implementation.
@@ -50,9 +55,7 @@ function ClientEntityActions.RegisterAction(actionName, actionFunc)
         print(string.format("[ClientEntityActions] WARNING: Overwriting registered action '%s'", actionName))
     end
     assert(type(actionName) == "string", "actionName must be a string")
-    assert(type(actionFunc) == "function", "actionFunc must be a function")
-    print(string.format("[ClientEntityActions] Registered action: %s", actionName))
-    ClientEntityActions.RegisteredActions [actionName] = actionFunc
+    ClientEntityActions.RegisteredActions[actionName] = actionFunc
     -- print(string.format("[ClientEntityActions] Registered action: %s", actionName))
 end
 

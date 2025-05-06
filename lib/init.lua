@@ -73,5 +73,5 @@ cLib.Particle = Particle or Require("lib/particles/client/particles.lua")
 cLib.Cache = Cache or Require("lib/cache/client/cache.lua")
 cLib.ClientEntity = ClientEntity or Require("lib/entities/client/client_entity.lua")
 cLib.ClientEntityActions = ClientEntityActions or Require("lib/entities/client/client_entity_actions.lua")
-
+cLib.ClientStateBag = ClientStateBag or Require("lib/statebags/client/client.lua")
 return cLib
