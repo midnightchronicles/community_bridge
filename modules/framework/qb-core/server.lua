@@ -447,6 +447,7 @@ Framework.RegisterUsableItem = function(itemName, cb)
     local func = function(src, item, itemData)
         itemData = itemData or item
         itemData.metadata = itemData.metadata or itemData.info or {}
+        itemData.slot = itemData.id or itemData.slot
         cb(src, itemData)
     end
     QBCore.Functions.CreateUseableItem(itemName, func)
