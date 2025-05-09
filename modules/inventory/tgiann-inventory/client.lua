@@ -69,5 +69,5 @@ end
 ---@param id any
 ---@return nil
 Inventory.OpenStash = function(id)
-    -- open stash export... not sure what it is yet. 
+    tgiann:OpenInventory('stash', id, { maxweight = 400000, slots = 100 })
 end
