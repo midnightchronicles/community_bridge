@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('ox_inventory') ~= 'started' then return end
 
 local ox_inventory = exports.ox_inventory
@@ -19,18 +20,14 @@ end
 Inventory.GetItemInfo = function(item)
     local itemData = ox_inventory:Items(item)
     if not itemData then return {} end
-    local repackedTable = {
+    return {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
         stack = itemData.stack or "true",
         weight = itemData.weight or "0",
         description = itemData.description or "none",
-        image = string.format("nui://ox_inventory/web/images/%s", itemData.client 
-            and itemData.client.image 
-            or string.format("%s.png", item)
-        ),
+        image = string.format("nui://ox_inventory/web/images/%s", itemData.client and itemData.client.image or string.format("%s.png", item)),
     }
-    return repackedTable
 end
 -- string.format("nui://ox_inventory/web/images/%s.png", item)
 

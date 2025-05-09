@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('qb-inventory') ~= 'started' then return end
 
 local qbInventory = exports['qb-inventory']
@@ -43,7 +44,7 @@ end
 Inventory.GetItemInfo = function(item)
     local itemData = Framework.Shared.Items[item]
     if not itemData then return {} end
-    local repackedTable = {
+    return {
         name = itemData.name,
         label = itemData.label,
         stack = itemData.unique,
@@ -51,7 +52,6 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description,
         image = Inventory.GetImagePath(itemData.image or itemData.name)
     }
-    return repackedTable
 end
 
 ---comment

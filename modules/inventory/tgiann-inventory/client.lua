@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('tgiann-inventory') ~= 'started' then return end
 local tgiann = exports["tgiann-inventory"]
 
@@ -14,7 +15,7 @@ end
 Inventory.GetItemInfo = function(item)
     local itemData = tgiann:GetItemList()
     if not itemData[item] then return {} end
-    local repackedTable = {
+    return {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
         stack = itemData.unique or "false",
@@ -22,7 +23,6 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description or "none",
         image = itemData.image or Inventory.GetImagePath(item),
     }
-    return repackedTable
 end
 
 ---comment

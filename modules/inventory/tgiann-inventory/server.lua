@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('tgiann-inventory') ~= 'started' then return end
 
 local tgiann = exports["tgiann-inventory"]
@@ -100,7 +101,16 @@ end
 Inventory.GetItemBySlot = function(src, slot)
     local item = tgiann:GetItemBySlot(src, slot)
     if not item then return {} end
-    return {name = item.name, label = item.label, weight = item.weight, slot = slot, count = item.amount, metadata = item.info, stack = item.unique or false, description = item.description}
+    return {
+        name = item.name,
+        label = item.label,
+        weight = item.weight,
+        slot = slot,
+        count = item.amount,
+        metadata = item.info,
+        stack = item.unique or false,
+        description = item.description
+    }
 end
 
 ---This will return a table of the item data including the image (very useful for menus etc)
@@ -109,7 +119,7 @@ end
 Inventory.GetItemInfo = function(item)
     local itemData = tgiann:GetItemList()
     if not itemData[item] then return {} end
-    local repackedTable = {
+    return {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
         stack = itemData.unique or "false",
@@ -117,7 +127,6 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description or "none",
         image = itemData.image or Inventory.GetImagePath(item),
     }
-    return repackedTable
 end
 
 ---This will update the item metadata for an item with the provided slot and metadata, its best to get the item first

@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('qs-inventory') ~= 'started' then return end
 
 local quasar = exports['qs-inventory']
@@ -131,7 +132,7 @@ Inventory.GetItemInfo = function(item)
     if not itemsData then return {} end
     local itemData = itemsData[item]
     if not itemData then return {} end
-    local repackedTable = {
+    return {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
         stack = itemData.unique or "false",
@@ -139,7 +140,6 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description or "none",
         image = itemData.image or Inventory.GetImagePath(item),
     }
-    return repackedTable
 end
 
 

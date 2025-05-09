@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('codem-inventory') ~= 'started' then return end
 Inventory = Inventory or {}
 
@@ -8,8 +9,9 @@ local codem = exports['codem-inventory']
 ---@return table
 Inventory.GetItemInfo = function(item)
     local itemData = codem:GetItemList(item)
+    if not itemData then return {} end
     local image = itemData.image and Inventory.GetImagePath(itemData.image) or Inventory.GetImagePath(item)
-    local repackedTable = {
+    return {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
         stack = itemData.unique or "false",
@@ -17,7 +19,6 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description or "none",
         image = image,
     }
-    return repackedTable or {}
 end
 
 ---comment

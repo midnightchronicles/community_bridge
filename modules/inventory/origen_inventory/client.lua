@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('origen_inventory') ~= 'started' then return end
 
 Inventory = Inventory or {}
@@ -9,7 +10,8 @@ local origin = exports.origen_inventory
 ---@return table
 Inventory.GetItemInfo = function(item)
     local itemData = origin:Items(item)
-    local repackedTable = {
+    if not itemData then return {} end
+    return {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
         stack = itemData.unique or "false",
@@ -17,7 +19,6 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description or "none",
         image = itemData.image or Inventory.GetImagePath(item),
     }
-    return repackedTable or {}
 end
 
 ---comment

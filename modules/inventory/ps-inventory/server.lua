@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('ps-inventory') ~= 'started' then return end
 
 local sloth = exports['ps-inventory']
@@ -57,7 +58,16 @@ end
 Inventory.GetItemBySlot = function(src, slot)
     local slotData = sloth:GetItemBySlot(src, slot)
     if not slotData then return {} end
-    return {name = slotData.name, label = slotData.name, weight = slotData.weight, slot = slot, count = slotData.amount, metadata = slotData.info, stack = slotData.unique, description = slotData.description}
+    return {
+        name = slotData.name,
+        label = slotData.name,
+        weight = slotData.weight,
+        slot = slot,
+        count = slotData.amount,
+        metadata = slotData.info,
+        stack = slotData.unique,
+        description = slotData.description
+    }
 end
 
 ---comment

@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('ox_inventory') ~= 'started' then return end
 local ox_inventory = exports.ox_inventory
 
@@ -9,7 +10,7 @@ Inventory = Inventory or {}
 Inventory.GetItemInfo = function(item)
     local itemData = ox_inventory:Items(item)
     if not itemData then return {} end
-    local repackedTable = {
+    return {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
         stack = itemData.stack or "true",
@@ -17,7 +18,6 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description or "none",
         image = (itemData.client and itemData.client.image) or Inventory.GetImagePath(item),
     }
-    return repackedTable
 end
 
 ---comment

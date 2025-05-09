@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('core_inventory') ~= 'started' then return end
 
 Inventory = Inventory or {}
@@ -76,7 +77,6 @@ Inventory.GetItemBySlot = function(src, slot)
     local inv = Inventory.GetPlayerInventory(src)
     if not inv then return {} end
     for _, v in pairs(inv) do
-        print(v.slot, slot)
         if v.slot == slot then
             return {
                 name = v.name,

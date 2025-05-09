@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('core_inventory') ~= 'started' then return end
 
 Inventory = Inventory or {}

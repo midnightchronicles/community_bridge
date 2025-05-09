@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 Inventory = Inventory or {}
 
 ---This will fallback to framework add item functions when an inventory does not have the specifiec function.

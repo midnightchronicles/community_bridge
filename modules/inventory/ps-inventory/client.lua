@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('ps-inventory') ~= 'started' then return end
 
 local ps = exports['ps-inventory']
@@ -31,7 +32,7 @@ end
 Inventory.GetItemInfo = function(item)
     local itemData = Framework.Shared.Items[item]
     if not itemData then return {} end
-    local repackedTable = {
+    return {
         name = itemData.name,
         label = itemData.label,
         stack = itemData.unique,
@@ -39,5 +40,4 @@ Inventory.GetItemInfo = function(item)
         description = itemData.description,
         image = Inventory.GetImagePath(itemData.name)
     }
-    return repackedTable
 end

@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('jpr-inventory') ~= 'started' then return end
 
 local jpr = exports['jpr-inventory']
@@ -56,7 +57,16 @@ end
 Inventory.GetItemBySlot = function(src, slot)
     local slotData = jpr:GetItemBySlot(src, slot)
     if not slotData then return {} end
-    return { name = slotData.name, label = slotData.label, weight = slotData.weight, slot = slot, count = slotData.amount, metadata = slotData.info, stack = slotData.unique, description = slotData.description }
+    return {
+        name = slotData.name,
+        label = slotData.label,
+        weight = slotData.weight,
+        slot = slot,
+        count = slotData.amount,
+        metadata = slotData.info,
+        stack = slotData.unique,
+        description = slotData.description
+    }
 end
 
 ---comment
