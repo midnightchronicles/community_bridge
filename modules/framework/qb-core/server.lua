@@ -72,7 +72,7 @@ Framework.GetItem = function(src, item, metadata)
     return repackedTable
 end
 
----This will get the data about an item such as name, label, stack, weight, description and image.
+---This will return a table with the item info, {name, label, stack, weight, description, image}
 ---@param item string
 ---@return table
 Framework.GetItemInfo = function(item)
@@ -89,8 +89,13 @@ Framework.GetItemInfo = function(item)
     return repackedTable
 end
 
--- Framework.GetItemCount(src, item, metadata)
--- Returns the count of items matching the specified name and if passed metadata from the player's inventory.
+---This will return the count of the item in the players inventory, if not found will return 0.
+---
+---if metadata is passed it will find the matching items count.
+---@param src number
+---@param item string
+---@param metadata table
+---@return number
 Framework.GetItemCount = function(src, item, metadata)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
@@ -105,7 +110,7 @@ Framework.GetItemCount = function(src, item, metadata)
     return count
 end
 
----comment
+---This will return a boolean if the player has the item.
 ---@param src number
 ---@param item string
 ---@return boolean
