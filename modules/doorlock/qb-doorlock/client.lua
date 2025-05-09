@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('qb-doorlock') ~= 'started' then return end
 
 Doorlock = Doorlock or {}
