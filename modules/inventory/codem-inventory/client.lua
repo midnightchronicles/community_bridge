@@ -4,7 +4,7 @@ Inventory = Inventory or {}
 
 local codem = exports['codem-inventory']
 
----comment
+---Return the item info in oxs format, {name, label, stack, weight, description, image}
 ---@param item string
 ---@return table
 Inventory.GetItemInfo = function(item)
@@ -21,7 +21,17 @@ Inventory.GetItemInfo = function(item)
     }
 end
 
----comment
+---This will get the image path for this item, if not found will return placeholder.
+---@param item string
+---@return string
+Inventory.GetImagePath = function(item)
+    item = Inventory.StripPNG(item)
+    local file = LoadResourceFile("codem-inventory", string.format("html/images/%s.png", item))
+    local imagePath = file and string.format("nui://codem-inventory/html/images/%s.png", item)
+    return imagePath or "https://avatars.githubusercontent.com/u/47620135"
+end
+
+---This will return the players inventory in the format of {name, label, count, slot, metadata}
 ---@return table
 Inventory.GetPlayerInventory = function()
     local items = {}
@@ -41,12 +51,3 @@ Inventory.GetPlayerInventory = function()
     return items
 end
 
----comment
----@param item string
----@return string
-Inventory.GetImagePath = function(item)
-    item = Inventory.StripPNG(item)
-    local file = LoadResourceFile("codem-inventory", string.format("html/images/%s.png", item))
-    local imagePath = file and string.format("nui://codem-inventory/html/images/%s.png", item)
-    return imagePath or "https://avatars.githubusercontent.com/u/47620135"
-end

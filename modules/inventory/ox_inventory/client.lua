@@ -4,7 +4,7 @@ local ox_inventory = exports.ox_inventory
 
 Inventory = Inventory or {}
 
----comment
+---Return the item info in oxs format, {name, label, stack, weight, description, image}
 ---@param item string
 ---@return table
 Inventory.GetItemInfo = function(item)
@@ -20,23 +20,21 @@ Inventory.GetItemInfo = function(item)
     }
 end
 
----comment
+---Will return boolean if the player has the item.
 ---@param item string
 ---@return boolean
 Inventory.HasItem = function(item)
-    local itemCount = ox_inventory:Search('count', item)
-    local hasItem = itemCount ~= 0
-    return hasItem
+    return ox_inventory:Search('count', item) > 0
 end
 
----comment
+---This will return th count of the item in the players inventory, if not found will return 0.
 ---@param item string
 ---@return number
 Inventory.GetItemCount = function(item)
     return ox_inventory:GetItemCount(item, nil, false)
 end
 
----comment
+---This will get the image path for this item, if not found will return placeholder.
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
@@ -46,14 +44,12 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
----comment
+---This will return the players inventory in the format of {name, label, count, slot, metadata}
 ---@return table
 Inventory.GetPlayerInventory = function()
-    return exports.ox_inventory:GetPlayerItems()
+    return ox_inventory:GetPlayerItems()
 end
 
 Inventory.OpenShop = function(shopTitle, shopInventory)
     ox_inventory:openInventory("shop", { type = shopTitle, id = 1 })
 end
-
---Bridge.RegisterModule("Inventory", Inventory)
