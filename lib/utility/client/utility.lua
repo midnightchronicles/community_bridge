@@ -495,6 +495,7 @@ print("Result:", result)
 
 ]]
 
+
 AddEventHandler('onResourceStop', function(resource)
     if resource ~= GetCurrentResourceName() then return end
     for _, blip in pairs(blipIDs) do
