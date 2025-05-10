@@ -55,6 +55,7 @@ Bridge.RegisterModule("Phone", Phone)
 Bridge.RegisterModule("Dispatch", Dispatch)
 Bridge.RegisterModule("Shops", Shops)
 Bridge.RegisterModule("Housing", Housing)
+Bridge.RegisterModule("Version", Version)
 
 --lib
 -- Bridge.RegisterModule("Tables", cLib.Tables)
@@ -86,7 +87,7 @@ end)
 -- ▄▀▀ ██▀ █▀▄ █ █ ██▀ █▀▄ 
 -- ▄█▀ █▄▄ █▀▄ ▀▄▀ █▄▄ █▀▄ 
 if not IsDuplicityVersion() then goto client end
-
+Bridge.RegisterModule('Version', Version)
 
 --    ▄▀▀ █   █ ██▀ █▄ █ ▀█▀ 
 --    ▀▄▄ █▄▄ █ █▄▄ █ ▀█  █  

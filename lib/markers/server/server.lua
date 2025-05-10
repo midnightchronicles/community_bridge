@@ -22,7 +22,7 @@ function Marker.Create(data)
         return
     end
 
-    local _id = id.CreateUniqueId(Created)
+    local _id = data.id or id.CreateUniqueId(Created)
     local data = {
         id = _id,
         position = data.position,
