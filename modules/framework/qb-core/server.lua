@@ -267,12 +267,8 @@ end
 
 Framework.RevivePlayer = function(src)
     src = tonumber(src)
-
     if not src then return false end
-    TriggerClientEvent('hospital:client:Revive',  src) -- FIXME: deprecate
-    -- TriggerEvent('txAdmin:events:playerHealed', {
-    --   target = src,
-    -- })
+    TriggerClientEvent('hospital:client:Revive',  src)
     return true
 end
 

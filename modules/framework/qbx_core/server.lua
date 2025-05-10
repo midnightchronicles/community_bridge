@@ -225,6 +225,13 @@ Framework.GetIsPlayerDead = function(src)
     return playerData.metadata.isdead or false
 end
 
+Framework.RevivePlayer = function(src)
+    src = tonumber(src)
+    if not src then return false end
+    TriggerClientEvent('hospital:client:Revive',  src)
+    return true
+end
+
 ---This will return the players thirst level.
 ---@param src number
 ---@return number
