@@ -4,7 +4,6 @@ LA = LA or Require("lib/utility/shared/la.lua")
 
 --- Internal implementation for walking. Registered via RegisterAction.
 function DefaultActions.WalkTo(entityData, coords, speed, timeout)
-    print("[ClientEntityActions] WalkTo action called", coords, speed, timeout)
     local entity = entityData.spawned
     local entityId = entityData.id -- Store ID locally for safety in thread
 
@@ -179,9 +178,7 @@ function DefaultActions.AttachProp(entityData, propModel, boneName, offsetPos, o
     end
 
     local modelHash = Utility.GetEntityHashFromModel(propModel)
-    print(modelHash, propModel)
     if not Utility.LoadModel(modelHash) then
-        print(string.format("[ClientEntityActions] Failed to load prop model '%s' for entity %s", propModel, entityId))
         ClientEntityActions.IsActionRunning[entityId] = false
         ClientEntityActions.ProcessNextAction(entityId)
         return
@@ -196,7 +193,6 @@ function DefaultActions.AttachProp(entityData, propModel, boneName, offsetPos, o
     if boneIndex == -1 then boneIndex = 0 end -- Default to root if bone not found or not ped
     offsetPos = offsetPos or vector3(0.0, 0.0, 0.0)
     offsetRot = offsetRot or vector3(0.0, 0.0, 0.0)
-    print(string.format("[ClientEntityActions] Attaching prop '%s' to entity %s at bone %d", propModel, entityId, boneIndex))
     AttachEntityToEntity(prop, entity, boneIndex, offsetPos.x, offsetPos.y, offsetPos.z, offsetRot.x, offsetRot.y, offsetRot.z, false, useSoftPinning or false, collision or false, isPed or false, vertexIndex or 2, fixedRot == nil and true or fixedRot)
     entityData.props = entityData.props or {} -- Ensure props table exists
     table.insert(entityData.props, prop) -- Store the prop handle in the entity data
@@ -349,6 +345,11 @@ function DefaultActions.Circle(entityData, radius, speed)
     end)
     -- ClientEntityActions.IsActionRunning[entityId] = false
     -- ClientEntityActions.ProcessNextAction(entityId) -- Try next action if this one failed immediately
+end
+
+function DefaultActions.Collisions(entityData, enable, keepPhysics)
+    local entity = entityData.spawned
+    SetEntityCollision(entity, enable, keepPhysics)
 end
 
 for name, func in pairs(DefaultActions) do

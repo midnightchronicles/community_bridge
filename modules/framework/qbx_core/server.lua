@@ -3,7 +3,7 @@ if GetResourceState('qbx_core') ~= 'started' then return end
 
 local QBox = exports.qbx_core
 
-Framework = {}
+Framework = Framework or {}
 
 ---Returns the name of the framework being used (if a supported framework).
 ---@return string

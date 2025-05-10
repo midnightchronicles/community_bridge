@@ -4,7 +4,7 @@ if GetResourceState('qbx_core') == 'started' then return end
 
 QBCore = exports['qb-core']:GetCoreObject()
 
-Framework = {}
+Framework = Framework or {}
 
 ---This will get the name of the framework being used (if a supported framework).
 ---@return string

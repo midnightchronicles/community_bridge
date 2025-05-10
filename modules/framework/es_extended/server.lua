@@ -3,7 +3,7 @@ if GetResourceState('es_extended') ~= 'started' then return end
 
 ESX = exports["es_extended"]:getSharedObject()
 
-Framework = {}
+Framework = Framework or {}
 
 Framework.GetFrameworkName = function()
     return 'es_extended'
@@ -138,6 +138,17 @@ Framework.GetIsPlayerDead = function(src)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not xPlayer then return end
     return xPlayer.get("is_dead") or false
+end
+
+Framework.RevivePlayer = function(src)
+    src = tonumber(src)
+
+    if not src then return false end
+    TriggerEvent('esx_ambulancejob:revive', src) -- FIXME: deprecate
+    -- TriggerEvent('txAdmin:events:playerHealed', {
+    --   target = src,
+    -- })
+    return true
 end
 
 -- Framework.AddThirst(src, value)

@@ -35,10 +35,11 @@ local function SpawnEntity(entityData)
         print(string.format("[ClientEntity] Unknown entity type '%s' for entity %s", entityData.entityType, entityData.id))
     end
     if entity then
+        -- print(string.format("[ClientEntity] Spawned %s entity %s (GameID: %s)", entityData.entityType, entityData.id, entity))
         entityData.spawned = entity
         SetModelAsNoLongerNeeded(model)
         SetEntityAsMissionEntity(entity, true, true) -- Keep entity from being deleted by game engine
-        FreezeEntityPosition(entity, entityData.freeze or false) -- Optional freeze based on meta
+        FreezeEntityPosition(entity, true) -- Optional freeze based on meta
         if entityData.OnSpawn and type(entityData.OnSpawn) == 'function' then
             entityData.OnSpawn(entityData)
         end
@@ -75,7 +76,7 @@ function ClientEntity.Register(entityData)
     -- print(string.format("[ClientEntity] Registering %s entity %s", entityData.entityType, entityData.id))
 
     -- Use Point system for proximity checks
-    print(string.format("[ClientEntity] Registering entity %s at %s", entityData.id, json.encode(entityData)))
+    -- print(string.format("[ClientEntity] Registering entity %s at %s", entityData.id, json.encode(entityData)))
     Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, function() end)
 end
 
@@ -96,13 +97,13 @@ end
 -- @param data table The data fields to update.
 function ClientEntity.Update(id, data)
     local entityData = Entities[id]
-    print(string.format("[ClientEntity] Updating entity %s", id))
+    -- print(string.format("[ClientEntity] Updating entity %s", id))
     if not entityData then return end
 
     local needsPointUpdate = false
     for key, value in pairs(data) do
         if key == 'coords' and #(entityData.coords - value) > 0.1 then
-            print(string.format("[ClientEntity] Updating coords for entity %s", id))
+            -- print(string.format("[ClientEntity] Updating coords for entity %s", id))
              needsPointUpdate = true
         end
         if key == 'spawnDistance' and entityData.spawnDistance ~= value then
@@ -176,7 +177,6 @@ end)
 -- New handler for entity actions
 RegisterNetEvent("community_bridge:client:TriggerEntityAction", function(entityId, actionName, ...)
     local entityData = Entities[entityId]
-    print("here", json.encode(entityData))
     -- Check if entity exists locally (it doesn't need to be spawned to queue actions)
     if entityData then
         if actionName == "Stop" then

@@ -3,7 +3,7 @@ if GetResourceState('qbx_core') ~= 'started' then return end
 
 QBox = exports.qbx_core
 
-Framework = {}
+Framework = Framework or {}
 
 Framework.GetFrameworkName = function()
     return 'qbx_core'

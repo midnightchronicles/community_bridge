@@ -4,7 +4,7 @@ if GetResourceState('qbx_core') == 'started' then return end
 
 QBCore = exports['qb-core']:GetCoreObject()
 
-Framework = {}
+Framework = Framework or {}
 Framework.Shared = QBCore.Shared
 Framework.GetFrameworkName = function()
     return 'qb-core'
@@ -263,6 +263,17 @@ Framework.GetIsPlayerDead = function(src)
     if not player then return end
     local playerData = player.PlayerData
     return playerData.metadata.isdead or playerData.metadata.inlaststand or false
+end
+
+Framework.RevivePlayer = function(src)
+    src = tonumber(src)
+
+    if not src then return false end
+    TriggerClientEvent('hospital:client:Revive',  src) -- FIXME: deprecate
+    -- TriggerEvent('txAdmin:events:playerHealed', {
+    --   target = src,
+    -- })
+    return true
 end
 
 
