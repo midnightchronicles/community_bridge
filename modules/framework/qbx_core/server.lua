@@ -21,6 +21,15 @@ Framework.GetPlayerDob = function(src)
     return playerData.charinfo.birthdate
 end
 
+--- Returns the player data of the specified source.
+---@param src any
+---@return table | nil
+Framework.GetPlayer = function(src)
+    local player = QBox:GetPlayer(src)
+    if not player then return end
+    return player
+end
+
 ---Returns a table of the jobs in the framework.
 ---@return table
 Framework.GetFrameworkJobs = function()
