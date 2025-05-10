@@ -19,6 +19,15 @@ Framework.GetPlayerIdentifier = function(src)
     return playerData.citizenid
 end
 
+--- Returns the player data of the specified source.
+---@param src any
+---@return table | nil
+Framework.GetPlayer = function(src)
+    local player = QBCore.Functions.GetPlayer(src)
+    if not player then return end
+    return player
+end
+
 Framework.GetFrameworkJobs = function()
     local jobs = {}
     for k, v in pairs(QBCore.Shared.Jobs) do

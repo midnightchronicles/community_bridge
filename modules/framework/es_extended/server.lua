@@ -16,6 +16,15 @@ Framework.GetPlayerDob = function(src)
     return dob
 end
 
+--- This will return a table of the players data
+---@param src any
+---@return table | nil
+Framework.GetPlayer = function(src)
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if not xPlayer then return end
+    return xPlayer
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 Framework.GetPlayerIdentifier = function(src)
