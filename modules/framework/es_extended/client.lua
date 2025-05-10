@@ -3,6 +3,7 @@ if GetResourceState('es_extended') ~= 'started' then return end
 
 ESX = exports["es_extended"]:getSharedObject()
 
+Framework = Framework or {}
 
 Framework.GetFrameworkName = function()
     return 'es_extended'
