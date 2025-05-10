@@ -10,3 +10,5 @@ Doorlock.GetClosestDoor = function()
     if not doorData then return end
     return tostring(doorData.id) or nil
 end
+
+return Doorlock

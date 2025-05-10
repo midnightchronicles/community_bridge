@@ -42,3 +42,5 @@ RegisterNetEvent('community_bridge:client:jpr-inventory:openStash', function(id,
     TriggerEvent("inventory:client:SetCurrentStash", id)
     TriggerServerEvent('inventory:server:OpenInventory', 'stash', id, { maxweight = data.weight, slots = data.slots })
 end)
+
+return Inventory

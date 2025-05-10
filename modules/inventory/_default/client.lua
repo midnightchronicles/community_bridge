@@ -41,3 +41,5 @@ Inventory.StripPNG = function(item)
     end
     return item
 end
+
+return Inventory

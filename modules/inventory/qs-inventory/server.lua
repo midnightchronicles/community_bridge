@@ -199,3 +199,5 @@ end
 Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return false, print("Currently qs shop is not bridged")
 end
+
+return Inventory

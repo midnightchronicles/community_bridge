@@ -16,3 +16,5 @@ Doorlock.ToggleDoorLock = function(doorID, toggle)
     end
     return true
 end
+
+return Doorlock

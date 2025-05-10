@@ -69,3 +69,5 @@ end
 Inventory.OpenStash = function(id)
     origin:openInventory('stash', id, { label = id, weight = 400000, slots = 100, })
 end
+
+return Inventory

@@ -175,3 +175,5 @@ RegisterNetEvent('QBCore:Client:OnGangUpdate', function(data)
     TriggerEvent('community_bridge:Client:OnPlayerGangUpdate', PlayerGangName, PlayerGangLabel, PlayerGangGradeName, PlayerGangGradeLevel)
     --]]
 end)
+
+return Framework

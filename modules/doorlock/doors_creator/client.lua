@@ -8,3 +8,5 @@ Doorlock = Doorlock or {}
 Doorlock.GetClosestDoor = function()
     return exports["doors_creator"]:getClosestActiveDoor()
 end
+
+return Doorlock

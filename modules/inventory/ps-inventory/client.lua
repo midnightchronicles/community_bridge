@@ -42,3 +42,5 @@ RegisterNetEvent('community_bridge:client:ps-inventory:openStash', function(id, 
     TriggerEvent('ps-inventory:client:SetCurrentStash', id)
     TriggerServerEvent('ps-inventory:server:OpenInventory', 'stash', id, { maxweight = data.weight, slots = data.slots })
 end)
+
+return Inventory

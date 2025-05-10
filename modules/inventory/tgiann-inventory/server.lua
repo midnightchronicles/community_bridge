@@ -205,3 +205,5 @@ Inventory.GetItem = function(src, item, metadata)
     item.metadata = item.info
     return item
 end
+
+return Inventory

@@ -19,3 +19,5 @@ Doorlock.GetClosestDoor = function()
     end
     return door
 end
+
+return Doorlock

@@ -62,3 +62,5 @@ Inventory.GetPlayerInventory = function()
     end
     return repackedTable
 end
+
+return Inventory

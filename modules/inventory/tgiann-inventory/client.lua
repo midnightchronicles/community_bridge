@@ -71,3 +71,5 @@ end
 Inventory.OpenStash = function(id)
     tgiann:OpenInventory('stash', id, { maxweight = 400000, slots = 100 })
 end
+
+return Inventory

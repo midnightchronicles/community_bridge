@@ -494,3 +494,4 @@ Framework.Commands.Add = function(name, help, arguments, argsrequired, callback,
     QBCore.Commands.Add(name, help, arguments, argsrequired, callback, permission, ...)
 end
 
+return Framework

@@ -203,3 +203,5 @@ Inventory.CreateShop = function(src, shopTitle, shopInventory, shopCoords, shopG
         print("QB-INVENTORY: You are using an outdated version of qb-inventory, please update to the latest version. Stuff will still work but you are using litterally the most exploitable inventory in fivem.")
     end
 end
+
+return Inventory

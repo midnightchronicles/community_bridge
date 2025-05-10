@@ -155,3 +155,5 @@ Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups
     registeredShops[shopTitle] = true
     return true
 end
+
+return Inventory

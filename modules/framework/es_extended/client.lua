@@ -134,3 +134,5 @@ RegisterNetEvent('esx:setJob', function(data)
     PlayerJobGradeLevel = data.grade
     TriggerEvent('community_bridge:Client:OnPlayerJobUpdate',PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel)
 end)
+
+return Framework

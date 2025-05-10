@@ -74,3 +74,5 @@ end
 Inventory.OpenStash = function(id)
     quasar:RegisterStash(id, 50, 50000)
 end
+
+return Inventory

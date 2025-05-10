@@ -55,3 +55,5 @@ RegisterNetEvent('community_bridge:client:codem-inventory:openStash', function(i
     if source ~= 65535 then return end
     TriggerServerEvent('codem-inventory:server:openstash', id, data.slots, data.weight, data.label)
 end)
+
+return Inventory

@@ -183,3 +183,5 @@ end
 Inventory.GetItem = function(src, item, metadata)
     return ox_inventory:GetItem(src, item, metadata, false)
 end
+
+return Inventory

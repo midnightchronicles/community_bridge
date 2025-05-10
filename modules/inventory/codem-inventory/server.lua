@@ -172,3 +172,5 @@ end
 Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return true, print("Unable to Create Shop for codem-inventory, I do not have access to a copy of this inventory to bridge the feature.")
 end
+
+return Inventory

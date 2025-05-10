@@ -181,3 +181,6 @@ end
 Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return true, print("Currently runtime shops are not supported in origen_inventory")
 end
+
+
+return Inventory

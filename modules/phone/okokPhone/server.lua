@@ -53,3 +53,5 @@ end
 lib.callback.registry('community_bridge:Callback:okokPhone:sendEmail', function(src, email, title, message)
     return Phone.SendEmail(src, email, title, message)
 end)
+
+return Phone

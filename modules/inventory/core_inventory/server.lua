@@ -226,3 +226,5 @@ lib.callback.register('community_bridge:Callback:core_inventory', function(sourc
     local items = core:getItemsList()
 	return items or {}
 end)
+
+return Inventory
