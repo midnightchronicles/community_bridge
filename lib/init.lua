@@ -35,6 +35,8 @@ function Require(modulePath, resourceName)
     return result
 end
 
+
+
 cLib = {
     Require = Require,
     Callback = Callback or Require("lib/utility/shared/callbacks.lua"),
@@ -76,5 +78,5 @@ cLib.ClientEntityActions = ClientEntityActions or Require("lib/entities/client/c
 cLib.ClientStateBag = ClientStateBag or Require("lib/statebags/client/client.lua")
 cLib.Marker = Marker or Require("lib/markers/client/markers.lua")
 cLib.Anim = Anim or Require("lib/anim/client/client.lua")
-
+cLib.Cutscene = Cutscene or Require("lib/cutscenes/client/cutscene.lua")
 return cLib

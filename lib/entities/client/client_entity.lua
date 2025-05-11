@@ -50,17 +50,14 @@ local function SpawnEntity(entityData)
 end
 
 local function RemoveEntity(entityData)
-    entityData = entityData and entityData.args
-    if not entityData then return end -- Added safety check
-
-    ClientEntityActions.StopAction(entityData.id) -- Stop any ongoing action AND clear queue before despawning
-
+    entityData = entityData and entityData.args or entityData
+    if not entityData then return end
+    ClientEntityActions.StopAction(entityData.id)
     if entityData.spawned and DoesEntityExist(entityData.spawned) then
         local entityHandle = entityData.spawned
-        entityData.spawned = nil -- Clear handle first
-        SetEntityAsMissionEntity(entityHandle, false, false) -- Allow game engine to delete if needed, though we delete manually
+        entityData.spawned = nil
+        SetEntityAsMissionEntity(entityHandle, false, false)
         DeleteEntity(entityHandle)
-        -- print(string.format("[ClientEntity] Removed %s entity %s (GameID: %s)", entityData.entityType, entityData.id, entityHandle))
     end
     if entityData.OnRemove and type(entityData.OnRemove) == 'function' then
         entityData.OnRemove(entityData)
@@ -86,9 +83,8 @@ function ClientEntity.Unregister(id)
     local entityData = Entities[id]
     if not entityData then return end
 
-    -- print(string.format("[ClientEntity] Unregistering entity %s", id))
-    Point.Remove(id) -- Remove from proximity checks (this will call RemoveEntity if currently in range)
-    RemoveEntity(entityData) -- Ensure it's removed even if Point.Remove didn't trigger it
+    Point.Remove(id) 
+    RemoveEntity(entityData) 
     Entities[id] = nil
 end
 
@@ -163,10 +159,12 @@ end
 
 -- Network Event Handlers
 RegisterNetEvent("community_bridge:client:CreateEntity", function(entityData)
+    print(string.format("[ClientEntity] Received entity %s", entityData.id))
     ClientEntity.Register(entityData)
 end)
 
 RegisterNetEvent("community_bridge:client:DeleteEntity", function(id)
+    print(string.format("[ClientEntity] Deleting entity %s", id))
     ClientEntity.Unregister(id)
 end)
 
