@@ -238,7 +238,7 @@ Framework.AddHunger = function(src, value)
     player.Functions.SetMetaData('hunger', Math.Clamp(newHunger, 0, 100))
     TriggerClientEvent('hud:client:UpdateNeeds', src, newHunger, playerData.metadata.thirst)
     --TriggerClientEvent('hud:client:UpdateStress', src, newStress)
-    
+
     return newHunger
 end
 
@@ -277,7 +277,7 @@ end
 Framework.RevivePlayer = function(src)
     src = tonumber(src)
     if not src then return false end
-    TriggerClientEvent('hospital:client:Revive',  src)
+    TriggerClientEvent('hospital:client:Revive', src)
     return true
 end
 
@@ -413,7 +413,8 @@ end
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
-    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = amount, slot = slot, metadata = metadata})
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src,
+        { action = "add", item = item, count = amount, slot = slot, metadata = metadata })
     return player.Functions.AddItem(item, amount, slot, metadata)
 end
 
@@ -422,7 +423,8 @@ end
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local player = QBCore.Functions.GetPlayer(src)
     if not player then return end
-    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = amount, slot = slot, metadata = metadata})
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src,
+        { action = "remove", item = item, count = amount, slot = slot, metadata = metadata })
     return player.Functions.RemoveItem(item, amount, slot or nil)
 end
 
@@ -452,12 +454,13 @@ end
 ---@return table
 Framework.GetOwnedVehicles = function(src)
     local citizenId = Framework.GetPlayerIdentifier(src)
-    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" .. citizenId .. "'")
+    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" ..
+        citizenId .. "'")
     local vehicles = {}
-    for i=1, #result do
+    for i = 1, #result do
         local vehicle = result[i].vehicle
         local plate = result[i].plate
-        table.insert(vehicles, {vehicle = vehicle, plate = plate})
+        table.insert(vehicles, { vehicle = vehicle, plate = plate })
     end
     return vehicles
 end
@@ -493,5 +496,3 @@ Framework.Commands = {}
 Framework.Commands.Add = function(name, help, arguments, argsrequired, callback, permission, ...)
     QBCore.Commands.Add(name, help, arguments, argsrequired, callback, permission, ...)
 end
-
-return Framework

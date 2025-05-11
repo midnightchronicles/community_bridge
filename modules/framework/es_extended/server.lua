@@ -103,14 +103,14 @@ Framework.GetPlayerInventory = function(src)
     local playerItems = xPlayer.getInventory()
     local repackedTable = {}
     for _, v in pairs(playerItems) do
-		if v.count > 0 then
-			table.insert(repackedTable, {
-				name = v.name,
-				count = v.count,
-				--metadata = v.metadata,
-				--slot = v.slot,
-			})
-		end
+        if v.count > 0 then
+            table.insert(repackedTable, {
+                name = v.name,
+                count = v.count,
+                --metadata = v.metadata,
+                --slot = v.slot,
+            })
+        end
     end
     return repackedTable
 end
@@ -133,9 +133,9 @@ Framework.GetPlayerMetadata = function(src, metadata)
 end
 
 -- defualt esx Available tables are
--- identifier, accounts, group, inventory, job, job_grade, loadout, 
--- metadata, position, firstname, lastname, dateofbirth, sex, height, 
--- skin, status, is_dead, id, disabled, last_property, created_at, last_seen, 
+-- identifier, accounts, group, inventory, job, job_grade, loadout,
+-- metadata, position, firstname, lastname, dateofbirth, sex, height,
+-- skin, status, is_dead, id, disabled, last_property, created_at, last_seen,
 -- phone_number, pincode
 Framework.GetStatus = function(src, column)
     local xPlayer = ESX.GetPlayerFromId(src)
@@ -250,7 +250,10 @@ end
 Framework.SetPlayerJob = function(src, name, grade)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not xPlayer then return end
-    if not ESX.DoesJobExist(name, grade) then lib.print.error("Job Does Not Exsist In Framework :NAME "..name.." Grade:"..grade) return end
+    if not ESX.DoesJobExist(name, grade) then
+        lib.print.error("Job Does Not Exsist In Framework :NAME " .. name .. " Grade:" .. grade)
+        return
+    end
     return xPlayer.setJob(name, grade, true)
 end
 
@@ -301,14 +304,14 @@ end
 Framework.GetOwnedVehicles = function(src)
     local citizenId = Framework.GetPlayerIdentifier(src)
     local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM owned_vehicles WHERE owner = '" .. citizenId .. "'")
-	local vehicles = {}
-    for i=1, #result do
+    local vehicles = {}
+    for i = 1, #result do
         local vehicle = result[i].vehicle
         local plate = result[i].plate
         local model = json.decode(vehicle).model
-        table.insert(vehicles, {vehicle = model, plate = plate})
+        table.insert(vehicles, { vehicle = model, plate = plate })
     end
-	return vehicles
+    return vehicles
 end
 
 -- Framework.RegisterUsableItem(item, cb)
@@ -339,7 +342,7 @@ AddEventHandler("playerDropped", function()
 end)
 
 lib.callback.register('community_bridge:Callback:GetFrameworkJobs', function(source)
-	return Framework.GetFrameworkJobs() or {}
+    return Framework.GetFrameworkJobs() or {}
 end)
 
 Framework.Commands = {}
@@ -351,5 +354,3 @@ Framework.Commands.Add = function(name, help, arguments, argsrequired, callback,
         arguments = arguments
     })
 end
-
-return Framework
