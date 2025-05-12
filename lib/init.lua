@@ -1,4 +1,5 @@
 loadedModules = {}
+local cLib = {}
 
 function Require(modulePath, resourceName)
     if resourceName and type(resourceName) ~= "string" then
@@ -35,23 +36,95 @@ function Require(modulePath, resourceName)
     return result
 end
 
+local function getServerLib()
+    return {
+        SQL = SQL or Require("lib/sql/server/sqlHandler.lua"),
+        Logs = Logs or Require("lib/logs/server/logs.lua"),
+        ItemsBuilder = ItemsBuilder or Require("lib/generators/server/ItemsBuilder.lua"),
+        LootTables = LootTables or Require("lib/generators/server/lootTables.lua"),
+        Cache = Cache or Require("lib/cache/shared/cache.lua"),
+        ServerEntity = ServerEntity or Require("lib/entities/server/server_entity.lua"),
+        Marker = Marker or Require("lib/markers/server/server.lua"),
+        Particle = Particle or Require("lib/particles/server/particles.lua"),
+    }
+end
 
+local function getClientLib()
+    return {
+        Require = Require,
+        Gizmo = Gizmo or Require("lib/placers/client/gizmo.lua"),
+        Scaleform = Scaleform or Require("lib/scaleform/client/scaleform.lua"),
+        Placeable = Placeable or Require("lib/placers/client/object_placer.lua"),
+        Utility = Utility or Require("lib/utility/client/utility.lua"),
+        PlaceableObject = PlaceableObject or Require("lib/placers/client/placeable_object.lua"),
+        Raycast = Raycast or Require("lib/raycast/client/raycast.lua"),
+        Point = Point or Require("lib/points/client/points.lua"),
+        Particle = Particle or Require("lib/particles/client/particles.lua"),
+        Cache = Cache or Require("lib/cache/client/cache.lua"),
+        ClientEntity = ClientEntity or Require("lib/entities/client/client_entity.lua"),
+        ClientEntityActions = ClientEntityActions or Require("lib/entities/client/client_entity_actions.lua"),
+        ClientStateBag = ClientStateBag or Require("lib/statebags/client/client.lua"),
+        Marker = Marker or Require("lib/markers/client/markers.lua"),
+        Anim = Anim or Require("lib/anim/client/client.lua"),
+        Cutscene = Cutscene or Require("lib/cutscenes/client/cutscene.lua"),
+        DUI = DUI or Require("lib/dui/client/dui.lua"),
+    }
+end
 
-cLib = {
-    Require = Require,
-    Callback = Callback or Require("lib/utility/shared/callbacks.lua"),
-    Ids = Ids or Require("lib/utility/shared/ids.lua"),
-    ReboundEntities = ReboundEntities or Require("lib/utility/shared/rebound_entities.lua"),
-    Tables = Tables or Require("lib/utility/shared/tables.lua"),
-    Prints = Prints or Require("lib/utility/shared/prints.lua"),
-    Math = Math or Require("lib/utility/shared/math.lua"),
-    LA = LA or Require("lib/utility/shared/la.lua"),
-    Perlin = Perlin or Require("lib/utility/shared/perlin.lua"),
-    -- Action = Action or Require("lib/entities/shared/actions.lua"),
-}
+local function getSharedLib()
+    return {
+        Require = Require,
+        Callback = Callback or Require("lib/utility/shared/callbacks.lua"),
+        Ids = Ids or Require("lib/utility/shared/ids.lua"),
+        ReboundEntities = ReboundEntities or Require("lib/utility/shared/rebound_entities.lua"),
+        Tables = Tables or Require("lib/utility/shared/tables.lua"),
+        Prints = Prints or Require("lib/utility/shared/prints.lua"),
+        Math = Math or Require("lib/utility/shared/math.lua"),
+        LA = LA or Require("lib/utility/shared/la.lua"),
+        Perlin = Perlin or Require("lib/utility/shared/perlin.lua"),
+        -- Action = Action or Require("lib/entities/shared/actions.lua"),
+    }
+end
 
-exports('cLib', cLib)
+cLib = setmetatable(getSharedLib(), { __index = IsDuplicityVersion() and getServerLib() or getClientLib() })
+_ENV.cLib = cLib
+_ENV.Require = Require
+exports('cLib', function()
+    return cLib
+end)
 
+--[[ _ENV.cLib = setmetatable({
+    context = not IsDuplicityVersion() and "client" or "server",
+    resource = GetCurrentResourceName(),
+    loaded = {}
+}, {
+    __newindex = function(self, key, value)
+        return error("Attempt to modify read-only table: " .. key)
+    end,
+    __index = function(self, key) -- modify the index function to load the library modules
+        if self.context == "server" then
+            return rawget(self.loaded, key)
+        else
+            return rawget(self.loaded, key)
+        end
+    end,
+    __call = function(self) -- modify the call function to load the library modules
+        if self.context == "server" then
+            if not next(self.loaded) then
+                self.loaded = getServerLib()
+                return true
+            end
+        else
+            if not next(self.loaded) then
+                self.loaded = getClientLib()
+                return true
+            end
+        end
+    end,
+})
+cLib() -- load the library modules ]]
+
+--[[
 if not IsDuplicityVersion() then goto client end
 
 cLib.SQL = SQL or Require("lib/sql/server/sqlHandler.lua")
@@ -84,3 +157,4 @@ cLib.DUI = DUI or Require("lib/dui/client/dui.lua")
 cLib.Particle = Particle or Require("lib/particles/client/particles.lua")
 
 return cLib
+ ]]
