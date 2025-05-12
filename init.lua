@@ -21,7 +21,8 @@ function Bridge.RegisterModule(moduleName, moduleTable)
         print("^2 Registering module:", moduleName, "^0")
     end
     Bridge[moduleName] = wrappedModule
-
+    _ENV[moduleName] = wrappedModule -- Add to the ENV table the modules so is more easy and safe to call from inside
+    _ENV.Bridge = Bridge -- Add the bridge too to the _ENV
 
     exports(moduleName, function()
         return wrappedModule
