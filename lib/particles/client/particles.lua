@@ -61,8 +61,6 @@ function Particle.Create(data)
     assert(data.ptfx, "Invalid particle data. Must contain string ptfx.")
 
     local _id = data.id or Ids.CreateUniqueId(Particles)
-    print("Creating particle", _id)
-    --  data for particles above
     data = {
         id = _id,
         dict = data.dict,
@@ -110,11 +108,8 @@ end
 
 function Particle.Remove(id)
     if not id then return end
-    print("Removing particle1", id)
     local particle = Particles[id]
-    print("Removing particle2", id)
     if not particle then return end
-    print("Removing particle3", id)
     Particle.Stop(particle.spawned)
     Particles[id] = nil
     point.Remove(id)
@@ -141,7 +136,6 @@ RegisterNetEvent("community_bridge:Client:ParticleRemove", function(id)
 end)
 
 RegisterNetEvent("community_bridge:Client:ParticleRemoveBulk", function(ids)
-    print("community_bridge:Client:ParticleRemoveBulk", ids)
     for _, id in pairs(ids) do
         Particle.Remove(id)
     end
