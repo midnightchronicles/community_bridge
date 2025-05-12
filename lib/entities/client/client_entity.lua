@@ -159,12 +159,10 @@ end
 
 -- Network Event Handlers
 RegisterNetEvent("community_bridge:client:CreateEntity", function(entityData)
-    print(string.format("[ClientEntity] Received entity %s", entityData.id))
     ClientEntity.Register(entityData)
 end)
 
 RegisterNetEvent("community_bridge:client:DeleteEntity", function(id)
-    print(string.format("[ClientEntity] Deleting entity %s", id))
     ClientEntity.Unregister(id)
 end)
 

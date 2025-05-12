@@ -34,14 +34,14 @@ function DefaultActions.WalkTo(entityData, coords, speed, timeout)
     ClientEntityActions.ActionThreads[entityId] = thread
 end
 --- Internal implementation for playing an animation. Registered via RegisterAction.
--- @param entityData table
--- @param animDict string
--- @param animName string
--- @param blendIn number (Optional, default 8.0)
--- @param blendOut number (Optional, default -8.0)
--- @param duration number (Optional, default -1 for loop/until stopped)
--- @param flag number (Optional, default 0)
--- @param playbackRate number (Optional, default 0.0)
+--- @param entityData table
+--- @param animDict string
+--- @param animName string
+--- @param blendIn number (Optional, default 8.0)
+--- @param blendOut number (Optional, default -8.0)
+--- @param duration number (Optional, default -1 for loop/until stopped)
+--- @param flag number (Optional, default 0)
+--- @param playbackRate number (Optional, default 0.0)
 function DefaultActions.PlayAnim(entityData, animDict, animName, blendIn, blendOut, duration, flag, playbackRate)
     local entity = entityData.spawned
     local entityId = entityData.id
@@ -156,17 +156,17 @@ function DefaultActions.LerpTo(entityData, targetCoords, duration, easingType, e
     ClientEntityActions.ActionThreads[entityId] = thread
 end
 --- Internal implementation for attaching a prop. Registered via RegisterAction.
--- This action completes immediately after attaching. Use DetachProp to remove.
--- @param entityData table
--- @param propModel string|number
--- @param boneIndex number (Optional, default -1 for root)
--- @param offsetPos vector3 (Optional, default vector3(0,0,0))
--- @param offsetRot vector3 (Optional, default vector3(0,0,0))
--- @param useSoftPinning boolean (Optional, default false)
--- @param collision boolean (Optional, default false)
--- @param isPed boolean (Optional, default false) - Seems unused in native?
--- @param vertexIndex number (Optional, default 2) - Seems unused in native?
--- @param fixedRot boolean (Optional, default true)
+--- This action completes immediately after attaching. Use DetachProp to remove.
+--- @param entityData table
+--- @param propModel string|number
+--- @param boneIndex number (Optional, default -1 for root)
+--- @param offsetPos vector3 (Optional, default vector3(0,0,0))
+--- @param offsetRot vector3 (Optional, default vector3(0,0,0))
+--- @param useSoftPinning boolean (Optional, default false)
+--- @param collision boolean (Optional, default false)
+--- @param isPed boolean (Optional, default false) - Seems unused in native?
+--- @param vertexIndex number (Optional, default 2) - Seems unused in native?
+--- @param fixedRot boolean (Optional, default true)
 function DefaultActions.AttachProp(entityData, propModel, boneName, offsetPos, offsetRot, useSoftPinning, collision, isPed, vertexIndex, fixedRot)
     local entity = entityData.spawned
     local entityId = entityData.id
@@ -205,8 +205,8 @@ function DefaultActions.AttachProp(entityData, propModel, boneName, offsetPos, o
     ClientEntityActions.ProcessNextAction(entityId)
 end
 --- Internal implementation for detaching a prop. Registered via RegisterAction.
--- @param entityData table
--- @param propModel string|number The model name/hash of the prop to detach.
+--- @param entityData table
+--- @param propModel string|number The model name/hash of the prop to detach.
 function DefaultActions.DetachProp(entityData, propModel)
     local entityId = entityData.id
 
@@ -264,7 +264,6 @@ function DefaultActions.GetInCar(entityData, vehicleData, seatIndex, timeout)
 end
 
 function DefaultActions.Freeze(entityData, freeze)
-    print("[ClientEntityActions] Freeze action called", freeze)
     local entity = entityData.spawned
     local entityId = entityData.id
 
