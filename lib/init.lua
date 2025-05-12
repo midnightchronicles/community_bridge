@@ -87,8 +87,6 @@ local function getSharedLib()
 end
 
 cLib = setmetatable(getSharedLib(), { __index = IsDuplicityVersion() and getServerLib() or getClientLib() })
-_ENV.cLib = cLib
-_ENV.Require = Require
 exports('cLib', function()
     return cLib
 end)
