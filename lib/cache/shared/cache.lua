@@ -140,6 +140,22 @@ function Cache.OnChange(name, onChange)
 end
 
 ---@param name string
+---@param newValue any
+function Cache.Update(name, newValue)
+    assert(name, "Cache name is required.")
+    local _name = tostring(name)
+    local cache = Cache.Caches[_name]
+    assert(cache, "Cache with name '" .. _name .. "' does not exist.")
+    local oldValue = cache.Value
+    if oldValue ~= newValue then
+        cache.Value = newValue
+        for i = 1, #cache.OnChange do
+            cache.OnChange[i](newValue, oldValue)
+        end
+    end
+end
+
+---@param name string
 function Cache.Remove(name)
     assert(name, "Cache name is required.")
     local _name = tostring(name)
