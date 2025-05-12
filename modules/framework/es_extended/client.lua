@@ -15,6 +15,7 @@ Framework.GetPlayerData = function()
     return ESX.PlayerData
 end
 
+--<-- TODO swap to internal callback system
 ---This will return a table of all the jobs in the framework.
 ---@return table
 Framework.GetFrameworkJobs = function()

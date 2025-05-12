@@ -221,6 +221,7 @@ Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups
 end
 
 
+--<-- TODO swap to internal callback system
 -- This is used for the esx users, documentation doesnt show a client side available option for the inventory so we use jank callbacks to get this.
 lib.callback.register('community_bridge:Callback:core_inventory', function(source)
     local items = core:getItemsList()

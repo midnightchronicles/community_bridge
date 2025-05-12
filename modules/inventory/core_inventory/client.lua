@@ -12,6 +12,7 @@ Inventory.GetItemInfo = function(item)
     if not frameworkName then return {} end
     local dataRepack = {}
     if frameworkName == 'es_extended' then
+        --<-- TODO swap to internal callback system
         local callbackData = lib.callback.await('community_bridge:Callback:core_inventory', false)
         -- really really wish this inventory allowed me to pull the item list client side....
         dataRepack = callbackData[item]
