@@ -452,3 +452,5 @@ AddEventHandler("playerDropped", function()
     local src = source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
+
+return Framework

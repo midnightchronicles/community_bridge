@@ -9,8 +9,8 @@ version '0.7.0'
 
 shared_scripts {
     '@ox_lib/init.lua',
-    'lib/init.lua',
     'settings/sharedConfig.lua',
+    'lib/init.lua',
     'modules/math/*.lua',
     'modules/locales/*.lua',
 }

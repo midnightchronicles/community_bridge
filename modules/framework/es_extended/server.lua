@@ -1,5 +1,6 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('es_extended') ~= 'started' then return end
+Prints = Prints or Require("lib/utility/shared/prints.lua")
 
 ESX = exports["es_extended"]:getSharedObject()
 
@@ -251,7 +252,7 @@ Framework.SetPlayerJob = function(src, name, grade)
     local xPlayer = ESX.GetPlayerFromId(src)
     if not xPlayer then return end
     if not ESX.DoesJobExist(name, grade) then
-        lib.print.error("Job Does Not Exsist In Framework :NAME " .. name .. " Grade:" .. grade)
+        Prints.Error("Job Does Not Exsist In Framework :NAME " .. name .. " Grade:" .. grade)
         return
     end
     return xPlayer.setJob(name, grade, true)
@@ -341,6 +342,7 @@ AddEventHandler("playerDropped", function()
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
 
+--<-- TODO swap to internal callback system
 lib.callback.register('community_bridge:Callback:GetFrameworkJobs', function(source)
     return Framework.GetFrameworkJobs() or {}
 end)
@@ -354,3 +356,5 @@ Framework.Commands.Add = function(name, help, arguments, argsrequired, callback,
         arguments = arguments
     })
 end
+
+return Framework
