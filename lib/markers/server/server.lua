@@ -3,7 +3,7 @@ local id = Ids or Require("lib/utility/shared/ids.lua")
 Marker = {}
 local Created = {}
 
-function Marker.Create(data)
+function Marker.New(data)
     if not data.position or not data.position.x or not data.position.y or not data.position.z then
         print("Invalid marker position. Must be a vector3 with x, y, and z coordinates.")
         return
@@ -40,19 +40,49 @@ function Marker.Create(data)
         drawOnEnts = data.drawOnEnts,
     }
     Created[_id] = data
-    TriggerClientEvent("community_bridge:Client:Marker", -1, data)
+    return _id
+end
+function Marker.Destroy(id)
+    if not id or not Created[id] then return end
+    Created[id] = nil
+    return true
+end
+
+function Marker.Create(data)
+    local _id = Marker.New(data)
+    if not _id then return end
+    TriggerClientEvent("community_bridge:Client:Marker", -1, Created[_id])
     return _id
 end
 
 function Marker.Remove(id)
-    if not Created[id] then return end
+    if not Marker.Destroy(id) then return end
     TriggerClientEvent("community_bridge:Client:MarkerRemove", -1, id)
-    Created[id] = nil
 end
 
-RegisterNetEvent("community_bridge:Server:MarkerRemove", function(id)
-    Marker.Remove(id)
-end)
+function Marker.CreateBulk(datas)
+    if not datas then return end
+    local toClient = {}
+    for k, v in pairs(datas) do
+        table.insert(toClient, Marker.Create(v))
+    end
+    TriggerClientEvent("community_bridge:Client:MarkerBulk", -1, toClient)
+    return toClient
+end
+
+function Marker.RemoveBulk(ids)
+    if not ids then return end
+    local toClient = {}
+    for k, v in pairs(ids) do
+        local id = v
+        if type(v) == "table" then
+            id = v.id
+        end
+        Marker.Destroy(id)
+        table.insert(toClient, id)
+    end
+    TriggerClientEvent("community_bridge:Client:MarkerRemoveBulk", -1, toClient)
+end
 
 exports("Marker", Marker)
 return Marker

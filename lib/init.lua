@@ -61,6 +61,7 @@ cLib.LootTables = LootTables or Require("lib/generators/server/lootTables.lua")
 cLib.Cache = Cache or Require("lib/cache/shared/cache.lua")
 cLib.ServerEntity = ServerEntity or Require("lib/entities/server/server_entity.lua")
 cLib.Marker = Marker or Require("lib/markers/server/server.lua")
+cLib.Particle = Particle or Require("lib/particles/server/particles.lua")
 if IsDuplicityVersion() then return cLib end
 ::client::
 
@@ -80,4 +81,6 @@ cLib.Marker = Marker or Require("lib/markers/client/markers.lua")
 cLib.Anim = Anim or Require("lib/anim/client/client.lua")
 cLib.Cutscene = Cutscene or Require("lib/cutscenes/client/cutscene.lua")
 cLib.DUI = DUI or Require("lib/dui/client/dui.lua")
+cLib.Particle = Particle or Require("lib/particles/client/particles.lua")
+
 return cLib

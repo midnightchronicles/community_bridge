@@ -1,8 +1,8 @@
 ---@diagnostic disable: duplicate-set-field
 Marker = {}
 local Created = setmetatable({}, { __mode = "k" }) --what is mode?
-local id = Ids or Require("lib/utility/shared/ids.lua")
-local point =  Require("lib/points/client/points.lua")
+local Ids = Ids or Require("lib/utility/shared/ids.lua")
+local point =  Point or Require("lib/points/client/points.lua")
 local loopRunning = false
 local Drawing = {}
 
@@ -29,7 +29,7 @@ end
 --- @param data table{position: vector3, offset: vector3, rotation: vector3, size: vector3, color: vector3, alpha: number, bobUpAndDown: boolean, marker: number, interaction: function}
 --- @return string|nil
 function Marker.Create(data)
-    local _id = data.id or id.Random()
+    local _id = data.id or Ids.CreateUniqueId(Created)
     if not validateMarkerData(data) then return end
     local basePosition = data.position or vector3(0.0, 0.0, 0.0)
     local baseOffset = data.offset or vector3(0.0, 0.0, 0.0)
@@ -61,7 +61,7 @@ function Marker.Create(data)
         end,
         function(markerData)                
             Drawing[_id] = nil               
-        end
+        end, nil
     )
     return _id
 end
@@ -117,12 +117,25 @@ function Marker.Run(data)
 end
 
 RegisterNetEvent("community_bridge:Client:Marker", function(data)
-    print("community_bridge:Client:Marker")
     Marker.Create(data)
+end)
+
+RegisterNetEvent("community_bridge:Client:MarkerBulk", function(datas)
+    if not datas then return end
+    for _, data in pairs(datas) do
+        Marker.Create(data)
+    end
 end)
 
 RegisterNetEvent("community_bridge:Client:MarkerRemove", function(id)
     Marker.Remove(id)
+end)
+
+RegisterNetEvent("community_bridge:Client:MarkerRemoveBulk", function(ids)
+    if not ids then return end
+    for _, id in pairs(ids) do
+        Marker.Remove(id)
+    end
 end)
 
 -- local loopRunning = false
