@@ -250,7 +250,7 @@ function Cutscene.Create(cutscene, coords, srcs)
 
         local isPedMale = IsPedMale(currentPed)
         local tag = isPedMale and tagTable.male or tagTable.female
-        local unusedTag = isPedMale and tagTable.female or tagTable.male
+        local unusedTag = not isPedMale and tagTable.male or tagTable.female -- needs to be this way as default has to be null for missing female
 
         SetCutsceneEntityStreamingFlags(tag, 0, 1)
         RegisterEntityForCutscene(currentPed, tag, 0, GetEntityModel(currentPed), 64)
@@ -374,12 +374,21 @@ function Cutscene.Start(cutsceneData)
         if playerData.identifier == 'script' then
             DeleteEntity(ped)
         elseif playerData.identifier == 'localplayer' then
-            SetEntityCoords(ped, playerData.coords.x, playerData.coords.y, playerData.coords.z, false, false, false,
-                false)
+            SetEntityCoords(ped, playerData.coords.x, playerData.coords.y, playerData.coords.z, false, false, false, false)
         end
         ::continue::
     end
     Cutscene.done = true
 end
+
+
+-- RegisterCommand('cutscene', function(source, args, rawCommand)
+--     local cutscene = args[1]
+--     if cutscene then
+--         local cutsceneData = Cutscene.Create(cutscene, false, { 1,1,1 })
+--         Cutscene.Start(cutsceneData)
+ 
+--     end
+-- end, false)
 
 return Cutscene
