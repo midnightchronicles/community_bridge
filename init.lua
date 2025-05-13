@@ -48,7 +48,7 @@ end)
 -- The following assignments expose core utilities globally,
 -- making them accessible in all subsequently loaded modules.
 
-_ENV.cLib = cLib ~= nil and cLib or export.community_lib.cLib() ---@type table
+_ENV.cLib = cLib ~= nil and cLib or exports.community_bridge:cLib() ---@type table
 _ENV.Require = Require ---@type fun(module: string): any
 exports("RegisterModule", Bridge.RegisterModule)
 
@@ -129,21 +129,3 @@ Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
 Bridge.RegisterModule("Dialogue", Dialogue)
 Bridge.RegisterModule("Accessibility", Accessibility) -- new
-
--- Fill the bridge tables with player data.
-function FillBridgeTables()
-    PlayerLoaded = true
-    PlayerIdentifier = Framework.GetPlayerIdentifier()
-    PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel = Framework.GetPlayerJob()
-end
-
--- Clean the bridge tables.
-function ClearClientSideVariables()
-    PlayerLoaded = false
-    PlayerIdentifier = nil
-    PlayerJobName = nil
-    PlayerJobLabel = nil
-    PlayerJobGradeName = nil
-    PlayerJobGradeLevel = nil
-    StoredOldClothing = {}
-end
