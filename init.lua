@@ -106,21 +106,3 @@ Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
 Bridge.RegisterModule("Dialogue", Dialogue)
 Bridge.RegisterModule("Accessibility", Accessibility) -- new
-
--- Fill the bridge tables with player data.
-function FillBridgeTables()
-    PlayerLoaded = true
-    PlayerIdentifier = Framework.GetPlayerIdentifier()
-    PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel = Framework.GetPlayerJob()
-end
-
--- Clean the bridge tables.
-function ClearClientSideVariables()
-    PlayerLoaded = false
-    PlayerIdentifier = nil
-    PlayerJobName = nil
-    PlayerJobLabel = nil
-    PlayerJobGradeName = nil
-    PlayerJobGradeLevel = nil
-    StoredOldClothing = {}
-end

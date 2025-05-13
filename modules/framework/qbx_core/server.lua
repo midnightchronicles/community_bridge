@@ -15,7 +15,7 @@ end
 ---@param src number
 ---@return string
 Framework.GetPlayerDob = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     return playerData.charinfo.birthdate
@@ -40,7 +40,7 @@ end
 ---@param src number
 ---@return string | boolean
 Framework.GetPlayerIdentifier = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     if not playerData then return false end
@@ -62,7 +62,7 @@ end
 ---@param src number
 ---@return string | nil
 Framework.GetPlayerName = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     return playerData.charinfo.firstname, playerData.charinfo.lastname
@@ -74,7 +74,7 @@ end
 ---@param metadata table
 ---@return table
 Framework.GetItem = function(src, item, metadata)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerInventory = player.PlayerData.items
     local repackedTable = {}
@@ -97,7 +97,7 @@ end
 ---@param metadata table
 ---@return number
 Framework.GetItemCount = function(src, item, metadata)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerInventory = player.PlayerData.items
     local count = 0
@@ -122,7 +122,7 @@ end
 ---@param src number
 ---@return table
 Framework.GetPlayerInventory = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerItems = player.PlayerData.items
     local repackedTable = {}
@@ -143,7 +143,7 @@ end
 ---@param value string
 ---@return boolean
 Framework.SetPlayerMetadata = function(src, metadata, value)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     player.Functions.SetMetaData(metadata, value)
     return true
@@ -154,7 +154,7 @@ end
 ---@param metadata string
 ---@return string | boolean | nil
 Framework.GetPlayerMetadata = function(src, metadata)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     return playerData.metadata[metadata] or false
@@ -165,7 +165,7 @@ end
 ---@param value number
 ---@return number | nil
 Framework.AddStress = function(src, value)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     local newStress = playerData.metadata.stress + value
@@ -179,7 +179,7 @@ end
 ---@param value number
 ---@return number | nil
 Framework.RemoveStress = function(src, value)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     local newStress = (playerData.metadata.stress or 0) - value
@@ -193,7 +193,7 @@ end
 ---@param value number
 ---@return number | nil
 Framework.AddHunger = function(src, value)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     local newHunger = (playerData.metadata.hunger or 0) + value
@@ -207,7 +207,7 @@ end
 ---@param value number
 ---@return number | nil
 Framework.AddThirst = function(src, value)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     local newThirst = (playerData.metadata.thirst or 0) + value
@@ -220,7 +220,7 @@ end
 ---@param src number
 ---@return number | nil
 Framework.GetHunger = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     local newHunger = (playerData.metadata.hunger or 0)
@@ -228,7 +228,7 @@ Framework.GetHunger = function(src)
 end
 
 Framework.GetIsPlayerDead = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     return playerData.metadata.isdead or false
@@ -245,7 +245,7 @@ end
 ---@param src number
 ---@return number
 Framework.GetThirst = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     local newThirst = (playerData.metadata.thirst or 0)
@@ -256,7 +256,7 @@ end
 ---@param src number
 ---@return string | nil
 Framework.GetPlayerPhone = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     return playerData.charinfo.phone
@@ -266,7 +266,7 @@ end
 ---@param src number
 ---@return string | nil
 Framework.GetPlayerGang = function(src)
-    local player = QBox:GetPlayer(src).PlayerData
+    local player = Framework.GetPlayer(src).PlayerData
     return player.gang.name
 end
 
@@ -291,7 +291,7 @@ end
 ---@return string | string | string | number | nil
 ---@return string | string | string | number | nil
 Framework.GetPlayerJob = function(src)
-    local player = QBox:GetPlayer(src).PlayerData
+    local player = Framework.GetPlayer(src).PlayerData
     if not player then return end
     return player.job.name, player.job.label, player.job.grade.name, player.job.grade.level
 end
@@ -302,7 +302,7 @@ end
 ---@param grade string
 ---@return boolean | nil
 Framework.SetPlayerJob = function(src, name, grade)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     return player.Functions.SetJob(name, grade)
 end
@@ -311,7 +311,7 @@ end
 ---@param src number
 ---@param status boolean
 Framework.SetPlayerDuty = function(src, status)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     QBox:SetJobDuty(playerData.citizenid, status)
@@ -322,7 +322,7 @@ end
 ---@param src number
 ---@return boolean | nil
 Framework.GetPlayerDuty = function(src)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     if not playerData.job.onduty then return false end
@@ -335,7 +335,7 @@ end
 ---@param amount number
 ---@return boolean | nil
 Framework.AddAccountBalance = function(src, _type, amount)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     if _type == 'money' then _type = 'cash' end
     return player.Functions.AddMoney(_type, amount)
@@ -347,7 +347,7 @@ end
 ---@param amount number
 ---@return boolean | nil
 Framework.RemoveAccountBalance = function(src, _type, amount)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     if _type == 'money' then _type = 'cash' end
     return player.Functions.RemoveMoney(_type, amount)
@@ -358,7 +358,7 @@ end
 ---@param _type string
 ---@return number | nil
 Framework.GetAccountBalance = function(src, _type)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     local playerData = player.PlayerData
     if _type == 'money' then _type = 'cash' end
@@ -373,7 +373,7 @@ end
 ---@param metadata table
 ---@return boolean | nil
 Framework.AddItem = function(src, item, amount, slot, metadata)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src,
         { action = "add", item = item, count = amount, slot = slot, metadata = metadata })
@@ -388,7 +388,7 @@ end
 ---@param metadata table
 ---@return boolean | nil
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src,
         { action = "remove", item = item, count = amount, slot = slot, metadata = metadata })
@@ -402,7 +402,7 @@ end
 ---@param metadata table
 ---@return boolean | nil
 Framework.SetMetadata = function(src, item, slot, metadata)
-    local player = QBox:GetPlayer(src)
+    local player = Framework.GetPlayer(src)
     if not player then return end
     player.Functions.RemoveItem(item, 1, slot)
     return player.Functions.AddItem(item, 1, slot, metadata)

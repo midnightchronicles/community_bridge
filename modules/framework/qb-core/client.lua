@@ -33,7 +33,7 @@ end
 ---This will get the players birth date
 ---@return string
 Framework.GetPlayerDob = function()
-    local player = QBCore.Functions.GetPlayerData()
+    local player = Framework.GetPlayerData()
     local playerData = player.PlayerData
     return playerData.charinfo.birthdate
 end
@@ -42,7 +42,7 @@ end
 ---@param metadata table | string
 ---@return table | string | number | boolean
 Framework.GetPlayerMetaData = function(metadata)
-    return QBCore.Functions.GetPlayerData().metadata[metadata]
+    return Framework.GetPlayerData().metadata[metadata]
 end
 
 Framework.Notify = function(message, type, time)
@@ -80,14 +80,14 @@ end
 ---This will get the players identifier (citizenid) etc.
 ---@return string
 Framework.GetPlayerIdentifier = function()
-    return QBCore.Functions.GetPlayerData().citizenid
+    return Framework.GetPlayerData().citizenid
 end
 
 ---This will get the players name (first and last).
 ---@return string
 ---@return string
 Framework.GetPlayerName = function()
-    local playerData = QBCore.Functions.GetPlayerData()
+    local playerData = Framework.GetPlayerData()
     return playerData.charinfo.firstname, playerData.charinfo.lastname
 end
 
@@ -97,7 +97,7 @@ end
 ---@return string
 ---@return string
 Framework.GetPlayerJob = function()
-    local playerData = QBCore.Functions.GetPlayerData()
+    local playerData = Framework.GetPlayerData()
     return playerData.job.name, playerData.job.label, playerData.job.grade.name, playerData.job.grade.level
 end
 
@@ -109,7 +109,7 @@ end
 ---@param item string
 ---@return number
 Framework.GetItemCount = function(item)
-    local frameworkInv = QBCore.Functions.GetPlayerData().items
+    local frameworkInv = Framework.GetPlayerData().items
     local count = 0
     for _, v in pairs(frameworkInv) do
         if v.name == item then
@@ -121,7 +121,7 @@ end
 
 Framework.GetPlayerInventory = function()
     local items = {}
-    local frameworkInv = QBCore.Functions.GetPlayerData().items
+    local frameworkInv = Framework.GetPlayerData().items
     for _, v in pairs(frameworkInv) do
         table.insert(items, {
             name = v.name,
@@ -140,7 +140,7 @@ end
 ---This will get a players dead status.
 ---@return boolean
 Framework.GetIsPlayerDead = function()
-    local playerData = QBCore.Functions.GetPlayerData()
+    local playerData = Framework.GetPlayerData()
     return playerData.metadata["isdead"] or playerData.metadata["inlaststand"]
 end
 
@@ -148,21 +148,15 @@ Framework.Shared = QBCore.Shared
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(1500)
-    FillBridgeTables()
     TriggerEvent('community_bridge:Client:OnPlayerLoaded')
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    ClearClientSideVariables()
-	TriggerEvent('community_bridge:Client:OnPlayerUnload')
+    TriggerEvent('community_bridge:Client:OnPlayerUnload')
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(data)
-    PlayerJobName = data.name
-    PlayerJobLabel = data.label
-    PlayerJobGradeName = data.grade.name
-    PlayerJobGradeLevel = data.grade.level
-    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate', PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel)
+    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate', data.name, data.label, data.grade_label, data.grade)
 end)
 
 RegisterNetEvent('QBCore:Client:OnGangUpdate', function(data)
