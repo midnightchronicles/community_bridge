@@ -38,7 +38,7 @@ end
 
 ---Returns the citizen ID of the player.
 ---@param src number
----@return string | boolean
+---@return string | boolean | nil
 Framework.GetPlayerIdentifier = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -60,6 +60,7 @@ end
 
 ---Returns the first and last name of the player.
 ---@param src number
+---@return string | nil
 ---@return string | nil
 Framework.GetPlayerName = function(src)
     local player = Framework.GetPlayer(src)
@@ -95,7 +96,7 @@ end
 ---@param src number
 ---@param item string
 ---@param metadata table
----@return number
+---@return number | nil
 Framework.GetItemCount = function(src, item, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -120,7 +121,7 @@ end
 
 ---Returns the entire inventory of the player as a table.
 ---@param src number
----@return table
+---@return table | nil
 Framework.GetPlayerInventory = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -141,7 +142,7 @@ end
 ---@param src number
 ---@param metadata string
 ---@param value string
----@return boolean
+---@return boolean | nil
 Framework.SetPlayerMetadata = function(src, metadata, value)
     local player = Framework.GetPlayer(src)
     if not player then return end
