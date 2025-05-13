@@ -22,7 +22,7 @@ function Bridge.RegisterModule(moduleName, moduleTable)
     end
     Bridge[moduleName] = wrappedModule
     _ENV[moduleName] = wrappedModule -- Add to the ENV table the modules so is more easy and safe to call from inside
-    _ENV.Bridge = Bridge -- Add the bridge too to the _ENV
+
 
     exports(moduleName, function()
         return wrappedModule
@@ -31,18 +31,37 @@ function Bridge.RegisterModule(moduleName, moduleTable)
     --trigger update object event
     TriggerEvent("Bridge:Refresh", moduleName, wrappedModule)
 end
+
+CreateThread(function() -- lets try to load the lib first to use it on the rest of the modules
+    for k, v in pairs(cLib) do
+        if v then
+            Bridge.RegisterModule(k, v)
+        end
+    end
+end)
+
+--- @module GlobalEnvironment
+--- @field cLib table # Core library utilities, available globally after initialization.
+--- @field Require fun(module: string): any # Function to require/load modules by name.
+
+--- Global environment setup.
+-- The following assignments expose core utilities globally,
+-- making them accessible in all subsequently loaded modules.
+
+_ENV.cLib = cLib ~= nil and cLib or export.community_lib.cLib() ---@type table
+_ENV.Require = Require ---@type fun(module: string): any
 exports("RegisterModule", Bridge.RegisterModule)
 
 --TODO: Create a way to overide functions or create a new functions for module
 
 function Bridge.RegisterModuleFunction(moduleName, functionName, func)
-    assert(moduleName and functionName and func, string.format("Bridge.RegisterModuleFunction(%s, %s, %s) - Invalid arguments", moduleName, functionName, func))
+    assert(moduleName and functionName and func,
+        string.format("Bridge.RegisterModuleFunction(%s, %s, %s) - Invalid arguments", moduleName, functionName, func))
     Bridge[moduleName] = Bridge[moduleName] or {}
     Bridge[moduleName][functionName] = func
     --trigger update object event
     TriggerEvent("Bridge:Refresh", moduleName, Bridge[moduleName])
 end
-
 
 --Bridge
 Bridge.RegisterModule("Framework", Framework)
@@ -75,23 +94,27 @@ Bridge.RegisterModule("Require", Require)
 -- Bridge.RegisterModule("Skills", Skills)
 
 
-for k, v in pairs(cLib) do
-    if v then
-        Bridge.RegisterModule(k, v)
+
+
+--[[ CreateThread(function() -- using metatables
+    for k, v in pairs(cLib.loaded) do
+        if v then
+            Bridge.RegisterModule(k, v)
+        end
     end
-end
+end) ]]
 
 exports('Bridge', function()
     return Bridge
 end)
 
--- ▄▀▀ ██▀ █▀▄ █ █ ██▀ █▀▄ 
--- ▄█▀ █▄▄ █▀▄ ▀▄▀ █▄▄ █▀▄ 
+-- ▄▀▀ ██▀ █▀▄ █ █ ██▀ █▀▄
+-- ▄█▀ █▄▄ █▀▄ ▀▄▀ █▄▄ █▀▄
 if not IsDuplicityVersion() then goto client end
 Bridge.RegisterModule('Version', Version)
 
---    ▄▀▀ █   █ ██▀ █▄ █ ▀█▀ 
---    ▀▄▄ █▄▄ █ █▄▄ █ ▀█  █  
+--    ▄▀▀ █   █ ██▀ █▄ █ ▀█▀
+--    ▀▄▄ █▄▄ █ █▄▄ █ ▀█  █
 if IsDuplicityVersion() then return end
 ::client::
 
