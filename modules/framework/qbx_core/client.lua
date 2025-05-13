@@ -74,15 +74,21 @@ end
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(1500)
+    FillBridgeTables()
     TriggerEvent('community_bridge:Client:OnPlayerLoaded')
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    TriggerEvent('community_bridge:Client:OnPlayerUnload')
+    ClearClientSideVariables()
+	TriggerEvent('community_bridge:Client:OnPlayerUnload')
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(data)
-    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate', data.name, data.label, data.grade.name, data.grade.level)
+    PlayerJobName = data.name
+    PlayerJobLabel = data.label
+    PlayerJobGradeName = data.grade.name
+    PlayerJobGradeLevel = data.grade.level
+    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate',PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel)
 end)
 
 return Framework

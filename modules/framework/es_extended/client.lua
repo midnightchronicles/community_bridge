@@ -119,15 +119,21 @@ end
 
 RegisterNetEvent('esx:playerLoaded', function(xPlayer)
     Wait(1500)
-    TriggerEvent('community_bridge:Client:OnPlayerLoaded')
+    FillBridgeTables()
+	TriggerEvent('community_bridge:Client:OnPlayerLoaded')
 end)
 
 RegisterNetEvent('esx:onPlayerLogout', function()
-    TriggerEvent('community_bridge:Client:OnPlayerUnload')
+    ClearClientSideVariables()
+	TriggerEvent('community_bridge:Client:OnPlayerUnload')
 end)
 
 RegisterNetEvent('esx:setJob', function(data)
-    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate', data.name, data.label, data.grade_label, data.grade)
+    PlayerJobName = data.name
+    PlayerJobLabel = data.label
+    PlayerJobGradeName = data.grade_label
+    PlayerJobGradeLevel = data.grade
+    TriggerEvent('community_bridge:Client:OnPlayerJobUpdate',PlayerJobName, PlayerJobLabel, PlayerJobGradeName, PlayerJobGradeLevel)
 end)
 
 return Framework
