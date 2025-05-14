@@ -12,7 +12,7 @@ end
 ---This will return a table of the players data, this is an internal table and should not be used.
 ---@return table
 Framework.GetPlayerData = function()
-    return ESX.PlayerData
+    return ESX.GetPlayerData()
 end
 
 --<-- TODO swap to internal callback system
