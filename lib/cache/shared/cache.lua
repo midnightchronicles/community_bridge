@@ -74,7 +74,6 @@ function Cache.Create(name, compare, waitTime)
             Value = compare()
         }
         Cache.Caches[_name] = _cache
-        print(_name .. " created with initial value: " .. tostring(Cache.Caches[_name].Value))
         for _, onChange in pairs(_cache.OnChange) do
             onChange(_cache.Value, nil)
         end
@@ -108,7 +107,6 @@ function Cache.Remove(name)
     local cache = Cache.Caches[_name]
     if cache then
         Cache.Caches[_name] = nil
-        print(_name .. " removed from cache.")
         if next(Cache.Caches) == nil then
             Cache.LoopRunning = false -- Stop the loop if no caches are left
         end
