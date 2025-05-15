@@ -57,7 +57,6 @@ end
 function Cache.Create(name, compare, waitTime)
     assert(name, "Cache name is required.")
     assert(compare, "Comparison function is required.")
-    assert(type(compare) == "function", "Comparison function must be a function.")
     local _name = tostring(name) -- Ensure name is a string
     local cache = Cache.Caches[_name]
     if cache and cache.Compare == compare then
