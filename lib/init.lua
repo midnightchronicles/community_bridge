@@ -80,7 +80,7 @@ cLib.ClientStateBag = ClientStateBag or Require("lib/statebags/client/client.lua
 cLib.Marker = Marker or Require("lib/markers/client/markers.lua")
 cLib.Anim = Anim or Require("lib/anim/client/client.lua")
 cLib.Cutscene = Cutscene or Require("lib/cutscenes/client/cutscene.lua")
-cLib.DUI = DUI or Require("lib/dui/client/dui.lua")
+--cLib.DUI = DUI or Require("lib/dui/client/dui.lua")
 cLib.Particle = Particle or Require("lib/particles/client/particles.lua")
 
 return cLib
