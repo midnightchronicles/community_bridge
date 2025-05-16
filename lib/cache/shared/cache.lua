@@ -57,7 +57,6 @@ end
 function Cache.Create(name, compare, waitTime)
     assert(name, "Cache name is required.")
     assert(compare, "Comparison function is required.")
-    assert(type(compare) == "function", "Comparison function must be a function.")
     local _name = tostring(name) -- Ensure name is a string
     local cache = Cache.Caches[_name]
     if cache and cache.Compare == compare then
@@ -75,7 +74,6 @@ function Cache.Create(name, compare, waitTime)
             Value = compare()
         }
         Cache.Caches[_name] = _cache
-        print(_name .. " created with initial value: " .. tostring(Cache.Caches[_name].Value))
         for _, onChange in pairs(_cache.OnChange) do
             onChange(_cache.Value, nil)
         end
@@ -109,7 +107,6 @@ function Cache.Remove(name)
     local cache = Cache.Caches[_name]
     if cache then
         Cache.Caches[_name] = nil
-        print(_name .. " removed from cache.")
         if next(Cache.Caches) == nil then
             Cache.LoopRunning = false -- Stop the loop if no caches are left
         end
