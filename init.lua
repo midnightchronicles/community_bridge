@@ -10,7 +10,7 @@ function Bridge.RegisterModule(moduleName, moduleTable)
 
     local wrappedModule = Bridge[moduleName] or {}
     if type(moduleTable) == 'function' then
-        Bridge[moduleName] = wrappedModule
+        Bridge[moduleName] = moduleTable
         exports(moduleName, moduleTable)
         return
     end

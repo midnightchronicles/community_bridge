@@ -2,7 +2,7 @@ loadedModules = {}
 
 function Require(modulePath, resourceName)
     if resourceName and type(resourceName) ~= "string" then
-        resourceName = GetCurrentResourceName()
+        resourceName = GetInvokingResource()
     end
 
     if not resourceName then
