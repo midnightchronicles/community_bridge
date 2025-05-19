@@ -1,4 +1,4 @@
-if GetResourceState('cd_easytime') ~= 'started' then return end
+if GetResourceState('cd_easytime') == 'missing' then return end
 Weather = Weather or {}
 
 ---comment

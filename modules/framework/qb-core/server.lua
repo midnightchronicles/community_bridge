@@ -2,10 +2,12 @@
 if GetResourceState('qb-core') ~= 'started' then return end
 if GetResourceState('qbx_core') == 'started' then return end
 
+Framework = Framework or {}
+
 QBCore = exports['qb-core']:GetCoreObject()
 
-Framework = Framework or {}
 Framework.Shared = QBCore.Shared
+
 Framework.GetFrameworkName = function()
     return 'qb-core'
 end

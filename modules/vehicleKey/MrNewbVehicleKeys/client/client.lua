@@ -1,6 +1,5 @@
 local resourceName = "MrNewbVehicleKeys"
-local configValue = BridgeClientConfig.VehicleKey
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+if GetResourceState(resourceName) == 'missing' then return end
 
 VehicleKey = VehicleKey or {}
 

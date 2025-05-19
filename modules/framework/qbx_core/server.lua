@@ -1,9 +1,9 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('qbx_core') ~= 'started' then return end
 
-local QBox = exports.qbx_core
-
 Framework = Framework or {}
+
+local QBox = exports.qbx_core
 
 ---Returns the name of the framework being used (if a supported framework).
 ---@return string

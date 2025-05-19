@@ -1,5 +1,5 @@
 ---@diagnostic disable: duplicate-set-field
-if GetResourceState('Renewed-Banking') ~= 'started' then return end
+if GetResourceState('Renewed-Banking') == 'missing' then return end
 Managment = Managment or {}
 
 ---This will return a table with account details

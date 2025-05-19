@@ -2,9 +2,11 @@
 if GetResourceState('qb-core') ~= 'started' then return end
 if GetResourceState('qbx_core') == 'started' then return end
 
+Framework = Framework or {}
+
 QBCore = exports['qb-core']:GetCoreObject()
 
-Framework = Framework or {}
+Framework.Shared = QBCore.Shared
 
 ---This will get the name of the framework being used (if a supported framework).
 ---@return string
@@ -159,8 +161,6 @@ Framework.GetIsPlayerDead = function()
     local playerData = Framework.GetPlayerData()
     return playerData.metadata["isdead"] or playerData.metadata["inlaststand"]
 end
-
-Framework.Shared = QBCore.Shared
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(1500)

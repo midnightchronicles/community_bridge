@@ -1,7 +1,5 @@
 local resourceName = "ox_target"
-local configValue = BridgeClientConfig.TargetSystem
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
-
+if GetResourceState(resourceName) == 'missing' then return end
 
 local targetDebug = false
 local function detectDebugEnabled()

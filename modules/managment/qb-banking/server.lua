@@ -1,5 +1,5 @@
 ---@diagnostic disable: duplicate-set-field
-if GetResourceState('qb-banking') ~= 'started' then return end
+if GetResourceState('qb-banking') == 'missing' then return end
 Managment = Managment or {}
 
 local qbBanking = exports['qb-banking']

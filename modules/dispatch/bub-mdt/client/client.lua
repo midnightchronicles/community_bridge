@@ -1,4 +1,4 @@
-if GetResourceState('bub-mdt') ~= 'started' then return end
+if GetResourceState('bub-mdt') == 'missing' then return end
 Dispatch = Dispatch or {}
 
 Dispatch.SendAlert = function(data)
