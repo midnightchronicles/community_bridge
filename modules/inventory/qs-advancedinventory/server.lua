@@ -3,7 +3,7 @@ if GetResourceState('qs-advancedinventory') ~= 'started' then return end
 local quasar = exports["qs-advancedinventory"]
 
 Inventory = Inventory or {}
-
+Inventory.Stashes = Inventory.Stashes or {}
 ---This will add an item, and return true or false based on success
 ---@param src number
 ---@param item string
