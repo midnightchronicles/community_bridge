@@ -78,15 +78,33 @@ end
 ---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
+    local frameworkInUse = Bridge.Framework.GetFrameworkName()
+    if frameworkInUse == 'qb-core' then
+        return Bridge.Framework.GetPlayerInventory(src)
+    end
     local playerItems = core:getInventory(src)
     local repackedTable = {}
     for _, v in pairs(playerItems) do
-        table.insert(repackedTable, {
-            name = v.name,
-            count = v.count,
-            metadata = v.metadata,
-            slot = v.id,
-        })
+        if v.metadata and v.count > 1 then
+            local plaseFixThisExportCuzThisIsPainful = core:getItems(src, v.name)
+            if plaseFixThisExportCuzThisIsPainful then
+                for _, item in pairs(plaseFixThisExportCuzThisIsPainful) do
+                    table.insert(repackedTable, {
+                        name = v.name,
+                        count = item.count,
+                        metadata = item.metadata,
+                        slot = item.id,
+                    })
+                end
+            end
+        else
+            table.insert(repackedTable, {
+                name = v.name,
+                count = v.count,
+                metadata = v.metadata,
+                slot = v.id,
+            })
+        end
     end
     return repackedTable
 end
