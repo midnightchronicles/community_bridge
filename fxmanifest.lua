@@ -13,6 +13,7 @@ shared_scripts {
     'lib/init.lua',
     'modules/math/*.lua',
     'modules/locales/*.lua',
+    'modules/clothing/**/shared.lua',
 }
 
 server_scripts {
@@ -72,6 +73,7 @@ files {
     'lib/**/client/*.lua',
     'lib/**/shared/*.lua',
     'lib/**/server/*.lua',
+    'modules/**',
     'settings/*.lua',
     'lib/init.lua',
 }

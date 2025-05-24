@@ -10,4 +10,49 @@
   <body>
     <div id="root"></div>
   </body>
+  <script> 
+    // dont judge me
+
+    function isTableJSON(jsonString) {
+        try {
+            const parsed = JSON.parse(jsonString);
+            if (!Array.isArray(parsed)) {
+                return false;
+            }
+            if (parsed.length > 0) {
+              const firstKeys = Object.keys(parsed[0]);
+              for (let i = 0; i < parsed.length; i++) {
+                if (typeof parsed[i] !== 'object' || parsed[i] === null || Array.isArray(parsed[i])) {
+                  return false;
+                }
+                if (Object.keys(parsed[i]).length !== firstKeys.length || !Object.keys(parsed[i]).every(key => firstKeys.includes(key))) {
+                    return false
+                }
+              }
+            }
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+    const copyToClipboard = (str) => {
+    const el = document.createElement("textarea");
+    el.value = str;
+    document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+    };
+
+    window.addEventListener("message", (event) => {
+        if (event?.data?.type === "copytoclipboard") {
+            var str = event.data.text;
+            // if (isTableJSON(str)) {
+            //     str = JSON.stringify(JSON.parse(str), null, 2);
+            // }
+            copyToClipboard(str);
+        }
+        
+    });
+  </script>
 </html>

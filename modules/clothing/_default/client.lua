@@ -3,34 +3,71 @@
 Clothing = Clothing or {}
 
 ClothingBackup = {}
+Callback = Callback or Require("lib/utility/shared/callbacks.lua")
+Ultility = Utility or Require('lib/utility/client/utility.lua')
 
-
----This will set the peds skin data to the specified table. It will also store previous skin in the event it needs returned to original.
----@param data table
----@return boolean
-Clothing.SetAppearance = function(data)
-    ClothingBackup = Clothing.GetAppearance()
-    Utility.SetEntitySkinData(cache.ped, data)
-    return true
+function Clothing.IsMale()
+    local ped = PlayerPedId()
+    if not ped then return end
+    if GetEntityModel(ped) == `mp_m_freemode_01` then
+        return true
+    end
+    return false
 end
 
----This will return a table of the players ped appearance
+---Get the skin data of a ped
+---@param entity number
 ---@return table
-Clothing.GetAppearance = function()
-    return Utility.GetEntitySkinData(cache.ped)
+function Clothing.GetAppearance(entity)
+    if not entity and not DoesEntityExist(entity) then return end
+    local model = GetEntityModel(entity)
+    local skinData = { model = model, components = {}, props = {} }
+    for i = 0, 11 do
+        table.insert(skinData.components, { component_id = i, drawable = GetPedDrawableVariation(entity, i), texture = GetPedTextureVariation(entity, i) })
+    end
+    for i = 0, 13 do
+        table.insert(skinData.props, { prop_id = i, drawable = GetPedPropIndex(entity, i), texture = GetPedPropTextureIndex(entity, i) })
+    end
+    return skinData
 end
 
----This will return the peds clothing to the previously stored clothing
+function Clothing.CopyAppearanceToClipboard()
+    local ped = PlayerPedId()
+    if not ped or not DoesEntityExist(ped) then return end
+    local skinData = Clothing.GetAppearance(ped)
+    if not skinData then return end
+    Ultility.CopyToClipboard(skinData)
+end
+
+Callback.Register('community_bridge:cb:GetAppearance', function()
+    local ped = PlayerPedId()
+    if not ped or not DoesEntityExist(ped) then return end
+    local skinData = Clothing.GetAppearance(ped)
+    return skinData
+end)
+
+---Apply skin data to a ped
+---@param entity number
+---@param skinData table
 ---@return boolean
-Clothing.RestoreAppearance = function()
-    Utility.SetEntitySkinData(cache.ped, ClothingBackup)
+function Clothing.SetAppearance(entity, skinData)
+    for k, v in pairs(skinData.components or {}) do
+        if v.component_id then
+            SetPedComponentVariation(entity, v.component_id, v.drawable, v.texture, 0)
+        end
+    end
+    for k, v in pairs(skinData.props or {}) do
+        if v.prop_id then
+            SetPedPropIndex(entity, v.prop_id, v.drawable, v.texture, 0)
+        end
+    end
     return true
 end
 
----This will reload the peds skin data from the backup table. This is used when the skin data is changed and needs to be reloaded.
+---This will return the peds components to the previously stored components
 ---@return boolean
-Clothing.ReloadSkin = function()
-    Utility.SetEntitySkinData(cache.ped, ClothingBackup)
+Clothing.RestoreAppearance = function(entity)
+    Clothing.SetAppearance(entity, ClothingBackup)
     return true
 end
 
@@ -38,24 +75,20 @@ Clothing.UpdateAppearanceBackup = function(data)
     ClothingBackup = data
 end
 
-RegisterNetEvent('community_bridge:client:updateClothingBackup', function(skindata)
-    ClothingBackup = skindata
-end)
-
 RegisterNetEvent('community_bridge:client:SetAppearance', function(data)
-    Clothing.SetAppearance(data)
+    Clothing.SetAppearance(PlayerPedId(), data)
 end)
 
 RegisterNetEvent('community_bridge:client:GetAppearance', function()
-    Clothing.GetAppearance()
+    Clothing.GetAppearance(PlayerPedId())
 end)
 
 RegisterNetEvent('community_bridge:client:RestoreAppearance', function()
-    Clothing.RestoreAppearance()
+    Clothing.RestoreAppearance(PlayerPedId())
 end)
 
-RegisterNetEvent('community_bridge:client:ReloadSkin', function()
-    Clothing.ReloadSkin()
+RegisterCommand("clothing:copy", function(source, args, rawCommand)
+    Clothing.CopyAppearanceToClipboard()
 end)
 
 return Clothing

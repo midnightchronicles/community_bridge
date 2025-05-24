@@ -23,6 +23,9 @@
         "cb_tritanopia_title": "Tritanopia",
         "cb_tritanopia_desc": "Daltonismo azul-amarelo que faz com que alguém não consiga distinguir a diferença entre azul e verde, roxo e vermelho, e amarelo e rosa.\nTambém faz com que as cores pareçam menos brilhantes.",
         "cb_tritanomaly_title": "Tritanomalia",
-        "cb_tritanomaly_desc": "O daltonismo azul-amarelo dificulta a distinção entre azul e verde e entre amarelo e vermelho.",
+        "cb_tritanomaly_desc": "O daltonismo azul-amarelo dificulta a distinção entre azul e verde e entre amarelo e vermelho."
+    },
+    "clipboard":{
+        "copy": "Copied to clipboard"
     }
 }

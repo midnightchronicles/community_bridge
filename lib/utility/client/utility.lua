@@ -3,6 +3,8 @@ Utility = Utility or {}
 local blipIDs = {}
 local spawnedPeds = {}
 
+Locales = Locales or Require('modules/locales/shared.lua')
+
 -- === Local Helpers ===
 
 ---Get the hash of a model (string or number)
@@ -409,7 +411,7 @@ end
 ---@param value T The value to match against the cases
 ---@param cases table<T|false, fun(): any> Table with case functions and an optional default (false key)
 ---@return any|false result The return value of the matched case function, or false if none matched
-function Utility.Switch(value, cases)
+function Utility.Switch(value, cases) 
     local caseFunc = cases[value] or cases[false]
 
     if caseFunc and type(caseFunc) == "function" then
@@ -418,6 +420,20 @@ function Utility.Switch(value, cases)
     end
 
     return false
+end
+
+function Utility.CopyToClipboard(text)
+    if not text then return false end
+    if type(text) ~= "string" then
+        text = json.encode(text, { indent = true })
+    end
+    SendNUIMessage({
+        type = "copytoclipboard",
+        text = text
+    })
+    local message = Locales and Locales.Locale("clipboard.copy") 
+    TriggerEvent('community_bridge:Client:Notify', message, 'success')
+    return true
 end
 
 --[[

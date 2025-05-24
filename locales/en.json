@@ -41,5 +41,8 @@
     "cb_tritanopia_desc": "Blue-yellow color blindness that makes someone unable to tell the difference between blue and green, purple and red, and yellow and pink.\nIt also makes colors look less bright.",
     "cb_tritanomaly_title": "Tritanomaly",
     "cb_tritanomaly_desc": "Blue-yellow color blindness makes it hard to tell the difference between blue and green and between yellow and red."
+  },
+  "clipboard":{
+    "copy": "Copied to clipboard"
   }
 }
