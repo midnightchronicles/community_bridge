@@ -74,7 +74,7 @@ function ClientEntity.Register(entityData)
 
     -- Use Point system for proximity checks
     -- print(string.format("[ClientEntity] Registering entity %s at %s", entityData.id, json.encode(entityData)))
-    Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, function() end)
+     return Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, function() end)
 end
 
 --- Unregisters an entity and removes it from the world if spawned.
