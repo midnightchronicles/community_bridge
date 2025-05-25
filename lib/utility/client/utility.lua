@@ -63,6 +63,30 @@ local function safeAddBlip(coords, sprite, color, scale, label, shortRange, disp
     return blip
 end
 
+---Create a entiyty blip safely and store its reference
+---@param entity number
+---@param sprite number
+---@param color number
+---@param scale number
+---@param label string
+---@param shortRange boolean
+---@param displayType number
+---@return number
+local function safeAddEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
+    local blip = AddBlipForEntity(entity)
+    SetBlipSprite(blip, sprite or 8)
+    SetBlipColour(blip, color or 3)
+    SetBlipScale(blip, scale or 0.8)
+    SetBlipDisplay(blip, displayType or 2)
+    SetBlipAsShortRange(blip, shortRange)
+    ShowHeadingIndicatorOnBlip(blip, true)
+    addTextEntryOnce(label, label)
+    BeginTextCommandSetBlipName(label)
+    EndTextCommandSetBlipName(blip)
+    table.insert(blipIDs, blip)
+    return blip
+end
+
 ---Remove a blip safely from the stored list
 ---@param blip number
 ---@return boolean
@@ -178,6 +202,19 @@ end
 ---@return number
 function Utility.CreateBlip(coords, sprite, color, scale, label, shortRange, displayType)
     return safeAddBlip(coords, sprite, color, scale, label, shortRange, displayType)
+end
+
+---Create a blip on the provided entity
+---@param entity number
+---@param sprite number
+---@param color number
+---@param scale number
+---@param label string
+---@param shortRange boolean
+---@param displayType number
+---@return number
+function Utility.CreateEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
+    return safeAddEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
 end
 
 ---Remove a blip if it exists
