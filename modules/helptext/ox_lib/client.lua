@@ -5,12 +5,13 @@ if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (c
 
 ---This will show a help text message at the screen position passed
 ---@param message string
----@param _position string
+---@param position string
 ---@return nil
 ---@diagnostic disable-next-line: duplicate-set-field
-HelpText.ShowHelpText = function(message, _position)
-    if _position == nil then _position = 'left-center' end
-    return exports.ox_lib:showTextUI(message, { position = _position })
+HelpText.ShowHelpText = function(message, position)
+    return exports.ox_lib:showTextUI(message, {
+        position = position or 'top-center'
+    })
 end
 
 ---This will hide the help text message on the screen
