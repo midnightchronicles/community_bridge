@@ -13,7 +13,10 @@
 ---@field Get fun(name:string): any
 ---@field OnChange fun(name:string, onChange:fun(new:any, old:any))
 ---@field Remove fun(name:string)
-local Cache = {} ---@type CacheModule
+Cache = Cache or {} ---@type CacheModule -- <-- we use Cache as a global variable so that if we dont required it more than once
+
+Table = Table or Require('lib/utility/shared/tables.lua')
+Id = Id or Require('lib/utility/shared/ids.lua')
 
 local Config = Require("settings/sharedConfig.lua")
 local max = 5000
@@ -54,9 +57,9 @@ local function processCacheEntry(now, cache)
 
     if remaining <= 0 then
         local oldValue = cache.Value
-        cache.Value = cache.Compare()
-        if cache.Value ~= oldValue and cache.OnChange then
-            for i, onChange in ipairs(cache.OnChange) do
+        cache.Value = cache.Compare()        
+        if not Table.Compare(cache.Value, oldValue) and cache.OnChange then
+            for i, onChange in pairs(cache.OnChange) do
                 onChange(cache.Value, oldValue)
             end
         end
@@ -212,11 +215,12 @@ function Cache.OnChange(name, onChange)
     local cache = Cache.Caches[_name]
     assert(cache, "Cache with name '" .. _name .. "' does not exist.")
 
+    local id = Id.CreateUniqueId(Cache.Caches[_name]?.OnChange)
     -- Figure out which resource is trying to register this callback
     local invokingResource = GetInvokingResource()
     if not invokingResource then return end
     -- Add the new callback to our list
-    local callbackIndex = #cache.OnChange + 1
+    local callbackIndex = id
     cache.OnChange[callbackIndex] = onChange
 
     -- Track the callback with its resource
@@ -226,6 +230,20 @@ function Cache.OnChange(name, onChange)
     })
 
     debugPrint(("Added new OnChange callback to cache '%s' from resource '%s'"):format(_name, invokingResource))
+    return callbackIndex
+end
+
+function Cache.RemoveOnChange(name, id)
+    assert(name, "Cache name is required.")
+    local _name = tostring(name)
+    local cache = Cache.Caches[_name]
+    assert(cache, "Cache with name '" .. _name .. "' does not exist.")
+    if cache.OnChange[id] then
+        cache.OnChange[id] = nil
+        debugPrint("Removed OnChange callback from cache '" .. _name .. "' with ID: " .. id)
+    else
+        debugPrint("No OnChange callback found with ID: " .. id .. " in cache '" .. _name .. "'")
+    end
 end
 
 ---@param name string

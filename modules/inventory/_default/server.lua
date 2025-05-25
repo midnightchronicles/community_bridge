@@ -135,7 +135,7 @@ end
 -- @param shopInventory table
 -- @param shopCoords table
 -- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return false, Prints.Error("This Inventory Has Not Been Bridged For A CreateShop Feature.")
 end
 

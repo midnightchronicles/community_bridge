@@ -77,6 +77,8 @@ Inventory.OpenStash = function(src, id)
     TriggerClientEvent('community_bridge:client:jpr-inventory:openStash', src, id, { weight = stash.weight, slots = stash.slots })
 end
 
+
+
 ---This will register a stash
 ---@param id number||string
 ---@param label string
@@ -154,7 +156,7 @@ end
 -- @param shopInventory table
 -- @param shopCoords table
 -- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     if not shopTitle or not shopInventory or not shopCoords then return end
     if registeredShops[shopTitle] then return true end
 

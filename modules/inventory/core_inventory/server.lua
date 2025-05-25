@@ -244,7 +244,7 @@ end
 -- @param shopInventory table
 -- @param shopCoords table
 -- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return false, print("Unable to open shop for core_inventory, I do not have access to a copy of this inventory to bridge the feature.")
 end
 

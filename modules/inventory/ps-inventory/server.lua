@@ -174,7 +174,7 @@ end
 -- @param shopInventory table
 -- @param shopCoords table
 -- @param shopGroups table
-Inventory.CreateShop = function(src, shopTitle, shopInventory, shopCoords, shopGroups)
+Inventory.RegisterShop = function(src, shopTitle, shopInventory, shopCoords, shopGroups)
     if not shopTitle or not shopInventory or not shopCoords then return end
     if registeredShops[shopTitle] then return true end
 

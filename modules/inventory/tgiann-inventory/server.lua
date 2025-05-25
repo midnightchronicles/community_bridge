@@ -186,7 +186,7 @@ end
 -- @param shopInventory table
 -- @param shopCoords table
 -- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return false, print("Currently tgiann-inventory is not bridged for shops")
 end
 

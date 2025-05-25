@@ -171,7 +171,7 @@ end
 -- @param shopInventory table
 -- @param shopCoords table
 -- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     if registeredShops[shopTitle] then return true end
     registeredShops[shopTitle] = true
     ox_inventory:RegisterShop(shopTitle, { name = shopTitle, inventory = shopInventory, groups = shopGroups, })
