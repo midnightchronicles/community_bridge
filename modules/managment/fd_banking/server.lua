@@ -26,7 +26,7 @@ end
 ---@param reason string
 ---@return boolean
 Managment.RemoveAccountMoney = function(account, amount, reason)
-    return fd_banking:removeAccountMoney(account, amount, reason)
+    return fd_banking:RemoveMoney(account, amount, reason)
 end
 
 return Managment
