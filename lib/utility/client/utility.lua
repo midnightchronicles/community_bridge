@@ -426,40 +426,6 @@ function Utility.GetClosestPlayer(coords, distanceScope, includeMe)
     return closestPlayer, closestDistance, GetPlayerServerId(closestPlayer)
 end
 
----Get the closest vehicle to given coordinates
----@param coords vector3|nil
----@param distanceScope number|nil
----@param includePlayerVeh boolean|nil
----@return number|nil, vector3|nil, number|nil
-function Utility.GetClosestVehicle(coords, distanceScope, includePlayerVeh)
-    local vehicleEntity = nil
-    local vehicleNetID = nil
-    local vehicleCoords = nil
-    local selfCoords = coords or GetEntityCoords(cache.ped)
-    local closestDistance = distanceScope or 5
-    local includeMyVeh = includePlayerVeh or false
-    local gamePoolVehicles = GetGamePool("CVehicle")
-
-    local playerVehicle = IsPedInAnyVehicle(cache.ped, false) and GetVehiclePedIsIn(cache.ped, false) or 0
-
-    for i = 1, #gamePoolVehicles do
-        local thisVehicle = gamePoolVehicles[i]
-        if DoesEntityExist(thisVehicle) and (includeMyVeh or thisVehicle ~= playerVehicle) then
-            local thisVehicleCoords = GetEntityCoords(thisVehicle)
-            local distance = #(selfCoords - thisVehicleCoords)
-            if closestDistance == -1 or distance < closestDistance then
-                vehicleEntity = thisVehicle
-                vehicleNetID = NetworkGetNetworkIdFromEntity(vehicleEntity) or nil
-                vehicleCoords = thisVehicleCoords
-                closestDistance = distance
-            end
-        end
-    end
-
-    return vehicleEntity, vehicleCoords, vehicleNetID
-end
-
-
 -- Deprecated point functions (no changes)
 function Utility.RegisterPoint(pointID, pointCoords, pointDistance, _onEnter, _onExit, _nearby)
     return Point.Register(pointID, pointCoords, pointDistance, nil, _onEnter, _onExit, _nearby)
