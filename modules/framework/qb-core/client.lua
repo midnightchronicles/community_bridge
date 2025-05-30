@@ -14,6 +14,9 @@ Framework.GetFrameworkName = function()
     return 'qb-core'
 end
 
+---This will return a table of the player data, this will be in the framework format.
+---This is mainly for internal bridge use and should be avoided.
+---@return table
 Framework.GetPlayerData = function()
     return QBCore.Functions.GetPlayerData()
 end
@@ -47,6 +50,11 @@ Framework.GetPlayerMetaData = function(metadata)
     return Framework.GetPlayerData().metadata[metadata]
 end
 
+---This will send a notification to the player.
+---@param message string
+---@param type string
+---@param time number
+---@return nil
 Framework.Notify = function(message, type, time)
     TriggerEvent('QBCore:Notify', message, 'primary', time)
 end
@@ -65,6 +73,9 @@ Framework.HideHelpText = function()
     return exports['qb-core']:HideText()
 end
 
+---This will return the item data for the specified item.
+---@param item string
+---@return table
 Framework.GetItemInfo = function(item)
     local itemData = QBCore.Shared.Items[item]
     if not itemData then return {} end
@@ -119,11 +130,14 @@ Framework.GetPlayerJobData = function()
     }
 end
 
+---This will return if the player has the specified item in their inventory.
+---@param item string
+---@return boolean
 Framework.HasItem = function(item)
 	return QBCore.Functions.HasItem(item)
 end
 
----comment
+---This will return the item count for the specified item in the players inventory.
 ---@param item string
 ---@return number
 Framework.GetItemCount = function(item)
@@ -137,6 +151,8 @@ Framework.GetItemCount = function(item)
     return count
 end
 
+---This will return the players inventory as a table in the ox_inventory style flormat.
+---@return table
 Framework.GetPlayerInventory = function()
     local items = {}
     local frameworkInv = Framework.GetPlayerData().items

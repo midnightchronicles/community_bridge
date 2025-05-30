@@ -5,18 +5,27 @@ QBox = exports.qbx_core
 
 Framework = Framework or {}
 
+---This will get the name of the framework being used (if a supported framework).
+---@return string
 Framework.GetFrameworkName = function()
     return 'qbx_core'
 end
 
+---This will return a table of the player data, this will be in the framework format.
+---This is mainly for internal bridge use and should be avoided.
+---@return table
 Framework.GetPlayerData = function()
     return QBox.GetPlayerData()
 end
 
+---This will return a table of all the jobs in the framework.
+---@return table
 Framework.GetFrameworkJobs = function()
     return QBox.GetJobs()
 end
 
+---This will get the players birth date
+---@return string
 Framework.GetPlayerDob = function()
     local playerData = Framework.GetPlayerData()
     return playerData.charinfo.birthdate
@@ -24,11 +33,10 @@ end
 
 ---Will Display the help text message on the screen
 ---@param message string
----@param _ unknown
+---@param position string
 ---@return nil
-Framework.ShowHelpText = function(message, _)
-    if _ == nil then _ = 'left-center' end
-    return exports.ox_lib:showTextUI(message, { position = _position })
+Framework.ShowHelpText = function(message, position)
+    return exports.ox_lib:showTextUI(message, { position = position or 'top-center' })
 end
 
 ---This will hide the help text message on the screen
@@ -37,19 +45,32 @@ Framework.HideHelpText = function()
     return exports.ox_lib:hideTextUI()
 end
 
+---This will return the players metadata for the specified metadata key.
+---@param metadata table | string
+---@return table | string | number | boolean
 Framework.GetPlayerMetaData = function(metadata)
     local playerData = Framework.GetPlayerData()
     return playerData.metadata[metadata]
 end
 
+---This will send a notification to the player.
+---@param message string
+---@param type string
+---@param time number
+---@return nil
 Framework.Notify = function(message, type, time)
     return QBox:Notify("Notification", type, time, message)
 end
 
+---This will get the players identifier (citizenid) etc.
+---@return string
 Framework.GetPlayerIdentifier = function()
     return Framework.GetPlayerData().citizenid
 end
 
+---This will get the players name (first and last).
+---@return string
+---@return string
 Framework.GetPlayerName = function()
     local playerData = Framework.GetPlayerData()
     return playerData.charinfo.firstname, playerData.charinfo.lastname
@@ -81,11 +102,13 @@ Framework.GetPlayerJobData = function()
     }
 end
 
+---This will return the players inventory as a table in the ox_inventory style flormat.
+---@return table
 Framework.GetPlayerInventory = function()
     return Framework.GetPlayerData().items
 end
 
----comment
+---This will return the item count for the specified item in the players inventory.
 ---@param item string
 ---@return number
 Framework.GetItemCount = function(item)
@@ -93,6 +116,8 @@ Framework.GetItemCount = function(item)
     return 0, print("Community_bridge:WARN: GetItemCount is not implemented for this framework, please use the inventory module to get the item count. If you are using a diffrent inventory please let us know so we can bridge it and have less nonsense.")
 end
 
+---This will get a players dead status.
+---@return boolean
 Framework.GetIsPlayerDead = function()
     local platerData = Framework.GetPlayerData()
     return platerData.metadata["isdead"] or platerData.metadata["inlaststand"]
