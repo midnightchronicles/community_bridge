@@ -2,11 +2,13 @@
 if GetResourceState('Renewed-Banking') == 'missing' then return end
 Managment = Managment or {}
 
+local renewed = exports['Renewed-Banking']
+
 ---This will return a table with account details
 ---@param account string
 ---@return table
 Managment.GetAccountMoney = function(account)
-    return exports['Renewed-Banking']:getAccountMoney(account)
+    return renewed:getAccountMoney(account)
 end
 
 ---This will add money to the specified account of the passed amount
@@ -15,7 +17,7 @@ end
 ---@param _ string
 ---@return boolean
 Managment.AddAccountMoney = function(account, amount, _)
-    return exports['Renewed-Banking']:addAccountMoney(account, amount)
+    return renewed:addAccountMoney(account, amount)
 end
 
 ---This will remove money from the specified account of the passed amount
@@ -24,7 +26,7 @@ end
 ---@param _ string
 ---@return boolean
 Managment.RemoveAccountMoney = function(account, amount, _)
-    return exports['Renewed-Banking']:removeAccountMoney(account, amount)
+    return renewed:removeAccountMoney(account, amount)
 end
 
 return Managment

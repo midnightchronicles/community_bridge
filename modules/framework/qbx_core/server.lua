@@ -13,7 +13,7 @@ end
 
 ---Returns the player date of birth.
 ---@param src number
----@return string
+---@return string|nil
 Framework.GetPlayerDob = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -69,11 +69,12 @@ Framework.GetPlayerName = function(src)
     return playerData.charinfo.firstname, playerData.charinfo.lastname
 end
 
--- Returns a table of items matching the specified name and if passed metadata from the player's inventory.
+---Returns a table of items matching the specified name and if passed metadata from the player's inventory.
+---returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
 ---@param src number
 ---@param item string
 ---@param metadata table
----@return table
+---@return table|nil
 Framework.GetItem = function(src, item, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -203,7 +204,7 @@ Framework.AddHunger = function(src, value)
     return newHunger
 end
 
--- Adds the specified value from the player's thirst level.
+---Adds the specified value from the player's thirst level.
 ---@param src number
 ---@param value number
 ---@return number | nil
@@ -228,6 +229,9 @@ Framework.GetHunger = function(src)
     return newHunger
 end
 
+---This will return a boolean if the player is dead or in last stand.
+---@param src number
+---@return boolean|nil
 Framework.GetIsPlayerDead = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -235,6 +239,9 @@ Framework.GetIsPlayerDead = function(src)
     return playerData.metadata.isdead or false
 end
 
+---This will revive a player, if the player is dead or in last stand.
+---@param src number
+---@return boolean
 Framework.RevivePlayer = function(src)
     src = tonumber(src)
     if not src then return false end
@@ -244,7 +251,7 @@ end
 
 ---This will return the players thirst level.
 ---@param src number
----@return number
+---@return number| nil
 Framework.GetThirst = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -299,6 +306,7 @@ Framework.GetPlayerJob = function(src)
 end
 
 ---This will return the players job name, job label, job grade label job grade level, boss status, and duty status in a table
+---@param src number
 ---@return table | nil
 Framework.GetPlayerJobData = function(src)
     local player = Framework.GetPlayer(src)
@@ -395,8 +403,7 @@ end
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
-    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src,
-        { action = "add", item = item, count = amount, slot = slot, metadata = metadata })
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, { action = "add", item = item, count = amount, slot = slot, metadata = metadata })
     return player.Functions.AddItem(item, amount, slot, metadata)
 end
 
@@ -410,13 +417,12 @@ end
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
-    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src,
-        { action = "remove", item = item, count = amount, slot = slot, metadata = metadata })
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, { action = "remove", item = item, count = amount, slot = slot, metadata = metadata })
     return player.Functions.RemoveItem(item, amount, slot)
 end
 
 ---Sets the metadata for the specified item in the player's inventory.
------@param src number
+---@param src number
 ---@param item string
 ---@param slot number
 ---@param metadata table
@@ -433,8 +439,7 @@ end
 ---@return table
 Framework.GetOwnedVehicles = function(src)
     local citizenId = Framework.GetPlayerIdentifier(src)
-    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" ..
-        citizenId .. "'")
+    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" .. citizenId .. "'")
     local vehicles = {}
     for i = 1, #result do
         local vehicle = result[i].vehicle

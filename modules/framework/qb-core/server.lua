@@ -8,12 +8,16 @@ QBCore = exports['qb-core']:GetCoreObject()
 
 Framework.Shared = QBCore.Shared
 
+---This will return the name of the framework in use.
+---@return string
 Framework.GetFrameworkName = function()
     return 'qb-core'
 end
 
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
+---@param src number
+---@return string | nil
 Framework.GetPlayerIdentifier = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -21,7 +25,7 @@ Framework.GetPlayerIdentifier = function(src)
     return playerData.citizenid
 end
 
---- Returns the player data of the specified source.
+--- Returns the player data of the specified source in the framework defualt format.
 ---@param src any
 ---@return table | nil
 Framework.GetPlayer = function(src)
@@ -30,6 +34,10 @@ Framework.GetPlayer = function(src)
     return player
 end
 
+---This will return the jobs registered in the framework in a table.
+---Format of the table is:
+---{name = jobName, label = jobLabel, grade = {name = gradeName, level = gradeLevel}}
+---@return table
 Framework.GetFrameworkJobs = function()
     local jobs = {}
     for k, v in pairs(QBCore.Shared.Jobs) do
@@ -44,7 +52,7 @@ end
 
 -- Framework.GetPlayerName(src)
 -- Returns the first and last name of the player.
----@return string, string
+---@return string|nil, string|nil
 Framework.GetPlayerName = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -52,8 +60,9 @@ Framework.GetPlayerName = function(src)
     return playerData.charinfo.firstname, playerData.charinfo.lastname
 end
 
----This will get the players birth date
----@return string
+---Returns the player date of birth.
+---@param src number
+---@return string|nil
 Framework.GetPlayerDob = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -61,9 +70,12 @@ Framework.GetPlayerDob = function(src)
     return playerData.charinfo.birthdate
 end
 
--- Framework.GetItem(src, item, metadata)
--- Returns a table of items matching the specified name and if passed metadata from the player's inventory.
--- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
+---Returns a table of items matching the specified name and if passed metadata from the player's inventory.
+---returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
+---@param src number
+---@param item string
+---@param metadata table
+---@return table|nil
 Framework.GetItem = function(src, item, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -109,7 +121,7 @@ end
 ---@return number
 Framework.GetItemCount = function(src, item, metadata)
     local player = Framework.GetPlayer(src)
-    if not player then return end
+    if not player then return 0 end
     local playerData = player.PlayerData
     local playerInventory = playerData.items
     local count = 0
@@ -133,6 +145,8 @@ end
 -- Framework.GetPlayerInventory(src)
 -- Returns the entire inventory of the player as a table.
 -- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
+---@param src number
+---@return table | nil
 Framework.GetPlayerInventory = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -161,6 +175,11 @@ Framework.GetPlayers = function()
     return playerList
 end
 
+---This will return the item data for the specified slot.
+---Format {name, label, weight, count, metadata, slot, stack, description}
+---@param src number
+---@param slot number
+---@return table|nil
 Framework.GetItemBySlot = function(src, slot)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -186,7 +205,7 @@ end
 
 -- Framework.SetMetadata(src, metadata, value)
 -- Adds the specified metadata key and number value to the player's data.
----@return boolean | nil
+---@return boolean|nil
 Framework.SetPlayerMetadata = function(src, metadata, value)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -196,6 +215,9 @@ end
 
 -- Framework.GetMetadata(src, metadata)
 -- Gets the specified metadata key to the player's data.
+---@param src number
+---@param metadata string
+---@return any|nil
 Framework.GetPlayerMetadata = function(src, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -205,6 +227,8 @@ end
 
 -- Framework.AddStress(src, value)
 -- Adds the specified value to the player's stress level and updates the client HUD.
+---@param src number
+---@param value number
 ---@return number | nil
 Framework.AddStress = function(src, value)
     local player = Framework.GetPlayer(src)
@@ -218,6 +242,8 @@ end
 
 -- Framework.RemoveStress(src, value)
 -- Removes the specified value from the player's stress level and updates the client HUD.
+---@param src number
+---@param value number
 ---@return number | nil
 Framework.RemoveStress = function(src, value)
     local player = Framework.GetPlayer(src)
@@ -231,6 +257,8 @@ end
 
 -- Framework.AddHunger(src, value)
 -- Adds the specified value from the player's hunger level.
+---@param src number
+---@param value number
 ---@return number | nil
 Framework.AddHunger = function(src, value)
     local player = Framework.GetPlayer(src)
@@ -240,12 +268,13 @@ Framework.AddHunger = function(src, value)
     player.Functions.SetMetaData('hunger', Math.Clamp(newHunger, 0, 100))
     TriggerClientEvent('hud:client:UpdateNeeds', src, newHunger, playerData.metadata.thirst)
     --TriggerClientEvent('hud:client:UpdateStress', src, newStress)
-
     return newHunger
 end
 
 -- Framework.AddThirst(src, value)
 -- Adds the specified value from the player's thirst level.
+---@param src number
+---@param value number
 ---@return number | nil
 Framework.AddThirst = function(src, value)
     local player = Framework.GetPlayer(src)
@@ -259,7 +288,7 @@ Framework.AddThirst = function(src, value)
 end
 
 ---This will get the hunger of a player
----@param src any
+---@param src number
 ---@return number | nil
 Framework.GetHunger = function(src)
     local player = Framework.GetPlayer(src)
@@ -269,6 +298,9 @@ Framework.GetHunger = function(src)
     return newHunger
 end
 
+---This will return a boolean if the player is dead or in last stand.
+---@param src number
+---@return boolean|nil
 Framework.GetIsPlayerDead = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -276,6 +308,9 @@ Framework.GetIsPlayerDead = function(src)
     return playerData.metadata.isdead or playerData.metadata.inlaststand or false
 end
 
+---This will revive a player, if the player is dead or in last stand.
+---@param src number
+---@return boolean
 Framework.RevivePlayer = function(src)
     src = tonumber(src)
     if not src then return false end
@@ -297,6 +332,8 @@ end
 
 -- Framework.GetPlayerPhone(src)
 -- Returns the phone number of the player.
+---@param src number
+---@return string | nil
 Framework.GetPlayerPhone = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -306,6 +343,8 @@ end
 
 -- Framework.GetPlayerGang(src)
 -- Returns the gang name of the player.
+---@param src number
+---@return string | nil
 Framework.GetPlayerGang = function(src)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -342,6 +381,7 @@ Framework.GetPlayerJob = function(src)
 end
 
 ---This will return the players job name, job label, job grade label job grade level, boss status, and duty status in a table
+---@param src number
 ---@return table | nil
 Framework.GetPlayerJobData = function(src)
     local player = Framework.GetPlayer(src)
@@ -373,12 +413,13 @@ end
 ---This will toggle a players duty status
 ---@param src number
 ---@param status boolean
----@return nil
+---@return boolean
 Framework.SetPlayerDuty = function(src, status)
     local player = Framework.GetPlayer(src)
-    if not player then return end
+    if not player then return false end
     player.Functions.SetJobDuty(status)
     TriggerEvent('QBCore:Server:SetDuty', src, player.PlayerData.job.onduty)
+    return true
 end
 
 -- Sets the player's job to the specified name and grade.
@@ -430,27 +471,42 @@ end
 
 -- Framework.AddItem(src, item, amount, slot, metadata)
 -- Adds the specified item to the player's inventory.
+---@param src number
+---@param item string
+---@param amount number
+---@param slot number
+---@param metadata table
+---@return boolean | nil
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
-    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src,
-        { action = "add", item = item, count = amount, slot = slot, metadata = metadata })
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, { action = "add", item = item, count = amount, slot = slot, metadata = metadata })
     return player.Functions.AddItem(item, amount, slot, metadata)
 end
 
 -- Framework.RemoveItem(src, item, amount, slot, metadata)
 -- Removes the specified item from the player's inventory.
+---@param src number
+---@param item string
+---@param amount number
+---@param slot number
+---@param metadata table
+---@return boolean | nil
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
-    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src,
-        { action = "remove", item = item, count = amount, slot = slot, metadata = metadata })
+    TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, { action = "remove", item = item, count = amount, slot = slot, metadata = metadata })
     return player.Functions.RemoveItem(item, amount, slot or nil)
 end
 
 -- Framework.SetMetadata(src, item, slot, metadata)
 -- Sets the metadata for the specified item in the player's inventory.
 -- Notes, this is kinda a jank workaround. with the framework aside from updating the entire table theres not really a better way
+---@param src number
+---@param item string
+---@param slot number
+---@param metadata table
+---@return boolean | nil
 Framework.SetMetadata = function(src, item, slot, metadata)
     local player = Framework.GetPlayer(src)
     if not player then return end
@@ -474,8 +530,7 @@ end
 ---@return table
 Framework.GetOwnedVehicles = function(src)
     local citizenId = Framework.GetPlayerIdentifier(src)
-    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" ..
-        citizenId .. "'")
+    local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM player_vehicles WHERE citizenid = '" .. citizenId .. "'")
     local vehicles = {}
     for i = 1, #result do
         local vehicle = result[i].vehicle
@@ -487,6 +542,8 @@ end
 
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
+---@param itemName string
+---@param cb function
 Framework.RegisterUsableItem = function(itemName, cb)
     local func = function(src, item, itemData)
         itemData = itemData or item

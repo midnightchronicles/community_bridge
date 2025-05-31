@@ -5,11 +5,14 @@ ESX = exports["es_extended"]:getSharedObject()
 
 Framework = Framework or {}
 
+---This will get the name of the framework being used (if a supported framework).
+---@return string
 Framework.GetFrameworkName = function()
     return 'es_extended'
 end
 
----This will return a table of the players data, this is an internal table and should not be used.
+---This will return a table of the player data, this will be in the framework format.
+---This is mainly for internal bridge use and should be avoided.
 ---@return table
 Framework.GetPlayerData = function()
     return ESX.GetPlayerData()
@@ -32,13 +35,13 @@ Framework.GetPlayerDob = function()
 end
 
 ---This will return the players metadata for the specified metadata key.
----@param metadata string
----@return table | nil
+---@param metadata table | string
+---@return table | string | number | boolean
 Framework.GetPlayerMetaData = function(metadata)
     return Framework.GetPlayerData().metadata[metadata]
 end
 
----This will prompt the user with a notification message
+---This will send a notification to the player.
 ---@param message string
 ---@param type string
 ---@param time number
@@ -61,14 +64,14 @@ Framework.HideHelpText = function()
     return exports['esx_textui']:HideUI()
 end
 
----This will return the players identifier
+---This will get the players identifier (citizenid) etc.
 ---@return string
 Framework.GetPlayerIdentifier = function()
     local playerData = Framework.GetPlayerData()
     return playerData.identifier
 end
 
----This will return the players first name, and the last name
+---This will get the players name (first and last).
 ---@return string
 ---@return string
 Framework.GetPlayerName = function()
@@ -103,12 +106,21 @@ Framework.GetPlayerJobData = function()
     }
 end
 
----This will return a boolean if the player has the item in their inventory
+---This will return if the player has the specified item in their inventory.
 ---@param item string
 ---@return boolean
 Framework.HasItem = function(item)
 	local hasItem = ESX.SearchInventory(item, true)
 	return hasItem > 0 and true or false
+end
+
+---This will return the item count for the specified item in the players inventory.
+---@param item string
+---@return number
+Framework.GetItemCount = function(item)
+    local inventory = Framework.GetPlayerInventory()
+    if not inventory then return 0 end
+    return inventory[item].count or 0
 end
 
 ---This will return a table of the players inventory
@@ -118,16 +130,7 @@ Framework.GetPlayerInventory = function()
     return playerData.inventory
 end
 
----This will return a number of the item in the players inventory
----@param item string
----@return number
-Framework.GetItemCount = function(item)
-    local inventory = Framework.GetPlayerInventory()
-    if not inventory then return 0 end
-    return inventory[item].count or 0
-end
-
----This will return a boolean if the player is dead
+---This will get a players dead status.
 ---@return boolean
 Framework.GetIsPlayerDead = function()
     local playerData = Framework.GetPlayerData()
