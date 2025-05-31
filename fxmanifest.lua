@@ -51,7 +51,7 @@ client_scripts {
     'modules/dispatch/**/client.lua',
     'modules/progressbar/**/client.lua',
     'modules/clothing/**/client.lua',
-    'modules/input/*.lua',
+    'modules/input/**/client.lua',
     'modules/menu/*.lua',
     'modules/helptext/**/client.lua',
     'modules/notify/**/client.lua',
@@ -61,6 +61,7 @@ client_scripts {
     'modules/accessibility/client.lua',
     'modules/skills/**/client.lua',
     'init.lua',
+    -- 'unit_tests/input_test.lua',
 }
 
 ui_page 'web/dist/index.html'

@@ -1,6 +1,6 @@
 
-if GetResourceState('ox_lib') ~= 'started' and GetResourceState('qb-menu') ~= 'started' then return end
--- {
+-- if GetResourceState('ox_lib') ~= 'started' and GetResourceState('qb-menu') ~= 'started' then return end
+-- -- {
 --     header = "Test",
 --     submitText = "Bill",
 --     inputs = {
@@ -76,38 +76,38 @@ if GetResourceState('ox_lib') ~= 'started' and GetResourceState('qb-menu') ~= 's
 --QB types: text, password, number, radio, checkbox, select,
 --
 -- "input", "number", "checkbox", "select", "multi-select", "slider", "color", "date", "date-range", "time",  "textarea",
-Input = {}
+-- Input = {}
 
--- qb to ox
---Open menu
+-- -- qb to ox
+-- --Open menu
 
-function Input.Open(title, data, isQBFormat, submitText)
-    if isQBFormat then
-        local inputs = data.inputs
-        if BridgeClientConfig.InputSystem == "ox" then
-            return lib.inputDialog(title, QBToOxInput(inputs))
-        elseif BridgeClientConfig.InputSystem == "qb" then
-            return exports['qb-input']:ShowInput({
-                header = title,
-                submitText = submitText or "Submit",
-                inputs = inputs
-            })
-        end
-    else
-        if BridgeClientConfig.InputSystem == "ox" then
-            return lib.inputDialog(title, data)
-        elseif BridgeClientConfig.InputSystem == "qb" then
-            return exports['qb-input']:ShowInput({
-                header = title,
-                submitText = submitText or "Submit",
-                inputs = OxToQBInput(data)
-            })
-        end
-    end
-    return OpenInput(title, data, isQBFormat, submitText)
-end
+-- function Input.Open(title, data, isQBFormat, submitText)
+--     if isQBFormat then
+--         local inputs = data.inputs
+--         if BridgeClientConfig.InputSystem == "ox" then
+--             return lib.inputDialog(title, QBToOxInput(inputs))
+--         elseif BridgeClientConfig.InputSystem == "qb" then
+--             return exports['qb-input']:ShowInput({
+--                 header = title,
+--                 submitText = submitText or "Submit",
+--                 inputs = inputs
+--             })
+--         end
+--     else
+--         if BridgeClientConfig.InputSystem == "ox" then
+--             return lib.inputDialog(title, data)
+--         elseif BridgeClientConfig.InputSystem == "qb" then
+--             return exports['qb-input']:ShowInput({
+--                 header = title,
+--                 submitText = submitText or "Submit",
+--                 inputs = OxToQBInput(data)
+--             })
+--         end
+--     end
+--     return OpenInput(title, data, isQBFormat, submitText)
+-- end
 
-return Input
+-- return Input
 
 
 --[[
