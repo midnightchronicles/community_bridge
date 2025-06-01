@@ -1,37 +1,94 @@
-# 🌉 Community Bridge  
-**By The Order of the Sacred Framework**
+# 🌉 Community Bridge
+> **By The Order of the Sacred Framework**
 
-Welcome to **Community Bridge**, a modular, beginner-friendly collection of tools and systems designed to simplify and unify development. Built with love and maintained by the community, this bridge aims to make scripting easier, cleaner, and more accessible for everyone.
+<div align="center">
+
+![License](https://img.shields.io/badge/license-GPLv3-blue.svg)
+![FiveM](https://img.shields.io/badge/FiveM-Compatible-green.svg)
+![Version](https://img.shields.io/badge/version-latest-brightgreen.svg)
+
+*A modular, beginner-friendly collection of tools and systems designed to simplify and unify FiveM development.*
+
+**Built with ❤️ by the community, for the community**
+
+</div>
 
 ---
 
-## 🔧 Features
+## ✨ Overview
 
-This bridge includes a wide range of plug-and-play systems, built with maximum compatibility in mind:
+**Community Bridge** is a comprehensive compatibility layer that unifies development across different FiveM frameworks and resources. Whether you're building with QB-Core, ESX, QBox, or any other framework, this bridge ensures your scripts work seamlessly across all environments.
 
-- **Inventory Module** – Designed to work with `ox_inventory`, `codem-inventory`, `core_inventory`, `jpr-inventory`, `origin_inventory`, `ps-inventory`, `qb-inventory`, `qs-inventory`, and `tgiann-inventory`. Includes an **item output generator** supporting `ox_inventory`, `qb-new`, and `qb-old` formats.
-- **Dispatch Module** – Compatible with `lb-tablet`, `ps-dispatch`, `qs-dispatch`, `redutzu-mdt`, `tk_dispatch`, `linden_outlawalert`, `cd_dispatch`, `bub_mdt`, and includes a built-in fallback to ensure notifications always get through.
-- **Doorlock Module** – Supports `ox_doorlock`, `qb-doorlock`, `rcore_doorlock`, and `jacksams-doorlock`.
-- **Framework Module** – Full support for `qb`, `qbox`, and `esx` with built-in fallbacks for maximum compatibility.
-- **Fuel System Module** – Works seamlessly with all major fuel systems.
-- **HelpText & Notify Modules** – Designed to support all popular systems with framework-level fallbacks.
-- **Input Module** – Compatible with both `qb-input` and `ox_lib` input methods.
-- **Management Module** – Works with most major management system variants.
-- **Menu Module** – Accepts both `qb` and `ox_lib` formats interchangeably.
-- **Phone Module** – Compatible with all major phone systems.
-- **Progress Bar Module** – Supports most commonly used progress bar resources.
-- **Shops Module** – An in-house shops system, simple to use and easy to expand.
-- **Skills Module** – Supports most skills systems in the ecosystem.
-- **Targeting Module** – Built to work with `qb-target`, `ox_target`, and `sleepless-interact`.
-- **Vehicle Key Module** – Compatible with all major vehicle key systems.
-- **Version Checker Module** – Built to handle version checks for both free and paid scripts across any setup.
-- **Weather Module** – Fully compatible with most weather control resources.
+### 🎯 Core Philosophy
+- 🔧 **Plug & Play** - Drop in and it just works
+- 🌐 **Universal Compatibility** - One bridge, all frameworks
+- 📚 **Beginner Friendly** - Clean, documented, and easy to understand
+- 🚀 **Future Proof** - Built to adapt and grow with the community
 
-Also includes:
-- Locale support  
-- Math utilities  
-- A rich collection of helper functions  
-- And more...
+---
+
+## 🚀 Features
+
+### 📦 **Inventory Systems**
+<details>
+<summary>Click to expand supported inventories</summary>
+
+- `ox_inventory` ⭐
+- `codem-inventory`
+- `core_inventory`
+- `jpr-inventory`
+- `origin_inventory`
+- `ps-inventory`
+- `qb-inventory`
+- `qs-inventory`
+- `tgiann-inventory`
+
+**Bonus:** Built-in item output generator supporting `ox_inventory`, `qb-new`, and `qb-old` formats!
+</details>
+
+### 🚨 **Dispatch Systems**
+<details>
+<summary>Click to expand supported dispatch systems</summary>
+
+- `lb-tablet`
+- `ps-dispatch`
+- `qs-dispatch`
+- `redutzu-mdt`
+- `tk_dispatch`
+- `linden_outlawalert`
+- `cd_dispatch`
+- `bub_mdt`
+
+**Plus:** Built-in fallback system ensures notifications always reach their destination.
+</details>
+
+### 🔐 **Framework Support**
+- **QB-Core** - Full compatibility
+- **QBox** - Native support
+- **ESX** - Complete integration
+- **Custom Frameworks** - Extensible design
+
+### 🏗️ **Additional Modules**
+
+| Module | Description | Compatibility |
+|--------|-------------|---------------|
+| 🚪 **Doorlock** | Universal door management | `ox_doorlock`, `qb-doorlock`, `rcore_doorlock`, `jacksams-doorlock` |
+| ⛽ **Fuel Systems** | Seamless fuel integration | All major fuel resources |
+| 📱 **Phone** | Cross-phone compatibility | All major phone systems |
+| 🎯 **Targeting** | Universal targeting system | `qb-target`, `ox_target`, `sleepless-interact` |
+| 🔑 **Vehicle Keys** | Key management bridge | All major key systems |
+| 🛍️ **Shops** | In-house shop system | Simple, expandable design |
+| 📊 **Progress Bars** | Universal progress system | Most common progress resources |
+| 🌤️ **Weather** | Weather control bridge | Most weather resources |
+| 🎮 **Skills** | Skill system integration | Most skill systems |
+
+### 🛠️ **Utility Features**
+- 🌍 **Locale Support** - Multi-language ready
+- 🧮 **Math Utilities** - Common mathematical functions
+- 🔧 **Helper Functions** - Rich collection of development tools
+- 📏 **Input Systems** - `qb-input` and `ox_lib` compatible
+- 📋 **Menu Systems** - Interchangeable QB and ox_lib formats
+- ✅ **Version Checker** - Built-in update management
 
 Whether you're building a full framework or just need utility features, **Community Bridge** is designed to make your workflow easier and more efficient.
 
@@ -56,10 +113,42 @@ Our mission: to promote open collaboration, reduce friction between systems, and
 
 ---
 
+## 🚀 Quick Start
+
+### Installation
+1. **Download** the latest release from GitHub
+2. **Extract** to your resources folder: `[bridges]/community_bridge`
+3. **Add** to your `server.cfg`:
+   ```cfg
+   ensure community_bridge
+   ```
+4. **Restart** your server
+
+---
+
 ## 📚 Documentation
 
 Read the full documentation here:  
 👉 [Our Gitbook Here](https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework)
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Here's how you can help:
+
+### How to Contribute
+1. **Fork** this repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Guidelines
+- ✅ Follow existing code style and patterns
+- ✅ Test your changes thoroughly
+- ✅ Update documentation when needed
+- ✅ Be respectful and constructive in discussions
 
 ---
 
@@ -68,8 +157,41 @@ Read the full documentation here:
 Have questions, suggestions, or want to contribute? Join us on Discord:  
 👉 [Our Discord Here](https://discord.gg/MukwBuJjP7)
 
+### Community Resources
+- 📖 **Wiki** - Comprehensive guides and tutorials
+- 🐛 **Bug Reports** - Help us improve by reporting issues
+- 💡 **Feature Requests** - Share your ideas with the community
+- 🎯 **Support** - Get help from experienced developers
+
 ---
 
-> “A bridge built not for one, but for all — strong, simple, and open.”
+## 📄 License
+
+This project is licensed under the **GPLv3 License** - see the [LICENSE](LICENSE) file for details.
+
+### Attribution
+Some modules include contributions from the FiveM community. Full attributions are listed in the `Attributions` file.
 
 ---
+
+## ⭐ Support the Project
+
+If Community Bridge has helped your development workflow, consider:
+- ⭐ **Starring** this repository
+- 🐛 **Reporting** bugs and issues
+- 💡 **Suggesting** new features
+- 🤝 **Contributing** code or documentation
+- 💬 **Sharing** with other developers
+
+---
+
+> "A bridge built not for one, but for all — strong, simple, and open."
+
+<div align="center">
+
+**Made with ❤️ by The Order of the Sacred Framework**
+
+![GitHub stars](https://img.shields.io/github/stars/The-Order-Of-The-Sacred-Framework/community_bridge?style=social)
+![Discord](https://img.shields.io/discord/1337224918710095882?style=social)
+
+</div>
