@@ -1,0 +1,48 @@
+{
+  "locale-unit-test": "Questa è una stringa di test",
+  "place_object_place": "[E] Posiziona  \n",
+  "place_object_cancel": "[X] Annulla  \n",
+  "place_object_scroll_up": "[SCROLL UP] Gira a destra  \n",
+  "place_object_scroll_down": "[SCROLL DOWN] Gira a sinistra",
+  "enter_text": "Inserisci Testo",
+  "no_prop_defined": "Non hai definito nessun oggetto da posizionare",
+  "Shops": {
+    "NotEnoughMoney": "Non hai abbastanza soldi per comprare questo articolo",
+    "Input": "Inserimento Quantità",
+    "PurchaseAmount": "Quantità di Acquisto",
+    "PurchasedItem": "Hai Acquistato ",
+    "CurrencySymbol": "€",
+    "Confirm": "Conferma Acquisto",
+    "AreYouSure": "Sei sicuro di voler acquistare un ",
+    "PayByCash": "Paga in contanti",
+    "PayByCard": "Paga con carta"
+  },
+  "UNITTEST": {
+    "UNITTESTA": "Sono un %s %s",
+    "UNITTEST": {
+      "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
+    }
+  },
+  "accessibility": {
+    "cb_command": "daltonismo",
+    "cb_title": "Opzioni Daltonismo",
+    "cb_desc": "Seleziona il tuo tipo di daltonismo\nDaltonismo attuale: %s",
+    "cb_none": "Nessuno",
+    "cb_updated": "Il daltonismo è stato aggiornato a %s",
+    "cb_default_title": "Nessun Daltonismo",
+    "cb_default_desc": "Nessun daltonismo.\nQuesta è l'opzione predefinita.",
+    "cb_protanomaly_title": "Protanomalia",
+    "cb_protanomaly_desc": "Daltonismo rosso-verde.\nFa apparire certe tonalità di rosso più verdi e meno brillanti.\nQuesto tipo è lieve e di solito non interferisce con le attività normali.",
+    "cb_deuteranomaly_title": "Deuteranomalia",
+    "cb_deuteranomaly_desc": "Daltonismo rosso-verde.\nFa apparire certe tonalità di verde più rosse.\nQuesto tipo è lieve e di solito non interferisce con le attività normali.",
+    "cb_dual_title": "Protanopia e Deuteranopia",
+    "cb_dual_desc": "Daltonismo rosso-verde.\nRende impossibile distinguere tra rosso e verde.",
+    "cb_tritanopia_title": "Tritanopia",
+    "cb_tritanopia_desc": "Daltonismo blu-giallo che rende impossibile distinguere tra blu e verde, viola e rosso, e giallo e rosa.\nRende anche i colori meno brillanti.",
+    "cb_tritanomaly_title": "Tritanomalia",
+    "cb_tritanomaly_desc": "Il daltonismo blu-giallo rende difficile distinguere tra blu e verde e tra giallo e rosso."
+  },
+  "clipboard":{
+    "copy": "Copiato negli appunti"
+  }
+}

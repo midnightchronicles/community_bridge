@@ -1,0 +1,48 @@
+{
+  "locale-unit-test": "这是一个测试字符串",
+  "place_object_place": "[E] 放置  \n",
+  "place_object_cancel": "[X] 取消  \n",
+  "place_object_scroll_up": "[滚轮上] 向右转  \n",
+  "place_object_scroll_down": "[滚轮下] 向左转",
+  "enter_text": "输入文本",
+  "no_prop_defined": "您没有定义要放置的对象",
+  "Shops": {
+    "NotEnoughMoney": "您没有足够的钱购买此物品",
+    "Input": "数量输入",
+    "PurchaseAmount": "购买数量",
+    "PurchasedItem": "您已购买 ",
+    "CurrencySymbol": "¥",
+    "Confirm": "确认购买",
+    "AreYouSure": "您确定要购买一个 ",
+    "PayByCash": "现金支付",
+    "PayByCard": "刷卡支付"
+  },
+  "UNITTEST": {
+    "UNITTESTA": "我是一个 %s %s",
+    "UNITTEST": {
+      "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
+    }
+  },
+  "accessibility": {
+    "cb_command": "色盲",
+    "cb_title": "色盲选项",
+    "cb_desc": "选择您的色盲类型\n当前色盲类型：%s",
+    "cb_none": "无",
+    "cb_updated": "色盲设置已更新为 %s",
+    "cb_default_title": "无色盲",
+    "cb_default_desc": "无色盲。\n这是默认选项。",
+    "cb_protanomaly_title": "红色弱",
+    "cb_protanomaly_desc": "红绿色盲。\n使某些红色看起来更绿，亮度更低。\n这种类型较轻微，通常不会影响正常活动。",
+    "cb_deuteranomaly_title": "绿色弱",
+    "cb_deuteranomaly_desc": "红绿色盲。\n使某些绿色看起来更红。\n这种类型较轻微，通常不会影响正常活动。",
+    "cb_dual_title": "红色盲和绿色盲",
+    "cb_dual_desc": "红绿色盲。\n使人完全无法区分红色和绿色。",
+    "cb_tritanopia_title": "蓝色盲",
+    "cb_tritanopia_desc": "蓝黄色盲，使人无法区分蓝色和绿色、紫色和红色、黄色和粉色。\n也使颜色看起来不那么明亮。",
+    "cb_tritanomaly_title": "蓝色弱",
+    "cb_tritanomaly_desc": "蓝黄色盲使人难以区分蓝色和绿色，以及黄色和红色。"
+  },
+  "clipboard":{
+    "copy": "已复制到剪贴板"
+  }
+}

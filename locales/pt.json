@@ -23,9 +23,25 @@
         "cb_tritanopia_title": "Tritanopia",
         "cb_tritanopia_desc": "Daltonismo azul-amarelo que faz com que alguém não consiga distinguir a diferença entre azul e verde, roxo e vermelho, e amarelo e rosa.\nTambém faz com que as cores pareçam menos brilhantes.",
         "cb_tritanomaly_title": "Tritanomalia",
-        "cb_tritanomaly_desc": "O daltonismo azul-amarelo dificulta a distinção entre azul e verde e entre amarelo e vermelho."
+        "cb_tritanomaly_desc": "O daltonismo azul-amarelo dificulta a distinção entre azul e verde e entre amarelo e vermelho."    },
+    "Shops": {
+        "NotEnoughMoney": "Você não tem dinheiro suficiente para comprar este item",
+        "Input": "Entrada de Quantidade",
+        "PurchaseAmount": "Quantidade de Compra",
+        "PurchasedItem": "Você Comprou ",
+        "CurrencySymbol": "€",
+        "Confirm": "Confirmar Compra",
+        "AreYouSure": "Tem certeza que quer comprar um ",
+        "PayByCash": "Pagar em dinheiro",
+        "PayByCard": "Pagar com cartão"
+    },
+    "UNITTEST": {
+        "UNITTESTA": "Eu sou um %s %s",
+        "UNITTEST": {
+            "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
+        }
     },
     "clipboard":{
-        "copy": "Copied to clipboard"
+        "copy": "Copiado para a área de transferência"
     }
 }

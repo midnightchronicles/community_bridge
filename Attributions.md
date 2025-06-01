@@ -1,37 +1,125 @@
-# Attributions
+# 🙏 Attributions
 
-This project incorporates code from several libraries and resources licensed under GPLv3, as it inherits their licensing, and the creators are credited below:
+> **Community Bridge** stands on the shoulders of giants. This project incorporates code from several outstanding libraries and resources, all licensed under GPLv3. We're grateful to the talented developers who made their work available to the community.
 
-## r_bridge
-- **Purpose**: Code for codem-inventory bridging, targeting, and framework item registration.
-- **Modifications to the code**: Code was used for codem/tgian inventory bridge & targeting, the idea of native helper functions came from that entirely. Targeting code has been altered to allow both formats, the item registration has been simplified to fit this use case.
-- **Credit**: **r_bridge** inventory bridging code for codem-inventory is used in this. Targeting code still remains as is and is used.
-  [\[r_bridge\]](https://github.com/rumaier/r_bridge)
+---
 
-## dirk_lib
-- **Purpose**: Vehicle fuel, vehicle key bridging.
-- **Modifications to the code**: None.
-- **Credit**: **dirk_lib** client side code is used to manage vehicle fuel and keys, bridging these systems.
-  [\[dirk_lib\]](https://github.com/DirkDigglerz/dirk_lib)
+## 📚 Libraries & Resources
 
-## ox_lib
-- **Purpose**: Utility functions for printing raycasting and point registering.
-- **Credit**: **ox_lib** provides various utility functions for printing and interacting with other objects in this resource. While theres no code pulled directly from the resource, it is still the backbone to it so a thanks is nessesary.
-  [\[ox_lib\]](https://github.com/overextended/ox_lib)
+### 🌉 r_bridge
+**Purpose:** Code for codem-inventory bridging, targeting, and framework item registration  
+**Repository:** [r_bridge](https://github.com/rumaier/r_bridge)
 
-## renewed_lib
-- **Purpose**: Object placer functionality.
-- **Modifications to the code**: Variable naming, added missing params for the natives used, updated a depreciated export from oxlib for the raycast camera, altered the showtext ui to now work with multiple showtextui systems, moved the text for placement into locales, the requestModel exports from ox_lib were replaced with the function my bridge uses to request models from ox_lib.
-- **Credit**: **renewed_lib** code is used for its object placement snippet.
-  [\[renewed_lib\]](https://github.com/Renewed-Scripts/Renewed-Lib)
+<details>
+<summary>📝 Implementation Details</summary>
 
+**Code we use:**
+- Inventory bridging code for codem-inventory integration
+- Targeting system foundation
 
-## duff
-- **Purpose**: Version Checker.
-- **Modifications to the code**: Variables removed, now will pull repo information from passed string.
-- **Credit**: **duff** code was refrenced and some used for version checker formatting and print style.
-  [\[duff\]](https://github.com/DonHulieo/duff/blob/d89ed3b0051194babf5711114a0c437d4e41f433/server/init.lua#L10C1-L28C4)
+**Modifications made:**
+- Adapted inventory bridge for codem compatibility in alternative structure
+- Enhanced targeting code to support both QB and ox formats in alternative structure
 
+</details>
 
+---
 
-Thank you to the creators and maintainers of these libraries/bridges/internet points for their hard work and contributions to the FiveM community.
+### 🔧 dirk_lib
+**Purpose:** Vehicle fuel and vehicle key bridging systems  
+**Repository:** [dirk_lib](https://github.com/DirkDigglerz/dirk_lib)
+
+<details>
+<summary>📝 Implementation Details</summary>
+
+**Code we use:**
+- Client-side vehicle fuel management
+- Vehicle key bridging functionality
+
+**Modifications made:**
+- None - code used as-is with full credit to original author
+
+</details>
+
+---
+
+### 📦 ox_lib
+**Purpose:** External compatibility and architectural inspiration  
+**Repository:** [ox_lib](https://github.com/overextended/ox_lib)
+
+<details>
+<summary>📝 Implementation Details</summary>
+
+**Compatibility features:**
+- External resource integration for raycasting utilities
+- Shared architectural patterns and conventions
+
+**Implementation approach:**
+- No direct code usage - maintains compatibility as external resource
+- Follows ox_lib patterns and conventions for seamless integration
+- Provides bridge compatibility for servers using ox_lib ecosystem
+
+</details>
+
+---
+
+### 🏗️ renewed_lib
+**Purpose:** Object placer functionality
+**Repository:** [renewed_lib](https://github.com/Renewed-Scripts/Renewed-Lib)
+
+<details>
+<summary>📝 Implementation Details</summary>
+
+**Code we use:**
+- Object placement system
+
+**Modifications made:**
+- Updated variable naming for consistency
+- Added missing parameters for native functions
+- Updated deprecated ox_lib raycast camera export
+- Enhanced showtext UI to work with multiple systems
+- Moved placement text to locales for internationalization
+- Replaced ox_lib model request exports with our bridge functions
+
+</details>
+
+---
+
+### 🔍 duff
+**Purpose:** Version checker system and update notifications  
+**Repository:** [duff](https://github.com/DonHulieo/duff/blob/d89ed3b0051194babf5711114a0c437d4e41f433/server/init.lua#L10C1-L28C4)
+
+<details>
+<summary>📝 Implementation Details</summary>
+
+**Code we use:**
+- Version checker formatting patterns
+- Update notification print styles
+- Repository information handling
+
+**Modifications made:**
+- Removed unnecessary variables
+- Enhanced to pull repository information from passed strings
+- Adapted print formatting for our use case
+
+</details>
+
+---
+
+## 🌟 Special Thanks
+
+A heartfelt thank you to all the creators and maintainers of these libraries, bridges, and resources. Your dedication to open-source development and the FiveM community makes projects like Community Bridge possible.
+
+Your willingness to share knowledge and code under GPLv3 licensing enables the entire community to build better, more compatible systems together.
+
+---
+
+## 📜 License Compliance
+
+All incorporated code maintains its original GPLv3 licensing. Community Bridge inherits this license to ensure continued open-source availability and community collaboration.
+
+For detailed license information, see the [LICENSE](LICENSE) file in the project root.
+
+---
+
+> *"If I have seen further it is by standing on the shoulders of Giants."* - Isaac Newton

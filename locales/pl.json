@@ -1,0 +1,48 @@
+{
+  "locale-unit-test": "To jest testowy ciąg znaków",
+  "place_object_place": "[E] Umieść  \n",
+  "place_object_cancel": "[X] Anuluj  \n",
+  "place_object_scroll_up": "[SCROLL UP] Obróć w prawo  \n",
+  "place_object_scroll_down": "[SCROLL DOWN] Obróć w lewo",
+  "enter_text": "Wprowadź Tekst",
+  "no_prop_defined": "Nie zdefiniowałeś żadnego obiektu do umieszczenia",
+  "Shops": {
+    "NotEnoughMoney": "Nie masz wystarczająco pieniędzy, aby kupić ten przedmiot",
+    "Input": "Wprowadzanie Ilości",
+    "PurchaseAmount": "Ilość Zakupu",
+    "PurchasedItem": "Kupiłeś ",
+    "CurrencySymbol": "zł",
+    "Confirm": "Potwierdź Zakup",
+    "AreYouSure": "Czy na pewno chcesz kupić ",
+    "PayByCash": "Zapłać gotówką",
+    "PayByCard": "Zapłać kartą"
+  },
+  "UNITTEST": {
+    "UNITTESTA": "Jestem %s %s",
+    "UNITTEST": {
+      "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
+    }
+  },
+  "accessibility": {
+    "cb_command": "daltonizm",
+    "cb_title": "Opcje Daltonizmu",
+    "cb_desc": "Wybierz swój typ daltonizmu\nObecny daltonizm: %s",
+    "cb_none": "Żaden",
+    "cb_updated": "Daltonizm został zaktualizowany na %s",
+    "cb_default_title": "Brak Daltonizmu",
+    "cb_default_desc": "Brak daltonizmu.\nTo jest opcja domyślna.",
+    "cb_protanomaly_title": "Protanomalia",
+    "cb_protanomaly_desc": "Daltonizm czerwono-zielony.\nSprawia, że niektóre odcienie czerwieni wyglądają bardziej zielono i mniej jasno.\nTen typ jest łagodny i zwykle nie przeszkadza w normalnych działaniach.",
+    "cb_deuteranomaly_title": "Deuteranomalia",
+    "cb_deuteranomaly_desc": "Daltonizm czerwono-zielony.\nSprawia, że niektóre odcienie zieleni wyglądają bardziej czerwono.\nTen typ jest łagodny i zwykle nie przeszkadza w normalnych działaniach.",
+    "cb_dual_title": "Protanopia i Deuteranopia",
+    "cb_dual_desc": "Daltonizm czerwono-zielony.\nSprawia, że ktoś nie może w ogóle rozróżnić czerwieni od zieleni.",
+    "cb_tritanopia_title": "Tritanopia",
+    "cb_tritanopia_desc": "Daltonizm niebiesko-żółty, który sprawia, że ktoś nie może rozróżnić niebieskiego od zielonego, fioletowego od czerwonego i żółtego od różowego.\nSprawia też, że kolory wyglądają mniej jasno.",
+    "cb_tritanomaly_title": "Tritanomalia",
+    "cb_tritanomaly_desc": "Daltonizm niebiesko-żółty utrudnia rozróżnianie niebieskiego od zielonego oraz żółtego od czerwonego."
+  },
+  "clipboard":{
+    "copy": "Skopiowano do schowka"
+  }
+}

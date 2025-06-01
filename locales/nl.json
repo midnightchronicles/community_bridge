@@ -1,0 +1,48 @@
+{
+  "locale-unit-test": "Dit is een test string",
+  "place_object_place": "[E] Plaatsen  \n",
+  "place_object_cancel": "[X] Annuleren  \n",
+  "place_object_scroll_up": "[SCROLL UP] Rechts draaien  \n",
+  "place_object_scroll_down": "[SCROLL DOWN] Links draaien",
+  "enter_text": "Tekst Invoeren",
+  "no_prop_defined": "Je hebt geen object gedefinieerd om te plaatsen",
+  "Shops": {
+    "NotEnoughMoney": "Je hebt niet genoeg geld om dit item te kopen",
+    "Input": "Hoeveelheid Invoer",
+    "PurchaseAmount": "Aankoop Hoeveelheid",
+    "PurchasedItem": "Je Hebt Gekocht ",
+    "CurrencySymbol": "€",
+    "Confirm": "Aankoop Bevestigen",
+    "AreYouSure": "Weet je zeker dat je een ",
+    "PayByCash": "Contant betalen",
+    "PayByCard": "Met kaart betalen"
+  },
+  "UNITTEST": {
+    "UNITTESTA": "Ik ben een %s %s",
+    "UNITTEST": {
+      "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
+    }
+  },
+  "accessibility": {
+    "cb_command": "kleurenblindheid",
+    "cb_title": "Kleurenblindheid Opties",
+    "cb_desc": "Selecteer je type kleurenblindheid\nHuidige kleurenblindheid: %s",
+    "cb_none": "Geen",
+    "cb_updated": "Kleurenblindheid is bijgewerkt naar %s",
+    "cb_default_title": "Geen Kleurenblindheid",
+    "cb_default_desc": "Geen kleurenblindheid.\nDit is de standaard optie.",
+    "cb_protanomaly_title": "Protanomalie",
+    "cb_protanomaly_desc": "Rood-groen kleurenblindheid.\nZorgt ervoor dat bepaalde tinten rood er groener en minder helder uitzien.\nDit type is mild en hindert meestal niet bij normale activiteiten.",
+    "cb_deuteranomaly_title": "Deuteranomalie",
+    "cb_deuteranomaly_desc": "Rood-groen kleurenblindheid.\nZorgt ervoor dat bepaalde tinten groen er roder uitzien.\nDit type is mild en hindert meestal niet bij normale activiteiten.",
+    "cb_dual_title": "Protanopie en Deuteranopie",
+    "cb_dual_desc": "Rood-groen kleurenblindheid.\nMaakt het iemand onmogelijk om onderscheid te maken tussen rood en groen.",
+    "cb_tritanopia_title": "Tritanopie",
+    "cb_tritanopia_desc": "Blauw-geel kleurenblindheid die het iemand onmogelijk maakt om onderscheid te maken tussen blauw en groen, paars en rood, en geel en roze.\nHet maakt kleuren ook minder helder.",
+    "cb_tritanomaly_title": "Tritanomalie",
+    "cb_tritanomaly_desc": "Blauw-geel kleurenblindheid maakt het moeilijk om onderscheid te maken tussen blauw en groen en tussen geel en rood."
+  },
+  "clipboard":{
+    "copy": "Gekopieerd naar klembord"
+  }
+}

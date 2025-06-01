@@ -118,7 +118,6 @@ Below are the core system integrations and advanced tools available:
 - 📦 **qb-clothing** - QB-Core clothing integration
 - 👗 **esx_skin** - ESX skin system support
 - 🔄 **Default Fallback** - Built-in clothing system
-- 🎨 **Appearance Debugging** - Real-time clothing change detection
 - 💾 **Appearance Caching** - Optimized appearance data management
 
 #### 🎭 **Animation & Effects Systems**
