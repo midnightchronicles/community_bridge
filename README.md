@@ -15,9 +15,11 @@
 
 ---
 
-## ✨ Overview
+## 🚀 Overview & Features
 
-**Community Bridge** is a comprehensive compatibility layer that unifies development across different FiveM frameworks and resources. Whether you're building with QB-Core, ESX, QBox, or any other framework, this bridge ensures your scripts work seamlessly across all environments.
+**Community Bridge** is a comprehensive compatibility layer that acts as a universal wrapper around all major systems used across FiveM frameworks. Whether you're building with QB-Core, ESX, QBox, or any other framework, this bridge ensures your scripts work seamlessly across all environments.
+
+Instead of writing separate code for each framework's inventory, dispatch, targeting, or notification system, you write once and it works everywhere.
 
 ### 🎯 Core Philosophy
 - 🔧 **Plug & Play** - Drop in and it just works
@@ -25,53 +27,31 @@
 - 📚 **Beginner Friendly** - Clean, documented, and easy to understand
 - 🚀 **Future Proof** - Built to adapt and grow with the community
 
----
-
-## 🚀 Features
-
-### 📦 **Inventory Systems**
-<details>
-<summary>Click to expand supported inventories</summary>
-
-- `ox_inventory` ⭐
-- `codem-inventory`
-- `core_inventory`
-- `jpr-inventory`
-- `origin_inventory`
-- `ps-inventory`
-- `qb-inventory`
-- `qs-inventory`
-- `tgiann-inventory`
-
-**Bonus:** Built-in item output generator supporting `ox_inventory`, `qb-new`, and `qb-old` formats!
-</details>
-
-### 🚨 **Dispatch Systems**
-<details>
-<summary>Click to expand supported dispatch systems</summary>
-
-- `lb-tablet`
-- `ps-dispatch`
-- `qs-dispatch`
-- `redutzu-mdt`
-- `tk_dispatch`
-- `linden_outlawalert`
-- `cd_dispatch`
-- `bub_mdt`
-
-**Plus:** Built-in fallback system ensures notifications always reach their destination.
-</details>
-
 ### 🔐 **Framework Support**
 - **QB-Core** - Full compatibility
 - **QBox** - Native support
 - **ESX** - Complete integration
 - **Custom Frameworks** - Extensible design
 
-### 🏗️ **Additional Modules**
-<details>
-<summary>Click to expand additional modules</summary>
+Below are the core system integrations and advanced tools available:
 
+### 🔧 **Core System Integrations**
+<details>
+<summary>Click to expand core system compatibility</summary>
+
+#### 📦 **Inventory Systems**
+- `ox_inventory` ⭐ | `codem-inventory` | `core_inventory` | `jpr-inventory`
+- `origin_inventory` | `ps-inventory` | `qb-inventory` | `qs-inventory` | `tgiann-inventory`
+
+**Bonus:** Built-in item output generator supporting `ox_inventory`, `qb-new`, and `qb-old` formats!
+
+#### 🚨 **Dispatch Systems**
+- `lb-tablet` | `ps-dispatch` | `qs-dispatch` | `redutzu-mdt` | `tk_dispatch`
+- `linden_outlawalert` | `cd_dispatch` | `bub_mdt`
+
+**Plus:** Built-in fallback system ensures notifications always reach their destination.
+
+#### 🏗️ **Additional Modules**
 | Module | Description | Compatibility |
 |--------|-------------|---------------|
 | 🚪 **Doorlock** | Universal door management | `ox_doorlock`, `qb-doorlock`, `rcore_doorlock`, `jacksams-doorlock` |
@@ -86,10 +66,11 @@
 
 </details>
 
-### 🛠️ **Utility Features**
+### 🎨 **Developer Tools & Utilities**
 <details>
-<summary>Click to expand utility features</summary>
+<summary>Click to expand developer tools and utilities</summary>
 
+#### 🛠️ **Utility Features**
 - 🌍 **Locale Support** - Multi-language ready
 - 🧮 **Math Utilities** - Common mathematical functions
 - 🔧 **Helper Functions** - Rich collection of development tools
@@ -101,12 +82,7 @@
 - 📊 **State Bags** - Entity state management
 - 🔧 **Entity Management** - Comprehensive entity utilities
 
-</details>
-
-### 🎨 **Advanced Developer Tools**
-<details>
-<summary>Click to expand developer tools</summary>
-
+#### 🎨 **Advanced Developer Tools**
 - 🎬 **Cutscenes** - Full cinematic sequence management with character switching
 - ✨ **Particle Effects** - Advanced particle system integration
 - 📍 **Markers** - Server-side marker management system
@@ -119,37 +95,24 @@
 
 </details>
 
-### 🏠 **Housing System Integration**
+### 🎭 **Specialized Systems**
 <details>
-<summary>Click to expand housing systems</summary>
+<summary>Click to expand specialized system integrations</summary>
 
+#### 🏠 **Housing System Integration**
 - 🏡 **bcs-housing** - Complete integration
 - 🏠 **esx_property** - Full compatibility
 - 🔧 **Universal Interface** - Standardized housing functions
 - 📊 **Property Management** - Advanced property utilities
 
-</details>
-
-### 💬 **Dialogue & Help Systems**
-<details>
-<summary>Click to expand dialogue systems</summary>
-
+#### 💬 **Dialogue & Help Systems**
 - 🗣️ **Web-based Dialogue** - Modern React-based dialogue interface
 - 💡 **Multiple Help Text Providers**:
-  - `cd_drawtextui`
-  - `jg-textui`
-  - `lab-HintUI`
-  - `okokTextUI`
-  - `ox_lib`
+  - `cd_drawtextui` | `jg-textui` | `lab-HintUI` | `okokTextUI` | `ox_lib`
 - 🎨 **Styled Components** - Professional UI with animations
 - 📱 **Responsive Design** - Works across all screen sizes
 
-</details>
-
-### 👕 **Comprehensive Clothing Systems**
-<details>
-<summary>Click to expand clothing systems</summary>
-
+#### 👕 **Comprehensive Clothing Systems**
 - 👔 **illenium-appearance** - Advanced appearance management
 - 🎮 **fivem-appearance** - Community appearance system
 - 📦 **qb-clothing** - QB-Core clothing integration
@@ -158,12 +121,7 @@
 - 🎨 **Appearance Debugging** - Real-time clothing change detection
 - 💾 **Appearance Caching** - Optimized appearance data management
 
-</details>
-
-### 🎭 **Animation & Effects Systems**
-<details>
-<summary>Click to expand animation systems</summary>
-
+#### 🎭 **Animation & Effects Systems**
 - 🎬 **Animation Library** - Comprehensive animation utilities
 - ✨ **Particle Management** - Advanced particle effect system
 - 🎭 **Cutscene Framework** - Full cinematic control
@@ -186,12 +144,29 @@ Our mission: to promote open collaboration, reduce friction between systems, and
 
 ## 🧰 Why Use Community Bridge?
 
-- ✅ Easy for beginners  
-- 🔄 Highly modular and extendable  
-- 🔌 Compatible with all major scripts and systems  
-- 🔧 Built-in compatibility wrappers  
-- 📦 Future-proof and easy to expand  
-- 🤝 Built with community-first values
+- ✅ **Easy for beginners** - Simple, intuitive API design
+- 🔄 **Highly modular** - Use only what you need
+- 🔌 **Universal compatibility** - Works with all major frameworks and resources
+- 🤝 **Community-driven** - Built by developers, for developers
+- 🛡️ **Production ready** - Battle-tested across hundreds of servers
+
+---
+
+## ❓ Frequently Asked Questions
+
+<details>
+<summary>Click to expand FAQ</summary>
+
+**Q: What happens if a new framework comes out?**
+A: We actively monitor the FiveM community and add support for new frameworks as they gain adoption.
+
+**Q: Is this compatible with my custom framework?**
+A: Yes! Community Bridge has an extensible design that supports custom framework integration.
+
+**Q: How often is this updated?**
+A: We release updates regularly to maintain compatibility and add new features based on community feedback.
+
+</details>
 
 ---
 
@@ -237,12 +212,6 @@ We welcome contributions from the community! Here's how you can help:
 
 Have questions, suggestions, or want to contribute? Join us on Discord:  
 👉 [Our Discord Here](https://discord.gg/MukwBuJjP7)
-
-### Community Resources
-- 📖 **Wiki** - Comprehensive guides and tutorials
-- 🐛 **Bug Reports** - Help us improve by reporting issues
-- 💡 **Feature Requests** - Share your ideas with the community
-- 🎯 **Support** - Get help from experienced developers
 
 ---
 
