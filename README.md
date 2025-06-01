@@ -69,6 +69,8 @@
 - **Custom Frameworks** - Extensible design
 
 ### 🏗️ **Additional Modules**
+<details>
+<summary>Click to expand additional modules</summary>
 
 | Module | Description | Compatibility |
 |--------|-------------|---------------|
@@ -82,13 +84,93 @@
 | 🌤️ **Weather** | Weather control bridge | Most weather resources |
 | 🎮 **Skills** | Skill system integration | Most skill systems |
 
+</details>
+
 ### 🛠️ **Utility Features**
+<details>
+<summary>Click to expand utility features</summary>
+
 - 🌍 **Locale Support** - Multi-language ready
 - 🧮 **Math Utilities** - Common mathematical functions
 - 🔧 **Helper Functions** - Rich collection of development tools
 - 📏 **Input Systems** - `qb-input` and `ox_lib` compatible
 - 📋 **Menu Systems** - Interchangeable QB and ox_lib formats
 - ✅ **Version Checker** - Built-in update management
+- 📦 **Cache System** - Advanced client-side caching with change detection
+- 🎯 **Point System** - 3D world interaction points
+- 📊 **State Bags** - Entity state management
+- 🔧 **Entity Management** - Comprehensive entity utilities
+
+</details>
+
+### 🎨 **Advanced Developer Tools**
+<details>
+<summary>Click to expand developer tools</summary>
+
+- 🎬 **Cutscenes** - Full cinematic sequence management with character switching
+- ✨ **Particle Effects** - Advanced particle system integration
+- 📍 **Markers** - Server-side marker management system
+- 🎯 **Raycast Utilities** - Advanced raycasting and collision detection
+- 📺 **Scaleform** - Native UI scaleform wrapper
+- 🎮 **Gizmo System** - 3D object manipulation with translate/rotate/scale
+- 🏗️ **Object Placement** - Advanced placeable object system with boundary checks
+- 🖥️ **DUI System** - Direct User Interface integration
+- 📐 **Math Tools** - Mathematical utilities for 3D calculations
+
+</details>
+
+### 🏠 **Housing System Integration**
+<details>
+<summary>Click to expand housing systems</summary>
+
+- 🏡 **bcs-housing** - Complete integration
+- 🏠 **esx_property** - Full compatibility
+- 🔧 **Universal Interface** - Standardized housing functions
+- 📊 **Property Management** - Advanced property utilities
+
+</details>
+
+### 💬 **Dialogue & Help Systems**
+<details>
+<summary>Click to expand dialogue systems</summary>
+
+- 🗣️ **Web-based Dialogue** - Modern React-based dialogue interface
+- 💡 **Multiple Help Text Providers**:
+  - `cd_drawtextui`
+  - `jg-textui`
+  - `lab-HintUI`
+  - `okokTextUI`
+  - `ox_lib`
+- 🎨 **Styled Components** - Professional UI with animations
+- 📱 **Responsive Design** - Works across all screen sizes
+
+</details>
+
+### 👕 **Comprehensive Clothing Systems**
+<details>
+<summary>Click to expand clothing systems</summary>
+
+- 👔 **illenium-appearance** - Advanced appearance management
+- 🎮 **fivem-appearance** - Community appearance system
+- 📦 **qb-clothing** - QB-Core clothing integration
+- 👗 **esx_skin** - ESX skin system support
+- 🔄 **Default Fallback** - Built-in clothing system
+- 🎨 **Appearance Debugging** - Real-time clothing change detection
+- 💾 **Appearance Caching** - Optimized appearance data management
+
+</details>
+
+### 🎭 **Animation & Effects Systems**
+<details>
+<summary>Click to expand animation systems</summary>
+
+- 🎬 **Animation Library** - Comprehensive animation utilities
+- ✨ **Particle Management** - Advanced particle effect system
+- 🎭 **Cutscene Framework** - Full cinematic control
+- 📺 **Scaleform Integration** - Native UI elements
+- 🎯 **Entity Animation** - Ped and object animation tools
+
+</details>
 
 Whether you're building a full framework or just need utility features, **Community Bridge** is designed to make your workflow easier and more efficient.
 
@@ -138,11 +220,10 @@ Read the full documentation here:
 We welcome contributions from the community! Here's how you can help:
 
 ### How to Contribute
-1. **Fork** this repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
+1. **Fork** this repositorys dev branch
+2. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+3. **Push** to the branch (`git push origin feature/amazing-feature`)
+4. **Open** a Pull Request
 
 ### Guidelines
 - ✅ Follow existing code style and patterns
@@ -185,7 +266,7 @@ If Community Bridge has helped your development workflow, consider:
 
 ---
 
-> "A bridge built not for one, but for all — strong, simple, and open."
+> "Connecting what matters — frameworks unified, development simplified."
 
 <div align="center">
 
