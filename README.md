@@ -6,6 +6,8 @@
 ![License](https://img.shields.io/badge/license-GPLv3-blue.svg)
 ![FiveM](https://img.shields.io/badge/FiveM-Compatible-green.svg)
 ![Version](https://img.shields.io/badge/version-latest-brightgreen.svg)
+![Contributors](https://img.shields.io/github/contributors/The-Order-Of-The-Sacred-Framework/community_bridge?style=for-the-badge&logo=github&color=blue)
+
 
 *A modular, beginner-friendly collection of tools and systems designed to simplify and unify FiveM development.*
 
