@@ -1,6 +1,44 @@
-local resourceName = "qb-input"
-local configValue = BridgeClientConfig.InputSystem
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+function QBTypeToOxType(_type)
+    if _type == "text" then
+        return "input"
+    elseif _type == "password" then
+        return "input"
+    elseif _type == "number" then
+        return "number"
+    elseif _type == "radio" then
+        return "checkbox"
+    elseif _type == "checkbox" then
+        return "checkbox"
+    elseif _type == "select" then
+        return "select"
+    end
+end
+
+function QBToOxInput(data)
+    local returnData = {}
+    for i, v in pairs(data) do
+        local input = {
+            label = v.text,
+            name = i,
+            type = QBTypeToOxType(v.type),
+            required = v.isRequired,
+            default = v.placeholder,
+        }
+        if v.type == "select" then
+            input.options = {}
+            for i, v in pairs(v.options) do
+                table.insert(input.options, {value = v.value, label = v.text})
+            end
+        elseif v.type == "checkbox" then
+            for i, v in pairs(v.options) do
+                table.insert(returnData, {value = v.value, label = v.text})
+            end
+        end
+        table.insert(returnData, input)
+    end
+    return returnData
+end
+
 
 function OxTypeToQBType(_type)
     if _type == "input" then
@@ -58,35 +96,4 @@ function OxToQBInput(data)
         table.insert(returnData, input)
     end
     return returnData
-end
-
-function OpenInput(title, data, isQBFormat, submitText)
-    local input = data.inputs
-    if not isQBFormat then
-        input = OxToQBInput(data)
-    end
-    local returnData = exports['qb-input']:ShowInput({
-        header = title,
-        submitText = submitText or "Submit",
-        inputs = input
-    })
-    if not returnData then return end
-    if returnData[1] then return returnData end
-    --converting to standard format (ox)
-    local convertedData = {}
-    if isQBFormat then
-        for i, v in pairs(input) do
-            for k, j in pairs(returnData) do
-                if k == v.text then
-                    convertedData[tonumber(i)] = j
-                end
-            end
-        end
-        return convertedData
-    end
-
-    for i, v in pairs(returnData) do
-        convertedData[tonumber(i)] = v
-    end
-    return convertedData
 end
