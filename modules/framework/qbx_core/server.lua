@@ -11,6 +11,14 @@ Framework.GetFrameworkName = function()
     return 'qbx_core'
 end
 
+---This will return if the player is an admin in the framework.
+---@param src any
+---@return boolean
+Framework.GetIsFrameworkAdmin = function(src)
+    if not src then return false end
+    return IsPlayerAceAllowed(src, 'admin')
+end
+
 ---Returns the player date of birth.
 ---@param src number
 ---@return string|nil

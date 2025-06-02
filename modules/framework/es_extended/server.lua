@@ -13,6 +13,18 @@ Framework.GetFrameworkName = function()
     return 'es_extended'
 end
 
+---This will return if the player is an admin in the framework.
+---@param src any
+---@return boolean
+Framework.GetIsFrameworkAdmin = function(src)
+    if not src then return false end
+    local xPlayer = Framework.GetPlayer(src)
+    if not xPlayer then return false end
+    local group = xPlayer.getGroup()
+    if group == 'admin' or group == 'superadmin' then return true end
+    return false
+end
+
 ---This will get the players birth date
 ---@return string|nil
 Framework.GetPlayerDob = function(src)

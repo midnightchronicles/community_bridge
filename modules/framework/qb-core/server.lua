@@ -14,6 +14,14 @@ Framework.GetFrameworkName = function()
     return 'qb-core'
 end
 
+---This will return if the player is an admin in the framework.
+---@param src any
+---@return boolean
+Framework.GetIsFrameworkAdmin = function(src)
+    if not src then return false end
+    return QBCore.Functions.HasPermission(src, 'admin')
+end
+
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
 ---@param src number
