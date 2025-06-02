@@ -13,7 +13,7 @@ local function convertFromQB(options)
             model = prop1.model,
             bone = prop1.bone,
             pos = prop1.coords,
-            rot = prop1.rotation,       
+            rot = prop1.rotation,
         },
         {
             model = prop2.model,
@@ -22,8 +22,6 @@ local function convertFromQB(options)
             rot = prop2.rotation,
         }
     }
-    
-    
     return {
         duration = options.duration,
         label = options.label,
@@ -38,17 +36,18 @@ local function convertFromQB(options)
         },
         anim = {
             dict = options.animation?.animDict,
-            clip = options.animation?.anim
+            clip = options.animation?.anim,
+            flag = options.animation?.flags or 49,
         },
         prop = props,
     }
 end
 
----comment
+---This function opens a progress bar.
 ---@param options table
 ---@param cb any
 ---@param isQBInput boolean
----@return nil
+---@return boolean
 ---@diagnostic disable-next-line: duplicate-set-field
 function ProgressBar.Open(options, cb, isQBInput)
     if isQBInput then
@@ -63,22 +62,3 @@ function ProgressBar.Open(options, cb, isQBInput)
 end
 
 return ProgressBar
-
---[[
-RegisterCommand("progressbar", function()
-    ProgressBar.Open({
-        duration = 5000,
-        label = "Searching",
-        disable = {
-            move = true,
-            combat = true
-        },
-        anim = {
-            dict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
-            clip = "machinic_loop_mechandplayer"
-        }
-    }, function(cancelled)
-        print(cancelled and "Cancelled" or "Complete")
-    end)
-end)
---]]

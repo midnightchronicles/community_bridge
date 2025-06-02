@@ -23,12 +23,12 @@ local function convertFromOx(options)
         animation = {
             animDict = options.anim?.dict,
             anim = options.anim?.clip,
-            flags = 49
+            flags = options.anim?.flag or 49
         },
         prop = {
             model = prop1.model,
             bone = prop1.bone,
-            coords = prop1.pos, 
+            coords = prop1.pos,
             rotation = prop1.rot
         },
         propTwo = {
@@ -40,11 +40,11 @@ local function convertFromOx(options)
     }
 end
 
----comment
+---This function opens a progress bar.
 ---@param options table
 ---@param cb any
 ---@param qbFormat boolean
----@return success boolean
+---@return boolean boolean
 ---@diagnostic disable-next-line: duplicate-set-field
 function ProgressBar.Open(options, cb, qbFormat)
     if not exports['progressbar'] then return false end
@@ -61,29 +61,3 @@ function ProgressBar.Open(options, cb, qbFormat)
 end
 
 return ProgressBar
-
-
--- Example usage:
---[[
-RegisterCommand("progressbar", function()
-    ProgressBar.Open({
-        duration = 5000,
-        label = "Searching",
-        disable = {
-            move = true,
-            combat = true
-        },
-        anim = {
-            dict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
-            clip = "machinic_loop_mechandplayer"
-        },
-        prop = {
-            model = "prop_ar_arrow_3",
-            pos = vector3(0.0, 0.0, 0.0),
-            rot = vector3(0.0, 0.0, 0.0)
-        },
-    }, function(cancelled)
-        print(cancelled and "Cancelled" or "Complete")
-    end)
-end)
---]]
