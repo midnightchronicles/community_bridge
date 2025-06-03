@@ -66,7 +66,7 @@ Target.AddGlobalVehicle = function(options)
     })
 end
 
----This will remove target options from all vehicles. 
+---This will remove target options from all vehicles.
 ---@param options table
 Target.RemoveGlobalVehicle = function(options)
     local assembledLables = {}
@@ -116,14 +116,14 @@ end
 ---@param size table
 ---@param heading number
 ---@param options table
-Target.AddBoxZone = function(name, coords, size, heading, options)
+Target.AddBoxZone = function(name, coords, size, heading, options, debug)
     options = Target.FixOptions(options)
     qb_target:AddBoxZone(name, coords, size.x, size.y, {
         name = name,
-        debugPoly = targetDebug,
+        debugPoly = debug or targetDebug,
         heading = heading,
-        minZ = coords.z - (size.x * 0.5),
-        maxZ = coords.z + (size.x * 0.5),
+        minZ = coords.z - (size.z * 0.5),
+        maxZ = coords.z + (size.z * 0.5),
     }, {
         options = options,
         distance = options.distance or 1.5,

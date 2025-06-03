@@ -13,7 +13,7 @@ local function SpawnEntity(entityData)
     --     print(string.format("SpawnEntity %s: %s", k, v))
     -- end
     local model = entityData.model and type(entityData.model) == 'string' and GetHashKey(entityData.model) or entityData.model
-    if not Utility.LoadModel(model) then
+    if model and not Utility.LoadModel(model) then
         print(string.format("[ClientEntity] Failed to load model %s for entity %s", entityData.model, entityData.id))
         return
     end
@@ -30,22 +30,19 @@ local function SpawnEntity(entityData)
         -- Apply ped specific settings from entityData.meta if needed
     elseif entityData.entityType == 'vehicle' then
         entity = CreateVehicle(model, coords.x, coords.y, coords.z, type(rotation) == 'number' and rotation or rotation.z, false, false)
-        -- Apply vehicle specific settings from entityData.meta if needed
     else
         print(string.format("[ClientEntity] Unknown entity type '%s' for entity %s", entityData.entityType, entityData.id))
     end
-    if entity then
-        -- print(string.format("[ClientEntity] Spawned %s entity %s (GameID: %s)", entityData.entityType, entityData.id, entity))
+    if entity and model then
         entityData.spawned = entity
         SetModelAsNoLongerNeeded(model)
-        SetEntityAsMissionEntity(entity, true, true) -- Keep entity from being deleted by game engine
-        FreezeEntityPosition(entity, true) -- Optional freeze based on meta
-        if entityData.OnSpawn then
-            entityData.OnSpawn(entityData)
-        end
-        -- print(string.format("[ClientEntity] Spawned %s entity %s (GameID: %s)", entityData.entityType, entityData.id, entity))
+        SetEntityAsMissionEntity(entity, true, true)
+        FreezeEntityPosition(entity, true)
     else
         SetModelAsNoLongerNeeded(model)
+    end
+    if entityData.OnSpawn then
+        entityData.OnSpawn(entityData)
     end
 end
 
@@ -83,8 +80,8 @@ function ClientEntity.Unregister(id)
     local entityData = Entities[id]
     if not entityData then return end
 
-    Point.Remove(id) 
-    RemoveEntity(entityData) 
+    Point.Remove(id)
+    RemoveEntity(entityData)
     Entities[id] = nil
 end
 
@@ -193,7 +190,7 @@ end)
 RegisterNetEvent("community_bridge:client:TriggerEntityActions", function(entityId, actions, endPosition)
     local entityData = Entities[entityId]
     if entityData then
-        for _, actionData in pairs(actions) do 
+        for _, actionData in pairs(actions) do
             local actionName = actionData.name
             local actionParams = actionData.params
             if actionName == "Stop" then

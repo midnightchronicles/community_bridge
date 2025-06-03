@@ -562,13 +562,13 @@ Framework.RegisterUsableItem = function(itemName, cb)
     QBCore.Functions.CreateUseableItem(itemName, func)
 end
 
-RegisterNetEvent("QBCore:Server:OnPlayerLoaded", function()
-    local src = source
+RegisterNetEvent("QBCore:Server:OnPlayerLoaded", function(src)
+    src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerLoaded", src)
 end)
 
-RegisterNetEvent("QBCore:Server:OnPlayerUnload", function(source)
-    local src = source
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function(src)
+    src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
 

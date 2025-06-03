@@ -102,18 +102,31 @@ end
 ---@param size table
 ---@param heading number
 ---@param options table
-Target.AddBoxZone = function(name, coords, size, heading, options)
-    options = Target.FixOptions(options)
+Target.AddBoxZone = function(name, coords, size, heading, options, debug)
+    options = Target.FixOptions(options or {})
     local target = ox_target:addBoxZone({
         coords = coords,
         size = size,
         rotation = heading,
-        debug = targetDebug,
+        debug = debug or targetDebug,
         options = options,
     })
     table.insert(targetZones, { name = name, id = target, creator = GetInvokingResource() })
     return target
 end
+
+-- RegisterCommand('boxzone:test', function(source, args, rawCommand)
+--     local coords = GetEntityCoords(PlayerPedId())
+--     Target.AddBoxZone('test_zone', coords, { 2.0, 2.0, 2.0 }, 0.0, {
+--         {
+--             label = 'Test Option',
+--             icon = 'fas fa-check',
+--             onSelect = function()
+--                 print('Test option selected!')
+--             end
+--         }
+--     }, true)
+-- end)
 
 ---This will add a circle zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string

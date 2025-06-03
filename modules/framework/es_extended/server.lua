@@ -432,13 +432,13 @@ Framework.RegisterUsableItem = function(itemName, cb)
     ESX.RegisterUsableItem(itemName, func)
 end
 
-RegisterNetEvent("esx:playerLoaded", function()
-    local src = source
+RegisterNetEvent("esx:playerLoaded", function(src)
+    src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerLoaded", src)
 end)
 
-RegisterNetEvent("esx:playerLogout", function()
-    local src = source
+RegisterNetEvent("esx:playerLogout", function(src)
+    src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
 

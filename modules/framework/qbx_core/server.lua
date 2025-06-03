@@ -471,13 +471,13 @@ Framework.RegisterUsableItem = function(itemName, cb)
     return QBox:CreateUseableItem(itemName, func)
 end
 
-RegisterNetEvent("QBCore:Server:OnPlayerLoaded", function()
-    local src = source
+RegisterNetEvent("QBCore:Server:OnPlayerLoaded", function(src)
+    src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerLoaded", src)
 end)
 
-RegisterNetEvent("QBCore:Server:OnPlayerUnload", function()
-    local src = source
+RegisterNetEvent("QBCore:Server:OnPlayerUnload", function(src)
+    src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
 
