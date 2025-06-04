@@ -80,8 +80,9 @@ end
 
 ---This will remove the target options from a local entity. This is useful for when you want to remove target options from a specific entity.
 ---@param entity any
-Target.RemoveLocalEntity = function(entity)
-    ox_target:removeLocalEntity(entity)
+---@param labels string | table | nil
+Target.RemoveLocalEntity = function(entities, optionNames)
+    ox_target:removeLocalEntity(entities, optionNames)
 end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
