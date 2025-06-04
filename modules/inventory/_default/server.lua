@@ -31,7 +31,12 @@ end
 ---@param items table
 ---@return boolean
 Inventory.AddTrunkItems = function(identifier, items)
-    return false, print("This Inventory Has Not Been Bridged For A Trunk Feature.")
+    return false, Prints.Error("This Inventory Has Not Been Bridged For A Trunk Feature.")
+end
+
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    return false, Prints.Error("This Inventory Has Not Been Bridged For A ClearStash Feature.")
 end
 
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
