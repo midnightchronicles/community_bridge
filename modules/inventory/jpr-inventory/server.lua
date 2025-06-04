@@ -64,20 +64,12 @@ end
 ---This will open the specified stash for the src passed.
 ---@param src number
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
 Inventory.OpenStash = function(src, id)
     local stash = Inventory.Stashes[id]
     assert(stash, "Stash not found", id)
     TriggerClientEvent('community_bridge:client:jpr-inventory:openStash', src, id, { weight = stash.weight, slots = stash.slots })
 end
-
-
 
 ---This will register a stash
 ---@param id number||string
@@ -100,6 +92,24 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coor
         coords = coords
     }
     return true
+end
+
+---This will add items to a trunk, and return true or false based on success
+---If a trunk with the identifier does not exist, it will create one with default values.
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddItemsToTrunk = function(identifier, items)
+    if type(items) ~= "table" then return false end
+    return false, print("AddItemsToTrunk is not implemented in jpr-inventory, because of this we dont have a way to add items to a trunk.")
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    return false, print("ClearInventory is not implemented in jpr-inventory, because of this we dont have a way to clear a stash.")
 end
 
 ---This will return a boolean if the player has the item.

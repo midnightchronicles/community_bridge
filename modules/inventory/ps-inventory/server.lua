@@ -32,6 +32,28 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
     return sloth:RemoveItem(src, item, count, slot, 'community_bridge')
 end
 
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddItemsToTrunk = function(identifier, items)
+    if type(items) ~= "table" then return false end
+    for k, v in pairs(items) do
+        local count = v.count or 1
+        local metadata = v.metadata or {}
+        sloth:AddToTrunk(identifier, nil, nil, v.item, count, metadata, nil)
+    end
+    return true
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    return false, print("ClearInventory is not implemented in ps-inventory, because of this we dont have a way to clear a stash.")
+end
+
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
 ---@param item string
 ---@return table

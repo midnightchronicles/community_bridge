@@ -6,6 +6,7 @@ local registeredShops = {}
 
 Inventory = Inventory or {}
 Inventory.Stashes = Inventory.Stashes or {}
+
 ---This will add an item, and return true or false based on success
 ---@param src number
 ---@param item string
@@ -28,6 +29,29 @@ end
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
     return ox_inventory:RemoveItem(src, item, count, metadata, slot)
+end
+
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddTrunkItems = function(identifier, items)
+    local id = "trunk"..identifier
+    if type(items) ~= "table" then return false end
+    Inventory.RegisterStash(id, identifier, 20, 10000, nil, nil, nil)
+    for _, v in pairs(items) do
+        ox_inventory:AddItem(id, v.item, v.count, v.metadata)
+    end
+    return true
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    ox_inventory:ClearInventory(_type..id, nil)
+    return true
 end
 
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
@@ -86,13 +110,7 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
----@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
+---@param id number|string
 ---@return nil
 Inventory.OpenStash = function(src, id)
     assert(Inventory.Stashes[id], "Stash not found", id)
@@ -100,7 +118,7 @@ Inventory.OpenStash = function(src, id)
 end
 
 ---This will register a stash
----@param id number||string
+---@param id number|string
 ---@param label string
 ---@param slots number
 ---@param weight number
@@ -178,7 +196,6 @@ Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGrou
     --return Inventory.OpenShop(src, shopTitle)
     return true
 end
-
 
 
 ---UNUSED:

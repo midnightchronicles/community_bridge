@@ -23,7 +23,7 @@ end
 Inventory.AddItem = function(src, item, count, slot, metadata)
     TriggerClientEvent('qb-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', count)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
-    return exports['qb-inventory']:AddItem(src, item, count, slot, metadata, 'community_bridge')
+    return qbInventory:AddItem(src, item, count, slot, metadata, 'community_bridge')
 end
 
 ---This will remove an item, and return true or false based on success
@@ -36,7 +36,49 @@ end
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
     TriggerClientEvent('qb-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove', count)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
-    return exports['qb-inventory']:RemoveItem(src, item, count, slot, 'community_bridge')
+    return qbInventory:RemoveItem(src, item, count, slot, 'community_bridge')
+end
+
+---This will add items to a trunk, and return true or false based on success
+---If a trunk with the identifier does not exist, it will create one with default values.
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddItemsToTrunk = function(identifier, items)
+    if type(items) ~= "table" then return false end
+    local fullTrunkId = "trunk-"..identifier
+    local repacked_items = {}
+    for _, item in pairs(items) do
+        table.insert(repacked_items, {
+            name = item.item,
+            amount = item.count,
+            info = item.metadata or {}
+        })
+    end
+
+    if getInventoryNewVersion() then
+        qbInventory:addTrunkItems(fullTrunkId, repacked_items)
+    else
+        if not qbInventory:GetInventory(fullTrunkId) then
+            qbInventory:CreateInventory(fullTrunkId, { label = fullTrunkId, slots = 20, maxweight = 10000 })
+        end
+        qbInventory:SetInventory(fullTrunkId, repacked_items, "Community Bridge Moving Items In Trunk")
+    end
+    return true
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    if _type == "trunk" then
+        id = "trunk-"..id
+    elseif _type == "glovebox" then
+        id = "glovebox-"..id
+    end
+    qbInventory:ClearStash(id)
+    return true
 end
 
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
@@ -78,20 +120,14 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
----@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
+---@param id number|string
 ---@return nil
 Inventory.OpenStash = function(src, id)
     local stash = Inventory.Stashes[id]
     assert(stash, "Stash not found", id)
 
     if getInventoryNewVersion() then
-        return exports['qb-inventory']:OpenInventory(src, id)
+        return qbInventory:OpenInventory(src, id)
     end
 
     TriggerClientEvent('community_bridge:client:qb-inventory:openStash', src, id, { weight = stash.weight, slots = stash.slots})
@@ -154,16 +190,16 @@ end
 Inventory.UpdatePlate = function(oldplate, newplate)
     local newVersion = getInventoryNewVersion()
     if newVersion then
-        local gloveboxInv = exports['qb-inventory']:GetInventory('glovebox-'..oldplate) or {slots = 5, maxweight = 10000, items = {}}
+        local gloveboxInv = qbInventory:GetInventory('glovebox-'..oldplate) or {slots = 5, maxweight = 10000, items = {}}
         local storedGloveBox = Bridge.Tables.DeepClone(gloveboxInv, nil, nil)
-        local trunkInv = exports['qb-inventory']:GetInventory('trunk-'..oldplate) or {slots = 5, maxweight = 10000, items = {}}
+        local trunkInv = qbInventory:GetInventory('trunk-'..oldplate) or {slots = 5, maxweight = 10000, items = {}}
         local storedTrunk = Bridge.Tables.DeepClone(trunkInv, nil, nil)
-        exports['qb-inventory']:ClearStash('glovebox-'..oldplate)
-        exports['qb-inventory']:ClearStash('trunk-'..oldplate)
-        exports['qb-inventory']:CreateInventory('glovebox-'..newplate, {label = 'glovebox-'..newplate, slots = storedGloveBox.slots, maxweight = storedGloveBox.maxweight})
-        exports['qb-inventory']:SetInventory('glovebox-'..newplate, storedGloveBox.items, "Community Bridge Moving Items In GloveBox")
-        exports['qb-inventory']:CreateInventory('trunk-'..newplate, {label = 'trunk-'..newplate, slots = storedTrunk.slots, maxweight = storedTrunk.maxweight})
-        exports['qb-inventory']:SetInventory('trunk-'..newplate, storedTrunk.items, "Community Bridge Moving Items In Trunk")
+        qbInventory:ClearStash('glovebox-'..oldplate)
+        qbInventory:ClearStash('trunk-'..oldplate)
+        qbInventory:CreateInventory('glovebox-'..newplate, {label = 'glovebox-'..newplate, slots = storedGloveBox.slots, maxweight = storedGloveBox.maxweight})
+        qbInventory:SetInventory('glovebox-'..newplate, storedGloveBox.items, "Community Bridge Moving Items In GloveBox")
+        qbInventory:CreateInventory('trunk-'..newplate, {label = 'trunk-'..newplate, slots = storedTrunk.slots, maxweight = storedTrunk.maxweight})
+        qbInventory:SetInventory('trunk-'..newplate, storedTrunk.items, "Community Bridge Moving Items In Trunk")
         return true
     else
         local queries = {
@@ -183,7 +219,7 @@ end
 Inventory.OpenShop = function(src, shopTitle)
     local newVersion = getInventoryNewVersion()
     if newVersion then
-        return exports['qb-inventory']:OpenShop(src, shopTitle)
+        return qbInventory:OpenShop(src, shopTitle)
     else
         local shopData = v1ShopData[shopTitle]
         if not shopData then return false end
@@ -206,7 +242,7 @@ Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGrou
         for _, v in pairs(shopInventory) do
             table.insert(repackedShopItems, {name = v.name, price = v.price, amount = v.count or 1000})
         end
-        exports['qb-inventory']:CreateShop({ name = shopTitle, label = shopTitle, coords = shopCoords, items = repackedShopItems, })
+        qbInventory:CreateShop({ name = shopTitle, label = shopTitle, coords = shopCoords, items = repackedShopItems, })
         return true
     else
         local shopData = { label = shopTitle, items = {}, slots = 0 }

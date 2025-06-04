@@ -30,6 +30,49 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
     return origin:removeItem(src, item, count, metadata, slot, true)
 end
 
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddTrunkItems = function(identifier, items)
+    local id = "trunk_"..identifier
+    if type(items) ~= "table" then return false end
+    Inventory.RegisterStash(id, identifier, 20, 10000, nil, nil, nil)
+    local repack_items = {}
+    for _, v in pairs(items) do
+        table.insert(repack_items, {
+            name = v.item,
+            amount = v.count,
+            metadata = v.metadata or {}
+        })
+    end
+    if #repack_items == 0 then return false end
+    origin:addItems(id, repack_items)
+    return true
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    local inventory = origin:getInventory(id, _type)
+    if not inventory then return false end
+    if _type == "trunk" then
+        id = "trunk_"..id
+    elseif _type == "glovebox" then
+        id = "glovebox_"..id
+    elseif _type == "stash" then
+        id = "stash_"..id
+    end
+    for _, v in pairs(inventory) do
+        if v.slot then
+            origin:removeItem(id, v.name, v.count)
+        end
+    end
+    return true
+end
+
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
 ---@param item string
 ---@return table

@@ -200,6 +200,24 @@ Inventory.CanCarryItem = function(src, item, count)
     return true
 end
 
+---This will add items to a trunk, and return true or false based on success
+---If a trunk with the identifier does not exist, it will create one with default values.
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddItemsToTrunk = function(identifier, items)
+    if type(items) ~= "table" then return false end
+    return false, print("AddItemsToTrunk is not implemented in core_inventory, because of this we dont have a way to add items to a trunk.")
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    return false, print("ClearInventory is not implemented in core_inventory, because of this we dont have a way to clear a stash.")
+end
+
 ---This will update the plate to the vehicle inside the inventory. (It will also update with jg-mechanic if using it)
 ---@param oldplate string
 ---@param newplate string

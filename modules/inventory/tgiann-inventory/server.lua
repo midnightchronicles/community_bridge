@@ -158,8 +158,32 @@ Inventory.UpdatePlate = function(oldplate, newplate)
     }
     local values = { newplate = newplate, oldplate = oldplate }
     MySQL.transaction.await(queries, values)
+    tgiann:UpdateVehicle(oldplate, newplate)
     if GetResourceState('jg-mechanic') ~= 'started' then return true end
     return true, exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
+end
+
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddTrunkItems = function(identifier, items)
+    local id = "trunk"..identifier
+    if type(items) ~= "table" then return false end
+    Inventory.RegisterStash(identifier, identifier, 20, 10000, nil, nil, nil)
+    for _, v in pairs(items) do
+        tgiann:AddItemToSecondaryInventory("trunk", identifier, v.item, v.count, nil, v.metadata)
+    end
+    return true
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    tgiann:DeleteInventory(_type, id)
+    return true
 end
 
 ---This will get the image path for an item, it is an alternate option to GetItemInfo. If a image isnt found will revert to community_bridge logo (useful for menus)
