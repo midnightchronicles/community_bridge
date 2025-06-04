@@ -44,5 +44,8 @@
   },
   "clipboard":{
     "copy": "已复制到剪贴板"
+  },
+  "placeable_object": {
+    "cant_place_here": "您无法在此处放置此对象"
   }
 }

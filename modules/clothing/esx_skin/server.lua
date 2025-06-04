@@ -11,28 +11,28 @@ ESX = ESX or exports['es_extended']:getSharedObject()
 --- @return table|nil The player's full appearance data or nil if not found
 function Clothing.GetFullAppearanceData(src)
     src = src and tonumber(src)
-    assert(src, "src is nil")    
+    assert(src, "src is nil")
     local Player = ESX.GetPlayerFromId(src)
     if not Player then return end
     local citId = Player.identifier
     if not citId then return end
-    
+
     if Clothing.Players[citId] then return Clothing.Players[citId] end
-    
+
     local result = MySQL.query.await('SELECT skin FROM users WHERE identifier = ?', { citId})
     if result[1] == nil then return end
-    
+
     local model = GetEntityModel(GetPlayerPed(src))
     local skinData = json.decode(result[1].skin)
     local converted = Clothing.ConvertToDefault(skinData)
-    
+
     -- Store complete data in the cache
     Clothing.Players[citId] = {
         model = model,
-        skin = skinData, 
-        converted = converted 
+        skin = skinData,
+        converted = converted
     }
-    
+
     return Clothing.Players[citId]
 end
 
@@ -81,16 +81,16 @@ function Clothing.SetAppearance(src, data, updateBackup, save)
     local model = GetEntityModel(GetPlayerPed(src))
     if not model then return end
     local converted = Clothing.ConvertFromDefault(data)
-    
+
     -- Get full appearance data
     local currentClothing = Clothing.GetFullAppearanceData(src)
     if not currentClothing then return end
- 
+
     local currentSkin = currentClothing.skin
     for k, v in pairs(converted) do
         currentSkin[k] = v
     end
-    
+
 
     if not Clothing.Players[citId].backup or updateBackup then
         Clothing.Players[citId].backup = currentClothing.converted
@@ -100,7 +100,7 @@ function Clothing.SetAppearance(src, data, updateBackup, save)
     Clothing.Players[citId].skin = currentSkin
     Clothing.Players[citId].model = model
     Clothing.Players[citId].converted = Clothing.ConvertToDefault(currentSkin)
-    if save then 
+    if save then
         local encodedSkin = json.encode(currentSkin)
         -- saving 1 sql call by adding the query here instead of calling save
         MySQL.update.await('UPDATE users SET skin = ? WHERE identifier = ?', {
@@ -137,7 +137,7 @@ end
 
 function Clothing.OpenMenu(src)
     src = src and tonumber(src)
-    assert(src, "src is nil") 
+    assert(src, "src is nil")
     TriggerClientEvent('esx_skin:openMenu', src)
 end
 

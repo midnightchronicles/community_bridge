@@ -127,6 +127,17 @@ Target.RemoveZone = function(name)
     end
 end
 
+-- Target.DisableTargeting = function(bool)
+--     sleepless_interact:disableInteract(bool)
+-- end
+
+-- Target.Refresh = function()
+--     sleepless_interact:disableInteract(false)
+--     Wait(10)
+--     sleepless_interact:disableInteract(true)
+-- end
+
+
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
         for _, target in pairs(targetZones) do

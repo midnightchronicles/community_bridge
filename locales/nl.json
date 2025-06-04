@@ -44,5 +44,8 @@
   },
   "clipboard":{
     "copy": "Gekopieerd naar klembord"
+  },
+  "placeable_object": {
+    "cant_place_here": "Je kunt dit object hier niet plaatsen"
   }
 }

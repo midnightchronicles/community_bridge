@@ -43,5 +43,8 @@
     },
     "clipboard":{
         "copy": "Copiado para a área de transferência"
+    },
+    "placeable_object": {
+        "cant_place_here": "Não pode colocar este objeto aqui"
     }
 }

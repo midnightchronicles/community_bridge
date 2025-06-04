@@ -44,5 +44,8 @@
   },
   "clipboard":{
     "copy": "Copié dans le presse-papiers"
+  },
+  "placeable_object": {
+    "cant_place_here": "Vous ne pouvez pas placer cet objet ici"
   }
 }

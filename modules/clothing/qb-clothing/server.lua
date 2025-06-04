@@ -11,28 +11,28 @@ QBCore = QBCore or exports['qb-core']:GetCoreObject()
 --- @return table|nil The player's full appearance data or nil if not found
 function Clothing.GetFullAppearanceData(src)
     src = src and tonumber(src)
-    assert(src, "src is nil")    
+    assert(src, "src is nil")
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player then return end
     local citId = Player.PlayerData.citizenid
     if not citId then return end
-    
+
     if Clothing.Players[citId] then return Clothing.Players[citId] end
-    
+
     local result = MySQL.query.await('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', { citId, 1 })
     if result[1] == nil then return end
-    
+
     local model = Player.PlayerData.model
     local skinData = json.decode(result[1].skin)
     local converted = Clothing.ConvertToDefault(skinData)
-    
+
     -- Store complete data in the cache
-    Clothing.Players[citId] = { 
-        model = model, 
-        skin = skinData, 
-        converted = converted 
+    Clothing.Players[citId] = {
+        model = model,
+        skin = skinData,
+        converted = converted
     }
-    
+
     return Clothing.Players[citId]
 end
 
@@ -64,16 +64,16 @@ function Clothing.SetAppearance(src, data, updateBackup, save)
     local model = GetEntityModel(GetPlayerPed(src))
     if not model then return end
     local converted = Clothing.ConvertFromDefault(data)
-    
+
     -- Get full appearance data
     local currentClothing = Clothing.GetFullAppearanceData(src)
     if not currentClothing then return end
- 
+
     local currentSkin = currentClothing.skin
     for k, v in pairs(converted) do
         currentSkin[k] = v
     end
-    
+
     if not Clothing.Players[citId].backup or updateBackup then
         Clothing.Players[citId].backup = currentClothing.converted
     end
@@ -118,7 +118,7 @@ end
 
 function Clothing.OpenMenu(src)
     src = src and tonumber(src)
-    assert(src, "src is nil") 
+    assert(src, "src is nil")
     TriggerClientEvent('qb-clothing:client:openMenu', src)
 end
 
@@ -131,7 +131,7 @@ AddEventHandler('community_bridge:Server:OnPlayerLoaded', function(src)
     if not Player then return end
     local citId = Player.PlayerData.citizenid
     if not citId then return end
-    
+
     -- Use GetFullAppearanceData to cache the complete appearance
     Clothing.GetFullAppearanceData(src)
 end)
@@ -208,6 +208,32 @@ RegisterCommand('clothing:openmenu', function(source, args, rawCommand)
 end, false)
 
 
-RegisterCommand('clothing:crowley', function(source, args, rawCommand)
-    local src = source
-end, false)
+-- RegisterCommand('clothing:crowley', function(source, args, rawCommand)
+--     local src = source
+--     Clothing.SetAppearance(src, {
+--         components = {
+--             {drawable = 0, texture = 0, component_id = 0},
+--             {drawable = 0, texture = 0, component_id = 1},
+--             {drawable = 19, texture = 0, component_id = 2},
+--             {drawable = 6, texture = 0, component_id = 3},
+--             {drawable = 0, texture = 0, component_id = 4},
+--             {drawable = 0, texture = 0, component_id = 5},
+--             {drawable = 0, texture = 0, component_id = 6},
+--             {drawable = 0, texture = 0, component_id = 7},
+--             {drawable = 23, texture = 0, component_id = 8},
+--             {drawable = 0, texture = 0, component_id = 9},
+--             {drawable = 0, texture = 0, component_id = 10},
+--             {drawable = 4, texture = 2, component_id = 11}
+--         },
+--         props = {
+--             {drawable = 27, prop_id = 0, texture = 0},
+--             {drawable = 0, prop_id = 1, texture = 0},
+--             {drawable = 0, prop_id = 2, texture = 0},
+--             {drawable = 0, prop_id = 3, texture = 0},
+--             {drawable = 0, prop_id = 4, texture = 0},
+--             {drawable = 0, prop_id = 5, texture = 0},
+--             -- {drawable = 0, prop_id = 6, texture = 0},
+--             -- {drawable = 0, prop_id = 7, texture = 0},
+--         }
+--     }, false, true)
+-- end, false)

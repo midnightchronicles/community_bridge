@@ -44,5 +44,8 @@
   },
   "clipboard":{
     "copy": "Copiado al portapapeles"
+  },
+  "placeable_object": {
+    "cant_place_here": "No puedes colocar este objeto aquí"
   }
 }

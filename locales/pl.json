@@ -44,5 +44,8 @@
   },
   "clipboard":{
     "copy": "Skopiowano do schowka"
+  },
+  "placeable_object": {
+    "cant_place_here": "Nie możesz umieścić tego obiektu tutaj"
   }
 }

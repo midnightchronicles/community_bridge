@@ -58,7 +58,7 @@ Target.AddGlobalVehicle = function(options)
     ox_target:addGlobalVehicle(options)
 end
 
----This will remove target options from all vehicles. 
+---This will remove target options from all vehicles.
 ---@param options table
 Target.RemoveGlobalVehicle = function(options)
     local assembledLables = {}
@@ -96,6 +96,18 @@ Target.RemoveModel = function(model)
     ox_target:removeModel(model)
 end
 
+-- Target.DisableTargeting = function(bool)
+--     ox_target:disableTargeting(bool)
+-- end
+
+-- Target.Refresh = function()
+--     ox_target:disableTargeting(true)
+--     Wait(10)
+--     ox_target:disableTargeting(false)
+-- end
+
+
+
 ---This will add a box zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
 ---@param coords table
@@ -104,6 +116,7 @@ end
 ---@param options table
 Target.AddBoxZone = function(name, coords, size, heading, options, debug)
     options = Target.FixOptions(options or {})
+    if not next(options) then return end
     local target = ox_target:addBoxZone({
         coords = coords,
         size = size,

@@ -27,7 +27,6 @@ local function SpawnEntity(entityData)
         SetEntityRotation(entity, rotation.x, rotation.y, rotation.z, 2, true)
     elseif entityData.entityType == 'ped' then
         entity = CreatePed(4, model, coords.x, coords.y, coords.z, type(rotation) == 'number' and rotation or rotation.z, false, false)
-        -- Apply ped specific settings from entityData.meta if needed
     elseif entityData.entityType == 'vehicle' then
         entity = CreateVehicle(model, coords.x, coords.y, coords.z, type(rotation) == 'number' and rotation or rotation.z, false, false)
     else

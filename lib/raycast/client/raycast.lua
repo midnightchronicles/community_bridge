@@ -35,7 +35,7 @@ function Raycast.ToCoords(startCoords, endCoords, flag, ignore)
         timeout = timeout - 1
         Wait(0)
     end
-    return retval, entity, finalCoords, normals, material    
+    return retval, entity, finalCoords, normals, material
 end
 
 function Raycast.FromCamera(flags, ignore, distance)
@@ -44,9 +44,8 @@ function Raycast.FromCamera(flags, ignore, distance)
     local destination = coords + Raycast.GetForwardVector() * distance
     local retval, entity, finalCoords, normals, material = Raycast.ToCoords(coords, destination, flags, ignore)
     if retval ~= 1 then
-        print("Raycast hit max distance, trying again", coords, dist)
         local newDest = destination - vector3(0, 0, 10)
-        return Raycast.ToCoords(destination, newDest, flags, ignore)        
+        return Raycast.ToCoords(destination, newDest, flags, ignore)
     end
     return retval, entity, finalCoords, normals, material
 end

@@ -110,6 +110,17 @@ Target.RemoveModel = function(model)
     qb_target:RemoveTargetModel(model)
 end
 
+-- Target.DisableTargeting = function(bool)
+--     qb_target:AllowTargeting(bool)
+-- end
+
+-- Target.Refresh = function()
+--     qb_target:AllowTargeting(false)
+--     Wait(10)
+--     qb_target:AllowTargeting(true)
+-- end
+
+
 ---This will add a box zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
 ---@param coords table
@@ -118,6 +129,7 @@ end
 ---@param options table
 Target.AddBoxZone = function(name, coords, size, heading, options, debug)
     options = Target.FixOptions(options)
+    if not next(options) then return end
     qb_target:AddBoxZone(name, coords, size.x, size.y, {
         name = name,
         debugPoly = debug or targetDebug,

@@ -44,5 +44,8 @@
   },
   "clipboard":{
     "copy": "Copied to clipboard"
+  },
+  "placeable_object": {
+    "cant_place_here": "You can't place this object here"
   }
 }
