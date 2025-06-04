@@ -26,6 +26,14 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
     return Framework.RemoveItem(src, item, count, slot, metadata)
 end
 
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddTrunkItems = function(identifier, items)
+    return false, print("This Inventory Has Not Been Bridged For A Trunk Feature.")
+end
+
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
 ---@param item string
 ---@return table
