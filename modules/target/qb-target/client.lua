@@ -88,9 +88,10 @@ Target.AddLocalEntity = function(entities, options)
 end
 
 ---This will remove the target options from a local entity. This is useful for when you want to remove target options from a specific entity.
----@param entity any
-Target.RemoveLocalEntity = function(entity)
-    qb_target:RemoveTargetEntity(entity)
+---@param entity number | table
+---@param labels string | table | nil
+Target.RemoveLocalEntity = function(entity, labels)
+    qb_target:RemoveTargetEntity(entity, labels)
 end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.

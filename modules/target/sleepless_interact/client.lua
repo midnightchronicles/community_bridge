@@ -102,9 +102,10 @@ end
 
 ---comment
 ---@param entity number
+---@param labels string | table | nil
 ---@return nil
-Target.RemoveLocalEntity = function(entity)
-    sleepless_interact:removeLocalEntity(entity)
+Target.RemoveLocalEntity = function(entity, labels)
+    sleepless_interact:removeLocalEntity(entity, labels)
 end
 
 ---comment
