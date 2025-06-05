@@ -1,16 +1,22 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "qs-smartphone"
 if GetResourceState(resourceName) == 'missing' then return end
 Phone = Phone or {}
 
----comment
+---This will get the name of the Phone system being being used.
+---@return string
+Phone.GetPhoneName = function()
+    return resourceName
+end
+
+---This will get the phone number of the passed source.
 ---@param src number
----@return number||boolean
----@diagnostic disable-next-line: duplicate-set-field
+---@return number|boolean
 Phone.GetPlayerPhone = function(src)
     return exports['qs-base']:GetPlayerPhone(src) or false
 end
 
----comment
+---This will send an email to the passed source, email address, title and message.
 ---@param src number
 ---@param email string
 ---@param title string

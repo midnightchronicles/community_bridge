@@ -1,13 +1,19 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "lb-phone"
 if GetResourceState(resourceName) == 'missing' then return end
 Phone = Phone or {}
 
----comment
+---This will get the name of the Phone system being being used.
+---@return string
+Phone.GetPhoneName = function()
+    return resourceName
+end
+
+---This will send an email to the passed email address with the title and message.
 ---@param email string
 ---@param title string
 ---@param message string
----@return nil
----@diagnostic disable-next-line: duplicate-set-field
+---@return boolean
 Phone.SendEmail = function(email, title, message)
     TriggerServerEvent('community_bridge:Server:genericEmail', {email = email, title = title, message = message})
 end
