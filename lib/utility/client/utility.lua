@@ -506,32 +506,6 @@ function Utility.CopyToClipboard(text)
     return true
 end
 
---[[
-local vehicleType = "boat"
-
-local result = Utility.Switch(vehicleType, {
-    car = function()
-        print("This is a Car")
-        -- Car-related logic here
-        return "Car logic executed"
-    end,
-    bike = function()
-        print("This is a Bike")
-        -- Bike-related logic here
-        return "Bike logic executed"
-    end,
-    [false] = function()
-        print("Unknown vehicle type. Running default logic.")
-        -- Default logic here
-        return "Default logic executed"
-    end,
-})
-
-print("Result:", result)
-
-]]
-
-
 --- Pattern match-like function
 ---@generic T
 ---@param value T The value to match
@@ -559,28 +533,13 @@ function Utility.Match(value, patterns)
     return false
 end
 
---[[
-local input = 42
-
-local result = Utility.Match(input, {
-    [function(v) return v < 0 end] = function()
-        print("Negative number")
-        return "Negative"
-    end,
-    [function(v) return v % 2 == 0 end] = function()
-        print("Even number")
-        return "Even"
-    end,
-    [false] = function()
-        print("No match")
-        return "Default"
-    end,
-})
-
-print("Result:", result)
-
-]]
-
+---Get zone name at coordinates
+---@param coords vector3
+---@return string
+function Utility.GetZoneName(coords)
+    local zoneHash = GetNameOfZone(coords.x, coords.y, coords.z)
+    return GetLabelText(zoneHash)
+end
 
 AddEventHandler('onResourceStop', function(resource)
     if resource ~= GetCurrentResourceName() then return end
