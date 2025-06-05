@@ -1,6 +1,12 @@
 ---@diagnostic disable: duplicate-set-field
 Managment = Managment or {}
 
+---This will get the name of the framework being used (if a supported framework).
+---@return string
+Managment.GetManagmentName = function()
+    return 'default'
+end
+
 ---This will return a table with account details
 ---@param account string
 ---@return table

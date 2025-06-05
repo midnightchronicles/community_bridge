@@ -4,6 +4,12 @@ Managment = Managment or {}
 
 local fd_banking = exports['fd_banking']
 
+---This will get the name of the framework being used (if a supported framework).
+---@return string
+Managment.GetManagmentName = function()
+    return 'fd_banking'
+end
+
 ---This will return a table with account details
 ---@param account string
 ---@return table

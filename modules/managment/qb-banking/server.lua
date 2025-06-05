@@ -3,6 +3,13 @@ if GetResourceState('qb-banking') == 'missing' then return end
 Managment = Managment or {}
 
 local qbBanking = exports['qb-banking']
+
+---This will get the name of the framework being used (if a supported framework).
+---@return string
+Managment.GetManagmentName = function()
+    return 'qb-banking'
+end
+
 ---This will return a table with account details
 ---@param account string
 ---@return table
