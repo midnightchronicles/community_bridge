@@ -112,7 +112,7 @@ end
 function Clothing.OpenMenu(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
-    TriggerClientEvent('qb-clothing:client:openMenu', src)
+    TriggerClientEvent('qb-clothing:client:openMenu', src) -- does this event  work while on esx?
 end
 
 --- Event handler for when a player loads into the server
@@ -120,7 +120,7 @@ end
 AddEventHandler('community_bridge:Server:OnPlayerLoaded', function(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(src) -- this locks it to qbcore, we should either just call Framework.identifier or do the require.
     if not Player then return end
     local citId = Player.PlayerData.citizenid
     if not citId then return end
@@ -201,6 +201,7 @@ RegisterCommand('clothing:openmenu', function(source, args, rawCommand)
 end, false)
 
 
+-- This should be moved into unit tests
 -- RegisterCommand('clothing:crowley', function(source, args, rawCommand)
 --     local src = source
 --     Clothing.SetAppearance(src, {

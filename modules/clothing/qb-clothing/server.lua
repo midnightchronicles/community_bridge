@@ -4,7 +4,7 @@ Clothing.Players = {}
 
 Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 Table = Table or Require('lib/utility/shared/tables.lua')
-QBCore = QBCore or exports['qb-core']:GetCoreObject()
+QBCore = QBCore or exports['qb-core']:GetCoreObject() -- probably easiest for now to call the Framework module
 
 --- Internal function to get the full appearance data including skin, model, and converted format
 --- @param src number The server ID of the player
