@@ -4,33 +4,32 @@ Clothing.Players = {}
 
 Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 Table = Table or Require('lib/utility/shared/tables.lua')
-QBCore = QBCore or exports['qb-core']:GetCoreObject()
 
 --- Internal function to get the full appearance data including skin, model, and converted format
 --- @param src number The server ID of the player
 --- @return table|nil The player's full appearance data or nil if not found
 function Clothing.GetFullAppearanceData(src)
     src = src and tonumber(src)
-    assert(src, "src is nil")    
+    assert(src, "src is nil")
     local citId = Bridge.Framework.GetPlayerIdentifier(src)
     if not citId then return end
-    
+
     if Clothing.Players[citId] then return Clothing.Players[citId] end
-    
+
     local result = MySQL.query.await('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', { citId, 1 })
     if result[1] == nil then return end
-    
+
     local model = result[1].model
     local skinData = json.decode(result[1].skin)
     local converted = skinData
-    
+
     -- Store complete data in the cache
-    Clothing.Players[citId] = { 
-        model = model, 
-        skin = skinData, 
-        converted = converted 
+    Clothing.Players[citId] = {
+        model = model,
+        skin = skinData,
+        converted = converted
     }
-    
+
     return Clothing.Players[citId]
 end
 
@@ -60,16 +59,16 @@ function Clothing.SetAppearance(src, data, updateBackup, save)
     local model = GetEntityModel(GetPlayerPed(src))
     if not model then return end
     local converted = data
-    
+
     -- Get full appearance data
     local currentClothing = Clothing.GetFullAppearanceData(src)
     if not currentClothing then return end
- 
+
     local currentSkin = currentClothing.skin
     for k, v in pairs(converted) do
         currentSkin[k] = v
     end
-    
+
     if not Clothing.Players[citId].backup or updateBackup then
         Clothing.Players[citId].backup = currentClothing.converted
     end
@@ -114,7 +113,7 @@ end
 
 function Clothing.OpenMenu(src)
     src = src and tonumber(src)
-    assert(src, "src is nil") 
+    assert(src, "src is nil")
     TriggerClientEvent('qb-clothing:client:openMenu', src)
 end
 
@@ -123,11 +122,6 @@ end
 AddEventHandler('community_bridge:Server:OnPlayerLoaded', function(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
-    local Player = QBCore.Functions.GetPlayer(src) -- this locks it to qbcore, we should either just call Framework.identifier or do the require.
-    if not Player then return end
-    local citId = Player.PlayerData.citizenid
-    if not citId then return end
-    
     -- Use GetFullAppearanceData to cache the complete appearance
     Clothing.GetFullAppearanceData(src)
 end)
@@ -251,7 +245,7 @@ RegisterCommand('clothing:crowley', function(source, args, rawCommand)
             {drawable = 0, prop_id = 11, texture = 0},
             {drawable = 0, prop_id = 12, texture = 0},
             {drawable = 0, prop_id = 13, texture = 0}
-            
+
         }
     }, false, true)
 end, false)
