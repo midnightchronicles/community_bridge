@@ -87,7 +87,7 @@ end
 ---This will open the specified stash for the src passed.
 ---@param src number
 ---@param _type string
----@param id number||string
+---@param id number|string
 ---@return nil
 Inventory.OpenStash = function(src, _type, id)
     _type = _type or "stash"
@@ -95,8 +95,8 @@ Inventory.OpenStash = function(src, _type, id)
     return false, Prints.Error("This Inventory Has Not Been Bridged For A Stash Feature.")
 end
 
---This will register a stash
----@param id number||string
+---This will register a stash
+---@param id number|string
 ---@param label string
 ---@param slots number
 ---@param weight number
@@ -104,7 +104,7 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
----@return string
+---@return string|number
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
     if Inventory.Stashes[id] then return true, id end
     Inventory.Stashes[id] = {

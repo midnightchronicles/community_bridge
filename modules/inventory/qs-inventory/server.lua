@@ -148,7 +148,7 @@ Inventory.OpenStash = function(src, _type, id)
 end
 
 ---This will register a stash
----@param id number||string
+---@param id number|string
 ---@param label string
 ---@param slots number
 ---@param weight number
@@ -156,9 +156,9 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
----@return string
+---@return string|number
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    if Inventory.Stashes[id] then return true end
+    if Inventory.Stashes[id] then return true, id end
     Inventory.Stashes[id] = {
         id = id,
         label = label,
@@ -168,7 +168,6 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coor
         groups = groups,
         coords = coords
     }
-    --exports['qs-inventory']:RegisterStash(src, id, stashSlots, stashWeight) -- this needs to pass source to register, need to plan around this.
     return true, id
 end
 
