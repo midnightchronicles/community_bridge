@@ -58,7 +58,6 @@ client_scripts {
     'modules/dialogue/**/client/*.lua',
     'modules/shops/**/client.lua',
     'modules/housing/**/client.lua',
-    'modules/accessibility/client.lua',
     'modules/skills/**/client.lua',
     'init.lua',
     -- 'unit_tests/input_test.lua',

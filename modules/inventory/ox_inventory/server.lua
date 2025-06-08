@@ -39,6 +39,7 @@ Inventory.AddTrunkItems = function(identifier, items)
     local id = "trunk"..identifier
     if type(items) ~= "table" then return false end
     Inventory.RegisterStash(id, identifier, 20, 10000, nil, nil, nil)
+    Wait(100) -- Wait for the stash to be registered just in case
     for _, v in pairs(items) do
         ox_inventory:AddItem(id, v.item, v.count, v.metadata)
     end
