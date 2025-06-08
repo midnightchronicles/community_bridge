@@ -111,11 +111,11 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number|string
 ---@return nil
-Inventory.OpenStash = function(src, id)
-    assert(Inventory.Stashes[id], "Stash not found", id)
-    TriggerClientEvent('ox_inventory:openInventory', src, 'stash', id)
+Inventory.OpenStash = function(src, _type, id)
+    ox_inventory:forceOpenInventory(src, _type, id)
 end
 
 ---This will register a stash
