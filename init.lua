@@ -105,4 +105,3 @@ Bridge.RegisterModule("Weather", Weather)
 Bridge.RegisterModule("Target", Target)
 Bridge.RegisterModule("Menu", Menu)
 Bridge.RegisterModule("Dialogue", Dialogue)
-Bridge.RegisterModule("Accessibility", Accessibility) -- new
