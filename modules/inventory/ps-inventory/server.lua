@@ -38,12 +38,7 @@ end
 ---@return boolean
 Inventory.AddItemsToTrunk = function(identifier, items)
     if type(items) ~= "table" then return false end
-    for k, v in pairs(items) do
-        local count = v.count or 1
-        local metadata = v.metadata or {}
-        sloth:AddToTrunk(identifier, nil, nil, v.item, count, metadata, nil)
-    end
-    return true
+    return false, print("AddItemsToTrunk is not implemented in ps-inventory, because of this we dont have a way to add items to a trunk.")
 end
 
 ---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
