@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('illenium-appearance') == 'missing' then return end
 Clothing = Clothing or {}
 Clothing.Players = {}
@@ -6,8 +7,8 @@ Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 Table = Table or Require('lib/utility/shared/tables.lua')
 
 --- Internal function to get the full appearance data including skin, model, and converted format
---- @param src number The server ID of the player
---- @return table|nil The player's full appearance data or nil if not found
+---@param src number The server ID of the player
+---@return table|nil The player's full appearance data or nil if not found
 function Clothing.GetFullAppearanceData(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
@@ -34,9 +35,9 @@ function Clothing.GetFullAppearanceData(src)
 end
 
 --- Retrieves a player's converted appearance data for easy use across modules
---- @param src number The server ID of the player
---- @param fullData boolean Optional - If true, returns the full data object including skin and model
---- @return table|nil The player's converted appearance data or full appearance data if fullData=true
+---@param src number The server ID of the player
+---@param fullData boolean Optional - If true, returns the full data object including skin and model
+---@return table|nil The player's converted appearance data or full appearance data if fullData=true
 function Clothing.GetAppearance(src, fullData)
     if fullData then
         return Clothing.GetFullAppearanceData(src)
@@ -47,10 +48,10 @@ function Clothing.GetAppearance(src, fullData)
 end
 
 --- Sets a player's appearance based on the provided data
---- @param src number The server ID of the player
---- @param data table The appearance data to apply
---- @param updateBackup boolean Whether to update the backup appearance data
---- @return table|nil The updated player appearance data or nil if failed
+---@param src number The server ID of the player
+---@param data table The appearance data to apply
+---@param updateBackup boolean Whether to update the backup appearance data
+---@return table|nil The updated player appearance data or nil if failed
 function Clothing.SetAppearance(src, data, updateBackup, save)
     src = src and tonumber(src)
     assert(src, "src is nil")
@@ -89,17 +90,17 @@ function Clothing.SetAppearance(src, data, updateBackup, save)
 end
 
 --- Sets a player's appearance based on gender-specific data
---- @param src number The server ID of the player
---- @param data table Table containing separate appearance data for male and female characters
---- @return table|nil Appearance updated player appearance data or nil if failed
+---@param src number The server ID of the player
+---@param data table Table containing separate appearance data for male and female characters
+---@return table|nil Appearance updated player appearance data or nil if failed
 function Clothing.SetAppearanceExt(src, data)
     local tbl = Clothing.IsMale(src) and data.male or data.female
     Clothing.SetAppearance(src, tbl)
 end
 
 --- Reverts a player's appearance to their backup appearance
---- @param src number The server ID of the player
---- @return boolean|nil Returns true if successful or nil if failed
+---@param src number The server ID of the player
+---@return boolean|nil Returns true if successful or nil if failed
 function Clothing.Revert(src)
     src = src and tonumber(src)
     assert(src, "src is nil")

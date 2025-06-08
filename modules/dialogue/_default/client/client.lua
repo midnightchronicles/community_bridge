@@ -36,9 +36,9 @@ function Dialogue.Close(name)
 end
 
 --- Open a dialogue with the player
---- @param name string
---- @param dialogue string
---- @param options table example = {{  id = string, label = string}}
+---@param name string
+---@param dialogue string
+---@param options table example = {{  id = string, label = string}}
 function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSelected)
     assert(name, "Name is required")
     assert(dialogue, "Dialogue is required")

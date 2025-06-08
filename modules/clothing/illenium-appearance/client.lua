@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('illenium-appearance') == 'missing' then return end
 Clothing = Clothing or {}
 

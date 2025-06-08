@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "F_RealCarKeysSystem"
 if GetResourceState(resourceName) == 'missing' then return end
 VehicleKey = VehicleKey or {}

@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "jaksams_VehiclesKeys"
 if GetResourceState(resourceName) == 'missing' then return end
 

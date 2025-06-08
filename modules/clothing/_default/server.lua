@@ -22,9 +22,9 @@ Clothing.SetAppearance = function(src, data)
 end
 
 --- Sets a player's appearance based on gender-specific data
---- @param src number The server ID of the player
---- @param data table Table containing separate appearance data for male and female characters
---- @return table|nil Appearance updated player appearance data or nil if failed
+---@param src number The server ID of the player
+---@param data table Table containing separate appearance data for male and female characters
+---@return table|nil Appearance updated player appearance data or nil if failed
 function Clothing.SetAppearanceExt(src, data)
     local tbl = Clothing.IsMale(src) and data.male or data.female
     Clothing.SetAppearance(src, tbl)

@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "qbx_vehiclekeys"
 if GetResourceState(resourceName) == 'missing' then return end
 

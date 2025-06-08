@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('esx_skin') == 'missing' then return end
 Clothing = Clothing or {}
 Clothing.Players = {}
@@ -6,9 +7,9 @@ Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 Table = Table or Require('lib/utility/shared/tables.lua')
 ESX = ESX or exports['es_extended']:getSharedObject()
 
---- Internal function to get the full appearance data including skin, model, and converted format
---- @param src number The server ID of the player
---- @return table|nil The player's full appearance data or nil if not found
+---Internal function to get the full appearance data including skin, model, and converted format
+---@param src number The server ID of the player
+---@return table|nil The player's full appearance data or nil if not found
 function Clothing.GetFullAppearanceData(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
@@ -36,10 +37,10 @@ function Clothing.GetFullAppearanceData(src)
     return Clothing.Players[citId]
 end
 
---- Retrieves a player's converted appearance data for easy use across modules
---- @param src number The server ID of the player
---- @param fullData boolean Optional - If true, returns the full data object including skin and model
---- @return table|nil The player's converted appearance data or full appearance data if fullData=true
+---Retrieves a player's converted appearance data for easy use across modules
+---@param src number The server ID of the player
+---@param fullData boolean Optional - If true, returns the full data object including skin and model
+---@return table|nil The player's converted appearance data or full appearance data if fullData=true
 function Clothing.GetAppearance(src, fullData)
     if fullData then
         return Clothing.GetFullAppearanceData(src)
@@ -49,7 +50,8 @@ function Clothing.GetAppearance(src, fullData)
     return completeData.converted
 end
 
-
+---This will save the player's current appearance to the database
+---@param src number|string
 function Clothing.Save(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
@@ -66,11 +68,11 @@ function Clothing.Save(src)
         citId
     })
 end
---- Sets a player's appearance based on the provided data
---- @param src number The server ID of the player
---- @param data table The appearance data to apply
---- @param updateBackup boolean Whether to update the backup appearance data
---- @return table|nil The updated player appearance data or nil if failed
+---Sets a player's appearance based on the provided data
+---@param src number The server ID of the player
+---@param data table The appearance data to apply
+---@param updateBackup boolean Whether to update the backup appearance data
+---@return table|nil The updated player appearance data or nil if failed
 function Clothing.SetAppearance(src, data, updateBackup, save)
     src = src and tonumber(src)
     assert(src, "src is nil")
@@ -113,17 +115,17 @@ function Clothing.SetAppearance(src, data, updateBackup, save)
 end
 
 --- Sets a player's appearance based on gender-specific data
---- @param src number The server ID of the player
---- @param data table Table containing separate appearance data for male and female characters
---- @return table|nil Appearance updated player appearance data or nil if failed
+---@param src number The server ID of the player
+---@param data table Table containing separate appearance data for male and female characters
+---@return table|nil Appearance updated player appearance data or nil if failed
 function Clothing.SetAppearanceExt(src, data)
     local tbl = Clothing.IsMale(src) and data.male or data.female
     Clothing.SetAppearance(src, tbl)
 end
 
---- Reverts a player's appearance to their backup appearance
---- @param src number The server ID of the player
---- @return boolean|nil Returns true if successful or nil if failed
+---Reverts a player's appearance to their backup appearance
+---@param src number The server ID of the player
+---@return boolean|nil Returns true if successful or nil if failed
 function Clothing.Revert(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
@@ -134,15 +136,16 @@ function Clothing.Revert(src)
     return Clothing.SetAppearance(src, backup)
 end
 
-
+---This will open the menu for the passed src
+---@param src number|string
 function Clothing.OpenMenu(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
     TriggerClientEvent('esx_skin:openMenu', src)
 end
 
---- Event handler for when a player loads into the server
---- Caches the player's appearance data
+---Event handler for when a player loads into the server
+---Caches the player's appearance data
 AddEventHandler('community_bridge:Server:OnPlayerLoaded', function(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
@@ -150,8 +153,8 @@ AddEventHandler('community_bridge:Server:OnPlayerLoaded', function(src)
     Clothing.GetFullAppearanceData(src)
 end)
 
---- Event handler for when a player disconnects from the server
---- Removes the player's appearance data from the cache
+---Event handler for when a player disconnects from the server
+---Removes the player's appearance data from the cache
 AddEventHandler('community_bridge:Server:OnPlayerUnload', function(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
@@ -161,8 +164,8 @@ end)
 
 
 
---- Event handler for when the resource starts
---- Caches appearance data for all currently connected players
+---Event handler for when the resource starts
+---Caches appearance data for all currently connected players
 AddEventHandler('onResourceStart', function(resource)
     if resource ~= GetCurrentResourceName() then return end
     for _, playerId in ipairs(GetPlayers()) do
@@ -174,12 +177,11 @@ AddEventHandler('onResourceStart', function(resource)
     end
 end)
 
---- Callback handler for retrieving a player's appearance data
+---Callback handler for retrieving a player's appearance data
 Callback.Register('community_bridge:cb:GetAppearance', function(source)
     local src = source
     return Clothing.GetAppearance(src)
 end)
-
 
 RegisterCommand('clothing:debug', function(source, args, rawCommand)
     local src = source

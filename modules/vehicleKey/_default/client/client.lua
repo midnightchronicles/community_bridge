@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 VehicleKey = VehicleKey or {}
 
 ---This will give keys to the specifed vehicle/plate.

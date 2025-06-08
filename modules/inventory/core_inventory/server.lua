@@ -52,7 +52,6 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
 end
 
 ---This will return the count of the item in the players inventory, if not found will return 0.
----
 ---if metadata is passed it will find the matching items count.
 ---@param src number
 ---@param item string
@@ -110,7 +109,6 @@ Inventory.GetPlayerInventory = function(src)
 end
 
 ---Returns the specified slot data as a table.
----
 ---format {weight, name, metadata, slot, label, count}
 ---@param src number
 ---@param slot number
@@ -175,7 +173,6 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coor
         groups = groups,
         coords = coords
     }
-    --core:openInventory(nil, id, 'stash', mathyShit, mathyShit, false, nil, false)
     return true, id
 end
 
@@ -246,25 +243,24 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
--- This will open the specified shop for the src passed.
+---This will open the specified shop for the src passed.
 ---@param src number
 ---@param shopTitle string
 Inventory.OpenShop = function(src, shopTitle)
     return false, print("Unable to open shop for core_inventory, I do not have access to a copy of this inventory to bridge the feature.")
 end
 
--- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
+---This will register a shop, if it already exists it will return true.
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
 Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return false, print("Unable to open shop for core_inventory, I do not have access to a copy of this inventory to bridge the feature.")
 end
 
-
---<-- TODO swap to internal callback system
--- This is used for the esx users, documentation doesnt show a client side available option for the inventory so we use jank callbacks to get this.
+---<-- TODO swap to internal callback system
+---This is used for the esx users, documentation doesnt show a client side available option for the inventory so we use jank callbacks to get this.
 lib.callback.register('community_bridge:Callback:core_inventory', function(source)
     local items = core:getItemsList()
 	return items or {}

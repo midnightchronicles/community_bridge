@@ -1,4 +1,4 @@
-
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('esx_skin') == 'missing' then return end
 Clothing = Clothing or {}
 

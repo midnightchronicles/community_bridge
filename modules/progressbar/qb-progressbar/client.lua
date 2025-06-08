@@ -1,9 +1,13 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "progressbar"
 local configValue = BridgeClientConfig.ProgressBarSystem
 if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 ProgressBar = ProgressBar or {}
 
+---This function converts an Ox progress bar options table to a QB progress bar options table.
+---@param options table
+---@return table
 local function convertFromOx(options)
     if not options then return options end
     local prop1 = options.prop?[1] or options.prop or {}
@@ -34,7 +38,7 @@ local function convertFromOx(options)
         propTwo = {
             model = prop2.model,
             bone = prop2.bone,
-            coords = prop2.pos, 
+            coords = prop2.pos,
             rotation = prop2.rot
         }
     }
@@ -45,7 +49,6 @@ end
 ---@param cb any
 ---@param qbFormat boolean
 ---@return boolean boolean
----@diagnostic disable-next-line: duplicate-set-field
 function ProgressBar.Open(options, cb, qbFormat)
     if not exports['progressbar'] then return false end
 

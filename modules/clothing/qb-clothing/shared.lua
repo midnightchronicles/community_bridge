@@ -92,7 +92,7 @@ end
 
 function Props.ConvertToDefault(qbProps)
     local returnProps = {}
-    for propIndex, propData in pairs(qbProps or {}) do        
+    for propIndex, propData in pairs(qbProps or {}) do
         local propId = Props.InverseMap[propIndex]
         if propId then
             table.insert(returnProps, {
@@ -114,7 +114,7 @@ function Clothing.ConvertFromDefault(defaultClothing)
 
     for propsIndex, propData in pairs(props) do
         components[propsIndex] = propData
-    end  
+    end
 
     return components --skin
 end

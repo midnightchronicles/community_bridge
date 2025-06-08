@@ -1,27 +1,43 @@
+---@diagnostic disable: duplicate-set-field
 Skills = Skills or {}
 
 local function warnUser()
     print("Currently only a few skill systems are supported by Community Bridge, you are using a resource that requires the skills module to be used.")
 end
 
----@diagnostic disable-next-line: duplicate-set-field
+---This will get the name of the Skills system being being used.
+---@return string
 Skills.GetResourceName = function()
     return "none"
 end
 
----@diagnostic disable-next-line: duplicate-set-field
+---This will get the skill level of the passed skill name.
+---@param src number
+---@param skillName string
+---@return number
 Skills.GetSkillLevel = function(src, skillName)
-    return 0, warnUser()
+    warnUser()
+    return 0
 end
 
----@diagnostic disable-next-line: duplicate-set-field
+---This will add xp to the passed skill name.
+---@param src number
+---@param skillName string
+---@param amount number
+---@return boolean
 Skills.AddXp = function(src, skillName, amount)
-    return false, warnUser()
+    warnUser()
+    return false
 end
 
----@diagnostic disable-next-line: duplicate-set-field
+---This will remove xp from the passed skill name.
+---@param src number
+---@param skillName string
+---@param amount number
+---@return boolean
 Skills.RemoveXp = function(src, skillName, amount)
-    return false, warnUser()
+    warnUser()
+    return false
 end
 
 return Skills

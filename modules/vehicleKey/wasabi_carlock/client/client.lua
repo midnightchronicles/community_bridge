@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "wasabi_carlock"
 if GetResourceState(resourceName) == 'missing' then return end
 

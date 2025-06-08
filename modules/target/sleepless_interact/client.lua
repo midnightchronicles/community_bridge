@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "sleepless_interact"
 if GetResourceState(resourceName) == 'missing' then return end
 if GetResourceState("ox_target") == 'started' then return end

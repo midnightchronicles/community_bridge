@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 HelpText = HelpText or {}
 
 ---This will show a help text message to the specified player at the screen position passed

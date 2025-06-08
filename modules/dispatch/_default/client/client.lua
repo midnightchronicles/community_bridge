@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 Dispatch = Dispatch or {}
 
 ---This will send an alert to currently supported dispatch systems.

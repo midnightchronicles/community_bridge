@@ -34,12 +34,16 @@ Inventory.AddTrunkItems = function(identifier, items)
     return false, Prints.Error("This Inventory Has Not Been Bridged For A Trunk Feature.")
 end
 
+---This will clear the specified inventory, will return success or failure.
+---@param id string
+---@return boolean
 Inventory.ClearStash = function(id, _type)
     if type(id) ~= "string" then return false end
     return false, Prints.Error("This Inventory Has Not Been Bridged For A ClearStash Feature.")
 end
 
----This will return a table with the item info, {name, label, stack, weight, description, image}
+---This will return a table with the item info, 
+---example: {name = "coolitem", label = "a cool item name", stack = false, weight = 1000, description = "some item description", image = "coolitem.png"}
 ---@param item string
 ---@return table
 Inventory.GetItemInfo = function(item)
@@ -47,8 +51,8 @@ Inventory.GetItemInfo = function(item)
 end
 
 ---This will return the count of the item in the players inventory, if not found will return 0.
----
 ---if metadata is passed it will find the matching items count.
+---example: 0
 ---@param src number
 ---@param item string
 ---@param metadata table
@@ -58,6 +62,7 @@ Inventory.GetItemCount = function(src, item, metadata)
 end
 
 ---This wil return the players inventory.
+---example: {{weight = 10, name = "farts", metadata = {description = "this is a description"}, slot = 1, label = "stinky", count = 1}, {weight = 10, name = "farts", metadata = {description = "this is a description"}, slot = 2, label = "stinky", count = 1}}
 ---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
@@ -65,8 +70,7 @@ Inventory.GetPlayerInventory = function(src)
 end
 
 ---Returns the specified slot data as a table.
----
----format {weight, name, metadata, slot, label, count}
+---example {weight = 10, name = "farts", metadata = {description = "this is a description"}, slot = 1, label = "stinky", count = 1}
 ---@param src number
 ---@param slot number
 ---@return table
@@ -152,10 +156,10 @@ Inventory.OpenShop = function(src, shopTitle)
 end
 
 -- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
 Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return false, Prints.Error("This Inventory Has Not Been Bridged For A CreateShop Feature.")
 end
@@ -167,6 +171,10 @@ Inventory.GetImagePath = function(item)
     return "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---This will remove the file extension from the item name if present.
+---example: "item.png" will become "item"
+---@param item string
+---@return string
 Inventory.StripPNG = function(item)
     if string.find(item, ".png") then
         item = string.gsub(item, ".png", "")

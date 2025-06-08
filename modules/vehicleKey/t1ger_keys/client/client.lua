@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "t1ger_keys"
 if GetResourceState(resourceName) == 'missing' then return end
 

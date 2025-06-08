@@ -193,10 +193,10 @@ Inventory.OpenShop = function(src, shopTitle)
 end
 
 -- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
 Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return true, print("Unable to Create Shop for codem-inventory, I do not have access to a copy of this inventory to bridge the feature.")
 end

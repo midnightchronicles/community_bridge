@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "mono_carkeys"
 if GetResourceState(resourceName) == 'missing' then return end
 

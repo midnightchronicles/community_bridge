@@ -1,4 +1,4 @@
-
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('esx_skin') == 'missing' then return end
 
 Clothing = Clothing or {}
@@ -91,14 +91,14 @@ end
 
 function Props.ConvertFromDefault(defaultProps)
     local returnProps = {}
-    for index, propData in pairs(defaultProps or {}) do   
+    for index, propData in pairs(defaultProps or {}) do
         local propId = Props.Map[propData.prop_id]
         if propId then
             returnProps[propId .. '_1'] = propData.drawable
-            returnProps[propId .. '_2'] = propData.texture            
+            returnProps[propId .. '_2'] = propData.texture
         end
     end
-    return returnProps    
+    return returnProps
 end
 
 function Props.ConvertToDefault(esxProps)
@@ -115,14 +115,14 @@ function Props.ConvertToDefault(esxProps)
                 returnProps[propId] = returnProps[propId] or {}
                 returnProps[propId].prop_id = propId
                 returnProps[propId].drawable = propData
-                returnProps[propId].texture = returnProps[propId].texture or 0              
+                returnProps[propId].texture = returnProps[propId].texture or 0
             end
         end
         table.sort(returnProps, function(a, b)
             return a.prop_id < b.prop_id
         end)
     end
-    return returnProps    
+    return returnProps
 end
 
 function Clothing.ConvertFromDefault(defaultClothing)
@@ -131,7 +131,7 @@ function Clothing.ConvertFromDefault(defaultClothing)
 
     for propsIndex, propData in pairs(props) do
         components[propsIndex] = propData
-    end  
+    end
 
     return components --skin
 end

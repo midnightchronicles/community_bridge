@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 if GetResourceState('redutzu-mdt') == 'missing' then return end
 Dispatch = Dispatch or {}
 

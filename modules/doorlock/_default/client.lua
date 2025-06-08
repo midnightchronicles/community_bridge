@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 Doorlock = Doorlock or {}
 
 ---This will get the closest door to the ped

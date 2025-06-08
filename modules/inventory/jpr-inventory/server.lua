@@ -41,7 +41,6 @@ Inventory.GetItemInfo = function(item)
 end
 
 ---Returns the specified slot data as a table.
----
 ---format {weight, name, metadata, slot, label, count}
 ---@param src number
 ---@param slot number
@@ -156,18 +155,18 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
--- This will open the specified shop for the src passed.
+---This will open the specified shop for the src passed.
 ---@param src number
 ---@param shopTitle string
 Inventory.OpenShop = function(src, shopTitle)
     jpr:OpenShop(src, shopTitle)
 end
 
--- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
+---This will register a shop, if it already exists it will return true.
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
 Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     if not shopTitle or not shopInventory or not shopCoords then return end
     if registeredShops[shopTitle] then return true end

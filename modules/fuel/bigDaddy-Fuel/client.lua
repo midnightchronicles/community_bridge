@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "BigDaddy-Fuel"
 if GetResourceState(resourceName) == 'missing' then return end
 Fuel = Fuel or {}

@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 HelpText = HelpText or {}
 
 ---This will show a help text message at the screen position passed
