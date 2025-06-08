@@ -114,7 +114,18 @@ end
 ---@param coords table
 ---@return nil
 Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    print("Currently not bridged for stashes")
+    local _type = nil
+    if id:sub(1, 5) == "trunk" then
+        _type = "trunk"
+        id = id:sub(5)
+    elseif id:sub(1, 6) == "glovebox" then
+        _type = "glovebox"
+        id = id:sub(6)
+    elseif id:sub(1, 5) == "stash" then
+        _type = "stash"
+        id = id:sub(5)
+    end
+    return tgiann:ForceOpenInventory(src, _type, id)
 end
 
 ---This will register a stash
@@ -127,7 +138,7 @@ end
 ---@param coords table
 ---@return boolean
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    return false, print("Currently not bridged for stashes")
+    return true
 end
 
 ---This will return a boolean if the player has the item.
@@ -170,7 +181,6 @@ end
 Inventory.AddTrunkItems = function(identifier, items)
     local id = "trunk"..identifier
     if type(items) ~= "table" then return false end
-    Inventory.RegisterStash(identifier, identifier, 20, 10000, nil, nil, nil)
     for _, v in pairs(items) do
         tgiann:AddItemToSecondaryInventory("trunk", identifier, v.item, v.count, nil, v.metadata)
     end
@@ -202,7 +212,7 @@ end
 ---@param src number
 ---@param shopTitle string
 Inventory.OpenShop = function(src, shopTitle)
-    print("Currently tgiann-inventory is not bridged for shops")
+    return false, print("Currently tgiann-inventory is not bridged for shops")
 end
 
 -- This will register a shop, if it already exists it will return true.
