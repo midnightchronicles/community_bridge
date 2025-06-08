@@ -24,7 +24,7 @@ end
 Fuel.SetFuel = function(vehicle, fuel, type)
     if not DoesEntityExist(vehicle) then return end
     local currentFuel = Entity(vehicle).state.fuel
-    Entity(vehicle).state.fuel = currentFuel + fuel
+    Entity(vehicle).state.fuel = currentFuel and currentFuel + fuel or fuel
     return Entity(vehicle).state.fuel
 end
 
