@@ -145,8 +145,10 @@ end
 ---@param groups table
 ---@param coords table
 ---@return nil
-Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    TriggerEvent("inventory:server:OpenInventory", "stash", id, { maxweight = weight, slots = slots })
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local data = Inventory.Stashes[id]
+    TriggerEvent("inventory:server:OpenInventory", _type, id, data and { maxweight = data.weight, slots = data.slots })
     TriggerClientEvent("inventory:client:SetCurrentStash",src, id)
 end
 
@@ -160,6 +162,16 @@ end
 ---@param coords table
 ---@return boolean
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
+    if Inventory.Stashes[id] then return true end
+    Inventory.Stashes[id] = {
+        id = id,
+        label = label,
+        slots = slots,
+        weight = weight,
+        owner = owner,
+        groups = groups,
+        coords = coords
+    }
     --exports['qs-inventory']:RegisterStash(src, id, stashSlots, stashWeight) -- this needs to pass source to register, need to plan around this.
     return true
 end

@@ -105,27 +105,22 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string == "trunk" || "glovebox" || "stash"
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
-Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    local _type = nil
-    if id:sub(1, 5) == "trunk" then
-        _type = "trunk"
-        id = id:sub(5)
-    elseif id:sub(1, 6) == "glovebox" then
-        _type = "glovebox"
-        id = id:sub(6)
-    elseif id:sub(1, 5) == "stash" then
-        _type = "stash"
-        id = id:sub(5)
-    end
-    return tgiann:ForceOpenInventory(src, _type, id)
+Inventory.OpenStash = function(src, _type, id)
+    -- if id:sub(1, 5) == "trunk" then
+    --     _type = "trunk"
+    --     id = id:sub(5)
+    -- elseif id:sub(1, 6) == "glovebox" then
+    --     _type = "glovebox"
+    --     id = id:sub(6)
+    -- elseif id:sub(1, 5) == "stash" then
+    --     _type = "stash"
+    --     id = id:sub(5)
+    -- end
+    local tbl = Inventory.Stashes[id]
+    return tgiann:ForceOpenInventory(src, _type, id, tbl and { maxWeight = tbl.weight , slots = tbl.slot, label = tbl.label})
 end
 
 ---This will register a stash
@@ -138,7 +133,16 @@ end
 ---@param coords table
 ---@return boolean
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    return true
+    Inventory.Stashes[id] = {
+        id = id,
+        label = label,
+        slots = slots,
+        weight = weight,
+        owner = owner,
+        groups = groups,
+        coords = coords
+    }
+    return id
 end
 
 ---This will return a boolean if the player has the item.
