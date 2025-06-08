@@ -112,9 +112,11 @@ end
 ---This will open the specified stash for the src passed.
 ---@param src number
 ---@param _type string
----@param id number|string
+---@param id number||string
 ---@return nil
 Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    --local tbl = Inventory.Stashes[id]
     ox_inventory:forceOpenInventory(src, _type, id)
 end
 
@@ -127,8 +129,9 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    if Inventory.Stashes[id] then return true end
+    if Inventory.Stashes[id] then return true, id end
     Inventory.Stashes[id] = {
         id = id,
         label = label,
@@ -138,7 +141,8 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coor
         groups = groups,
         coords = coords
     }
-    return ox_inventory:RegisterStash(id, label, slots, weight, owner, groups)
+    ox_inventory:RegisterStash(id, label, slots, weight, owner, groups)
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.

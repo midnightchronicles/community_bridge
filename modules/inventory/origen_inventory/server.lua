@@ -143,18 +143,13 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
-Inventory.OpenStash = function(src, id)
-    local stash = Inventory.Stashes[id]
-    assert(stash, "Stash not found", id)
-    return origin:OpenInventory(src, 'stash', id)
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local tbl = Inventory.Stashes[id]
+    return origin:OpenInventory(src, _type, id)
 end
 
 ---This will register a stash
@@ -167,7 +162,7 @@ end
 ---@param coords table
 ---@return boolean
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    if Inventory.Stashes[id] then return true end
+    if Inventory.Stashes[id] then return true, id end
     Inventory.Stashes[id] = {
         id = id,
         label = label,
@@ -177,7 +172,8 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coor
         groups = groups,
         coords = coords
     }
-    return origin:registerStash(id, label, slots, weight, owner, groups, coords)
+    origin:registerStash(id, label, slots, weight, owner, groups, coords)
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.

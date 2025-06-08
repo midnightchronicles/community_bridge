@@ -63,12 +63,13 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number||string
 ---@return nil
-Inventory.OpenStash = function(src, id)
-    local stash = Inventory.Stashes[id]
-    assert(stash, "Stash not found", id)
-    TriggerClientEvent('community_bridge:client:jpr-inventory:openStash', src, id, { weight = stash.weight, slots = stash.slots })
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local tbl = Inventory.Stashes[id]
+    TriggerClientEvent('community_bridge:client:jpr-inventory:openStash', src, id, { weight = tbl.weight, slots = tbl.slots })
 end
 
 ---This will register a stash
@@ -80,8 +81,9 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    if Inventory.Stashes[id] then return true end
+    if Inventory.Stashes[id] then return true, id end
     Inventory.Stashes[id] = {
         id = id,
         label = label,
@@ -91,7 +93,7 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coor
         groups = groups,
         coords = coords
     }
-    return true
+    return true, id
 end
 
 ---This will add items to a trunk, and return true or false based on success

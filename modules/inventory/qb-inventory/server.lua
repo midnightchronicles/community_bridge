@@ -120,17 +120,18 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
----@param id number|string
+---@param _type string
+---@param id number||string
 ---@return nil
-Inventory.OpenStash = function(src, id)
-    local stash = Inventory.Stashes[id]
-    assert(stash, "Stash not found", id)
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local tbl = Inventory.Stashes[id]
 
     if getInventoryNewVersion() then
         return qbInventory:OpenInventory(src, id)
     end
 
-    TriggerClientEvent('community_bridge:client:qb-inventory:openStash', src, id, { weight = stash.weight, slots = stash.slots})
+    TriggerClientEvent('community_bridge:client:qb-inventory:openStash', src, id, { weight = tbl.weight, slots = tbl.slots})
 end
 
 ---This will register a stash
@@ -142,8 +143,9 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    if Inventory.Stashes[id] then return true end
+    if Inventory.Stashes[id] then return true, id end
     Inventory.Stashes[id] = {
         id = id,
         label = label,
@@ -153,7 +155,7 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coor
         groups = groups,
         coords = coords
     }
-    return true
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.
@@ -213,7 +215,7 @@ Inventory.UpdatePlate = function(oldplate, newplate)
     return true, exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
 end
 
--- This will open the specified shop for the src passed.
+---This will open the specified shop for the src passed.
 ---@param src number
 ---@param shopTitle string
 Inventory.OpenShop = function(src, shopTitle)
@@ -227,11 +229,11 @@ Inventory.OpenShop = function(src, shopTitle)
     end
 end
 
--- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
+--This will register a shop, if it already exists it will return true.
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
 Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     if not shopTitle or not shopInventory then return end
     if registeredShops[shopTitle] then return true end

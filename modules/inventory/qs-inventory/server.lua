@@ -137,18 +137,13 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
 Inventory.OpenStash = function(src, _type, id)
     _type = _type or "stash"
-    local data = Inventory.Stashes[id]
-    TriggerEvent("inventory:server:OpenInventory", _type, id, data and { maxweight = data.weight, slots = data.slots })
+    local tbl = Inventory.Stashes[id]
+    TriggerEvent("inventory:server:OpenInventory", _type, id, tbl and { maxweight = tbl.weight, slots = tbl.slots })
     TriggerClientEvent("inventory:client:SetCurrentStash",src, id)
 end
 
@@ -161,6 +156,7 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
     if Inventory.Stashes[id] then return true end
     Inventory.Stashes[id] = {
@@ -173,7 +169,7 @@ Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coor
         coords = coords
     }
     --exports['qs-inventory']:RegisterStash(src, id, stashSlots, stashWeight) -- this needs to pass source to register, need to plan around this.
-    return true
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.
