@@ -46,6 +46,7 @@ end
 ---@return boolean
 Inventory.ClearStash = function(id, _type)
     if type(id) ~= "string" then return false end
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
     return false, print("ClearInventory is not implemented in ps-inventory, because of this we dont have a way to clear a stash.")
 end
 

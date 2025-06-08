@@ -52,6 +52,7 @@ end
 Inventory.ClearStash = function(id, _type)
     if type(id) ~= "string" then return false end
     ox_inventory:ClearInventory(_type..id, nil)
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
     return true
 end
 
@@ -205,9 +206,7 @@ end
 
 ---UNUSED:
 ---This will return generic item data from the specified inventory, with the items total count.
----
 ---format without metadata { count, stack, name, weight, label }
----
 ---fortmat with metadata { count, stack, name, weight, label, metadata }
 ---@param src number
 ---@param item string

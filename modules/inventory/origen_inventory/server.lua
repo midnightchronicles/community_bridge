@@ -52,12 +52,12 @@ Inventory.AddTrunkItems = function(identifier, items)
 end
 
 ---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
----@param id string
+---@param identifier string
 ---@return boolean
-Inventory.ClearStash = function(id, _type)
-    if type(id) ~= "string" then return false end
-    local inventory = origin:getInventory(id, _type)
-    if not inventory then return false end
+Inventory.ClearStash = function(identifier, _type)
+    if type(identifier) ~= "string" then return false end
+    if Inventory.Stashes[identifier] then Inventory.Stashes[identifier] = nil end
+    local id = identifier
     if _type == "trunk" then
         id = "trunk_"..id
     elseif _type == "glovebox" then
@@ -65,9 +65,12 @@ Inventory.ClearStash = function(id, _type)
     elseif _type == "stash" then
         id = "stash_"..id
     end
-    for _, v in pairs(inventory) do
+    local inv = origin:getInventory(identifier, _type)
+    if not inv then return false end
+    local indexed = inv.inventory
+    for _, v in pairs(indexed) do
         if v.slot then
-            origin:removeItem(id, v.name, v.count)
+            origin:removeItem(id, v.name, v.amount, nil, v.slot)
         end
     end
     return true
@@ -89,9 +92,7 @@ Inventory.GetItemInfo = function(item)
     }
 end
 
-
 ---This will return the count of the item in the players inventory, if not found will return 0.
----
 ---if metadata is passed it will find the matching items count.
 ---@param src number
 ---@param item string
@@ -109,7 +110,6 @@ Inventory.GetPlayerInventory = function(src)
 end
 
 ---Returns the specified slot data as a table.
----
 ---format {weight, name, metadata, slot, label, count}
 ---@param src number
 ---@param slot number

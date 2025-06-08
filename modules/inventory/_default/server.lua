@@ -39,6 +39,7 @@ end
 ---@return boolean
 Inventory.ClearStash = function(id, _type)
     if type(id) ~= "string" then return false end
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
     return false, Prints.Error("This Inventory Has Not Been Bridged For A ClearStash Feature.")
 end
 

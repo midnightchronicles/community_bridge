@@ -35,14 +35,21 @@ end
 ---@param identifier string
 ---@param items table
 ---@return boolean
-Inventory.AddItemsToTrunk = function(identifier, items)
+Inventory.AddTrunkItems = function(identifier, items)
     if type(items) ~= "table" then return false end
+    return false
+    --[[
     for k, v in pairs(items) do
-        local count = v.count or 1
-        local metadata = v.metadata or {}
-        quasar:AddToTrunk(identifier, nil, nil, v.item, count, metadata, nil)
+        -- 
+        In testing this inventory allowed it on owned vehicle but not unowned vehicles, 
+        also attempted registering it as a stash with no luck.
+        was thinking about just forcing it in sql but there is data attached that I assume is a timestamp
+        kinda not sure on this one atm...
+        Also there is no GetInventory(identifier) only by player source
+        --quasar:AddToTrunk(identifier, v.count, v.metadata, v.item, v.metadata)
     end
     return true
+    --]]
 end
 
 ---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
@@ -50,8 +57,13 @@ end
 ---@return boolean
 Inventory.ClearStash = function(id, _type)
     if type(id) ~= "string" then return false end
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
+    return false
+    --[[
     quasar:ClearOtherInventory(_type, id)
+
     return true
+    --]]
 end
 
 ---This will return a table with the item info, {name, label, stack, weight, description, image}

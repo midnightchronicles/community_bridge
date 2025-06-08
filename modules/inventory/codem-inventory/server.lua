@@ -65,7 +65,6 @@ Inventory.GetPlayerInventory = function(src)
 end
 
 ---Returns the specified slot data as a table.
----
 ---format {weight, name, metadata, slot, label, count}
 ---@param src number
 ---@param slot number
@@ -153,7 +152,7 @@ end
 ---@param identifier string
 ---@param items table
 ---@return boolean
-Inventory.AddItemsToTrunk = function(identifier, items)
+Inventory.AddTrunkItems = function(identifier, items)
     if type(items) ~= "table" then return false end
     return false, print("AddItemsToTrunk is not implemented in codem-inventory, because of this we dont have a way to add items to a trunk.")
 end
@@ -163,6 +162,7 @@ end
 ---@return boolean
 Inventory.ClearStash = function(id, _type)
     if type(id) ~= "string" then return false end
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
     return false, print("ClearInventory is not implemented in codem-inventory, because of this we dont have a way to clear a stash.")
 end
 

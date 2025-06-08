@@ -44,25 +44,32 @@ end
 ---@param identifier string
 ---@param items table
 ---@return boolean
-Inventory.AddItemsToTrunk = function(identifier, items)
+Inventory.AddTrunkItems = function(identifier, items)
     if type(items) ~= "table" then return false end
     local fullTrunkId = "trunk-"..identifier
     local repacked_items = {}
+    local slot = 0
     for _, item in pairs(items) do
-        table.insert(repacked_items, {
+        slot = slot + 1
+        repacked_items[slot] = {
             name = item.item,
             amount = item.count,
-            info = item.metadata or {}
-        })
+            info = item.metadata,
+            type = item.type or "item",
+            slot = slot,
+        }
     end
-
-    if getInventoryNewVersion() then
-        qbInventory:addTrunkItems(fullTrunkId, repacked_items)
-    else
-        if not qbInventory:GetInventory(fullTrunkId) then
-            qbInventory:CreateInventory(fullTrunkId, { label = fullTrunkId, slots = 20, maxweight = 10000 })
+    local newVersion = getInventoryNewVersion()
+    if newVersion then
+        qbInventory:CreateInventory(fullTrunkId, { label = fullTrunkId })
+        Wait(1000)
+        for i = 1, #repacked_items do
+            local v = repacked_items[i]
+            qbInventory:AddItem(fullTrunkId, v.name, v.amount, v.slot, v.info, "community_bridge, adding items to trunk")
         end
-        qbInventory:SetInventory(fullTrunkId, repacked_items, "Community Bridge Moving Items In Trunk")
+    else
+        -- I dont have a copy of this version to test it, if you run into issues please let me know.
+        TriggerEvent("inventory:server:addTrunkItems", fullTrunkId, repacked_items)
     end
     return true
 end
@@ -77,7 +84,10 @@ Inventory.ClearStash = function(id, _type)
     elseif _type == "glovebox" then
         id = "glovebox-"..id
     end
-    qbInventory:ClearStash(id)
+    if qbInventory:GetInventory(id) then
+        qbInventory:ClearStash(id)
+    end
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
     return true
 end
 
@@ -98,7 +108,6 @@ Inventory.GetItemInfo = function(item)
 end
 
 ---Returns the specified slot data as a table.
----
 ---format {weight, name, metadata, slot, label, count}
 ---@param src number
 ---@param slot number

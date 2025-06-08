@@ -190,6 +190,7 @@ end
 Inventory.ClearStash = function(id, _type)
     if type(id) ~= "string" then return false end
     tgiann:DeleteInventory(_type, id)
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
     return true
 end
 
