@@ -501,8 +501,8 @@ function Utility.CopyToClipboard(text)
         type = "copytoclipboard",
         text = text
     })
-    local message = Locales and Locales.Locale("clipboard.copy") 
-    TriggerEvent('community_bridge:Client:Notify', message, 'success')
+    local message = Locales and Locales.Locale("clipboard.copy")
+    --TriggerEvent('community_bridge:Client:Notify', message, 'success')
     return true
 end
 
