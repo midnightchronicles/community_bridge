@@ -99,7 +99,7 @@ end
 ---@param metadata table
 ---@return number
 Inventory.GetItemCount = function(src, item, metadata)
-    return origin:getItemCount(src, item, metadata, false)
+    return origin:getItemCount(src, item, metadata, false) or 0
 end
 
 ---This wil return the players inventory.
