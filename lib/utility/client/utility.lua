@@ -3,6 +3,8 @@ Utility = Utility or {}
 local blipIDs = {}
 local spawnedPeds = {}
 
+Locales = Locales or Require('modules/locales/shared.lua')
+
 -- === Local Helpers ===
 
 ---Get the hash of a model (string or number)
@@ -54,6 +56,30 @@ local function safeAddBlip(coords, sprite, color, scale, label, shortRange, disp
     SetBlipScale(blip, scale or 0.8)
     SetBlipDisplay(blip, displayType or 2)
     SetBlipAsShortRange(blip, shortRange)
+    addTextEntryOnce(label, label)
+    BeginTextCommandSetBlipName(label)
+    EndTextCommandSetBlipName(blip)
+    table.insert(blipIDs, blip)
+    return blip
+end
+
+---Create a entiyty blip safely and store its reference
+---@param entity number
+---@param sprite number
+---@param color number
+---@param scale number
+---@param label string
+---@param shortRange boolean
+---@param displayType number
+---@return number
+local function safeAddEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
+    local blip = AddBlipForEntity(entity)
+    SetBlipSprite(blip, sprite or 8)
+    SetBlipColour(blip, color or 3)
+    SetBlipScale(blip, scale or 0.8)
+    SetBlipDisplay(blip, displayType or 2)
+    SetBlipAsShortRange(blip, shortRange)
+    ShowHeadingIndicatorOnBlip(blip, true)
     addTextEntryOnce(label, label)
     BeginTextCommandSetBlipName(label)
     EndTextCommandSetBlipName(blip)
@@ -176,6 +202,19 @@ end
 ---@return number
 function Utility.CreateBlip(coords, sprite, color, scale, label, shortRange, displayType)
     return safeAddBlip(coords, sprite, color, scale, label, shortRange, displayType)
+end
+
+---Create a blip on the provided entity
+---@param entity number
+---@param sprite number
+---@param color number
+---@param scale number
+---@param label string
+---@param shortRange boolean
+---@param displayType number
+---@return number
+function Utility.CreateEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
+    return safeAddEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
 end
 
 ---Remove a blip if it exists
@@ -387,6 +426,39 @@ function Utility.GetClosestPlayer(coords, distanceScope, includeMe)
     return closestPlayer, closestDistance, GetPlayerServerId(closestPlayer)
 end
 
+---Get the closest vehicle to given coordinates
+---@param coords vector3|nil
+---@param distanceScope number|nil
+---@param includePlayerVeh boolean|nil
+---@return number|nil, vector3|nil, number|nil
+function Utility.GetClosestVehicle(coords, distanceScope, includePlayerVeh)
+    local vehicleEntity = nil
+    local vehicleNetID = nil
+    local vehicleCoords = nil
+    local selfCoords = coords or GetEntityCoords(cache.ped)
+    local closestDistance = distanceScope or 5
+    local includeMyVeh = includePlayerVeh or false
+    local gamePoolVehicles = GetGamePool("CVehicle")
+
+    local playerVehicle = IsPedInAnyVehicle(cache.ped, false) and GetVehiclePedIsIn(cache.ped, false) or 0
+
+    for i = 1, #gamePoolVehicles do
+        local thisVehicle = gamePoolVehicles[i]
+        if DoesEntityExist(thisVehicle) and (includeMyVeh or thisVehicle ~= playerVehicle) then
+            local thisVehicleCoords = GetEntityCoords(thisVehicle)
+            local distance = #(selfCoords - thisVehicleCoords)
+            if closestDistance == -1 or distance < closestDistance then
+                vehicleEntity = thisVehicle
+                vehicleNetID = NetworkGetNetworkIdFromEntity(thisVehicle) or nil
+                vehicleCoords = thisVehicleCoords
+                closestDistance = distance
+            end
+        end
+    end
+
+    return vehicleEntity, vehicleCoords, vehicleNetID
+end
+
 -- Deprecated point functions (no changes)
 function Utility.RegisterPoint(pointID, pointCoords, pointDistance, _onEnter, _onExit, _nearby)
     return Point.Register(pointID, pointCoords, pointDistance, nil, _onEnter, _onExit, _nearby)
@@ -409,7 +481,7 @@ end
 ---@param value T The value to match against the cases
 ---@param cases table<T|false, fun(): any> Table with case functions and an optional default (false key)
 ---@return any|false result The return value of the matched case function, or false if none matched
-function Utility.Switch(value, cases)
+function Utility.Switch(value, cases) 
     local caseFunc = cases[value] or cases[false]
 
     if caseFunc and type(caseFunc) == "function" then
@@ -420,31 +492,19 @@ function Utility.Switch(value, cases)
     return false
 end
 
---[[
-local vehicleType = "boat"
-
-local result = Utility.Switch(vehicleType, {
-    car = function()
-        print("This is a Car")
-        -- Car-related logic here
-        return "Car logic executed"
-    end,
-    bike = function()
-        print("This is a Bike")
-        -- Bike-related logic here
-        return "Bike logic executed"
-    end,
-    [false] = function()
-        print("Unknown vehicle type. Running default logic.")
-        -- Default logic here
-        return "Default logic executed"
-    end,
-})
-
-print("Result:", result)
-
-]]
-
+function Utility.CopyToClipboard(text)
+    if not text then return false end
+    if type(text) ~= "string" then
+        text = json.encode(text, { indent = true })
+    end
+    SendNUIMessage({
+        type = "copytoclipboard",
+        text = text
+    })
+    local message = Locales and Locales.Locale("clipboard.copy")
+    --TriggerEvent('community_bridge:Client:Notify', message, 'success')
+    return true
+end
 
 --- Pattern match-like function
 ---@generic T
@@ -473,28 +533,13 @@ function Utility.Match(value, patterns)
     return false
 end
 
---[[
-local input = 42
-
-local result = Utility.Match(input, {
-    [function(v) return v < 0 end] = function()
-        print("Negative number")
-        return "Negative"
-    end,
-    [function(v) return v % 2 == 0 end] = function()
-        print("Even number")
-        return "Even"
-    end,
-    [false] = function()
-        print("No match")
-        return "Default"
-    end,
-})
-
-print("Result:", result)
-
-]]
-
+---Get zone name at coordinates
+---@param coords vector3
+---@return string
+function Utility.GetZoneName(coords)
+    local zoneHash = GetNameOfZone(coords.x, coords.y, coords.z)
+    return GetLabelText(zoneHash)
+end
 
 AddEventHandler('onResourceStop', function(resource)
     if resource ~= GetCurrentResourceName() then return end

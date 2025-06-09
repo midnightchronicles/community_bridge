@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "Nu aveți suficienți bani pentru a cumpăra acest articol",
+		"Input": "Introducere cantitate",
+		"PurchaseAmount": "Cantitatea de cumpărare",
+		"PurchasedItem": "Ați cumpărat ",
+		"CurrencySymbol": "lei",
+		"Confirm": "Confirmați achiziția",
+		"AreYouSure": "Sunteți sigur că doriți să cumpărați ",
+		"PayByCash": "Plătiți cu numerar",
+		"PayByCard": "Plătiți cu cardul"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Sunt un %s %s",
+		"locale-unit-test": "Acesta este un șir de test"
+	},
+	"clipboard": {
+		"copy": "Copiat în clipboard"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Nu ați definit niciun obiect de plasat",
+		"cant_place_here": "Nu puteți plasa acest obiect aici",
+		"place_object_place": "[E] Plasați  \n",
+		"place_object_cancel": "[X] Anulați  \n",
+		"place_object_scroll_up": "[SCROLL UP] Rotiți la dreapta  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Rotiți la stânga"
+	}
+}

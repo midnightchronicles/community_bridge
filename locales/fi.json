@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "Sinulla ei ole tarpeeksi rahaa tämän tuotteen ostamiseen",
+		"Input": "Määrän syöttö",
+		"PurchaseAmount": "Ostomäärä",
+		"PurchasedItem": "Ostit ",
+		"CurrencySymbol": "€",
+		"Confirm": "Vahvista osto",
+		"AreYouSure": "Oletko varma, että haluat ostaa ",
+		"PayByCash": "Maksa käteisellä",
+		"PayByCard": "Maksa kortilla"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Olen %s %s",
+		"locale-unit-test": "Tämä on testijono"
+	},
+	"clipboard": {
+		"copy": "Kopioitu leikepöydälle"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Et ole määritellyt mitään objektia sijoitettavaksi",
+		"cant_place_here": "Et voi sijoittaa tätä objektia tähän",
+		"place_object_place": "[E] Sijoita  \n",
+		"place_object_cancel": "[X] Peruuta  \n",
+		"place_object_scroll_up": "[SCROLL UP] Käännä oikealle  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Käännä vasemmalle"
+	}
+}

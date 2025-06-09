@@ -2,6 +2,7 @@
 if GetResourceState('codem-inventory') ~= 'started' then return end
 
 Inventory = Inventory or {}
+Inventory.Stashes = Inventory.Stashes or {}
 
 local codem = exports['codem-inventory']
 
@@ -64,7 +65,6 @@ Inventory.GetPlayerInventory = function(src)
 end
 
 ---Returns the specified slot data as a table.
----
 ---format {weight, name, metadata, slot, label, count}
 ---@param src number
 ---@param slot number
@@ -96,20 +96,18 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
-Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    TriggerClientEvent('community_bridge:client:codem-inventory:openStash', src, id, { label = label, slots = slots, weight = weight })
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local tbl = Inventory.Stashes[id]
+    TriggerClientEvent('community_bridge:client:codem-inventory:openStash', src, id, { label = tbl.label, slots = tbl.slots, weight = tbl.weight })
 end
 
+
 ---This will register a stash
----@param id number||string
+---@param id number|string
 ---@param label string
 ---@param slots number
 ---@param weight number
@@ -117,8 +115,19 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string|number
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    return true
+    if Inventory.Stashes[id] then return true, id end
+    Inventory.Stashes[id] = {
+        id = id,
+        label = label,
+        slots = slots,
+        weight = weight,
+        owner = owner,
+        groups = groups,
+        coords = coords
+    }
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.
@@ -136,6 +145,25 @@ end
 ---@return boolean
 Inventory.CanCarryItem = function(src, item, count)
     return true
+end
+
+---This will add items to a trunk, and return true or false based on success
+---If a trunk with the identifier does not exist, it will create one with default values.
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddTrunkItems = function(identifier, items)
+    if type(items) ~= "table" then return false end
+    return false, print("AddItemsToTrunk is not implemented in codem-inventory, because of this we dont have a way to add items to a trunk.")
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
+    return false, print("ClearInventory is not implemented in codem-inventory, because of this we dont have a way to clear a stash.")
 end
 
 ---This will update the plate to the vehicle inside the inventory. (It will also update with jg-mechanic if using it)
@@ -165,11 +193,11 @@ Inventory.OpenShop = function(src, shopTitle)
 end
 
 -- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return true, print("Unable to Create Shop for codem-inventory, I do not have access to a copy of this inventory to bridge the feature.")
 end
 

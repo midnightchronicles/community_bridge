@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "Du har ikke nok penge til at købe denne vare",
+		"Input": "Mængde input",
+		"PurchaseAmount": "Købsmængde",
+		"PurchasedItem": "Du har købt ",
+		"CurrencySymbol": "kr",
+		"Confirm": "Bekræft køb",
+		"AreYouSure": "Er du sikker på, at du vil købe en ",
+		"PayByCash": "Betal kontant",
+		"PayByCard": "Betal med kort"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Jeg er en %s %s",
+		"locale-unit-test": "Dette er en test streng"
+	},
+	"clipboard": {
+		"copy": "Kopieret til udklipsholder"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Du har ikke defineret noget objekt at placere",
+		"cant_place_here": "Du kan ikke placere dette objekt her",
+		"place_object_place": "[E] Placer  \n",
+		"place_object_cancel": "[X] Annuller  \n",
+		"place_object_scroll_up": "[SCROLL UP] Drej til højre  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Drej til venstre"
+	}
+}

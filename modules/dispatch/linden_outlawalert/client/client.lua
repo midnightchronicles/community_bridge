@@ -1,4 +1,5 @@
-if GetResourceState('linden_outlawalert') ~= 'started' then return end
+---@diagnostic disable: duplicate-set-field
+if GetResourceState('linden_outlawalert') == 'missing' then return end
 Dispatch = Dispatch or {}
 
 Dispatch.SendAlert = function(data)

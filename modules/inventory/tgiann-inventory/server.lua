@@ -4,6 +4,7 @@ if GetResourceState('tgiann-inventory') ~= 'started' then return end
 local tgiann = exports["tgiann-inventory"]
 
 Inventory = Inventory or {}
+Inventory.Stashes = Inventory.Stashes or {}
 
 ---This will add an item, and return true or false based on success
 ---@param src number
@@ -104,20 +105,17 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
-Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    print("Currently not bridged for stashes")
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local tbl = Inventory.Stashes[id]
+    return tgiann:ForceOpenInventory(src, _type, id, tbl and { maxWeight = tbl.weight , slots = tbl.slot, label = tbl.label})
 end
 
 ---This will register a stash
----@param id number||string
+---@param id number|string
 ---@param label string
 ---@param slots number
 ---@param weight number
@@ -125,8 +123,19 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string|number
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    return false, print("Currently not bridged for stashes")
+    if Inventory.Stashes[id] then return true, id end
+    Inventory.Stashes[id] = {
+        id = id,
+        label = label,
+        slots = slots,
+        weight = weight,
+        owner = owner,
+        groups = groups,
+        coords = coords
+    }
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.
@@ -157,8 +166,32 @@ Inventory.UpdatePlate = function(oldplate, newplate)
     }
     local values = { newplate = newplate, oldplate = oldplate }
     MySQL.transaction.await(queries, values)
+    tgiann:UpdateVehicle(oldplate, newplate)
     if GetResourceState('jg-mechanic') ~= 'started' then return true end
     return true, exports["jg-mechanic"]:vehiclePlateUpdated(oldplate, newplate)
+end
+
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddTrunkItems = function(identifier, items)
+    local id = "trunk"..identifier
+    if type(items) ~= "table" then return false end
+    for _, v in pairs(items) do
+        tgiann:AddItemToSecondaryInventory("trunk", identifier, v.item, v.count, nil, v.metadata)
+    end
+    return true
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    tgiann:DeleteInventory(_type, id)
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
+    return true
 end
 
 ---This will get the image path for an item, it is an alternate option to GetItemInfo. If a image isnt found will revert to community_bridge logo (useful for menus)
@@ -177,15 +210,15 @@ end
 ---@param src number
 ---@param shopTitle string
 Inventory.OpenShop = function(src, shopTitle)
-    print("Currently tgiann-inventory is not bridged for shops")
+    return false, print("Currently tgiann-inventory is not bridged for shops")
 end
 
 -- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return false, print("Currently tgiann-inventory is not bridged for shops")
 end
 

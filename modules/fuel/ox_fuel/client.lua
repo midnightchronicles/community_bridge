@@ -1,7 +1,6 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "ox_fuel"
-local configValue = BridgeClientConfig.Fuel
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
-
+if GetResourceState(resourceName) == 'missing' then return end
 Fuel = Fuel or {}
 
 ---This will get the name of the Fuel being used (if a supported Fuel).
@@ -25,7 +24,7 @@ end
 Fuel.SetFuel = function(vehicle, fuel, type)
     if not DoesEntityExist(vehicle) then return end
     local currentFuel = Entity(vehicle).state.fuel
-    Entity(vehicle).state.fuel = currentFuel + fuel
+    Entity(vehicle).state.fuel = currentFuel and currentFuel + fuel or fuel
     return Entity(vehicle).state.fuel
 end
 

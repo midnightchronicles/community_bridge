@@ -36,9 +36,9 @@ function Dialogue.Close(name)
 end
 
 --- Open a dialogue with the player
---- @param name string
---- @param dialogue string
---- @param options table example = {{  id = string, label = string}}
+---@param name string
+---@param dialogue string
+---@param options table example = {{  id = string, label = string}}
 function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSelected)
     assert(name, "Name is required")
     assert(dialogue, "Dialogue is required")
@@ -55,26 +55,18 @@ function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSel
 
     -- camera magic!
     if entity then
+        Wait(500)
+        local endLocation = GetOffsetFromEntityInWorldCoords(entity, offset.x, offset.y + 2.0, offset.z + 0.5)
         local pedHeading = GetEntityHeading(entity)
-        -- Convert heading to radians and calculate offset
-        local angleRad = math.rad(pedHeading)
-        local offsetX = math.sin(angleRad) * 1.5
-        local offsetY = math.cos(angleRad) * 1.5
-
         -- Get position in front of ped based on their heading
-        local endLocation = GetEntityCoords(entity) + vector3(offsetX * offset.x, offsetY * offset.y, 0.5)
 
         if not cam then cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1) end
-        local camPos = GetCamCoord(cam)
-        local dist = #(endLocation - camPos)
-        local abs = cam and math.abs(dist)
-        if not abs or abs > 0.5 then      
-            local camAngle = (pedHeading + 180.0) % 360.0
-            SetCamRot(cam, rotationOffset.x, rotationOffset.y, camAngle + rotationOffset.z, 2)
-            SetCamCoord(cam, endLocation.x, endLocation.y, endLocation.z)
-            RenderScriptCams(true, true, 1000, true, false)
-            SetCamActive(cam, true)
-        end
+        local camAngle = (pedHeading + 180.0) % 360.0
+        SetCamRot(cam, rotationOffset.x, rotationOffset.y, camAngle + rotationOffset.z, 2)
+        SetCamCoord(cam, endLocation.x, endLocation.y, endLocation.z)
+        RenderScriptCams(true, true, 1000, true, false)
+        SetCamActive(cam, true)
+
     end
     SendNUIMessage({
         type = "open",
@@ -105,62 +97,62 @@ end)
 
 -- Debug command
 if BridgeSharedConfig.DebugLevel  >= 1 then
-    RegisterCommand("dialogue", function()
-        local pos = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0, 2.0, 0)
-        local timeout = 500 
-        local model = `a_f_y_hipster_01`
-        RequestModel(model)
-        while not HasModelLoaded(model) do
-            Wait(0)
-            timeout = timeout - 1
-            if timeout == 0 then
-                print("Failed to load model")
-                return
-            end
-        end
-        local ped = CreatePed(0, model, pos.x, pos.y, pos.z, 0.0, false, false)
+    -- RegisterCommand("dialogue", function()
+    --     local pos = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0, 2.0, 0)
+    --     local timeout = 500
+    --     local model = `a_f_y_hipster_01`
+    --     RequestModel(model)
+    --     while not HasModelLoaded(model) do
+    --         Wait(0)
+    --         timeout = timeout - 1
+    --         if timeout == 0 then
+    --             print("Failed to load model")
+    --             return
+    --         end
+    --     end
+    --     local ped = CreatePed(0, model, pos.x, pos.y, pos.z, 0.0, false, false)
 
-        local characterData = {
-            entity = ped,
-            offset = vector3(0, 0, 0),
-            rotationOffset = vector3(0, 0, 0)
-        }
-        Wait(750)
-        Dialogue.Open("Akmed", "Hello how are you doing my friend?", characterData, {
-            {
-                label = "Trade with me",
-                id = 'something',
-            },
-            {
-                label = "Goodbye",
-                id = 'someotherthing',
-            },
-        },
-        function(selectedId)
-            if selectedId == 'something' then
-                Dialogue.Open( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, {
-                    {
-                        label = "Fuck off",
-                        id = 'something',
-                    },
-                    {
-                        label = "Goodbye",
-                        id = 'someotherthing',
-                    },
-                },
-                function(selectedId)
-                    DeleteEntity(ped)
-                    if selectedId == "something" then
-                        print("You hate lucky charms")
-                    else
-                        print("Thanks for keeping it civil")
-                    end
-                end)
-            else
-                DeleteEntity(ped)
-            end
-        end)
-    end)
+    --     local characterData = {
+    --         entity = ped,
+    --         offset = vector3(0, 0, 0),
+    --         rotationOffset = vector3(0, 0, 0)
+    --     }
+    --     Wait(750)
+    --     Dialogue.Open("Akmed", "Hello how are you doing my friend?", characterData, {
+    --         {
+    --             label = "Trade with me",
+    --             id = 'something',
+    --         },
+    --         {
+    --             label = "Goodbye",
+    --             id = 'someotherthing',
+    --         },
+    --     },
+    --     function(selectedId)
+    --         if selectedId == 'something' then
+    --             Dialogue.Open( "Akmed" , "Thank you for wanting to purchase me lucky charms", characterData, {
+    --                 {
+    --                     label = "Fuck off",
+    --                     id = 'something',
+    --                 },
+    --                 {
+    --                     label = "Goodbye",
+    --                     id = 'someotherthing',
+    --                 },
+    --             },
+    --             function(selectedId)
+    --                 DeleteEntity(ped)
+    --                 if selectedId == "something" then
+    --                     print("You hate lucky charms")
+    --                 else
+    --                     print("Thanks for keeping it civil")
+    --                 end
+    --             end)
+    --         else
+    --             DeleteEntity(ped)
+    --         end
+    --     end)
+    -- end)
 end
 
 return Dialogue

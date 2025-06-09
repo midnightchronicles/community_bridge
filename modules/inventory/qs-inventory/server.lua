@@ -4,6 +4,7 @@ if GetResourceState('qs-inventory') ~= 'started' then return end
 local quasar = exports['qs-inventory']
 
 Inventory = Inventory or {}
+Inventory.Stashes = Inventory.Stashes or {}
 
 ---This will add an item, and return true or false based on success
 ---@param src number
@@ -28,6 +29,41 @@ end
 Inventory.RemoveItem = function(src, item, count, slot, metadata)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
     return quasar:RemoveItem(src, item, count, slot, metadata)
+end
+
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddTrunkItems = function(identifier, items)
+    if type(items) ~= "table" then return false end
+    return false
+    --[[
+    for k, v in pairs(items) do
+        -- 
+        In testing this inventory allowed it on owned vehicle but not unowned vehicles, 
+        also attempted registering it as a stash with no luck.
+        was thinking about just forcing it in sql but there is data attached that I assume is a timestamp
+        kinda not sure on this one atm...
+        Also there is no GetInventory(identifier) only by player source
+        --quasar:AddToTrunk(identifier, v.count, v.metadata, v.item, v.metadata)
+    end
+    return true
+    --]]
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
+    return false
+    --[[
+    quasar:ClearOtherInventory(_type, id)
+
+    return true
+    --]]
 end
 
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
@@ -113,21 +149,18 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
-Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    TriggerEvent("inventory:server:OpenInventory", "stash", id, { maxweight = weight, slots = slots })
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local tbl = Inventory.Stashes[id]
+    TriggerEvent("inventory:server:OpenInventory", _type, id, tbl and { maxweight = tbl.weight, slots = tbl.slots })
     TriggerClientEvent("inventory:client:SetCurrentStash",src, id)
 end
 
 ---This will register a stash
----@param id number||string
+---@param id number|string
 ---@param label string
 ---@param slots number
 ---@param weight number
@@ -135,9 +168,19 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string|number
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    --exports['qs-inventory']:RegisterStash(src, id, stashSlots, stashWeight) -- this needs to pass source to register, need to plan around this.
-    return true
+    if Inventory.Stashes[id] then return true, id end
+    Inventory.Stashes[id] = {
+        id = id,
+        label = label,
+        slots = slots,
+        weight = weight,
+        owner = owner,
+        groups = groups,
+        coords = coords
+    }
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.
@@ -192,11 +235,11 @@ Inventory.OpenShop = function(src, shopTitle)
 end
 
 -- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return false, print("Currently qs shop is not bridged")
 end
 

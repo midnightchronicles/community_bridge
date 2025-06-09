@@ -1,9 +1,13 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "progressbar"
 local configValue = BridgeClientConfig.ProgressBarSystem
 if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 ProgressBar = ProgressBar or {}
 
+---This function converts an Ox progress bar options table to a QB progress bar options table.
+---@param options table
+---@return table
 local function convertFromOx(options)
     if not options then return options end
     local prop1 = options.prop?[1] or options.prop or {}
@@ -23,29 +27,28 @@ local function convertFromOx(options)
         animation = {
             animDict = options.anim?.dict,
             anim = options.anim?.clip,
-            flags = 49
+            flags = options.anim?.flag or 49
         },
         prop = {
             model = prop1.model,
             bone = prop1.bone,
-            coords = prop1.pos, 
+            coords = prop1.pos,
             rotation = prop1.rot
         },
         propTwo = {
             model = prop2.model,
             bone = prop2.bone,
-            coords = prop2.pos, 
+            coords = prop2.pos,
             rotation = prop2.rot
         }
     }
 end
 
----comment
+---This function opens a progress bar.
 ---@param options table
 ---@param cb any
 ---@param qbFormat boolean
----@return success boolean
----@diagnostic disable-next-line: duplicate-set-field
+---@return boolean boolean
 function ProgressBar.Open(options, cb, qbFormat)
     if not exports['progressbar'] then return false end
 
@@ -61,29 +64,3 @@ function ProgressBar.Open(options, cb, qbFormat)
 end
 
 return ProgressBar
-
-
--- Example usage:
---[[
-RegisterCommand("progressbar", function()
-    ProgressBar.Open({
-        duration = 5000,
-        label = "Searching",
-        disable = {
-            move = true,
-            combat = true
-        },
-        anim = {
-            dict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
-            clip = "machinic_loop_mechandplayer"
-        },
-        prop = {
-            model = "prop_ar_arrow_3",
-            pos = vector3(0.0, 0.0, 0.0),
-            rot = vector3(0.0, 0.0, 0.0)
-        },
-    }, function(cancelled)
-        print(cancelled and "Cancelled" or "Complete")
-    end)
-end)
---]]

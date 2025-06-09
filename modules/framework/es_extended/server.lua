@@ -1,15 +1,32 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('es_extended') ~= 'started' then return end
+
 Prints = Prints or Require("lib/utility/shared/prints.lua")
 
 ESX = exports["es_extended"]:getSharedObject()
 
 Framework = Framework or {}
 
+---This will return the name of the framework in use.
+---@return string
 Framework.GetFrameworkName = function()
     return 'es_extended'
 end
 
+---This will return if the player is an admin in the framework.
+---@param src any
+---@return boolean
+Framework.GetIsFrameworkAdmin = function(src)
+    if not src then return false end
+    local xPlayer = Framework.GetPlayer(src)
+    if not xPlayer then return false end
+    local group = xPlayer.getGroup()
+    if group == 'admin' or group == 'superadmin' then return true end
+    return false
+end
+
+---This will get the players birth date
+---@return string|nil
 Framework.GetPlayerDob = function(src)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -17,9 +34,7 @@ Framework.GetPlayerDob = function(src)
     return dob
 end
 
---- This will return a table of the players data
---- 
---- This table is in the framework format and not converted to any standard.
+--- Returns the player data of the specified source in the framework defualt format.
 ---@param src any
 ---@return table | nil
 Framework.GetPlayer = function(src)
@@ -30,18 +45,24 @@ end
 
 -- Framework.GetPlayerIdentifier(src)
 -- Returns the citizen ID of the player.
+---@param src number
+---@return string | nil
 Framework.GetPlayerIdentifier = function(src)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
     return xPlayer.getIdentifier()
 end
 
+---This will return the jobs registered in the framework in a table.
+---Format of the table is:
+---{name = jobName, label = jobLabel, grade = {name = gradeName, level = gradeLevel}}
+---@return table
 Framework.GetFrameworkJobs = function()
     return ESX.GetJobs()
 end
-
 -- Framework.GetPlayerName(src)
 -- Returns the first and last name of the player.
+---@return string|nil, string|nil
 Framework.GetPlayerName = function(src)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -59,9 +80,12 @@ Framework.GetPlayers = function()
     return playerList
 end
 
--- Framework.GetItem(src, item, metadata)
--- Returns a table of items matching the specified name and if passed metadata from the player's inventory.
--- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
+---Returns a table of items matching the specified name and if passed metadata from the player's inventory.
+---returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
+---@param src number
+---@param item string
+---@param _ table
+---@return table|nil
 Framework.GetItem = function(src, item, _)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -80,15 +104,19 @@ Framework.GetItem = function(src, item, _)
     return repackedTable
 end
 
--- Framework.GetItemCount(src, item, _)
--- Returns the count of items matching the specified name and if passed metadata from the player's inventory.
+---This will return the count of the item in the players inventory, if not found will return 0.
+---if metadata is passed it will find the matching items count (esx_core does not feature metadata items).
+---@param src number
+---@param item string
+---@param _ table
+---@return number
 Framework.GetItemCount = function(src, item, _)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
     return xPlayer.getInventoryItem(item).count
 end
 
----comment
+---This will return a boolean if the player has the item.
 ---@param src number
 ---@param item string
 ---@return boolean
@@ -99,7 +127,9 @@ end
 
 -- Framework.GetPlayerInventory(src)
 -- Returns the entire inventory of the player as a table.
--- returns {name = v.name, count = v.amount, _, _}
+-- returns {name = v.name, count = v.amount, metadata = v.info, slot = v.slot}
+---@param src number
+---@return table | nil
 Framework.GetPlayerInventory = function(src)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -120,6 +150,7 @@ end
 
 -- Framework.SetMetadata(src, metadata, value)
 -- Adds the specified metadata key and number value to the player's data.
+---@return boolean|nil
 Framework.SetPlayerMetadata = function(src, metadata, value)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -128,7 +159,10 @@ Framework.SetPlayerMetadata = function(src, metadata, value)
 end
 
 -- Framework.GetMetadata(src, metadata)
--- Gets the specified metadata key and value to the player's data.
+-- Gets the specified metadata key to the player's data.
+---@param src number
+---@param metadata string
+---@return any|nil
 Framework.GetPlayerMetadata = function(src, metadata)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -146,12 +180,18 @@ Framework.GetStatus = function(src, column)
     return xPlayer.get(column) or nil
 end
 
+---This will return a boolean if the player is dead or in last stand.
+---@param src number
+---@return boolean|nil
 Framework.GetIsPlayerDead = function(src)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
     return xPlayer.get("is_dead") or false
 end
 
+---This will revive a player, if the player is dead or in last stand.
+---@param src number
+---@return boolean
 Framework.RevivePlayer = function(src)
     src = tonumber(src)
     if not src then return false end
@@ -161,6 +201,9 @@ end
 
 -- Framework.AddThirst(src, value)
 -- Adds the specified value from the player's thirst level.
+---@param src number
+---@param value number
+---@return number | nil
 Framework.AddThirst = function(src, value)
     local clampIT = Math.Clamp(value, 0, 200000)
     local levelForEsx = clampIT * 2000
@@ -170,6 +213,9 @@ end
 
 -- Framework.AddHunger(src, value)
 -- Adds the specified value from the player's hunger level.
+---@param src number
+---@param value number
+---@return number | nil
 Framework.AddHunger = function(src, value)
     local clampIT = Math.Clamp(value, 0, 200000)
     local levelForEsx = clampIT * 2000
@@ -177,12 +223,18 @@ Framework.AddHunger = function(src, value)
     return levelForEsx
 end
 
+---This will get the hunger of a player
+---@param src number
+---@return number | nil
 Framework.GetHunger = function(src)
     local status = Framework.GetStatus(src, "status")
     if not status then return 0 end
     return status.hunger
 end
 
+---This will get the thirst of a player
+---@param src any
+---@return number | nil
 Framework.GetThirst = function(src)
     local status = Framework.GetStatus(src, "status")
     if not status then return 0 end
@@ -191,6 +243,8 @@ end
 
 -- Framework.GetPlayerPhone(src)
 -- Returns the phone number of the player.
+---@param src number
+---@return string | nil
 Framework.GetPlayerPhone = function(src)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -241,9 +295,9 @@ Framework.GetPlayerDuty = function(src)
     return true
 end
 
----Sets the players duty status.
+---This will toggle a players duty status
 ---@param src number
----@param dutystatus boolean
+---@param status boolean
 ---@return boolean
 Framework.SetPlayerDuty = function(src, dutystatus)
     local xPlayer = Framework.GetPlayer(src)
@@ -253,22 +307,26 @@ Framework.SetPlayerDuty = function(src, dutystatus)
     return xPlayer.setJob(job.name, job.grade, dutystatus)
 end
 
--- Framework.GetPlayersByJob(jobname)
--- returns a table of player sources that have the specified job name.
+---This will get a table of player sources that have the specified job name.
+---@param job any
+---@return table
 Framework.GetPlayersByJob = function(job)
     local players = GetPlayers()
     local playerList = {}
     for _, src in pairs(players) do
         local xPlayer = Framework.GetPlayer(src)
-        if xPlayer.getJob().name == job then
+        if xPlayer and xPlayer.getJob().name == job then
             table.insert(playerList, src)
         end
     end
     return playerList
 end
 
--- Framework.SetPlayerJob(src, name, grade)
 -- Sets the player's job to the specified name and grade.
+---@param src number
+---@param name string
+---@param grade string
+---@return nil
 Framework.SetPlayerJob = function(src, name, grade)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -279,8 +337,11 @@ Framework.SetPlayerJob = function(src, name, grade)
     return xPlayer.setJob(name, grade, true)
 end
 
--- Framework.AddAccountBalance(src, _type, amount)
--- Adds the specified amount to the player's account balance of the specified type.
+---This will add money based on the type of account (money/bank)
+---@param src number
+---@param _type string
+---@param amount number
+---@return boolean | nil
 Framework.AddAccountBalance = function(src, _type, amount)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -288,8 +349,11 @@ Framework.AddAccountBalance = function(src, _type, amount)
     return xPlayer.addAccountMoney(_type, amount)
 end
 
--- Framework.RemoveAccountBalance(src, _type, amount)
--- Removes the specified amount from the player's account balance of the specified type.
+---This will remove money based on the type of account (money/bank)
+---@param src number
+---@param _type string
+---@param amount number
+---@return boolean | nil
 Framework.RemoveAccountBalance = function(src, _type, amount)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -298,8 +362,10 @@ Framework.RemoveAccountBalance = function(src, _type, amount)
     return true
 end
 
--- Framework.GetAccountBalance(src, _type)
--- Returns the player's account balance of the specified type.
+---This will remove money based on the type of account (money/bank)
+---@param src number
+---@param _type string
+---@return string | nil
 Framework.GetAccountBalance = function(src, _type)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
@@ -307,22 +373,37 @@ Framework.GetAccountBalance = function(src, _type)
     return xPlayer.getAccount(_type).money
 end
 
--- Framework.AddItem(src, item, amount, _, _)
+-- Framework.AddItem(src, item, amount, slot, metadata)
 -- Adds the specified item to the player's inventory.
+---@param src number
+---@param item string
+---@param amount number
+---@param slot number
+---@param metadata table
+---@return boolean | nil
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
     return xPlayer.addInventoryItem(item, amount)
 end
 
--- Framework.RemoveItem(src, item, amount, _, _)
+-- Framework.RemoveItem(src, item, amount, slot, metadata)
 -- Removes the specified item from the player's inventory.
+---@param src number
+---@param item string
+---@param amount number
+---@param slot number
+---@param metadata table
+---@return boolean | nil
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
     return xPlayer.removeInventoryItem(item, amount)
 end
 
+---This will get all owned vehicles for the player
+---@param src number
+---@return table
 Framework.GetOwnedVehicles = function(src)
     local citizenId = Framework.GetPlayerIdentifier(src)
     local result = MySQL.Sync.fetchAll("SELECT vehicle, plate FROM owned_vehicles WHERE owner = '" .. citizenId .. "'")
@@ -336,8 +417,11 @@ Framework.GetOwnedVehicles = function(src)
     return vehicles
 end
 
+
 -- Framework.RegisterUsableItem(item, cb)
 -- Registers a usable item with a callback function.
+---@param itemName string
+---@param cb function
 Framework.RegisterUsableItem = function(itemName, cb)
     local func = function(src, item, itemData)
         itemData = itemData or item
@@ -348,13 +432,13 @@ Framework.RegisterUsableItem = function(itemName, cb)
     ESX.RegisterUsableItem(itemName, func)
 end
 
-RegisterNetEvent("esx:playerLoaded", function()
-    local src = source
+RegisterNetEvent("esx:playerLoaded", function(src)
+    src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerLoaded", src)
 end)
 
-RegisterNetEvent("esx:playerLogout", function()
-    local src = source
+RegisterNetEvent("esx:playerLogout", function(src)
+    src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
 

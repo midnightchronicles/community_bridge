@@ -5,7 +5,7 @@ use_experimental_fxv2_oal 'yes'
 author 'The Order of the Sacred Framework'
 name 'community_bridge'
 description 'A Universal Bridge for Our Community, created by a group of contributors with a shared vision to enhance both user and developer experiences. This bridge connects various frameworks, inventories, target systems, notification systems, and more, fostering compatibility and seamless integration.'
-version '0.8.1'
+version '0.9.0'
 
 shared_scripts {
     '@ox_lib/init.lua',
@@ -13,6 +13,7 @@ shared_scripts {
     'lib/init.lua',
     'modules/math/*.lua',
     'modules/locales/*.lua',
+    'modules/clothing/**/shared.lua',
 }
 
 server_scripts {
@@ -50,16 +51,16 @@ client_scripts {
     'modules/dispatch/**/client.lua',
     'modules/progressbar/**/client.lua',
     'modules/clothing/**/client.lua',
-    'modules/input/*.lua',
+    'modules/input/**/client.lua',
     'modules/menu/*.lua',
     'modules/helptext/**/client.lua',
     'modules/notify/**/client.lua',
     'modules/dialogue/**/client/*.lua',
     'modules/shops/**/client.lua',
     'modules/housing/**/client.lua',
-    'modules/accessibility/client.lua',
     'modules/skills/**/client.lua',
     'init.lua',
+    -- 'unit_tests/input_test.lua',
 }
 
 ui_page 'web/dist/index.html'
@@ -72,6 +73,7 @@ files {
     'lib/**/client/*.lua',
     'lib/**/shared/*.lua',
     'lib/**/server/*.lua',
+    'modules/**',
     'settings/*.lua',
     'lib/init.lua',
 }

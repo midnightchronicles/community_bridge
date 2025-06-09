@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 Weather = Weather or {}
 
 ---This will toggle the players weather/time sync

@@ -1,8 +1,6 @@
 ---@diagnostic disable: duplicate-set-field
 local resourceName = "lc_fuel"
-local configValue = BridgeClientConfig.Fuel
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
-
+if GetResourceState(resourceName) == 'missing' then return end
 Fuel = Fuel or {}
 
 ---This will get the name of the Fuel being used (if a supported Fuel).

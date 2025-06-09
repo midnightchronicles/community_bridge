@@ -1,7 +1,6 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "ox_target"
-local configValue = BridgeClientConfig.TargetSystem
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
-
+if GetResourceState(resourceName) == 'missing' then return end
 
 local targetDebug = false
 local function detectDebugEnabled()
@@ -30,6 +29,7 @@ Target.FixOptions = function(options)
             return action(entityOrData)
         end
         options[k].onSelect = select
+        options[k].groups = v.job or v.groups
     end
     return options
 end
@@ -60,7 +60,7 @@ Target.AddGlobalVehicle = function(options)
     ox_target:addGlobalVehicle(options)
 end
 
----This will remove target options from all vehicles. 
+---This will remove target options from all vehicles.
 ---@param options table
 Target.RemoveGlobalVehicle = function(options)
     local assembledLables = {}
@@ -80,8 +80,9 @@ end
 
 ---This will remove the target options from a local entity. This is useful for when you want to remove target options from a specific entity.
 ---@param entity any
-Target.RemoveLocalEntity = function(entity)
-    ox_target:removeLocalEntity(entity)
+---@param labels string | table | nil
+Target.RemoveLocalEntity = function(entities, optionNames)
+    ox_target:removeLocalEntity(entities, optionNames)
 end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
@@ -98,24 +99,50 @@ Target.RemoveModel = function(model)
     ox_target:removeModel(model)
 end
 
+-- Target.DisableTargeting = function(bool)
+--     ox_target:disableTargeting(bool)
+-- end
+
+-- Target.Refresh = function()
+--     ox_target:disableTargeting(true)
+--     Wait(10)
+--     ox_target:disableTargeting(false)
+-- end
+
+
+
 ---This will add a box zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
 ---@param coords table
 ---@param size table
 ---@param heading number
 ---@param options table
-Target.AddBoxZone = function(name, coords, size, heading, options)
-    options = Target.FixOptions(options)
+Target.AddBoxZone = function(name, coords, size, heading, options, debug)
+    options = Target.FixOptions(options or {})
+    if not next(options) then return end
     local target = ox_target:addBoxZone({
         coords = coords,
         size = size,
         rotation = heading,
-        debug = targetDebug,
+        debug = debug or targetDebug,
         options = options,
     })
     table.insert(targetZones, { name = name, id = target, creator = GetInvokingResource() })
     return target
 end
+
+-- RegisterCommand('boxzone:test', function(source, args, rawCommand)
+--     local coords = GetEntityCoords(PlayerPedId())
+--     Target.AddBoxZone('test_zone', coords, { 2.0, 2.0, 2.0 }, 0.0, {
+--         {
+--             label = 'Test Option',
+--             icon = 'fas fa-check',
+--             onSelect = function()
+--                 print('Test option selected!')
+--             end
+--         }
+--     }, true)
+-- end)
 
 ---This will add a circle zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string

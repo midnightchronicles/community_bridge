@@ -2,9 +2,11 @@
 if GetResourceState('qb-core') ~= 'started' then return end
 if GetResourceState('qbx_core') == 'started' then return end
 
+Framework = Framework or {}
+
 QBCore = exports['qb-core']:GetCoreObject()
 
-Framework = Framework or {}
+Framework.Shared = QBCore.Shared
 
 ---This will get the name of the framework being used (if a supported framework).
 ---@return string
@@ -12,6 +14,9 @@ Framework.GetFrameworkName = function()
     return 'qb-core'
 end
 
+---This will return a table of the player data, this will be in the framework format.
+---This is mainly for internal bridge use and should be avoided.
+---@return table
 Framework.GetPlayerData = function()
     return QBCore.Functions.GetPlayerData()
 end
@@ -45,6 +50,11 @@ Framework.GetPlayerMetaData = function(metadata)
     return Framework.GetPlayerData().metadata[metadata]
 end
 
+---This will send a notification to the player.
+---@param message string
+---@param type string
+---@param time number
+---@return nil
 Framework.Notify = function(message, type, time)
     TriggerEvent('QBCore:Notify', message, 'primary', time)
 end
@@ -63,6 +73,9 @@ Framework.HideHelpText = function()
     return exports['qb-core']:HideText()
 end
 
+---This will return the item data for the specified item.
+---@param item string
+---@return table
 Framework.GetItemInfo = function(item)
     local itemData = QBCore.Shared.Items[item]
     if not itemData then return {} end
@@ -117,11 +130,14 @@ Framework.GetPlayerJobData = function()
     }
 end
 
+---This will return if the player has the specified item in their inventory.
+---@param item string
+---@return boolean
 Framework.HasItem = function(item)
 	return QBCore.Functions.HasItem(item)
 end
 
----comment
+---This will return the item count for the specified item in the players inventory.
 ---@param item string
 ---@return number
 Framework.GetItemCount = function(item)
@@ -135,6 +151,8 @@ Framework.GetItemCount = function(item)
     return count
 end
 
+---This will return the players inventory as a table in the ox_inventory style flormat.
+---@return table
 Framework.GetPlayerInventory = function()
     local items = {}
     local frameworkInv = Framework.GetPlayerData().items
@@ -153,14 +171,43 @@ Framework.GetPlayerInventory = function()
     return items
 end
 
+---This will return the vehicle properties for the specified vehicle.
+---@param vehicle number
+---@return table
+Framework.GetVehicleProperties = function(vehicle)
+    if not vehicle or not DoesEntityExist(vehicle) then return {} end
+    local vehicleProps = QBCore.Functions.GetVehicleProperties(vehicle)
+    return vehicleProps or {}
+end
+
+---This will set the vehicle properties for the specified vehicle.
+---@param vehicle number
+---@param properties table
+---@return boolean
+Framework.SetVehicleProperties = function(vehicle, properties)
+    if not vehicle or not DoesEntityExist(vehicle) then return false end
+    if not properties then return false end
+    if NetworkGetEntityIsNetworked(vehicle) then
+        local vehNetID = NetworkGetNetworkIdFromEntity(vehicle)
+        local entOwner = GetPlayerServerId(NetworkGetEntityOwner(vehNetID))
+        if entOwner ~= GetPlayerServerId(PlayerId()) then
+            NetworkRequestControlOfEntity(vehicle)
+            local count = 0
+            while not NetworkHasControlOfEntity(vehicle) and count < 3000 do
+                Wait(1)
+                count = count + 1
+            end
+        end
+    end
+    return true, QBCore.Functions.SetVehicleProperties(vehicle, properties)
+end
+
 ---This will get a players dead status.
 ---@return boolean
 Framework.GetIsPlayerDead = function()
     local playerData = Framework.GetPlayerData()
     return playerData.metadata["isdead"] or playerData.metadata["inlaststand"]
 end
-
-Framework.Shared = QBCore.Shared
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(1500)

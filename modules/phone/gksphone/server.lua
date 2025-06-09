@@ -1,23 +1,27 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "gksphone"
-local configValue = BridgeSharedConfig.Phone
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+if GetResourceState(resourceName) == 'missing' then return end
 Phone = Phone or {}
 
----comment
+---This will get the name of the Phone system being being used.
+---@return string
+Phone.GetPhoneName = function()
+    return resourceName
+end
+
+---This will get the phone number of the passed source.
 ---@param src number
----@return number| boolean
----@diagnostic disable-next-line: duplicate-set-field
+---@return number|boolean
 Phone.GetPlayerPhone = function(src)
     return exports["gksphone"]:GetPhoneBySource(src) or false
 end
 
----comment
+---This will send an email to the passed source, email address, title and message.
 ---@param src number
 ---@param email string
 ---@param title string
 ---@param message string
 ---@return boolean
----@diagnostic disable-next-line: duplicate-set-field
 Phone.SendEmail = function(src, email, title, message)
     local data = {}
     data.sender = email

@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 Target = Target or {}
 
 local function warnUser()

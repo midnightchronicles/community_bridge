@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "你没有足够的钱来购买这个物品",
+		"Input": "数量输入",
+		"PurchaseAmount": "购买数量",
+		"PurchasedItem": "你已购买 ",
+		"CurrencySymbol": "¥",
+		"Confirm": "确认购买",
+		"AreYouSure": "你确定要购买一个 ",
+		"PayByCash": "现金支付",
+		"PayByCard": "刷卡支付"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "我是一个 %s %s",
+		"locale-unit-test": "这是一个测试字符串"
+	},
+	"clipboard": {
+		"copy": "已复制到剪贴板"
+	},
+	"placeable_object": {
+		"no_prop_defined": "你没有定义任何要放置的物体",
+		"cant_place_here": "你不能在这里放置这个物体",
+		"place_object_place": "[E] 放置  \n",
+		"place_object_cancel": "[X] 取消  \n",
+		"place_object_scroll_up": "[滚轮上] 向右转  \n",
+		"place_object_scroll_down": "[滚轮下] 向左转"
+	}
+}

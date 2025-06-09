@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "このアイテムを購入するのに十分なお金がありません",
+		"Input": "数量入力",
+		"PurchaseAmount": "購入数量",
+		"PurchasedItem": "購入しました ",
+		"CurrencySymbol": "¥",
+		"Confirm": "購入を確認",
+		"AreYouSure": "本当に購入しますか ",
+		"PayByCash": "現金で支払う",
+		"PayByCard": "カードで支払う"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "私は%s %sです",
+		"locale-unit-test": "これはテスト文字列です"
+	},
+	"clipboard": {
+		"copy": "クリップボードにコピーしました"
+	},
+	"placeable_object": {
+		"no_prop_defined": "配置するオブジェクトが定義されていません",
+		"cant_place_here": "ここにこのオブジェクトを配置できません",
+		"place_object_place": "[E] 配置  \n",
+		"place_object_cancel": "[X] キャンセル  \n",
+		"place_object_scroll_up": "[SCROLL UP] 右回転  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] 左回転"
+	}
+}

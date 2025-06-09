@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "У вас недостаточно денег для покупки этого товара",
+		"Input": "Ввод количества",
+		"PurchaseAmount": "Количество покупки",
+		"PurchasedItem": "Вы купили ",
+		"CurrencySymbol": "₽",
+		"Confirm": "Подтвердить покупку",
+		"AreYouSure": "Вы уверены, что хотите купить ",
+		"PayByCash": "Оплатить наличными",
+		"PayByCard": "Оплатить картой"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Я %s %s",
+		"locale-unit-test": "Это тестовая строка"
+	},
+	"clipboard": {
+		"copy": "Скопировано в буфер обмена"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Вы не определили объект для размещения",
+		"cant_place_here": "Вы не можете разместить этот объект здесь",
+		"place_object_place": "[E] Разместить  \n",
+		"place_object_cancel": "[X] Отмена  \n",
+		"place_object_scroll_up": "[SCROLL UP] Повернуть вправо  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Повернуть влево"
+	}
+}

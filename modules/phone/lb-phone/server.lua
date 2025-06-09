@@ -1,20 +1,27 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "lb-phone"
-local configValue = BridgeSharedConfig.Phone
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
+if GetResourceState(resourceName) == 'missing' then return end
 Phone = Phone or {}
 
----@diagnostic disable-next-line: duplicate-set-field
+---This will get the name of the Phone system being being used.
+---@return string
+Phone.GetPhoneName = function()
+    return resourceName
+end
+
+---This will get the phone number of the passed source.
+---@param src number
+---@return number|boolean
 Phone.GetPlayerPhone = function(src)
     return exports["lb-phone"]:GetEquippedPhoneNumber(src) or false
 end
 
----comment
+---This will send an email to the passed source, email address, title and message.
 ---@param src number
 ---@param email string
 ---@param title string
 ---@param message string
 ---@return boolean
----@diagnostic disable-next-line: duplicate-set-field
 Phone.SendEmail = function(src, email, title, message)
     local numberNumber = exports["lb-phone"]:GetEquippedPhoneNumber(src)
     if not numberNumber then return false, Prints.Error("Could not Find Phone number") end

@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "Jy het nie genoeg geld om hierdie item te koop nie",
+		"Input": "Hoeveelheid invoer",
+		"PurchaseAmount": "Aankoop hoeveelheid",
+		"PurchasedItem": "Jy het gekoop ",
+		"CurrencySymbol": "R",
+		"Confirm": "Bevestig aankoop",
+		"AreYouSure": "Is jy seker jy wil 'n ",
+		"PayByCash": "Betaal kontant",
+		"PayByCard": "Betaal met kaart"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Ek is 'n %s %s",
+		"locale-unit-test": "Dit is 'n toets string"
+	},
+	"clipboard": {
+		"copy": "Gekopieer na knipbord"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Jy het geen voorwerp gedefinieer om te plaas nie",
+		"cant_place_here": "Jy kan nie hierdie voorwerp hier plaas nie",
+		"place_object_place": "[E] Plaas  \n",
+		"place_object_cancel": "[X] Kanselleer  \n",
+		"place_object_scroll_up": "[SCROLL UP] Draai regs  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Draai links"
+	}
+}

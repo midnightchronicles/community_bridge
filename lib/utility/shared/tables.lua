@@ -115,5 +115,16 @@ Table.Shuffle = function(tbl)
     return tbl
 end
 
+Table.Compare = function(a, b)
+    if type(a) == "table" then
+        for k, v in pairs(a) do
+            if not Table.Compare(v, b[k]) then return false end
+        end
+        return true
+    else
+        return a == b
+    end
+end
+
 exports("Table", Table)
 return Table

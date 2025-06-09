@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "คุณไม่มีเงินเพียงพอที่จะซื้อสินค้านี้",
+		"Input": "ป้อนจำนวน",
+		"PurchaseAmount": "จำนวนการซื้อ",
+		"PurchasedItem": "คุณซื้อแล้ว ",
+		"CurrencySymbol": "฿",
+		"Confirm": "ยืนยันการซื้อ",
+		"AreYouSure": "คุณแน่ใจหรือไม่ว่าต้องการซื้อ ",
+		"PayByCash": "จ่ายด้วยเงินสด",
+		"PayByCard": "จ่ายด้วยบัตร"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "ฉันคือ %s %s",
+		"locale-unit-test": "นี่คือสตริงทดสอบ"
+	},
+	"clipboard": {
+		"copy": "คัดลอกไปยังคลิปบอร์ดแล้ว"
+	},
+	"placeable_object": {
+		"no_prop_defined": "คุณไม่ได้กำหนดวัตถุใดๆ ให้วาง",
+		"cant_place_here": "คุณไม่สามารถวางวัตถุนี้ที่นี่ได้",
+		"place_object_place": "[E] วาง  \n",
+		"place_object_cancel": "[X] ยกเลิก  \n",
+		"place_object_scroll_up": "[SCROLL UP] หมุนขวา  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] หมุนซ้าย"
+	}
+}

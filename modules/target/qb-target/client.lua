@@ -1,7 +1,7 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "qb-target"
-local configValue = BridgeClientConfig.TargetSystem
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
-if GetResourceState('ox_target') == 'started' then return end -- this is for older versions of ox that supported the backwards compatability. As its depricated we dont want to touch that.
+if GetResourceState(resourceName) == 'missing' then return end
+if GetResourceState("ox_target") == 'started' then return end
 
 local targetDebug = false
 local function detectDebugEnabled()
@@ -67,7 +67,7 @@ Target.AddGlobalVehicle = function(options)
     })
 end
 
----This will remove target options from all vehicles. 
+---This will remove target options from all vehicles.
 ---@param options table
 Target.RemoveGlobalVehicle = function(options)
     local assembledLables = {}
@@ -89,9 +89,10 @@ Target.AddLocalEntity = function(entities, options)
 end
 
 ---This will remove the target options from a local entity. This is useful for when you want to remove target options from a specific entity.
----@param entity any
-Target.RemoveLocalEntity = function(entity)
-    qb_target:RemoveTargetEntity(entity)
+---@param entity number | table
+---@param labels string | table | nil
+Target.RemoveLocalEntity = function(entity, labels)
+    qb_target:RemoveTargetEntity(entity, labels)
 end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
@@ -111,20 +112,32 @@ Target.RemoveModel = function(model)
     qb_target:RemoveTargetModel(model)
 end
 
+-- Target.DisableTargeting = function(bool)
+--     qb_target:AllowTargeting(bool)
+-- end
+
+-- Target.Refresh = function()
+--     qb_target:AllowTargeting(false)
+--     Wait(10)
+--     qb_target:AllowTargeting(true)
+-- end
+
+
 ---This will add a box zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
 ---@param coords table
 ---@param size table
 ---@param heading number
 ---@param options table
-Target.AddBoxZone = function(name, coords, size, heading, options)
+Target.AddBoxZone = function(name, coords, size, heading, options, debug)
     options = Target.FixOptions(options)
+    if not next(options) then return end
     qb_target:AddBoxZone(name, coords, size.x, size.y, {
         name = name,
-        debugPoly = targetDebug,
+        debugPoly = debug or targetDebug,
         heading = heading,
-        minZ = coords.z - (size.x * 0.5),
-        maxZ = coords.z + (size.x * 0.5),
+        minZ = coords.z - (size.z * 0.5),
+        maxZ = coords.z + (size.z * 0.5),
     }, {
         options = options,
         distance = options.distance or 1.5,

@@ -2,7 +2,7 @@ loadedModules = {}
 
 function Require(modulePath, resourceName)
     if resourceName and type(resourceName) ~= "string" then
-        resourceName = GetCurrentResourceName()
+        resourceName = GetInvokingResource()
     end
 
     if not resourceName then
@@ -62,14 +62,14 @@ cLib.Cache = Cache or Require("lib/cache/shared/cache.lua")
 cLib.ServerEntity = ServerEntity or Require("lib/entities/server/server_entity.lua")
 cLib.Marker = Marker or Require("lib/markers/server/server.lua")
 cLib.Particle = Particle or Require("lib/particles/server/particles.lua")
+cLib.Shell = Shells or Require("lib/shells/server/shells.lua")
 if IsDuplicityVersion() then return cLib end
 ::client::
 
-cLib.Gizmo = Gizmo or Require("lib/placers/client/gizmo.lua")
 cLib.Scaleform = Scaleform or Require("lib/scaleform/client/scaleform.lua")
 cLib.Placeable = Placeable or Require("lib/placers/client/object_placer.lua")
 cLib.Utility = Utility or Require("lib/utility/client/utility.lua")
-cLib.PlaceableObject = PlaceableObject or Require("lib/placers/client/placeable_object.lua")
+cLib.PlaceableObject = ObjectPlacer or Require("lib/placers/client/placeable_object.lua")
 cLib.Raycast = Raycast or Require("lib/raycast/client/raycast.lua")
 cLib.Point = Point or Require("lib/points/client/points.lua")
 cLib.Particle = Particle or Require("lib/particles/client/particles.lua")

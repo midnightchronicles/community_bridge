@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "ليس لديك مال كافٍ لشراء هذا العنصر",
+		"Input": "إدخال الكمية",
+		"PurchaseAmount": "كمية الشراء",
+		"PurchasedItem": "لقد اشتريت ",
+		"CurrencySymbol": "ر.س",
+		"Confirm": "تأكيد الشراء",
+		"AreYouSure": "هل أنت متأكد من أنك تريد شراء ",
+		"PayByCash": "الدفع نقداً",
+		"PayByCard": "الدفع بالبطاقة"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "أنا %s %s",
+		"locale-unit-test": "هذا نص تجريبي"
+	},
+	"clipboard": {
+		"copy": "تم النسخ إلى الحافظة"
+	},
+	"placeable_object": {
+		"no_prop_defined": "لم تحدد أي كائن للوضع",
+		"cant_place_here": "لا يمكنك وضع هذا الكائن هنا",
+		"place_object_place": "[E] وضع  \n",
+		"place_object_cancel": "[X] إلغاء  \n",
+		"place_object_scroll_up": "[SCROLL UP] تدوير يمين  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] تدوير يسار"
+	}
+}

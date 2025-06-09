@@ -1,9 +1,13 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "ox_lib"
 local configValue = BridgeClientConfig.ProgressBarSystem
 if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 ProgressBar = ProgressBar or {}
 
+---This function converts a QB progress bar options table to an Ox progress bar options table.
+---@param options table
+---@return table
 local function convertFromQB(options)
     if not options then return options end
     local prop1 = options.prop or {}
@@ -13,7 +17,7 @@ local function convertFromQB(options)
             model = prop1.model,
             bone = prop1.bone,
             pos = prop1.coords,
-            rot = prop1.rotation,       
+            rot = prop1.rotation,
         },
         {
             model = prop2.model,
@@ -22,8 +26,6 @@ local function convertFromQB(options)
             rot = prop2.rotation,
         }
     }
-    
-    
     return {
         duration = options.duration,
         label = options.label,
@@ -38,18 +40,18 @@ local function convertFromQB(options)
         },
         anim = {
             dict = options.animation?.animDict,
-            clip = options.animation?.anim
+            clip = options.animation?.anim,
+            flag = options.animation?.flags or 49,
         },
         prop = props,
     }
 end
 
----comment
+---This function opens a progress bar.
 ---@param options table
 ---@param cb any
----@param isQBInput boolean
----@return nil
----@diagnostic disable-next-line: duplicate-set-field
+---@param isQBInput boolean||optional
+---@return boolean
 function ProgressBar.Open(options, cb, isQBInput)
     if isQBInput then
         options = convertFromQB(options)
@@ -63,22 +65,3 @@ function ProgressBar.Open(options, cb, isQBInput)
 end
 
 return ProgressBar
-
---[[
-RegisterCommand("progressbar", function()
-    ProgressBar.Open({
-        duration = 5000,
-        label = "Searching",
-        disable = {
-            move = true,
-            combat = true
-        },
-        anim = {
-            dict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
-            clip = "machinic_loop_mechandplayer"
-        }
-    }, function(cancelled)
-        print(cancelled and "Cancelled" or "Complete")
-    end)
-end)
---]]

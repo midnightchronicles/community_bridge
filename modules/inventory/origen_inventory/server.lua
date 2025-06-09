@@ -2,6 +2,7 @@
 if GetResourceState('origen_inventory') ~= 'started' then return end
 
 Inventory = Inventory or {}
+Inventory.Stashes = Inventory.Stashes or {}
 
 local origin = exports.origen_inventory
 
@@ -29,6 +30,52 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
     return origin:removeItem(src, item, count, metadata, slot, true)
 end
 
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddTrunkItems = function(identifier, items)
+    local id = "trunk_"..identifier
+    if type(items) ~= "table" then return false end
+    Inventory.RegisterStash(id, identifier, 20, 10000, nil, nil, nil)
+    local repack_items = {}
+    for _, v in pairs(items) do
+        table.insert(repack_items, {
+            name = v.item,
+            amount = v.count,
+            metadata = v.metadata or {}
+        })
+    end
+    if #repack_items == 0 then return false end
+    origin:addItems(id, repack_items)
+    return true
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param identifier string
+---@return boolean
+Inventory.ClearStash = function(identifier, _type)
+    if type(identifier) ~= "string" then return false end
+    if Inventory.Stashes[identifier] then Inventory.Stashes[identifier] = nil end
+    local id = identifier
+    if _type == "trunk" then
+        id = "trunk_"..id
+    elseif _type == "glovebox" then
+        id = "glovebox_"..id
+    elseif _type == "stash" then
+        id = "stash_"..id
+    end
+    local inv = origin:getInventory(identifier, _type)
+    if not inv then return false end
+    local indexed = inv.inventory
+    for _, v in pairs(indexed) do
+        if v.slot then
+            origin:removeItem(id, v.name, v.amount, nil, v.slot)
+        end
+    end
+    return true
+end
+
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
 ---@param item string
 ---@return table
@@ -45,9 +92,7 @@ Inventory.GetItemInfo = function(item)
     }
 end
 
-
 ---This will return the count of the item in the players inventory, if not found will return 0.
----
 ---if metadata is passed it will find the matching items count.
 ---@param src number
 ---@param item string
@@ -65,7 +110,6 @@ Inventory.GetPlayerInventory = function(src)
 end
 
 ---Returns the specified slot data as a table.
----
 ---format {weight, name, metadata, slot, label, count}
 ---@param src number
 ---@param slot number
@@ -99,20 +143,17 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
-Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    return origin:OpenInventory(src, 'stash', id)
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local tbl = Inventory.Stashes[id]
+    return origin:OpenInventory(src, _type, id)
 end
 
 ---This will register a stash
----@param id number||string
+---@param id number|string
 ---@param label string
 ---@param slots number
 ---@param weight number
@@ -120,8 +161,20 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string|number
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    return origin:registerStash(id, label, slots, weight, owner, groups, coords)
+    if Inventory.Stashes[id] then return true, id end
+    Inventory.Stashes[id] = {
+        id = id,
+        label = label,
+        slots = slots,
+        weight = weight,
+        owner = owner,
+        groups = groups,
+        coords = coords
+    }
+    origin:registerStash(id, label, slots, weight, owner, groups, coords)
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.
@@ -174,11 +227,11 @@ Inventory.OpenShop = function(src, shopTitle)
 end
 
 -- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
-Inventory.CreateShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
+Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
     return true, print("Currently runtime shops are not supported in origen_inventory")
 end
 

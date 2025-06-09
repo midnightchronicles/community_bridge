@@ -4,6 +4,7 @@ local sloth = exports['ps-inventory']
 local registeredShops = {}
 
 Inventory = Inventory or {}
+Inventory.Stashes = Inventory.Stashes or {}
 
 ---This will add an item, and return true or false based on success
 ---@param src number
@@ -29,6 +30,24 @@ Inventory.RemoveItem = function(src, item, count, slot, metadata)
     TriggerClientEvent('ps-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove', count)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "remove", item = item, count = count, slot = slot, metadata = metadata})
     return sloth:RemoveItem(src, item, count, slot, 'community_bridge')
+end
+
+---This will add items to a trunk, and return true or false based on success
+---@param identifier string
+---@param items table
+---@return boolean
+Inventory.AddItemsToTrunk = function(identifier, items)
+    if type(items) ~= "table" then return false end
+    return false, print("AddItemsToTrunk is not implemented in ps-inventory, because of this we dont have a way to add items to a trunk.")
+end
+
+---This will clear the specified inventory, will always return true unless a value isnt passed correctly.
+---@param id string
+---@return boolean
+Inventory.ClearStash = function(id, _type)
+    if type(id) ~= "string" then return false end
+    if Inventory.Stashes[id] then Inventory.Stashes[id] = nil end
+    return false, print("ClearInventory is not implemented in ps-inventory, because of this we dont have a way to clear a stash.")
 end
 
 ---This will return a table with the item info, {name, label, stack, weight, description, image}
@@ -84,20 +103,17 @@ end
 
 ---This will open the specified stash for the src passed.
 ---@param src number
+---@param _type string
 ---@param id number||string
----@param label string
----@param slots number
----@param weight number
----@param owner string
----@param groups table
----@param coords table
 ---@return nil
-Inventory.OpenStash = function(src, id, label, slots, weight, owner, groups, coords)
-    TriggerClientEvent('community_bridge:client:ps-inventory:openStash', src, id, { label = label, maxweight = weight, slots = slots, })
+Inventory.OpenStash = function(src, _type, id)
+    _type = _type or "stash"
+    local tbl = Inventory.Stashes[id]
+    TriggerClientEvent('community_bridge:client:ps-inventory:openStash', src, id, { label = tbl.label, maxweight = tbl.weight, slots = tbl.slots, })
 end
 
 ---This will register a stash
----@param id number||string
+---@param id number|string
 ---@param label string
 ---@param slots number
 ---@param weight number
@@ -105,8 +121,19 @@ end
 ---@param groups table
 ---@param coords table
 ---@return boolean
+---@return string|number
 Inventory.RegisterStash = function(id, label, slots, weight, owner, groups, coords)
-    return true
+    if Inventory.Stashes[id] then return true, id end
+    Inventory.Stashes[id] = {
+        id = id,
+        label = label,
+        slots = slots,
+        weight = weight,
+        owner = owner,
+        groups = groups,
+        coords = coords
+    }
+    return true, id
 end
 
 ---This will return a boolean if the player has the item.
@@ -159,11 +186,11 @@ Inventory.OpenShop = function(src, shopTitle)
 end
 
 -- This will register a shop, if it already exists it will return true.
--- @param shopTitle string
--- @param shopInventory table
--- @param shopCoords table
--- @param shopGroups table
-Inventory.CreateShop = function(src, shopTitle, shopInventory, shopCoords, shopGroups)
+---@param shopTitle string
+---@param shopInventory table
+---@param shopCoords table
+---@param shopGroups table
+Inventory.RegisterShop = function(src, shopTitle, shopInventory, shopCoords, shopGroups)
     if not shopTitle or not shopInventory or not shopCoords then return end
     if registeredShops[shopTitle] then return true end
 

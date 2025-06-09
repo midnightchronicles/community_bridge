@@ -2,7 +2,7 @@ Shops = Shops or {}
 
 local registeredShops = {}
 
----commentThis can open a shop for the client
+---This can open a shop for the client
 ---@param src number
 ---@param shopTitle string
 ---@return boolean

@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "Nie masz wystarczająco pieniędzy, aby kupić ten przedmiot",
+		"Input": "Wprowadzenie ilości",
+		"PurchaseAmount": "Ilość zakupu",
+		"PurchasedItem": "Kupiłeś ",
+		"CurrencySymbol": "zł",
+		"Confirm": "Potwierdź zakup",
+		"AreYouSure": "Czy na pewno chcesz kupić ",
+		"PayByCash": "Zapłać gotówką",
+		"PayByCard": "Zapłać kartą"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Jestem %s %s",
+		"locale-unit-test": "To jest ciąg testowy"
+	},
+	"clipboard": {
+		"copy": "Skopiowano do schowka"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Nie zdefiniowałeś żadnego obiektu do umieszczenia",
+		"cant_place_here": "Nie możesz umieścić tego obiektu tutaj",
+		"place_object_place": "[E] Umieść  \n",
+		"place_object_cancel": "[X] Anuluj  \n",
+		"place_object_scroll_up": "[SCROLL UP] Obróć w prawo  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Obróć w lewo"
+	}
+}

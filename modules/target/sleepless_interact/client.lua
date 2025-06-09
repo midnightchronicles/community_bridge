@@ -1,7 +1,7 @@
+---@diagnostic disable: duplicate-set-field
 local resourceName = "sleepless_interact"
-local configValue = BridgeClientConfig.TargetSystem
-if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (configValue ~= "auto" and configValue ~= resourceName) then return end
-
+if GetResourceState(resourceName) == 'missing' then return end
+if GetResourceState("ox_target") == 'started' then return end
 
 local targetDebug = false
 local function detectDebugEnabled()
@@ -40,7 +40,6 @@ Target.AddGlobalPlayer = function(options)
 end
 
 Target.DisableTargeting = function(bool)
-    --sleepless_interact:disableTargeting(bool)
     sleepless_interact:disableInteract(bool)
 end
 
@@ -104,9 +103,10 @@ end
 
 ---comment
 ---@param entity number
+---@param labels string | table | nil
 ---@return nil
-Target.RemoveLocalEntity = function(entity)
-    sleepless_interact:removeLocalEntity(entity)
+Target.RemoveLocalEntity = function(entity, labels)
+    sleepless_interact:removeLocalEntity(entity, labels)
 end
 
 ---comment
@@ -128,6 +128,17 @@ Target.RemoveZone = function(name)
         end
     end
 end
+
+-- Target.DisableTargeting = function(bool)
+--     sleepless_interact:disableInteract(bool)
+-- end
+
+-- Target.Refresh = function()
+--     sleepless_interact:disableInteract(false)
+--     Wait(10)
+--     sleepless_interact:disableInteract(true)
+-- end
+
 
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
