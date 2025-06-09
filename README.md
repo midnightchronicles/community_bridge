@@ -17,6 +17,20 @@
 
 ---
 
+## 📚 Documentation
+
+Read the full documentation here:  
+👉 [Our Gitbook Here](https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework)
+
+---
+
+## 💬 Join the Community
+
+Have questions, suggestions, or want to contribute? Join us on Discord:  
+👉 [Our Discord Here](https://discord.gg/MukwBuJjP7)
+
+---
+
 ## 🚀 Overview & Features
 
 **Community Bridge** is a comprehensive compatibility layer that acts as a universal wrapper around all major systems used across FiveM frameworks. Whether you're building with QB-Core, ESX, QBox, or any other framework, this bridge ensures your scripts work seamlessly across all environments.
@@ -181,38 +195,6 @@ A: We release updates regularly to maintain compatibility and add new features b
    ensure community_bridge
    ```
 4. **Restart** your server
-
----
-
-## 📚 Documentation
-
-Read the full documentation here:  
-👉 [Our Gitbook Here](https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework)
-
----
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Here's how you can help:
-
-### How to Contribute
-1. **Fork** this repositorys dev branch
-2. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-3. **Push** to the branch (`git push origin feature/amazing-feature`)
-4. **Open** a Pull Request
-
-### Guidelines
-- ✅ Follow existing code style and patterns
-- ✅ Test your changes thoroughly
-- ✅ Update documentation when needed
-- ✅ Be respectful and constructive in discussions
-
----
-
-## 💬 Join the Community
-
-Have questions, suggestions, or want to contribute? Join us on Discord:  
-👉 [Our Discord Here](https://discord.gg/MukwBuJjP7)
 
 ---
 
