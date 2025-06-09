@@ -106,7 +106,8 @@ end
 ---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
-    return origin:GetInventory(src)
+    local playerInv = origin:GetInventory(src)
+    return playerInv.inventory or {}
 end
 
 ---Returns the specified slot data as a table.
@@ -115,7 +116,8 @@ end
 ---@param slot number
 ---@return table
 Inventory.GetItemBySlot = function(src, slot)
-    local inv = origin:getInventory(src)
+    local playerInv = origin:getInventory(src)
+    local inv = playerInv.inventory or {}
     for k, v in pairs(inv) do
         if v.slot == slot then
             return {
@@ -124,7 +126,7 @@ Inventory.GetItemBySlot = function(src, slot)
                 metadata = v.metadata,
                 slot = v.slot,
                 label = v.label,
-                count = v.count
+                count = v.amount
             }
         end
     end
