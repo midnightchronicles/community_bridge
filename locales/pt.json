@@ -1,50 +1,28 @@
 {
-    "locale-unit-test": "Isto é apenas uma string de teste",
-    "place_object_place": "[E] Colocar  \n",
-    "place_object_cancel": "[X] Cancelar  \n",
-    "place_object_scroll_up": "[SCROLL UP] Direita\n",
-    "place_object_scroll_down": "[SCROLL DOWN] Esquerda",
-    "enter_text": "Inserir Texto",
-    "no_prop_defined": "Não definiu nenhum objeto para colocar",
-    "accessibility": {
-        "cb_command": "daltônico",
-        "cb_title": "Opções de daltonismo",
-        "cb_desc": "Selecione seu tipo de daltonismo\nDaltonismo atual: %s",
-        "cb_none": "Nenhum",
-        "cb_updated": "O daltonismo foi atualizado para %s",
-        "cb_default_title": "Sem daltonismo",
-        "cb_default_desc": "Sem daltonismo.\nEsta é a opção padrão.",
-        "cb_protanomaly_title": "Protanomalia",
-        "cb_protanomaly_desc": "Daltonismo vermelho-verde.\nFaz com que certos tons de vermelho pareçam mais verdes e menos brilhantes.\nEste tipo é leve e geralmente não atrapalha as atividades normais.",
-        "cb_deuteranomaly_title": "Deuteranomalia",
-        "cb_deuteranomaly_desc": "Daltonismo vermelho-verde.\nFaz com que certos tons de verde pareçam mais vermelhos.\nEste tipo é leve e geralmente não atrapalha as atividades normais.",
-        "cb_dual_title": "Protanopia e Deuteranopia",
-        "cb_dual_desc": "Daltonismo vermelho-verde.\nFaz com que alguém não consiga distinguir entre vermelho e verde.",
-        "cb_tritanopia_title": "Tritanopia",
-        "cb_tritanopia_desc": "Daltonismo azul-amarelo que faz com que alguém não consiga distinguir a diferença entre azul e verde, roxo e vermelho, e amarelo e rosa.\nTambém faz com que as cores pareçam menos brilhantes.",
-        "cb_tritanomaly_title": "Tritanomalia",
-        "cb_tritanomaly_desc": "O daltonismo azul-amarelo dificulta a distinção entre azul e verde e entre amarelo e vermelho."    },
-    "Shops": {
-        "NotEnoughMoney": "Você não tem dinheiro suficiente para comprar este item",
-        "Input": "Entrada de Quantidade",
-        "PurchaseAmount": "Quantidade de Compra",
-        "PurchasedItem": "Você Comprou ",
-        "CurrencySymbol": "€",
-        "Confirm": "Confirmar Compra",
-        "AreYouSure": "Tem certeza que quer comprar um ",
-        "PayByCash": "Pagar em dinheiro",
-        "PayByCard": "Pagar com cartão"
-    },
-    "UNITTEST": {
-        "UNITTESTA": "Eu sou um %s %s",
-        "UNITTEST": {
-            "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
-        }
-    },
-    "clipboard":{
-        "copy": "Copiado para a área de transferência"
-    },
-    "placeable_object": {
-        "cant_place_here": "Não pode colocar este objeto aqui"
-    }
+	"Shops": {
+		"NotEnoughMoney": "Você não tem dinheiro suficiente para comprar este item",
+		"Input": "Entrada de quantidade",
+		"PurchaseAmount": "Quantidade de compra",
+		"PurchasedItem": "Você comprou ",
+		"CurrencySymbol": "R$",
+		"Confirm": "Confirmar compra",
+		"AreYouSure": "Tem certeza de que deseja comprar um ",
+		"PayByCash": "Pagar em dinheiro",
+		"PayByCard": "Pagar com cartão"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Eu sou um %s %s",
+		"locale-unit-test": "Esta é uma string de teste"
+	},
+	"clipboard": {
+		"copy": "Copiado para a área de transferência"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Você não definiu nenhum objeto para colocar",
+		"cant_place_here": "Você não pode colocar este objeto aqui",
+		"place_object_place": "[E] Colocar  \n",
+		"place_object_cancel": "[X] Cancelar  \n",
+		"place_object_scroll_up": "[SCROLL UP] Girar à direita  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Girar à esquerda"
+	}
 }

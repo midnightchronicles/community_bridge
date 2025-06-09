@@ -1,51 +1,28 @@
 {
-  "locale-unit-test": "Ceci est une chaîne de test",
-  "place_object_place": "[E] Placer  \n",
-  "place_object_cancel": "[X] Annuler  \n",
-  "place_object_scroll_up": "[SCROLL UP] Tourner à droite  \n",
-  "place_object_scroll_down": "[SCROLL DOWN] Tourner à gauche",
-  "enter_text": "Saisir le Texte",
-  "no_prop_defined": "Vous n'avez défini aucun objet à placer",
-  "Shops": {
-    "NotEnoughMoney": "Vous n'avez pas assez d'argent pour acheter cet article",
-    "Input": "Saisie de Quantité",
-    "PurchaseAmount": "Quantité d'Achat",
-    "PurchasedItem": "Vous Avez Acheté ",
-    "CurrencySymbol": "€",
-    "Confirm": "Confirmer l'Achat",
-    "AreYouSure": "Êtes-vous sûr de vouloir acheter un ",
-    "PayByCash": "Payer en espèces",
-    "PayByCard": "Payer par carte"
-  },
-  "UNITTEST": {
-    "UNITTESTA": "Je suis un %s %s",
-    "UNITTEST": {
-      "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
-    }
-  },
-  "accessibility": {
-    "cb_command": "daltonisme",
-    "cb_title": "Options de Daltonisme",
-    "cb_desc": "Sélectionnez votre type de daltonisme\nDaltonisme actuel : %s",
-    "cb_none": "Aucun",
-    "cb_updated": "Le daltonisme a été mis à jour vers %s",
-    "cb_default_title": "Pas de Daltonisme",
-    "cb_default_desc": "Pas de daltonisme.\nCeci est l'option par défaut.",
-    "cb_protanomaly_title": "Protanomalie",
-    "cb_protanomaly_desc": "Daltonisme rouge-vert.\nFait que certaines nuances de rouge paraissent plus vertes et moins brillantes.\nCe type est léger et n'interfère généralement pas avec les activités normales.",
-    "cb_deuteranomaly_title": "Deutéranomalie",
-    "cb_deuteranomaly_desc": "Daltonisme rouge-vert.\nFait que certaines nuances de vert paraissent plus rouges.\nCe type est léger et n'interfère généralement pas avec les activités normales.",
-    "cb_dual_title": "Protanopie et Deutéranopie",
-    "cb_dual_desc": "Daltonisme rouge-vert.\nRend quelqu'un incapable de distinguer le rouge du vert du tout.",
-    "cb_tritanopia_title": "Tritanopie",
-    "cb_tritanopia_desc": "Daltonisme bleu-jaune qui rend quelqu'un incapable de distinguer le bleu du vert, le violet du rouge, et le jaune du rose.\nIl rend aussi les couleurs moins brillantes.",
-    "cb_tritanomaly_title": "Tritanomalie",
-    "cb_tritanomaly_desc": "Le daltonisme bleu-jaune rend difficile la distinction entre le bleu et le vert et entre le jaune et le rouge."
-  },
-  "clipboard":{
-    "copy": "Copié dans le presse-papiers"
-  },
-  "placeable_object": {
-    "cant_place_here": "Vous ne pouvez pas placer cet objet ici"
-  }
+	"Shops": {
+		"NotEnoughMoney": "Vous n'avez pas assez d'argent pour acheter cet article",
+		"Input": "Saisie de quantité",
+		"PurchaseAmount": "Quantité d'achat",
+		"PurchasedItem": "Vous avez acheté ",
+		"CurrencySymbol": "€",
+		"Confirm": "Confirmer l'achat",
+		"AreYouSure": "Êtes-vous sûr de vouloir acheter un ",
+		"PayByCash": "Payer en espèces",
+		"PayByCard": "Payer par carte"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Je suis un %s %s",
+		"locale-unit-test": "Ceci est une chaîne de test"
+	},
+	"clipboard": {
+		"copy": "Copié dans le presse-papiers"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Vous n'avez défini aucun objet à placer",
+		"cant_place_here": "Vous ne pouvez pas placer cet objet ici",
+		"place_object_place": "[E] Placer  \n",
+		"place_object_cancel": "[X] Annuler  \n",
+		"place_object_scroll_up": "[SCROLL UP] Tourner à droite  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Tourner à gauche"
+	}
 }

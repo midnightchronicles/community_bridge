@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "Nemáte dostatek peněz na nákup této položky",
+		"Input": "Zadání množství",
+		"PurchaseAmount": "Množství k nákupu",
+		"PurchasedItem": "Zakoupili jste ",
+		"CurrencySymbol": "Kč",
+		"Confirm": "Potvrdit nákup",
+		"AreYouSure": "Jste si jisti, že chcete koupit ",
+		"PayByCash": "Platit hotově",
+		"PayByCard": "Platit kartou"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Jsem %s %s",
+		"locale-unit-test": "Toto je testovací řetězec"
+	},
+	"clipboard": {
+		"copy": "Zkopírováno do schránky"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Nedefinovali jste žádný objekt k umístění",
+		"cant_place_here": "Tento objekt zde nemůžete umístit",
+		"place_object_place": "[E] Umístit  \n",
+		"place_object_cancel": "[X] Zrušit  \n",
+		"place_object_scroll_up": "[SCROLL UP] Otočit doprava  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Otočit doleva"
+	}
+}

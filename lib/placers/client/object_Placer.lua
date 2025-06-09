@@ -6,10 +6,10 @@ lib.locale()
 
 -- Object placer --
 local placementText = {
-    locale('place_object_place'),
-    locale('place_object_cancel'),
-    locale('place_object_scroll_up'),
-    locale('place_object_scroll_down')
+    locale('placeable_object.place_object_place'),
+    locale('placeable_object.place_object_cancel'),
+    locale('placeable_object.place_object_scroll_up'),
+    locale('placeable_object.place_object_scroll_down')
 }
 
 local function finishPlacing()
@@ -31,7 +31,7 @@ Placeable.PlaceObject = function(object, distance, snapToGround, allowedMats, of
     distance = tonumber(distance or 10.0 )
     if activePlacementProp then return end
 
-    if not object then Prints.Error('no_prop_defined') end
+    if not object then Prints.Error('placeable_object.no_prop_defined') end
 
     local propObject = type(object) == 'string' and joaat(object) or object
     local heading = 0.0

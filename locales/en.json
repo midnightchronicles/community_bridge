@@ -1,51 +1,28 @@
 {
-  "locale-unit-test": "This is a test string",
-  "place_object_place": "[E] Place  \n",
-  "place_object_cancel": "[X] Cancel  \n",
-  "place_object_scroll_up": "[SCROLL UP] Turn right  \n",
-  "place_object_scroll_down": "[SCROLL DOWN] Turn left",
-  "enter_text": "Enter Text",
-  "no_prop_defined": "You didnt define any object to place",
-  "Shops": {
-    "NotEnoughMoney": "You dont have enough money to buy this item",
-    "Input": "Amount Input",
-    "PurchaseAmount": "Purchase Quanity",
-    "PurchasedItem": "You Have Purchased ",
-    "CurrencySymbol": "$",
-    "Confirm": "Confirm Purchase",
-    "AreYouSure": "Are you sure you want to purchase a ",
-    "PayByCash": "Pay by cash",
-    "PayByCard": "Pay by card"
-  },
-  "UNITTEST": {
-    "UNITTESTA": "Im a %s %s",
-    "UNITTEST": {
-      "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
-    }
-  },
-  "accessibility": {
-    "cb_command": "colourblindness",
-    "cb_title": "Colourblindness Options",
-    "cb_desc": "Select your type of colourblindness\nCurrent Colourblindness: %s",
-    "cb_none": "None",
-    "cb_updated": "Colourblindness has been updated to %s",
-    "cb_default_title": "No Colourblindness",
-    "cb_default_desc": "No colourblindness.\nThis is the default option.",
-    "cb_protanomaly_title": "Protanomaly",
-    "cb_protanomaly_desc": "Red-green color blindness.\nMakes certain shades of red look more green and less bright.\nThis type is mild and usually doesn’t get in the way of normal activities.",
-    "cb_deuteranomaly_title": "Deuteranomaly",
-    "cb_deuteranomaly_desc": "Red-green color blindness.\nIt makes certain shades of green look more red.\nThis type is mild and doesn’t usually get in the way of normal activities.",
-    "cb_dual_title": "Protanopia and Deuteranopia",
-    "cb_dual_desc": "Red-green color blindness.\nMakes someone unable to tell the difference between red and green at all.",
-    "cb_tritanopia_title": "Tritanopia",
-    "cb_tritanopia_desc": "Blue-yellow color blindness that makes someone unable to tell the difference between blue and green, purple and red, and yellow and pink.\nIt also makes colors look less bright.",
-    "cb_tritanomaly_title": "Tritanomaly",
-    "cb_tritanomaly_desc": "Blue-yellow color blindness makes it hard to tell the difference between blue and green and between yellow and red."
-  },
-  "clipboard":{
-    "copy": "Copied to clipboard"
-  },
-  "placeable_object": {
-    "cant_place_here": "You can't place this object here"
-  }
+	"Shops": {
+		"NotEnoughMoney": "You dont have enough money to buy this item",
+		"Input": "Amount Input",
+		"PurchaseAmount": "Purchase Quanity",
+		"PurchasedItem": "You Have Purchased ",
+		"CurrencySymbol": "$",
+		"Confirm": "Confirm Purchase",
+		"AreYouSure": "Are you sure you want to purchase a ",
+		"PayByCash": "Pay by cash",
+		"PayByCard": "Pay by card"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Im a %s %s",
+		"locale-unit-test": "This is a test string"
+	},
+	"clipboard": {
+		"copy": "Copied to clipboard"
+	},
+	"placeable_object": {
+		"no_prop_defined": "You didnt define any object to place",
+		"cant_place_here": "You can't place this object here",
+		"place_object_place": "[E] Place  \n",
+		"place_object_cancel": "[X] Cancel  \n",
+		"place_object_scroll_up": "[SCROLL UP] Turn right  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Turn left"
+	}
 }

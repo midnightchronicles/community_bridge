@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "Δεν έχετε αρκετά χρήματα για να αγοράσετε αυτό το αντικείμενο",
+		"Input": "Εισαγωγή ποσότητας",
+		"PurchaseAmount": "Ποσότητα αγοράς",
+		"PurchasedItem": "Αγοράσατε ",
+		"CurrencySymbol": "€",
+		"Confirm": "Επιβεβαίωση αγοράς",
+		"AreYouSure": "Είστε σίγουροι ότι θέλετε να αγοράσετε ",
+		"PayByCash": "Πληρωμή με μετρητά",
+		"PayByCard": "Πληρωμή με κάρτα"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Είμαι ένας %s %s",
+		"locale-unit-test": "Αυτή είναι μια συμβολοσειρά δοκιμής"
+	},
+	"clipboard": {
+		"copy": "Αντιγράφηκε στο πρόχειρο"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Δεν έχετε ορίσει κάποιο αντικείμενο προς τοποθέτηση",
+		"cant_place_here": "Δεν μπορείτε να τοποθετήσετε αυτό το αντικείμενο εδώ",
+		"place_object_place": "[E] Τοποθέτηση  \n",
+		"place_object_cancel": "[X] Ακύρωση  \n",
+		"place_object_scroll_up": "[SCROLL UP] Περιστροφή δεξιά  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Περιστροφή αριστερά"
+	}
+}

@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "Bu ürünü satın almak için yeterli paranız yok",
+		"Input": "Miktar girişi",
+		"PurchaseAmount": "Satın alma miktarı",
+		"PurchasedItem": "Satın aldınız ",
+		"CurrencySymbol": "₺",
+		"Confirm": "Satın almayı onayla",
+		"AreYouSure": "Bir tane satın almak istediğinizden emin misiniz ",
+		"PayByCash": "Nakit ile öde",
+		"PayByCard": "Kart ile öde"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Ben bir %s %s",
+		"locale-unit-test": "Bu bir test dizesi"
+	},
+	"clipboard": {
+		"copy": "Panoya kopyalandı"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Yerleştirilecek herhangi bir nesne tanımlamadınız",
+		"cant_place_here": "Bu nesneyi buraya yerleştiremezsiniz",
+		"place_object_place": "[E] Yerleştir  \n",
+		"place_object_cancel": "[X] İptal  \n",
+		"place_object_scroll_up": "[SCROLL UP] Sağa çevir  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Sola çevir"
+	}
+}

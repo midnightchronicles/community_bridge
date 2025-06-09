@@ -1,51 +1,28 @@
 {
-  "locale-unit-test": "Dies ist ein Test-String",
-  "place_object_place": "[E] Platzieren  \n",
-  "place_object_cancel": "[X] Abbrechen  \n",
-  "place_object_scroll_up": "[SCROLL UP] Nach rechts drehen  \n",
-  "place_object_scroll_down": "[SCROLL DOWN] Nach links drehen",
-  "enter_text": "Text Eingeben",
-  "no_prop_defined": "Sie haben kein Objekt zum Platzieren definiert",
-  "Shops": {
-    "NotEnoughMoney": "Sie haben nicht genug Geld, um diesen Artikel zu kaufen",
-    "Input": "Mengen-Eingabe",
-    "PurchaseAmount": "Kaufmenge",
-    "PurchasedItem": "Sie Haben Gekauft ",
-    "CurrencySymbol": "€",
-    "Confirm": "Kauf Bestätigen",
-    "AreYouSure": "Sind Sie sicher, dass Sie ein ",
-    "PayByCash": "Bar bezahlen",
-    "PayByCard": "Mit Karte bezahlen"
-  },
-  "UNITTEST": {
-    "UNITTESTA": "Ich bin ein %s %s",
-    "UNITTEST": {
-      "UNITTESTA": "\n.-._                                                   _,-,\n`._`-._                                           _,-'_,'\n   `._ `-._                                   _,-' _,'\n      `._  `-._        __.-----.__        _,-'  _,'\n         `._   `#===\\\"\\\"\\\"           \\\"\\\"\\\"===#'   _,'\n            `._/)  ._               _.  (\\_,'\n             )*'     **.__     __.**     '*(\n             #  .==..__  \\\"\\\"   \\\"\\\"  __..==,  #\n             #   `\\\"._(_).       .(_)_.\\\"'   #"
-    }
-  },
-  "accessibility": {
-    "cb_command": "farbenblindheit",
-    "cb_title": "Farbenblindheit-Optionen",
-    "cb_desc": "Wählen Sie Ihren Typ der Farbenblindheit\nAktuelle Farbenblindheit: %s",
-    "cb_none": "Keine",
-    "cb_updated": "Farbenblindheit wurde auf %s aktualisiert",
-    "cb_default_title": "Keine Farbenblindheit",
-    "cb_default_desc": "Keine Farbenblindheit.\nDies ist die Standard-Option.",
-    "cb_protanomaly_title": "Protanomalie",
-    "cb_protanomaly_desc": "Rot-Grün-Farbenblindheit.\nLässt bestimmte Rottöne grüner und weniger hell erscheinen.\nDieser Typ ist mild und stört normalerweise nicht die normalen Aktivitäten.",
-    "cb_deuteranomaly_title": "Deuteranomalie",
-    "cb_deuteranomaly_desc": "Rot-Grün-Farbenblindheit.\nLässt bestimmte Grüntöne röter erscheinen.\nDieser Typ ist mild und stört normalerweise nicht die normalen Aktivitäten.",
-    "cb_dual_title": "Protanopie und Deuteranopie",
-    "cb_dual_desc": "Rot-Grün-Farbenblindheit.\nMacht es jemandem unmöglich, zwischen Rot und Grün zu unterscheiden.",
-    "cb_tritanopia_title": "Tritanopie",
-    "cb_tritanopia_desc": "Blau-Gelb-Farbenblindheit, die es jemandem unmöglich macht, zwischen Blau und Grün, Lila und Rot, und Gelb und Rosa zu unterscheiden.\nSie macht Farben auch weniger hell.",
-    "cb_tritanomaly_title": "Tritanomalie",
-    "cb_tritanomaly_desc": "Blau-Gelb-Farbenblindheit macht es schwer, zwischen Blau und Grün und zwischen Gelb und Rot zu unterscheiden."
-  },
-  "clipboard":{
-    "copy": "In die Zwischenablage kopiert"
-  },
-  "placeable_object": {
-    "cant_place_here": "Sie können dieses Objekt hier nicht platzieren"
-  }
+	"Shops": {
+		"NotEnoughMoney": "Du hast nicht genug Geld, um diesen Artikel zu kaufen",
+		"Input": "Mengeneingabe",
+		"PurchaseAmount": "Kaufmenge",
+		"PurchasedItem": "Du hast gekauft ",
+		"CurrencySymbol": "€",
+		"Confirm": "Kauf bestätigen",
+		"AreYouSure": "Bist du sicher, dass du einen ",
+		"PayByCash": "Bar bezahlen",
+		"PayByCard": "Mit Karte bezahlen"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "Ich bin ein %s %s",
+		"locale-unit-test": "Das ist ein Teststring"
+	},
+	"clipboard": {
+		"copy": "In die Zwischenablage kopiert"
+	},
+	"placeable_object": {
+		"no_prop_defined": "Du hast kein Objekt zum Platzieren definiert",
+		"cant_place_here": "Du kannst dieses Objekt hier nicht platzieren",
+		"place_object_place": "[E] Platzieren  \n",
+		"place_object_cancel": "[X] Abbrechen  \n",
+		"place_object_scroll_up": "[SCROLL UP] Rechts drehen  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] Links drehen"
+	}
 }

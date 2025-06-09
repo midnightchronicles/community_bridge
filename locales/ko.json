@@ -1,0 +1,28 @@
+{
+	"Shops": {
+		"NotEnoughMoney": "이 아이템을 구매할 돈이 부족합니다",
+		"Input": "수량 입력",
+		"PurchaseAmount": "구매 수량",
+		"PurchasedItem": "구매했습니다 ",
+		"CurrencySymbol": "₩",
+		"Confirm": "구매 확인",
+		"AreYouSure": "정말로 구매하시겠습니까 ",
+		"PayByCash": "현금으로 결제",
+		"PayByCard": "카드로 결제"
+	},
+	"UNITTEST": {
+		"UNITTESTA": "나는 %s %s입니다",
+		"locale-unit-test": "이것은 테스트 문자열입니다"
+	},
+	"clipboard": {
+		"copy": "클립보드에 복사됨"
+	},
+	"placeable_object": {
+		"no_prop_defined": "배치할 객체를 정의하지 않았습니다",
+		"cant_place_here": "여기에 이 객체를 배치할 수 없습니다",
+		"place_object_place": "[E] 배치  \n",
+		"place_object_cancel": "[X] 취소  \n",
+		"place_object_scroll_up": "[SCROLL UP] 오른쪽으로 회전  \n",
+		"place_object_scroll_down": "[SCROLL DOWN] 왼쪽으로 회전"
+	}
+}
