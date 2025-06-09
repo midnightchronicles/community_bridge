@@ -107,7 +107,20 @@ end
 ---@return table
 Inventory.GetPlayerInventory = function(src)
     local playerInv = origin:GetInventory(src)
-    return playerInv.inventory or {}
+    local inv = playerInv.inventory or {}
+    local repack = {}
+    for _, v in pairs(inv) do
+        if v.slot then
+            table.insert(repack, {
+                item = v.name,
+                count = v.amount,
+                metadata = v.metadata or {},
+                slot = v.slot,
+                label = v.label or "Unknown"
+            })
+        end
+    end
+    return repack
 end
 
 ---Returns the specified slot data as a table.
@@ -116,9 +129,8 @@ end
 ---@param slot number
 ---@return table
 Inventory.GetItemBySlot = function(src, slot)
-    local playerInv = origin:getInventory(src)
-    local inv = playerInv.inventory or {}
-    for k, v in pairs(inv) do
+    local playerInv = Inventory.GetPlayerInventory(src)
+    for _, v in pairs(playerInv) do
         if v.slot == slot then
             return {
                 weight = v.weight,
