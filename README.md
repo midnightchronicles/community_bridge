@@ -185,39 +185,6 @@ A: We release updates regularly to maintain compatibility and add new features b
 
 ---
 
-## 🚀 Quick Start
-
-### Installation
-1. **Download** the latest release from GitHub
-2. **Extract** to your resources folder: `[bridges]/community_bridge`
-3. **Add** to your `server.cfg`:
-   ```cfg
-   ensure community_bridge
-   ```
-4. **Restart** your server
-
----
-
-## 📄 License
-
-This project is licensed under the **GPLv3 License** - see the [LICENSE](LICENSE) file for details.
-
-### Attribution
-Some modules include contributions from the FiveM community. Full attributions are listed in the `Attributions` file.
-
----
-
-## ⭐ Support the Project
-
-If Community Bridge has helped your development workflow, consider:
-- ⭐ **Starring** this repository
-- 🐛 **Reporting** bugs and issues
-- 💡 **Suggesting** new features
-- 🤝 **Contributing** code or documentation
-- 💬 **Sharing** with other developers
-
----
-
 > "Connecting what matters — frameworks unified, development simplified."
 
 <div align="center">
