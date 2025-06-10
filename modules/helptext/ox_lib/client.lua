@@ -10,7 +10,7 @@ if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (c
 ---@return nil
 HelpText.ShowHelpText = function(message, position)
     return exports.ox_lib:showTextUI(message, {
-        position = position or 'top-center'
+        position = position or 'right-center'
     })
 end
 
