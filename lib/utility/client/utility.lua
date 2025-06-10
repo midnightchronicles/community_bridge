@@ -612,8 +612,13 @@ local function translateKey(key)
 end
 
 function Utility.GetCommandKey(commandName)
-    local hash = GetHashKey(commandName)
+    local hash = GetHashKey(commandName) | 0x80000000
     local button = GetControlInstructionalButton(2, hash, true)
+    if not button or button == "" or button == "NULL" then
+        hash = GetHashKey(commandName)
+        button = GetControlInstructionalButton(2, hash, true)
+    end
+
     return translateKey(button)
 end
 
