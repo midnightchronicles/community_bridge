@@ -112,7 +112,7 @@ Inventory.GetPlayerInventory = function(src)
     for _, v in pairs(inv) do
         if v.slot then
             table.insert(repack, {
-                item = v.name,
+                name = v.name,
                 count = v.amount,
                 metadata = v.metadata or {},
                 slot = v.slot,
