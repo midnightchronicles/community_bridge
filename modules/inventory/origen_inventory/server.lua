@@ -133,12 +133,12 @@ Inventory.GetItemBySlot = function(src, slot)
     for _, v in pairs(playerInv) do
         if v.slot == slot then
             return {
-                weight = v.weight,
                 name = v.name,
+                count = v.count,
+                weight = v.weight or 0,
                 metadata = v.metadata,
                 slot = v.slot,
-                label = v.label,
-                count = v.amount
+                label = v.label
             }
         end
     end
@@ -158,7 +158,7 @@ end
 ---This will open the specified stash for the src passed.
 ---@param src number
 ---@param _type string
----@param id number||string
+---@param id number|string
 ---@return nil
 Inventory.OpenStash = function(src, _type, id)
     _type = _type or "stash"
