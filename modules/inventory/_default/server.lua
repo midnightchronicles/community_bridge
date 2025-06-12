@@ -162,7 +162,7 @@ end
 ---@param shopCoords table
 ---@param shopGroups table
 Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
-    return false, Prints.Error("This Inventory Has Not Been Bridged For A CreateShop Feature.")
+    return Bridge.Shops.CreateShop(shopTitle, shopInventory, shopCoords, shopGroups)
 end
 
 ---This will get the image path for an item, it is an alternate option to GetItemInfo. If a image isnt found will revert to community_bridge logo (useful for menus)
