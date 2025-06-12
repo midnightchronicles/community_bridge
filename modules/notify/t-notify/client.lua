@@ -15,7 +15,8 @@ end
 ---@return nil
 Notify.SendNotify = function(message, _type, time)
     time = time or 3000
-    return exports['t-notify']:Alert({ style = 'info', message = message, duration = time, })
+    _type = _type or "info"
+    return exports['t-notify']:Alert({ style = _type, message = message, duration = time, })
 end
 
 return Notify

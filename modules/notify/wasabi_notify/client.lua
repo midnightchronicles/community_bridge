@@ -15,6 +15,7 @@ end
 ---@return nil
 Notify.SendNotify = function(message, _type, time)
     time = time or 3000
+    _type = _type or "info"
     return exports.wasabi_notify:notify(_type, message, time, _type)
 end
 

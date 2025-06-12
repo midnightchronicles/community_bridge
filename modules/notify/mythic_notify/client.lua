@@ -15,7 +15,8 @@ end
 ---@return nil
 Notify.SendNotify = function(message, _type, time)
     time = time or 3000
-    return exports['mythic_notify']:SendAlert('inform', message, time)
+    _type = _type or "inform"
+    return exports['mythic_notify']:SendAlert(_type, message, time)
 end
 
 return Notify
