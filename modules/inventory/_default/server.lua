@@ -153,7 +153,7 @@ end
 ---@param src number
 ---@param shopTitle string
 Inventory.OpenShop = function(src, shopTitle)
-    return false, Prints.Error("This Inventory Has Not Been Bridged For A OpenShop Feature.")
+    return Bridge.Shops.OpenShop(src, shopTitle)
 end
 
 -- This will register a shop, if it already exists it will return true.
