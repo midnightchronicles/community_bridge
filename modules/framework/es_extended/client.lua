@@ -175,7 +175,7 @@ Framework.SetVehicleProperties = function(vehicle, properties)
             end
         end
     end
-    return true, QBCore.Functions.SetVehicleProperties(vehicle, properties)
+    return true, ESX.Game.SetVehicleProperties(vehicle, properties)
 end
 
 ---This will get a players dead status.
