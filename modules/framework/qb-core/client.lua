@@ -74,6 +74,7 @@ Framework.HideHelpText = function()
 end
 
 ---This will return the players money by type, I recommend not useing this as its the client and not secure or to be trusted.
+---Use case is for a ui or a menu I guess.
 ---@param _type string
 ---@return number
 Framework.GetAccountBalance = function(_type)
