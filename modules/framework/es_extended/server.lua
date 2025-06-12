@@ -304,7 +304,8 @@ Framework.SetPlayerDuty = function(src, dutystatus)
     if not xPlayer then return false end
     local job = xPlayer.getJob()
     if not job.onDuty then return false end
-    return xPlayer.setJob(job.name, job.grade, dutystatus)
+    xPlayer.setJob(job.name, job.grade, dutystatus)
+    return true
 end
 
 ---This will get a table of player sources that have the specified job name.
@@ -334,7 +335,8 @@ Framework.SetPlayerJob = function(src, name, grade)
         Prints.Error("Job Does Not Exsist In Framework :NAME " .. name .. " Grade:" .. grade)
         return
     end
-    return xPlayer.setJob(name, grade, true)
+    xPlayer.setJob(name, grade, true)
+    return true 
 end
 
 ---This will add money based on the type of account (money/bank)
@@ -346,7 +348,8 @@ Framework.AddAccountBalance = function(src, _type, amount)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
     if _type == 'cash' then _type = 'money' end
-    return xPlayer.addAccountMoney(_type, amount)
+    xPlayer.addAccountMoney(_type, amount)
+    return true
 end
 
 ---This will remove money based on the type of account (money/bank)
@@ -384,7 +387,8 @@ end
 Framework.AddItem = function(src, item, amount, slot, metadata)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
-    return xPlayer.addInventoryItem(item, amount)
+    xPlayer.addInventoryItem(item, amount)
+    return true
 end
 
 -- Framework.RemoveItem(src, item, amount, slot, metadata)
@@ -398,7 +402,8 @@ end
 Framework.RemoveItem = function(src, item, amount, slot, metadata)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return end
-    return xPlayer.removeInventoryItem(item, amount)
+    xPlayer.removeInventoryItem(item, amount)
+    return true
 end
 
 ---This will get all owned vehicles for the player
