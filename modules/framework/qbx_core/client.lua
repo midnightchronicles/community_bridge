@@ -108,6 +108,17 @@ Framework.GetPlayerInventory = function()
     return Framework.GetPlayerData().items
 end
 
+---This will return the players money by type, I recommend not useing this as its the client and not secure or to be trusted.
+---@param _type string
+---@return number
+Framework.GetAccountBalance = function(_type)
+    local player = Framework.GetPlayerData()
+    if not player then return 0 end
+    local account = player.money
+    if _type == 'money' then _type = 'cash' end
+    return account[_type] or 0
+end
+
 ---This will return the vehicle properties for the specified vehicle.
 ---@param vehicle number
 ---@return table
