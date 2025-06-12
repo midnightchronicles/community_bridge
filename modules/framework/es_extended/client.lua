@@ -175,6 +175,15 @@ Framework.SetVehicleProperties = function(vehicle, properties)
             end
         end
     end
+    -- Every framework version does this just a diffrent key I guess?
+    if properties.color1 and type(properties.color1) == 'table' then
+        properties.customPrimaryColor = {properties.color1[1], properties.color1[2], properties.color1[3]}
+        properties.color1 = nil
+    end
+    if properties.color2 and type(properties.color2) == 'table' then
+        properties.customSecondaryColor = {properties.color2[1], properties.color2[2], properties.color2[3]}
+        properties.color2 = nil
+    end
     return true, ESX.Game.SetVehicleProperties(vehicle, properties)
 end
 
