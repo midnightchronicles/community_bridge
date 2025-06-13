@@ -55,7 +55,7 @@ Inventory.GetPlayerInventory = function()
         table.insert(repack, {
             name = v.name,
             label = v.label,
-            count = v.count,
+            count = v.amount,
             slot = v.slot,
             metadata = v.metadata,
             stack = v.unique,

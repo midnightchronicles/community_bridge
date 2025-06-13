@@ -79,10 +79,23 @@ Target.AddLocalEntity = function(entities, options)
 end
 
 ---This will remove the target options from a local entity. This is useful for when you want to remove target options from a specific entity.
----@param entity any
----@param labels string | table | nil
+---@param entities table
+---@param optionNames string | table | nil
 Target.RemoveLocalEntity = function(entities, optionNames)
     ox_target:removeLocalEntity(entities, optionNames)
+end
+
+---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
+---@param options table
+Target.AddGlobalPed = function(options)
+    options = Target.FixOptions(options)
+    ox_target:addGlobalPed(options)
+end
+
+---This will remove target options from all peds. This is useful for when you want to remove target options from all peds.
+---@param options any
+Target.RemoveGlobalPed = function(options)
+    ox_target:removeGlobalPed(options)
 end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.

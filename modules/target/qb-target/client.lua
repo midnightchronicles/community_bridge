@@ -96,6 +96,20 @@ Target.RemoveLocalEntity = function(entity, labels)
 end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
+---@param options table
+Target.AddGlobalPed = function(options)
+    options = Target.FixOptions(options)
+    qb_target:AddGlobalPed(options)
+end
+
+---This will remove target options from all peds. This is useful for when you want to remove target options from all peds.
+---@param options any
+Target.RemoveGlobalPed = function(options)
+    qb_target:RemoveGlobalPed(options)
+end
+
+
+---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
 ---@param models number | table
 ---@param options table
 Target.AddModel = function(models, options)

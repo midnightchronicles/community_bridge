@@ -130,6 +130,23 @@ Framework.GetPlayerInventory = function()
     return playerData.inventory
 end
 
+---This will return the players money by type, I recommend not useing this as its the client and not secure or to be trusted.
+---Use case is for a ui or a menu I guess.
+---@param _type string
+---@return number
+Framework.GetAccountBalance = function(_type)
+    local player = Framework.GetPlayerData()
+    if not player then return 0 end
+    local accounts = player.accounts
+    if _type == 'cash' then _type = 'money' end
+    for _, account in ipairs(accounts) do
+        if account.name == _type then
+            return account.money or 0
+        end
+    end
+    return 0
+end
+
 ---This will return the vehicle properties for the specified vehicle.
 ---@param vehicle number
 ---@return table
@@ -158,7 +175,16 @@ Framework.SetVehicleProperties = function(vehicle, properties)
             end
         end
     end
-    return true, QBCore.Functions.SetVehicleProperties(vehicle, properties)
+    -- Every framework version does this just a diffrent key I guess?
+    if properties.color1 and type(properties.color1) == 'table' then
+        properties.customPrimaryColor = {properties.color1[1], properties.color1[2], properties.color1[3]}
+        properties.color1 = nil
+    end
+    if properties.color2 and type(properties.color2) == 'table' then
+        properties.customSecondaryColor = {properties.color2[1], properties.color2[2], properties.color2[3]}
+        properties.color2 = nil
+    end
+    return true, ESX.Game.SetVehicleProperties(vehicle, properties)
 end
 
 ---This will get a players dead status.

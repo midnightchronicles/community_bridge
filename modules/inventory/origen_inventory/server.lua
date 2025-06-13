@@ -99,14 +99,28 @@ end
 ---@param metadata table
 ---@return number
 Inventory.GetItemCount = function(src, item, metadata)
-    return origin:getItemCount(src, item, metadata, false)
+    return origin:getItemCount(src, item, metadata, false) or 0
 end
 
 ---This wil return the players inventory.
 ---@param src number
 ---@return table
 Inventory.GetPlayerInventory = function(src)
-    return origin:GetInventory(src)
+    local playerInv = origin:GetInventory(src)
+    local inv = playerInv.inventory or {}
+    local repack = {}
+    for _, v in pairs(inv) do
+        if v.slot then
+            table.insert(repack, {
+                name = v.name,
+                count = v.amount,
+                metadata = v.metadata or {},
+                slot = v.slot,
+                label = v.label or "Unknown"
+            })
+        end
+    end
+    return repack
 end
 
 ---Returns the specified slot data as a table.
@@ -115,16 +129,16 @@ end
 ---@param slot number
 ---@return table
 Inventory.GetItemBySlot = function(src, slot)
-    local inv = origin:getInventory(src)
-    for k, v in pairs(inv) do
+    local playerInv = Inventory.GetPlayerInventory(src)
+    for _, v in pairs(playerInv) do
         if v.slot == slot then
             return {
-                weight = v.weight,
                 name = v.name,
+                count = v.count,
+                weight = v.weight or 0,
                 metadata = v.metadata,
                 slot = v.slot,
-                label = v.label,
-                count = v.count
+                label = v.label
             }
         end
     end
@@ -144,7 +158,7 @@ end
 ---This will open the specified stash for the src passed.
 ---@param src number
 ---@param _type string
----@param id number||string
+---@param id number|string
 ---@return nil
 Inventory.OpenStash = function(src, _type, id)
     _type = _type or "stash"

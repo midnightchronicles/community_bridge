@@ -5,7 +5,6 @@ Clothing.Players = {}
 
 Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 Table = Table or Require('lib/utility/shared/tables.lua')
-ESX = ESX or exports['es_extended']:getSharedObject()
 
 ---Internal function to get the full appearance data including skin, model, and converted format
 ---@param src number The server ID of the player
@@ -13,9 +12,7 @@ ESX = ESX or exports['es_extended']:getSharedObject()
 function Clothing.GetFullAppearanceData(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
-    local Player = ESX.GetPlayerFromId(src)
-    if not Player then return end
-    local citId = Player.identifier
+    local citId = Bridge.Framework.GetPlayerIdentifier(src)
     if not citId then return end
 
     if Clothing.Players[citId] then return Clothing.Players[citId] end
@@ -55,9 +52,7 @@ end
 function Clothing.Save(src)
     src = src and tonumber(src)
     assert(src, "src is nil")
-    local Player = ESX.GetPlayerFromId(src)
-    if not Player then return end
-    local citId = Player.identifier
+    local citId = Bridge.Framework.GetPlayerIdentifier(src)
     if not citId then return end
     local currentClothing = Clothing.GetFullAppearanceData(src)
     if not currentClothing then return end
@@ -76,9 +71,7 @@ end
 function Clothing.SetAppearance(src, data, updateBackup, save)
     src = src and tonumber(src)
     assert(src, "src is nil")
-    local Player = ESX.GetPlayerFromId(src)
-    if not Player then return end
-    local citId = Player.identifier
+    local citId = Bridge.Framework.GetPlayerIdentifier(src)
     if not citId then return end
     local model = GetEntityModel(GetPlayerPed(src))
     if not model then return end
@@ -162,8 +155,6 @@ AddEventHandler('community_bridge:Server:OnPlayerUnload', function(src)
     Clothing.Players[strSrc] = nil
 end)
 
-
-
 ---Event handler for when the resource starts
 ---Caches appearance data for all currently connected players
 AddEventHandler('onResourceStart', function(resource)
@@ -182,31 +173,3 @@ Callback.Register('community_bridge:cb:GetAppearance', function(source)
     local src = source
     return Clothing.GetAppearance(src)
 end)
-
-RegisterCommand('clothing:debug', function(source, args, rawCommand)
-    local src = source
-    Clothing.SetAppearance(src, {
-        components ={
-            {component_id = 1, drawable = math.random(0, 50), texture = 0},
-            {component_id = 2, drawable = math.random(0, 50), texture = 0},
-            {component_id = 3, drawable = math.random(0, 50), texture = 0},
-            {component_id = 4, drawable = math.random(0, 50), texture = 0},
-            {component_id = 5, drawable = math.random(0, 50), texture = 0},
-            {component_id = 6, drawable = math.random(0, 50), texture = 0},
-            {component_id = 7, drawable = math.random(0, 50), texture = 0},
-            {component_id = 8, drawable = math.random(0, 50), texture = 0},
-        },
-        props = {
-            {prop_id = 3, drawable = 0, texture = 0},
-            {prop_id = 1, drawable = 0, texture = 0},
-            {prop_id = 2, drawable = 0, texture = 0},
-        }
-    })
-end, false)
-
-
-RegisterCommand('clothing:revert', function(source, args, rawCommand)
-    local src = source
-    Clothing.Revert(src)
-end, false)
-

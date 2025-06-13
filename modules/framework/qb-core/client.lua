@@ -73,6 +73,18 @@ Framework.HideHelpText = function()
     return exports['qb-core']:HideText()
 end
 
+---This will return the players money by type, I recommend not useing this as its the client and not secure or to be trusted.
+---Use case is for a ui or a menu I guess.
+---@param _type string
+---@return number
+Framework.GetAccountBalance = function(_type)
+    local player = Framework.GetPlayerData()
+    if not player then return 0 end
+    local account = player.money
+    if _type == 'money' then _type = 'cash' end
+    return account[_type] or 0
+end
+
 ---This will return the item data for the specified item.
 ---@param item string
 ---@return table

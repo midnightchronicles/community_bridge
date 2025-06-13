@@ -3,17 +3,30 @@
 
 <div align="center">
 
-![License](https://img.shields.io/badge/license-GPLv3-blue.svg)
-![FiveM](https://img.shields.io/badge/FiveM-Compatible-green.svg)
-![Version](https://img.shields.io/badge/version-latest-brightgreen.svg)
-![Contributors](https://img.shields.io/github/contributors/The-Order-Of-The-Sacred-Framework/community_bridge?style=for-the-badge&logo=github&color=blue)
-
+![](https://img.shields.io/github/downloads/The-Order-Of-The-Sacred-Framework/community_bridge/total?logo=github)
+![](https://img.shields.io/github/downloads/The-Order-Of-The-Sacred-Framework/community_bridge/latest/total?logo=github)
+![](https://img.shields.io/github/contributors/The-Order-Of-The-Sacred-Framework/community_bridge?logo=github)
+![](https://img.shields.io/github/v/release/The-Order-Of-The-Sacred-Framework/community_bridge?logo=github)
 
 *A modular, beginner-friendly collection of tools and systems designed to simplify and unify FiveM development.*
 
 **Built with ❤️ by the community, for the community**
 
 </div>
+
+---
+
+## 📚 Documentation
+
+Read the full documentation here:  
+👉 [Our Gitbook Here](https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework)
+
+---
+
+## 💬 Join the Community
+
+Have questions, suggestions, or want to contribute? Join us on Discord:  
+👉 [Our Discord Here](https://discord.gg/MukwBuJjP7)
 
 ---
 
@@ -168,71 +181,6 @@ A: Yes! Community Bridge has an extensible design that supports custom framework
 A: We release updates regularly to maintain compatibility and add new features based on community feedback.
 
 </details>
-
----
-
-## 🚀 Quick Start
-
-### Installation
-1. **Download** the latest release from GitHub
-2. **Extract** to your resources folder: `[bridges]/community_bridge`
-3. **Add** to your `server.cfg`:
-   ```cfg
-   ensure community_bridge
-   ```
-4. **Restart** your server
-
----
-
-## 📚 Documentation
-
-Read the full documentation here:  
-👉 [Our Gitbook Here](https://mrnewbs-scrips.gitbook.io/the-order-of-the-sacred-framework)
-
----
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Here's how you can help:
-
-### How to Contribute
-1. **Fork** this repositorys dev branch
-2. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-3. **Push** to the branch (`git push origin feature/amazing-feature`)
-4. **Open** a Pull Request
-
-### Guidelines
-- ✅ Follow existing code style and patterns
-- ✅ Test your changes thoroughly
-- ✅ Update documentation when needed
-- ✅ Be respectful and constructive in discussions
-
----
-
-## 💬 Join the Community
-
-Have questions, suggestions, or want to contribute? Join us on Discord:  
-👉 [Our Discord Here](https://discord.gg/MukwBuJjP7)
-
----
-
-## 📄 License
-
-This project is licensed under the **GPLv3 License** - see the [LICENSE](LICENSE) file for details.
-
-### Attribution
-Some modules include contributions from the FiveM community. Full attributions are listed in the `Attributions` file.
-
----
-
-## ⭐ Support the Project
-
-If Community Bridge has helped your development workflow, consider:
-- ⭐ **Starring** this repository
-- 🐛 **Reporting** bugs and issues
-- 💡 **Suggesting** new features
-- 🤝 **Contributing** code or documentation
-- 💬 **Sharing** with other developers
 
 ---
 
