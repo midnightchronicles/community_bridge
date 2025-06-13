@@ -12,31 +12,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq zip
-
-      - name: Create release ZIP
-        run: |
-          zip -r community_bridge.zip . -x ".git/*" ".github/*"
-
-      - name: Upload ZIP to release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: community_bridge.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Send webhook notification
         env:
           WEBHOOK_URL: ${{ secrets.RELEASE_WEBHOOK_URL }}
         run: |
+          # Extract repository name and release details
           REPO_NAME=$(basename "$GITHUB_REPOSITORY")
           RELEASE_VERSION=$(jq -r '.release.tag_name // "Unknown Version"' "$GITHUB_EVENT_PATH")
           TITLE="$REPO_NAME $RELEASE_VERSION"
           DESCRIPTION=$(jq -r '.release.body // "No description provided."' "$GITHUB_EVENT_PATH")
 
+          # Construct JSON payload
           PAYLOAD=$(jq -n \
             --arg title "$TITLE" \
             --arg description "$DESCRIPTION" \
@@ -68,15 +57,17 @@ jobs:
                       "type": 2,
                       "style": 5,
                       "label": "Get The Latest Community Bridge Release",
-                      "url": "https://github.com/The-Order-Of-The-Sacred-Framework/community_bridge/releases/latest"
+                      "url": "https://github.com/The-Order-Of-The-Sacred-Framework/community_bridge/tree/main"
                     }
                   ]
                 }
               ]
             }')
 
+          # Debugging: Print the payload for verification
           echo "$PAYLOAD"
 
+          # Send webhook
           curl -X POST "$WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             --data-raw "$PAYLOAD" || exit 1

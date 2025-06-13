@@ -3,8 +3,6 @@
 
 <div align="center">
 
-![](https://img.shields.io/github/downloads/The-Order-Of-The-Sacred-Framework/community_bridge/total?logo=github)
-![](https://img.shields.io/github/downloads/The-Order-Of-The-Sacred-Framework/community_bridge/latest/total?logo=github)
 ![](https://img.shields.io/github/contributors/The-Order-Of-The-Sacred-Framework/community_bridge?logo=github)
 ![](https://img.shields.io/github/v/release/The-Order-Of-The-Sacred-Framework/community_bridge?logo=github)
 
