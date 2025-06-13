@@ -26,6 +26,8 @@ function OxToQBMenu(id, menu)
                 event = "community_bridge:client:MenuCallback",
                 args = {id = id, selected = i, args = v.args, onSelect = v.onSelect},
             }
+        else
+            button.params = {} -- should fix nil errors when no onSelect is provided
         end
 
         table.insert(qbMenu, button)
