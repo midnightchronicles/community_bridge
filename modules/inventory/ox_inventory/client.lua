@@ -50,8 +50,4 @@ Inventory.GetPlayerInventory = function()
     return ox_inventory:GetPlayerItems()
 end
 
-Inventory.OpenShop = function(shopTitle, shopInventory)
-    ox_inventory:openInventory("shop", { type = shopTitle, id = 1 })
-end
-
 return Inventory

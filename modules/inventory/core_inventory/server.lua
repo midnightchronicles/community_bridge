@@ -244,22 +244,6 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
----This will open the specified shop for the src passed.
----@param src number
----@param shopTitle string
-Inventory.OpenShop = function(src, shopTitle)
-    return false, print("Unable to open shop for core_inventory, I do not have access to a copy of this inventory to bridge the feature.")
-end
-
----This will register a shop, if it already exists it will return true.
----@param shopTitle string
----@param shopInventory table
----@param shopCoords table
----@param shopGroups table
-Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
-    return false, print("Unable to open shop for core_inventory, I do not have access to a copy of this inventory to bridge the feature.")
-end
-
 ---<-- TODO swap to internal callback system
 ---This is used for the esx users, documentation doesnt show a client side available option for the inventory so we use jank callbacks to get this.
 lib.callback.register('community_bridge:Callback:core_inventory', function(source)

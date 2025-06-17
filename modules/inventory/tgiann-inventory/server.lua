@@ -206,22 +206,6 @@ Inventory.GetImagePath = function(item)
 end
 
 
--- This will open the specified shop for the src passed.
----@param src number
----@param shopTitle string
-Inventory.OpenShop = function(src, shopTitle)
-    return false, print("Currently tgiann-inventory is not bridged for shops")
-end
-
--- This will register a shop, if it already exists it will return true.
----@param shopTitle string
----@param shopInventory table
----@param shopCoords table
----@param shopGroups table
-Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
-    return false, print("Currently tgiann-inventory is not bridged for shops")
-end
-
 ---UNUSED:
 ---This will return generic item data from the specified inventory, with the items total count.
 ---
