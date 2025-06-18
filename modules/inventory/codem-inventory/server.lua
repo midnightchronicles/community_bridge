@@ -184,21 +184,4 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
-
--- This will open the specified shop for the src passed.
----@param src number
----@param shopTitle string
-Inventory.OpenShop = function(src, shopTitle)
-    print("Unable to open shop for codem-inventory, I do not have access to a copy of this inventory to bridge the feature.")
-end
-
--- This will register a shop, if it already exists it will return true.
----@param shopTitle string
----@param shopInventory table
----@param shopCoords table
----@param shopGroups table
-Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGroups)
-    return true, print("Unable to Create Shop for codem-inventory, I do not have access to a copy of this inventory to bridge the feature.")
-end
-
 return Inventory

@@ -72,7 +72,7 @@ Bridge.RegisterModule("Require", Require)
 -- Bridge.RegisterModule("Perlin", cLib.Perlin)
 -- Bridge.RegisterModule("Actions", cLib.Actions)
 -- Bridge.RegisterModule("Cache", cLib.Cache)
--- Bridge.RegisterModule("Skills", Skills)
+Bridge.RegisterModule("Skills", Skills)
 
 
 for k, v in pairs(cLib) do

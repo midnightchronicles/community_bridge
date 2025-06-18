@@ -3,6 +3,7 @@
 
 <div align="center">
 
+![Used by 500+ servers](https://img.shields.io/badge/used%20by-500%2B%20servers-6e7781?style=flat&logo=github)
 ![](https://img.shields.io/github/contributors/The-Order-Of-The-Sacred-Framework/community_bridge?logo=github)
 ![](https://img.shields.io/github/v/release/The-Order-Of-The-Sacred-Framework/community_bridge?logo=github)
 
