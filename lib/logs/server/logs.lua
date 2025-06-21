@@ -1,7 +1,7 @@
 Logs = Logs or {}
 
-local WebhookURL = "" -- Add webhook URL here if using built-in logging system
-local LogoForEmbed = "" -- optional logo for the embed
+local WebhookURL = BridgeServerConfig.WebhookURL -- Add webhook URL here if using built-in logging system
+local LogoForEmbed = BridgeServerConfig.WebhookImage -- optional logo for the embed
 
 ---This will send a log to the configured webhook or log system.
 ---@param src number
@@ -9,7 +9,8 @@ local LogoForEmbed = "" -- optional logo for the embed
 ---@return nil
 Logs.Send = function(src, message)
     if not src or not message then return end
-    if BridgeServerConfig.LogSystem == "built-in" then
+    local logType = BridgeServerConfig.LogSystem or "built-in"
+    if logType == "built-in" then
         PerformHttpRequest(WebhookURL, function(err, text, headers) end, 'POST', json.encode(
         {
             username = "Community_Bridge's Logger",
@@ -19,7 +20,6 @@ Logs.Send = function(src, message)
                     color = "15769093",
                     title = GetCurrentResourceName(),
                     url = 'https://discord.gg/Gm6rYEXUsn',
-                    --description = message,
                     thumbnail = { url = LogoForEmbed },
                     fields = {
                         {
@@ -46,9 +46,9 @@ Logs.Send = function(src, message)
                 }
             }
         }), { ['Content-Type']= 'application/json' })
-    elseif BridgeServerConfig.LogSystem == "qb" then
+    elseif logType == "qb" then
         return TriggerEvent('qb-log:server:CreateLog', GetCurrentResourceName(), GetCurrentResourceName(), 'green', message)
-    elseif BridgeServerConfig.LogSystem == "ox_lib" then
+    elseif logType == "ox_lib" then
         return lib.logger(src, GetCurrentResourceName(), message)
     end
 end

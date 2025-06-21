@@ -299,12 +299,12 @@ end
 ---@param src number
 ---@param status boolean
 ---@return boolean
-Framework.SetPlayerDuty = function(src, dutystatus)
+Framework.SetPlayerDuty = function(src, status)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return false end
     local job = xPlayer.getJob()
     if not job.onDuty then return false end
-    xPlayer.setJob(job.name, job.grade, dutystatus)
+    xPlayer.setJob(job.name, job.grade, status)
     return true
 end
 
