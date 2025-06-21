@@ -34,6 +34,12 @@ Target.FixOptions = function(options)
     return options
 end
 
+---This will toggle the targeting system on or off. This is useful for when you want to disable the targeting system for a specific player entirely.
+---@param bool boolean
+Target.DisableTargeting = function(bool)
+    ox_target:disableTargeting(bool)
+end
+
 ---This will add target options to players.
 ---@param options table
 Target.AddGlobalPlayer = function(options)
@@ -43,14 +49,20 @@ end
 
 ---This will remove target options from all players.
 Target.RemoveGlobalPlayer = function()
----@diagnostic disable-next-line: missing-parameter
     ox_target:removeGlobalPlayer()
 end
 
----This will toggle the targeting system on or off. This is useful for when you want to disable the targeting system for a specific player entirely.
----@param bool boolean
-Target.DisableTargeting = function(bool)
-    ox_target:disableTargeting(bool)
+---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
+---@param options table
+Target.AddGlobalPed = function(options)
+    options = Target.FixOptions(options)
+    ox_target:addGlobalPed(options)
+end
+
+---This will remove target options from all peds. This is useful for when you want to remove target options from all peds.
+---@param options any
+Target.RemoveGlobalPed = function(options)
+    ox_target:removeGlobalPed(options)
 end
 
 ---This will add taget options to all vehicles.
@@ -86,19 +98,6 @@ Target.RemoveLocalEntity = function(entities, optionNames)
 end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
----@param options table
-Target.AddGlobalPed = function(options)
-    options = Target.FixOptions(options)
-    ox_target:addGlobalPed(options)
-end
-
----This will remove target options from all peds. This is useful for when you want to remove target options from all peds.
----@param options any
-Target.RemoveGlobalPed = function(options)
-    ox_target:removeGlobalPed(options)
-end
-
----This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
 ---@param models number | table
 ---@param options table
 Target.AddModel = function(models, options)
@@ -111,18 +110,6 @@ end
 Target.RemoveModel = function(model)
     ox_target:removeModel(model)
 end
-
--- Target.DisableTargeting = function(bool)
---     ox_target:disableTargeting(bool)
--- end
-
--- Target.Refresh = function()
---     ox_target:disableTargeting(true)
---     Wait(10)
---     ox_target:disableTargeting(false)
--- end
-
-
 
 ---This will add a box zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
@@ -143,19 +130,6 @@ Target.AddBoxZone = function(name, coords, size, heading, options, debug)
     table.insert(targetZones, { name = name, id = target, creator = GetInvokingResource() })
     return target
 end
-
--- RegisterCommand('boxzone:test', function(source, args, rawCommand)
---     local coords = GetEntityCoords(PlayerPedId())
---     Target.AddBoxZone('test_zone', coords, { 2.0, 2.0, 2.0 }, 0.0, {
---         {
---             label = 'Test Option',
---             icon = 'fas fa-check',
---             onSelect = function()
---                 print('Test option selected!')
---             end
---         }
---     }, true)
--- end)
 
 ---This will add a circle zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string

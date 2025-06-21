@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 Shops = Shops or {}
 
 local registeredShops = {}

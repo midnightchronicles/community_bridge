@@ -5,9 +5,7 @@ if GetResourceState("ox_target") == 'started' then return end
 
 local targetDebug = false
 local function detectDebugEnabled()
-    if BridgeSharedConfig.DebugLevel == 2 then
-        targetDebug = true
-    end
+    if BridgeSharedConfig.DebugLevel == 2 then targetDebug = true end
 end
 
 detectDebugEnabled()
@@ -17,6 +15,9 @@ local targetZones = {}
 
 Target = Target or {}
 
+---This is an internal function that is used to fix the options passed to fit alternative target systems, for example qb-ox or ox-qb etc.
+---@param options table
+---@return table
 Target.FixOptions = function(options)
     for k, v in pairs(options) do
         local action = v.onSelect or v.action
@@ -31,29 +32,46 @@ Target.FixOptions = function(options)
     return options
 end
 
----comment
+---This will toggle the targeting system on or off. This is useful for when you want to disable the targeting system for a specific player entirely.
+---@param bool boolean
+Target.DisableTargeting = function(bool) -- someone disabled this mistakenly
+    sleepless_interact:disableInteract(bool)
+end
+
+---This will add target options to players.
 ---@param options table
----@return nil
 Target.AddGlobalPlayer = function(options)
     options = Target.FixOptions(options)
     sleepless_interact:addGlobalPlayer(options)
 end
 
-Target.DisableTargeting = function(bool)
-    sleepless_interact:disableInteract(bool)
+---This will remove target options from all players.
+Target.RemoveGlobalPlayer = function()
+    sleepless_interact:removeGlobalPlayer()
 end
 
----comment
+---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
 ---@param options table
----@return nil
+Target.AddGlobalPed = function(options)
+    options = Target.FixOptions(options)
+    sleepless_interact:addGlobalPed(options)
+end
+
+---This will remove target options from all peds. This is useful for when you want to remove target options from all peds.
+---@param options any
+Target.RemoveGlobalPed = function(options)
+    sleepless_interact:removeGlobalPed(options)
+end
+
+---This will add taget options to all vehicles.
+---@param options table
 Target.AddGlobalVehicle = function(options)
     options = Target.FixOptions(options)
     sleepless_interact:addGlobalVehicle(options)
 end
 
----comment
+---This will remove target options from all vehicles.
 ---@param options table
----@return nil
 Target.RemoveGlobalVehicle = function(options)
     local assembledLables = {}
     for k, v in pairs(options) do
@@ -62,31 +80,41 @@ Target.RemoveGlobalVehicle = function(options)
     sleepless_interact:removeGlobalVehicle(assembledLables)
 end
 
----comment
----@param entities table
+---This will generate targets on non networked entites with the passed options.
+---@param entities number | table
 ---@param options table
----@return nil
 Target.AddLocalEntity = function(entities, options)
     options = Target.FixOptions(options)
     sleepless_interact:addLocalEntity(entities, options)
 end
 
----comment
----@param models table
+---This will remove the target options from a local entity. This is useful for when you want to remove target options from a specific entity.
+---@param entity number | table
+---@param labels string | table | nil
+Target.RemoveLocalEntity = function(entity, labels)
+    sleepless_interact:removeLocalEntity(entity, labels)
+end
+
+---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
+---@param models number | table
 ---@param options table
----@return nil
 Target.AddModel = function(models, options)
     options = Target.FixOptions(options)
     sleepless_interact:addModel(models, options)
 end
 
----comment
+---This will remove target options from all specified models.
+---@param model number
+Target.RemoveModel = function(model)
+    sleepless_interact:removeModel(model)
+end
+
+---This will add a box zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
 ---@param coords table
 ---@param size table
 ---@param heading number
 ---@param options table
----@return number
 Target.AddBoxZone = function(name, coords, size, heading, options)
     options = Target.FixOptions(options)
     local target = sleepless_interact:addCoords({
@@ -97,28 +125,26 @@ Target.AddBoxZone = function(name, coords, size, heading, options)
     return target
 end
 
-Target.RemoveGlobalPlayer = function()
-    sleepless_interact:removeGlobalPlayer()
-end
-
----comment
----@param entity number
----@param labels string | table | nil
----@return nil
-Target.RemoveLocalEntity = function(entity, labels)
-    sleepless_interact:removeLocalEntity(entity, labels)
-end
-
----comment
----@param model string
----@return nil
-Target.RemoveModel = function(model)
-    sleepless_interact:removeModel(model)
-end
-
----comment
+---This will add a circle zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string
----@return nil
+---@param coords table
+---@param radius number
+---@param options table
+Target.AddSphereZone = function(name, coords, radius, heading, options)
+    options = Target.FixOptions(options)
+    local target = sleepless_interact:addSphereZone({
+        coords = coords,
+        radius = radius,
+        name = name,
+        debug = targetDebug,
+        options = options
+    })
+    table.insert(targetZones, { name = name, id = target, creator = GetInvokingResource() })
+    return target
+end
+
+---This will remove target options from a specific zone.
+---@param name string
 Target.RemoveZone = function(name)
     for _, data in pairs(targetZones) do
         if data.name == name then
@@ -129,26 +155,14 @@ Target.RemoveZone = function(name)
     end
 end
 
--- Target.DisableTargeting = function(bool)
---     sleepless_interact:disableInteract(bool)
--- end
-
--- Target.Refresh = function()
---     sleepless_interact:disableInteract(false)
---     Wait(10)
---     sleepless_interact:disableInteract(true)
--- end
-
-
 AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() then
-        for _, target in pairs(targetZones) do
-            if target.creator == resource then
-                sleepless_interact:removeZone(target.id)
-            end
+    if resource ~= GetCurrentResourceName() then return end
+    for _, target in pairs(targetZones) do
+        if target.creator == resource then
+            sleepless_interact:removeZone(target.id)
         end
-        targetZones = {}
     end
+    targetZones = {}
 end)
 
 return Target

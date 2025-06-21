@@ -2,6 +2,7 @@
 local requiredModules = {
     'modules/target/_default/client.lua',
     'modules/target/qb-target/client.lua',
+    'modules/target/sleepless_interact/client.lua',
     'modules/target/ox_target/client.lua'
 }
 
