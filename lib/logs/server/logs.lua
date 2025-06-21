@@ -1,7 +1,9 @@
 Logs = Logs or {}
 
-local WebhookURL = BridgeServerConfig.WebhookURL -- Add webhook URL here if using built-in logging system
-local LogoForEmbed = BridgeServerConfig.WebhookImage -- optional logo for the embed
+local WebhookURL = "" -- Add webhook URL here if using built-in logging system
+local LogoForEmbed = "https://cdn.discordapp.com/avatars/299410129982455808/31ce635662206e8bd0132c34ce9ce683?size=1024"
+local LogSystem = "built-in" -- Default log system, can be "built-in", "qb", or "ox_lib"
+
 
 ---This will send a log to the configured webhook or log system.
 ---@param src number
@@ -9,7 +11,7 @@ local LogoForEmbed = BridgeServerConfig.WebhookImage -- optional logo for the em
 ---@return nil
 Logs.Send = function(src, message)
     if not src or not message then return end
-    local logType = BridgeServerConfig.LogSystem or "built-in"
+    local logType = LogSystem or "built-in"
     if logType == "built-in" then
         PerformHttpRequest(WebhookURL, function(err, text, headers) end, 'POST', json.encode(
         {
