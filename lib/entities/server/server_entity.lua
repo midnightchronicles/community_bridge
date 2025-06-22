@@ -10,7 +10,7 @@ ServerEntity = {} -- Renamed from EntityRelay
 -- @param rotation vector3|number Heading for peds/vehicles, rotation for objects
 -- @param meta table Optional additional data
 -- @return table The created entity data
-function ServerEntity.Create(id, entityType, model, coords, rotation, meta)
+function ServerEntity.New(id, entityType, model, coords, rotation, meta)
     local self = meta or {}
     self.id = id or Ids.CreateUniqueId(Entities)
     self.entityType = entityType
@@ -23,11 +23,35 @@ function ServerEntity.Create(id, entityType, model, coords, rotation, meta)
     assert(self.entityType, "EntityType is required")
     assert(self.model, "Model is required for entity creation")
     assert(self.coords, "Coords are required for entity creation")
-
     ServerEntity.Add(self)
-    TriggerClientEvent("community_bridge:client:CreateEntity", -1, self)
-    Wait(1000)
     return self
+end
+function ServerEntity.Create(id, entityType, model, coords, rotation, meta)
+    local self = ServerEntity.New(id, entityType, model, coords, rotation, meta)
+    if not self then
+        print("Failed to create entity with ID: " .. tostring(id))
+        return nil
+    end
+    TriggerClientEvent("community_bridge:client:CreateEntity", -1, self)
+    return self
+end
+
+function ServerEntity.CreateBulk(entities)
+    local createdEntities = {}
+    for _, entityData in pairs(entities) do
+        local id = entityData.id or Ids.CreateUniqueId(Entities)
+        local entity =  ServerEntity.New(
+            id,
+            entityData.entityType,
+            entityData.model,
+            entityData.coords,
+            entityData.rotation,
+            entityData.meta
+        )
+        createdEntities[id] = entity
+    end
+    TriggerClientEvent("community_bridge:client:CreateEntities", -1, createdEntities)
+    return createdEntities
 end
 
 --- Deletes a server-side entity representation and notifies clients.
@@ -103,7 +127,7 @@ AddEventHandler('onResourceStop', function(resourceName)
         end
     end
     for _, id in pairs(toDelete) do
-        ServerEntity.Delete(id) 
+        ServerEntity.Delete(id)
     end
 end)
 

@@ -71,7 +71,7 @@ end
 Table.FindFirstUnoccupiedSlot = function(tbl)
     local occupiedSlots = {}
     for _, v in pairs(tbl) do
-        if v.slot then 
+        if v.slot then
             occupiedSlots[v.slot] = true
         end
     end
@@ -124,6 +124,14 @@ Table.Compare = function(a, b)
     else
         return a == b
     end
+end
+
+Table.Count = function(tbl)
+    local count = 0
+    for _ in pairs(tbl) do
+        count = count + 1
+    end
+    return count
 end
 
 exports("Table", Table)

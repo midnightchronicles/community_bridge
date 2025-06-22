@@ -2,7 +2,10 @@ SQL = {}
 
 Require("lib/MySQL.lua", "oxmysql")
 
-
+--- Creates a table in the database if it does not exist.
+-- @param tableName The name of the table to create. Example: {{ name = "identifier", type = "VARCHAR(50)", primary = true }}
+-- @param columns A table containing column definitions, where each column is a table with 'name' and 'type'.
+---@return nil
 
 function SQL.Create(tableName, columns)
     assert(MySQL, "Tried using module SQL without MySQL being loaded")

@@ -73,6 +73,15 @@ function ClientEntity.Register(entityData)
      return Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, function() end)
 end
 
+function ClientEntity.RegisterBulk(entities)
+    local registeredEntities = {}
+    for _, entityData in pairs(entities) do
+        ClientEntity.Register(entityData)
+        registeredEntities[entityData.id] = entityData
+    end
+    return registeredEntities
+end
+
 --- Unregisters an entity and removes it from the world if spawned.
 -- @param id string|number The ID of the entity to unregister.
 function ClientEntity.Unregister(id)
@@ -156,6 +165,10 @@ end
 -- Network Event Handlers
 RegisterNetEvent("community_bridge:client:CreateEntity", function(entityData)
     ClientEntity.Register(entityData)
+end)
+
+RegisterNetEvent("community_bridge:client:CreateEntities", function(entities)
+    ClientEntity.RegisterBulk(entities)
 end)
 
 RegisterNetEvent("community_bridge:client:DeleteEntity", function(id)
