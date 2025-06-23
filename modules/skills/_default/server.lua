@@ -37,7 +37,6 @@ Skills.GetLevelFromXP = function(skillName, xp)
     if not skillName or not xp or xp < 0 then return 1 end
     local skill = Skills.All[skillName]
     if not skill then return 1 end
-    local cache = skill.cache or {}
     for level = 1, skill.maxLevel do
         local requiredXp = Skills.GetTotalXPForLevel(skillName, level)
         if requiredXp > xp then
@@ -117,8 +116,6 @@ Skills.SetXP = function(src, skillName, xp)
     skill.level = Skills.GetLevelFromXP(skillName, skill.totalXP)
     local xpToReduce = Skills.GetTotalXPForLevel(skillName, skill.level - 1)
     skill.xp = math.max(0, skill.totalXP - xpToReduce)
-    print("Setting XP for skill:", skillName, "XP:", skill.xp, "Level:", skill.level, xpToReduce)
-
     playerSkills[skillName] = skill
     Framework.SetPlayerMetadata(src, "community_bridge_skills", playerSkills)
     return true
