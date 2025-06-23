@@ -95,8 +95,10 @@ Skills.AddXP = function(src, skillName, xp)
     end
     local playerSkills = Framework.GetPlayerMetadata(src, "community_bridge_skills") or {}
     local skill = playerSkills[skillName] or { xp = 0, level = 1 }
-    skill.xp = skill.xp + xp
-    skill.level = Skills.GetLevelFromXP(skillName, skill.xp)
+    skill.totalXP = (skill.totalXP or skill.xp or 0) + xp
+    skill.level = Skills.GetLevelFromXP(skillName, skill.totalXP)
+    local xpToReduce = Skills.GetTotalXPForLevel(skillName, skill.level - 1)
+    skill.xp = math.max(0, skill.totalXP - xpToReduce)
 
     playerSkills[skillName] = skill
     Framework.SetPlayerMetadata(src, "community_bridge_skills", playerSkills)
@@ -111,8 +113,11 @@ Skills.SetXP = function(src, skillName, xp)
 
     local playerSkills = Framework.GetPlayerMetadata(src, "community_bridge_skills") or {}
     local skill = playerSkills[skillName] or { xp = 0, level = 1 }
-    skill.xp = math.max(0, xp)
-    skill.level = Skills.GetLevelFromXP(skillName, skill.xp)
+    skill.totalXP = math.max(0, xp)
+    skill.level = Skills.GetLevelFromXP(skillName, skill.totalXP)
+    local xpToReduce = Skills.GetTotalXPForLevel(skillName, skill.level - 1)
+    skill.xp = math.max(0, skill.totalXP - xpToReduce)
+    print("Setting XP for skill:", skillName, "XP:", skill.xp, "Level:", skill.level, xpToReduce)
 
     playerSkills[skillName] = skill
     Framework.SetPlayerMetadata(src, "community_bridge_skills", playerSkills)
