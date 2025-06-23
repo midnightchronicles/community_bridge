@@ -103,7 +103,7 @@ Skills.AddPlayerXP = function(src, skillName, xp)
     return true
 end
 
-Skills.SetPlayerXP = function(src, skillName, xp)
+Skills.SetXP = function(src, skillName, xp)
     if not src or not skillName or not xp or xp < 0 then return false end
     if not Skills.All[skillName] then
         Skills.All[skillName] = Skills.Create(skillName, 99, 50)
@@ -119,7 +119,7 @@ Skills.SetPlayerXP = function(src, skillName, xp)
     return true
 end
 
-Skills.GetPlayerXP = function(src, skillName)
+Skills.GetXP = function(src, skillName)
     if not src or not skillName then return 0 end
     local playerSkills = Framework.GetPlayerMetadata(src, "community_bridge_skills") or {}
     local skill = playerSkills[skillName] or { xp = 0, level = 1 }
