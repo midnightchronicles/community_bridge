@@ -32,7 +32,7 @@ Skills.AddXp = function(src, skillName, amount)
        Skills.All[skillName] = Skills.Create(skillName, 99, 50)
     end
     if not amount or amount < 0 then
-        amount = Skill.GetScaledXP(Skills.All[skillName].baseXP, Skills.GetSkillLevel(src, skillName))
+        amount = Skills.GetScaledXP(Skills.All[skillName].baseXP, Skills.GetSkillLevel(src, skillName))
     end
     exports.pickle_xp:AddPlayerXP(src, skillName, amount)
     return true
