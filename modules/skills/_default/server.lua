@@ -61,14 +61,14 @@ Skills.GetScaledXP = function(baseXP, playerLevel)
     return math.floor(baseXP * (1 + playerLevel * 0.05))
 end
 
-Skills.GetPlayerLevel = function(src, skillName)
+Skills.GetSkillLevel = function(src, skillName)
     if not src or not skillName then return 1 end
     local playerSkills = Framework.GetPlayerMetadata(src, "community_bridge_skills") or {}
     local skill = playerSkills[skillName] or { xp = 0, level = 1 }
     return skill.level or 1
 end
 
-Skills.SetPlayerLevel = function(src, skillName, level)
+Skills.SetSkillLevel = function(src, skillName, level)
     if not src or not skillName or not level or level < 1 then return false end
     if not Skills.All[skillName] then
         Skills.All[skillName] = Skills.Create(skillName, 99, 50)
@@ -84,7 +84,7 @@ Skills.SetPlayerLevel = function(src, skillName, level)
     return true
 end
 
-Skills.AddPlayerXP = function(src, skillName, xp)
+Skills.AddXP = function(src, skillName, xp)
     if not src or not skillName then return false end
     if not Skills.All[skillName] then
         Skills.All[skillName] = Skills.Create(skillName, 99, 50)
