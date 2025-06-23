@@ -91,7 +91,7 @@ Skills.AddXP = function(src, skillName, xp)
     end
 
     if not xp or xp < 0 then
-        xp = Skills.GetScaledXP(Skills.All[skillName].baseXP, Skills.GetPlayerLevel(src, skillName))
+        xp = Skills.GetScaledXP(Skills.All[skillName].baseXP, Skills.GetSkillLevel(src, skillName))
     end
     local playerSkills = Framework.GetPlayerMetadata(src, "community_bridge_skills") or {}
     local skill = playerSkills[skillName] or { xp = 0, level = 1 }
