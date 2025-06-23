@@ -28,6 +28,12 @@ end
 Skills.AddXp = function(src, skillName, amount)
     local skillData = exports.evolent_skills:getSkillLevel(src, skillName)
     if not skillData then return false, print("Skill not found") end
+    if not Skills.All[skillName] then
+       Skills.All[skillName] = Skills.Create(skillName, 99, 50)
+    end
+    if not amount or amount < 0 then
+        amount = Skill.GetScaledXP(Skills.All[skillName].baseXP, Skills.GetSkillLevel(src, skillName))
+    end
     exports.evolent_skills:addXp(src, skillName, amount)
     return true
 end
