@@ -31,9 +31,6 @@ Skills.AddXp = function(src, skillName, amount)
     if not Skills.All[skillName] then
        Skills.All[skillName] = Skills.Create(skillName, 99, 50)
     end
-    if not amount or amount < 0 then
-        amount = Skills.GetScaledXP(Skills.All[skillName].baseXP, Skills.GetSkillLevel(src, skillName))
-    end
     exports.OT_skills:addXP(src, skillName, amount)
     return true
 end
