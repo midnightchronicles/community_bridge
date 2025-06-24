@@ -70,10 +70,7 @@ end
 Skills.GetXPRequiredForLevel = function(level)
     if not level or level < 1 then return 0 end
     if level == 1 then return 83 end  -- Level 1 to 2 requires 83 XP
-
-    local currentLevelXP = Skills.GetXPForLevel(level)
-    local previousLevelXP = Skills.GetXPForLevel(level - 1)
-    return currentLevelXP - previousLevelXP
+    return Skills.GetXPForLevel(level)
 end
 
 -- Add XP and handle level ups
@@ -98,39 +95,30 @@ Skills.AddXP = function(src, skillName, xp)
     -- Add XP
     currentXP = currentXP + xp
 
-    -- Check for level ups
-    local newLevel = oldLevel
-    while newLevel < 99 do
-        local xpNeeded = Skills.GetXPRequiredForLevel(newLevel)
-        if currentXP >= xpNeeded then
-            currentXP = currentXP - xpNeeded  -- Subtract the XP used for this level
-            newLevel = newLevel + 1
-        else
-            break
-        end
+
+    local xpNeeded = Skills.GetXPRequiredForLevel(oldLevel + 1)
+    if currentXP >= xpNeeded then
+        currentXP = currentXP - xpNeeded  -- Subtract the XP used for this level
+        oldLevel = oldLevel + 1
     end
 
-    -- If we leveled up, ensure currentXP doesn't exceed the new level's requirement
-    if newLevel > oldLevel then
-        local newLevelRequirement = Skills.GetXPRequiredForLevel(newLevel)
-        if currentXP >= newLevelRequirement then
-            currentXP = newLevelRequirement - 1  -- Cap at requirement - 1
-        end
-    end
+
+    -- -- If we leveled up, ensure currentXP doesn't exceed the new level's requirement
+    -- if newLevel > oldLevel then
+    --     local newLevelRequirement = Skills.GetXPRequiredForLevel(newLevel)
+    --     if currentXP >= newLevelRequirement then
+    --         currentXP = newLevelRequirement - 1  -- Cap at requirement - 1
+    --     end
+    -- end
 
     -- Update skill
-    skill.level = newLevel
+    skill.level = oldLevel
     skill.currentXP = currentXP
     playerSkills[skillName] = skill
 
     Framework.SetPlayerMetadata(src, "community_bridge_skills", playerSkills)
 
-    return {
-        levelUp = newLevel > oldLevel,
-        oldLevel = oldLevel,
-        newLevel = newLevel,
-        levelsGained = newLevel - oldLevel
-    }
+    return true, oldLevel, currentXP
 end
 
 -- Set skill level directly (resets currentXP to 0)
