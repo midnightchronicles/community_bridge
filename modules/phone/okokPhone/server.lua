@@ -54,7 +54,7 @@ Phone.SendEmail = function(src, email, title, message)
 end
 
 --<-- TODO swap to internal callback system
-lib.callback.registry('community_bridge:Callback:okokPhone:sendEmail', function(src, email, title, message)
+lib.callback.register('community_bridge:Callback:okokPhone:sendEmail', function(src, email, title, message)
     return Phone.SendEmail(src, email, title, message)
 end)
 
