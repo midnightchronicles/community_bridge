@@ -14,7 +14,7 @@ end
 ---@param account string
 ---@return number
 Managment.GetAccountMoney = function(account)
-    local balance = exports['wasabi_banking']:GetAccountBalance(account, 'society')
+    local balance = wasabi_banking:GetAccountBalance(account, 'society')
     return balance or 0
 end
 
