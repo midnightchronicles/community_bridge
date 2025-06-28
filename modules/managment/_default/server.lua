@@ -7,11 +7,11 @@ Managment.GetManagmentName = function()
     return 'default'
 end
 
----This will return a table with account details
+---This will return a number
 ---@param account string
----@return table
+---@return number
 Managment.GetAccountMoney = function(account)
-    return {}, print("The resource you are using does not support this function.")
+    return 0, print("The resource you are using does not support this function.")
 end
 
 ---This will add money to the specified account of the passed amount

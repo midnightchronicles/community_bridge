@@ -10,9 +10,9 @@ Managment.GetManagmentName = function()
     return 'wasabi_banking'
 end
 
----This will return a table with account details
+---This will return a number
 ---@param account string
----@return table
+---@return number
 Managment.GetAccountMoney = function(account)
     local balance = exports['wasabi_banking']:GetAccountBalance(account, 'society')
     return balance or 0
