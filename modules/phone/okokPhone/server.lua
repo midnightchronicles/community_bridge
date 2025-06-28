@@ -17,6 +17,7 @@
 local resourceName = "okokPhone"
 if GetResourceState(resourceName) == 'missing' then return end
 Phone = Phone or {}
+Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 
 ---This will get the name of the Phone system being being used.
 ---@return string
@@ -53,8 +54,7 @@ Phone.SendEmail = function(src, email, title, message)
     return success
 end
 
---<-- TODO swap to internal callback system
-lib.callback.register('community_bridge:Callback:okokPhone:sendEmail', function(src, email, title, message)
+Callback.Register('community_bridge:Callback:okokPhone:sendEmail', function(src, email, title, message)
     return Phone.SendEmail(src, email, title, message)
 end)
 

@@ -1,6 +1,7 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('core_inventory') ~= 'started' then return end
 local core = exports.core_inventory
+Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 
 Inventory = Inventory or {}
 
@@ -12,8 +13,7 @@ Inventory.GetItemInfo = function(item)
     if not frameworkName then return {} end
     local dataRepack = {}
     if frameworkName == 'es_extended' then
-        --<-- TODO swap to internal callback system
-        local callbackData = lib.callback.await('community_bridge:Callback:core_inventory', false)
+        local callbackData = Callback.Trigger('community_bridge:Callback:core_inventory', false)
         -- really really wish this inventory allowed me to pull the item list client side....
         dataRepack = callbackData[item]
         if not dataRepack then return {} end
