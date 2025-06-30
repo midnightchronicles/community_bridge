@@ -98,20 +98,10 @@ Skills.AddXP = function(src, skillName, xp)
 
     local xpNeeded = Skills.GetXPRequiredForLevel(oldLevel + 1)
     if currentXP >= xpNeeded then
-        currentXP = currentXP - xpNeeded  -- Subtract the XP used for this level
+        currentXP = currentXP - xpNeeded
         oldLevel = oldLevel + 1
     end
 
-
-    -- -- If we leveled up, ensure currentXP doesn't exceed the new level's requirement
-    -- if newLevel > oldLevel then
-    --     local newLevelRequirement = Skills.GetXPRequiredForLevel(newLevel)
-    --     if currentXP >= newLevelRequirement then
-    --         currentXP = newLevelRequirement - 1  -- Cap at requirement - 1
-    --     end
-    -- end
-
-    -- Update skill
     skill.level = oldLevel
     skill.currentXP = currentXP
     playerSkills[skillName] = skill

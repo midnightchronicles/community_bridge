@@ -481,7 +481,7 @@ end
 ---@param value T The value to match against the cases
 ---@param cases table<T|false, fun(): any> Table with case functions and an optional default (false key)
 ---@return any|false result The return value of the matched case function, or false if none matched
-function Utility.Switch(value, cases) 
+function Utility.Switch(value, cases)
     local caseFunc = cases[value] or cases[false]
 
     if caseFunc and type(caseFunc) == "function" then
@@ -542,19 +542,19 @@ function Utility.GetZoneName(coords)
 end
 
 local SpecialKeyCodes = {
-    ['b_116'] = 'WheelMouseMove.Up',
-    ['b_115'] = 'WheelMouseMove.Up',
-    ['b_100'] = 'MouseClick.LeftClick',
-    ['b_101'] = 'MouseClick.RightClick',
-    ['b_102'] = 'MouseClick.MiddleClick',
-    ['b_103'] = 'MouseClick.ExtraBtn1',
-    ['b_104'] = 'MouseClick.ExtraBtn2',
-    ['b_105'] = 'MouseClick.ExtraBtn3',
-    ['b_106'] = 'MouseClick.ExtraBtn4',
-    ['b_107'] = 'MouseClick.ExtraBtn5',
-    ['b_108'] = 'MouseClick.ExtraBtn6',
-    ['b_109'] = 'MouseClick.ExtraBtn7',
-    ['b_110'] = 'MouseClick.ExtraBtn8',
+    ['b_116'] = 'Scroll Up',
+    ['b_115'] = 'Scroll Down',
+    ['b_100'] = 'LMB',
+    ['b_101'] = 'RMB',
+    ['b_102'] = 'MMB',
+    ['b_103'] = 'Extra 1',
+    ['b_104'] = 'Extra 2',
+    ['b_105'] = 'Extra 3',
+    ['b_106'] = 'Extra 4',
+    ['b_107'] = 'Extra 5',
+    ['b_108'] = 'Extra 6',
+    ['b_109'] = 'Extra 7',
+    ['b_110'] = 'Extra 8',
     ['b_1015'] = 'AltLeft',
     ['b_1000'] = 'ShiftLeft',
     ['b_2000'] = 'Space',

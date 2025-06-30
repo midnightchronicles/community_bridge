@@ -5,575 +5,776 @@ Language = Language or Require("modules/locales/shared.lua")
 
 PlaceableObject = PlaceableObject or {}
 
--- Local variables
-local isPlacing = false
-local currentEntity = nil
-local currentMode = 'normal' -- 'normal' or 'movement'
-local currentPromise = nil -- Store the current promise
+-- Register key mappings for placement controls
+RegisterKeyMapping('+place_object', locale('placeable_object.place_object_place'), 'mouse_button', 'MOUSE_LEFT')
+RegisterKeyMapping('+cancel_placement', locale('placeable_object.place_object_cancel'), 'mouse_button', 'MOUSE_RIGHT')
+RegisterKeyMapping('+rotate_left', locale('placeable_object.rotate_left'), 'keyboard', 'LEFT')
+RegisterKeyMapping('+rotate_right', locale('placeable_object.rotate_right'), 'keyboard', 'RIGHT')
+RegisterKeyMapping('+scroll_up', locale('placeable_object.place_object_scroll_up'), 'mouse_wheel', 'IOM_WHEEL_UP')
+RegisterKeyMapping('+scroll_down', locale('placeable_object.place_object_scroll_down'), 'mouse_wheel', 'IOM_WHEEL_DOWN')
+RegisterKeyMapping('+depth_modifier', locale('placeable_object.depth_modifier'), 'keyboard', 'LCONTROL')
+
+local state = {
+    isPlacing = false,
+    currentEntity = nil,
+    mode = 'normal', -- 'normal' or 'movement'
+    promise = nil,
+    scaleform = nil,
+
+    -- Placement settings
+    depth = 2.0,
+    heading = 0.0,
+    height = 0.0,
+    snapToGround = true,
+    paused = false,
+
+    -- Current settings
+    settings = {},
+    boundaryCheck = nil,
+
+    -- Key press states
+    keys = {
+        placeObject = false,
+        cancelPlacement = false,
+        rotateLeft = false,
+        rotateRight = false,
+        scrollUp = false,
+        scrollDown = false,
+        depthModifier = false
+    }
+}
+
+-- Command handlers for key mappings
+RegisterCommand('+place_object', function()
+    if state.isPlacing then
+        state.keys.placeObject = true
+    end
+end, false)
+
+RegisterCommand('-place_object', function()
+    state.keys.placeObject = false
+end, false)
+
+RegisterCommand('+cancel_placement', function()
+    if state.isPlacing then
+        state.keys.cancelPlacement = true
+    end
+end, false)
+
+RegisterCommand('-cancel_placement', function()
+    state.keys.cancelPlacement = false
+end, false)
+
+RegisterCommand('+rotate_left', function()
+    if state.isPlacing then
+        state.keys.rotateLeft = true
+    end
+end, false)
+
+RegisterCommand('-rotate_left', function()
+    state.keys.rotateLeft = false
+end, false)
+
+RegisterCommand('+rotate_right', function()
+    if state.isPlacing then
+        state.keys.rotateRight = true
+    end
+end, false)
+
+RegisterCommand('-rotate_right', function()
+    state.keys.rotateRight = false
+end, false)
+
+RegisterCommand('+scroll_up', function()
+    if state.isPlacing then
+        state.keys.scrollUp = true
+    end
+end, false)
+
+RegisterCommand('-scroll_up', function()
+    state.keys.scrollUp = false
+end, false)
+
+RegisterCommand('+scroll_down', function()
+    if state.isPlacing then
+        state.keys.scrollDown = true
+    end
+end, false)
+
+RegisterCommand('-scroll_down', function()
+    state.keys.scrollDown = false
+end, false)
+
+RegisterCommand('+depth_modifier', function()
+    if state.isPlacing then
+        state.keys.depthModifier = true
+    end
+end, false)
+
+RegisterCommand('-depth_modifier', function()
+    state.keys.depthModifier = false
+end, false)
 
 -- Utility functions
-local function eyetrace(depth, disableSphere)
+local function getMouseWorldPos(depth)
     local screenX = GetDisabledControlNormal(0, 239)
     local screenY = GetDisabledControlNormal(0, 240)
 
     local world, normal = GetWorldCoordFromScreenCoord(screenX, screenY)
     local playerPos = GetEntityCoords(PlayerPedId())
-    local target = playerPos + normal * depth
-    if not disableSphere then
-        DrawSphere(target.x, target.y, target.z, 0.5, 255, 0, 0, 0.5)
-    end
-    return target
+    return playerPos + normal * depth
 end
 
-local function inBoundary(pos, boundary)
+local function isInBoundary(pos, boundary)
     if not boundary then return true end
+
     local x, y, z = table.unpack(pos)
-    local minX, minY, minZ = table.unpack(boundary.min)
-    local maxX, maxY, maxZ = table.unpack(boundary.max)
-    return x >= minX and x <= maxX and y >= minY and y <= maxY and z >= minZ and z <= maxZ
-end
 
-local function checkBoundaryAndMaterials(entity, settings)
-    local inBounds = true
-    if settings.allowedMats or settings.boundary then
-        CreateThread(function()
-            while isPlacing do
-                local hit, _, coords, _, materialHash
+    -- Handle legacy min/max boundary format for backwards compatibility
+    if boundary.min and boundary.max then
+        local minX, minY, minZ = table.unpack(boundary.min)
+        local maxX, maxY, maxZ = table.unpack(boundary.max)
+        return x >= minX and x <= maxX and y >= minY and y <= maxY and z >= minZ and z <= maxZ
+    end
 
-                if currentMode == 'movement' then
-                    local entityCoords = GetEntityCoords(entity)
-                    local destination = entityCoords - vector3(0, 0, settings.maxDepth or 10)
-                    hit, _, coords, _, materialHash = Raycast.ToCoords(entityCoords, destination, 1, 4)
-                else
-                    hit, _, coords, _, materialHash = Raycast.FromCamera(1, 4)
+    -- Handle list of points (polygon boundary)
+    if boundary.points and #boundary.points > 0 then
+        local points = boundary.points
+        local minZ = boundary.minZ or -math.huge
+        local maxZ = boundary.maxZ or math.huge
+
+        -- Check Z bounds first
+        if z < minZ or z > maxZ then
+            return false
+        end
+
+        -- Point-in-polygon test using ray casting algorithm (improved version)
+        local inside = false
+        local n = #points
+
+        for i = 1, n do
+            local j = i == n and 1 or i + 1 -- Next point (wrap around)
+
+            local xi, yi = points[i].x or points[i][1], points[i].y or points[i][2]
+            local xj, yj = points[j].x or points[j][1], points[j].y or points[j][2]
+
+            -- Ensure xi, yi, xj, yj are numbers
+            if not (xi and yi and xj and yj) then
+                goto continue
+            end
+
+            -- Ray casting test
+            if ((yi > y) ~= (yj > y)) then
+                -- Calculate intersection point
+                local intersect = (xj - xi) * (y - yi) / (yj - yi) + xi
+                if x < intersect then
+                    inside = not inside
                 end
+            end
 
-                local validMaterial = not settings.allowedMats or settings.allowedMats[materialHash]
-                local validBoundary = inBoundary(GetEntityCoords(entity), settings.boundary)
+            ::continue::
+        end
 
-                if hit and hit ~= 1 and validMaterial and validBoundary then
-                    if not inBounds then
-                        inBounds = true
-                        SetEntityDrawOutlineColor(0, 255, 0, 255)
-                        SetEntityDrawOutline(entity, true)
-                    end
-                elseif inBounds then
-                    inBounds = false
-                    SetEntityDrawOutline(entity, false)
+        return inside
+    end
+
+    -- Fallback to true if boundary format is not recognized
+    return true
+end
+
+local function checkMaterialAndBoundary()
+    if not state.currentEntity then return true end
+
+    local pos = GetEntityCoords(state.currentEntity)
+    local inBounds = isInBoundary(pos, state.settings.boundary)
+
+    -- Check built-in boundary first
+    if state.settings.boundary and not inBounds then return false end
+
+    -- Check custom boundary function if provided
+    if state.settings.customCheck then
+        local customResult = state.settings.customCheck(pos, state.currentEntity, state.settings)
+        if not customResult then return false end
+    end
+
+    -- Check allowed materials
+    if state.settings.allowedMats then
+        local hit, _, _, _, materialHash = GetShapeTestResult(StartShapeTestRay(pos.x, pos.y, pos.z + 1.0, pos.x, pos.y, pos.z - 5.0, -1, 0, 7))
+        if hit == 1 then
+            for _, allowedMat in ipairs(state.settings.allowedMats) do
+                if materialHash == GetHashKey(allowedMat) then
+                    return inBounds
                 end
-                Wait(500)
             end
-            SetEntityDrawOutline(entity, false)
-        end)
+            return false
+        end
     end
-    return function() return inBounds end
+
+    return inBounds
 end
 
-local function setupInstructionalButtons(settings)
-    local buttons = {
-        {type = "CLEAR_ALL"},
-        {type = "SET_CLEAR_SPACE", int = 200},
-    }
+local function checkMaterialAndBoundaryDetailed()
+    if not state.currentEntity then return true, true, true end
 
-    -- Common buttons
-    table.insert(buttons, {type = "SET_DATA_SLOT", name = settings.config?.place_object?.name or 'Place Object:', keyIndex = settings.config?.place_object?.key or {223}, int = 5})
-    table.insert(buttons, {type = "SET_DATA_SLOT", name = settings.config?.cancel_placement?.name or 'Cancel Placement:', keyIndex = settings.config?.cancel_placement?.key or {222}, int = 4})
+    local pos = GetEntityCoords(state.currentEntity)
+    local inBounds = isInBoundary(pos, state.settings.boundary)
+    local customCheckPassed = true
+    local materialCheckPassed = true
 
-    if currentMode == 'normal' then
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = settings.config?.snap_to_ground?.name or 'Snap to Ground:', keyIndex = settings.config?.snap_to_ground?.key or {19}, int = 1})
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = settings.config?.rotate?.name or 'Rotate:', keyIndex = settings.config?.rotate?.key or {14, 15}, int = 2})
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = settings.config?.distance?.name or 'Distance:', keyIndex = settings.config?.distance?.key or {14,15,36}, int = 3})
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = settings.config?.toggle_placement?.name or 'Toggle Placement:', keyIndex = settings.config?.toggle_placement?.key or {199}, int = 0})
+    -- Check built-in boundary first
+    if state.settings.boundary and not inBounds then
+        return false, false, customCheckPassed
+    end
 
-        -- Add vertical controls if allowed
-        if settings.allowVertical then
-            table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Move Up/Down:', keyIndex = {85, 48}, int = 8})
-        end
-
-        if settings.allowMovement then
-            table.insert(buttons, {type = "SET_DATA_SLOT", name = settings.config?.movement?.name or 'Toggle Movement Mode:', keyIndex = settings.config?.movement?.key or {38}, int = 6})
-        end
-    elseif currentMode == 'movement' then
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Move Forward/Back:', keyIndex = {32, 33}, int = 1})
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Move Left/Right:', keyIndex = {34, 35}, int = 2})
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Move Up/Down:', keyIndex = {85, 48}, int = 3})
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Rotate Left/Right:', keyIndex = {174, 175}, int = 4})
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Snap to Ground:', keyIndex = {19}, int = 5})
-        table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Confirm (Enter):', keyIndex = {191}, int = 6})
-
-        if settings.allowNormal then
-            table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Normal Mode:', keyIndex = {38}, int = 7})
+    -- Check custom boundary function if provided
+    if state.settings.customCheck then
+        customCheckPassed = state.settings.customCheck(pos, state.currentEntity, state.settings)
+        if not customCheckPassed then
+            return false, inBounds, false
         end
     end
 
-    table.insert(buttons, {type = "DRAW_INSTRUCTIONAL_BUTTONS"})
-    table.insert(buttons, {type = "SET_BACKGROUND_COLOUR"})
-
-    return Scaleform.SetupInstructionalButtons(buttons)
-end
-
-local function normalPlacementLoop(entity, settings, getBoundsStatus)
-    -- Initialize or retrieve from settings to maintain state
-    settings.currentDepth = settings.currentDepth or settings.depth or 10.0
-    settings.currentHeading = settings.currentHeading or -GetEntityHeading(PlayerPedId())
-    settings.currentHeight = settings.currentHeight or 0.0 -- Add height tracking
-    settings.placeOnGround = settings.placeOnGround ~= nil and settings.placeOnGround or not settings.allowVertical -- Default based on allowVertical
-    settings.paused = settings.paused or false
-
-    local depth = settings.currentDepth
-    local heading = settings.currentHeading
-    local height = settings.currentHeight
-    local placeOnGround = settings.placeOnGround
-    local paused = settings.paused
-    local pos
-
-    -- Don't use while loop here, just process one frame
-    if not isPlacing or currentMode ~= 'normal' then
-        return
-    end
-
-    if paused then
-        if IsControlJustPressed(0, 199) then -- home
-            paused = not paused
-            settings.paused = paused
-        end
-        return
-    end
-
-    -- Disable controls
-    DisableControlAction(0, 24, true) -- Attack
-    DisableControlAction(0, 25, true) -- Aim
-    DisableControlAction(0, 36, true) -- INPUT_DUCK
-
-    -- Place object (left click)
-    if IsDisabledControlJustPressed(0, 223) then
-        if not getBoundsStatus() then
-            print(Language.Locale("placeable_object.cant_place_here"))
-        else
-            pos = GetEntityCoords(entity)
-            isPlacing = false
-            if currentPromise then
-                currentPromise:resolve({
-                    entity = entity,
-                    position = pos,
-                    heading = heading
-                })
-                currentPromise = nil
+    -- Check allowed materials
+    if state.settings.allowedMats then
+        local hit, _, _, _, materialHash = GetShapeTestResult(StartShapeTestRay(pos.x, pos.y, pos.z + 1.0, pos.x, pos.y, pos.z - 5.0, -1, 0, 7))
+        if hit == 1 then
+            for _, allowedMat in ipairs(state.settings.allowedMats) do
+                if materialHash == GetHashKey(allowedMat) then
+                    return inBounds, inBounds, customCheckPassed
+                end
             end
-            DeleteEntity(entity)
-            return
+            materialCheckPassed = false
+            return false, inBounds, customCheckPassed
         end
     end
 
-    -- Cancel (right click)
-    if IsDisabledControlJustPressed(0, 25) then
-        isPlacing = false
-        if currentPromise then
-            currentPromise:resolve(nil) -- Return nil for cancel
-            currentPromise = nil
-        end
-        DeleteEntity(entity)
-        return
-    end
-
-    -- Toggle snap to ground (Alt)
-    if IsControlJustPressed(0, 19) then
-        if settings.allowVertical then
-            placeOnGround = not placeOnGround
-            settings.placeOnGround = placeOnGround
-            if placeOnGround then
-                height = 0.0 -- Reset height when snapping to ground
-                settings.currentHeight = height
-            end
-        else
-            -- Force snap to ground if vertical movement not allowed
-            PlaceObjectOnGroundProperly(entity)
-        end
-    end
-
-    -- Switch to movement mode
-    if settings.allowMovement and IsControlJustPressed(0, 38) then
-        currentMode = 'movement'
-        return
-    end
-
-    -- Vertical controls (only if allowVertical is enabled and not snapped to ground)
-    if settings.allowVertical and not placeOnGround then
-        if IsControlPressed(0, 85) then -- Q - Move up
-            height = height + (settings.heightStep or 0.1)
-            settings.currentHeight = height
-        elseif IsControlPressed(0, 48) then -- Z - Move down
-            height = height - (settings.heightStep or 0.1)
-            settings.currentHeight = height
-        end
-    end
-
-    -- Depth and rotation controls
-    if IsControlPressed(0, 224) then -- left ctrl
-        if IsControlJustPressed(0, 15) then -- D key
-            depth = math.min(depth + settings.depthStep, settings.depthMax)
-        elseif IsControlJustPressed(0, 14) then -- A key
-            depth = math.max(depth - settings.depthStep, settings.depthMin)
-        end
-    else
-        if IsControlJustPressed(0, 15) then -- D key
-            heading = (heading + settings.rotationStep) % 360
-        elseif IsControlJustPressed(0, 14) then -- A key
-            heading = (heading - settings.rotationStep) % 360
-        end
-    end
-
-    -- Update position
-    pos = eyetrace(depth, settings.disableSphere)
-
-    -- Add height offset if not snapping to ground
-    if settings.allowVertical and not placeOnGround then
-        pos = pos + vector3(0, 0, height)
-    end
-
-    if entity then
-        SetEntityCoords(entity, pos.x, pos.y, pos.z)
-        SetEntityHeading(entity, heading)
-        if placeOnGround then
-            PlaceObjectOnGroundProperly(entity)
-            pos = GetEntityCoords(entity)
-        end
-    end
-
-    -- Store updated values back to settings
-    settings.currentDepth = depth
-    settings.currentHeading = heading
-    settings.currentHeight = height
-    settings.placeOnGround = placeOnGround
+    return inBounds, inBounds, customCheckPassed
 end
 
-local function movementPlacementLoop(entity, settings, getBoundsStatus)
-    -- Don't use while loop here, just process one frame
-    if not isPlacing or currentMode ~= 'movement' or not DoesEntityExist(entity) then
-        return
-    end
+-- local function setupInstructionalButtons()
+--     local buttons = {}
 
-    if IsEntityAPed(entity) then
-        SetEntityAlpha(entity, 200)
-    end
+--     -- Common buttons
+--     table.insert(buttons, {type = "SET_DATA_SLOT", name = state.settings.config?.place_object?.name or 'Place Object:', keyIndex = state.settings.config?.place_object?.key or {223}, int = 5})
+--     table.insert(buttons, {type = "SET_DATA_SLOT", name = state.settings.config?.cancel_placement?.name or 'Cancel:', keyIndex = state.settings.config?.cancel_placement?.key or {25}, int = 4})
 
-    -- Disable movement controls to prevent player from moving
-    DisableControlAction(0, 30, true)  -- Move Left/Right
-    DisableControlAction(0, 31, true)  -- Move Forward/Back
-    DisableControlAction(0, 36, true)  -- INPUT_DUCK
-    DisableControlAction(0, 21, true)  -- Sprint
-    DisableControlAction(0, 22, true)  -- Jump
+--     if state.mode == 'normal' then
+--         table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Rotate:', keyIndex = {241, 242}, int = 3})
+--         table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Depth:', keyIndex = {224}, int = 2})
+--         if state.settings.allowVertical then
+--             table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Height:', keyIndex = {16, 17}, int = 1})
+--             table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Toggle Ground Snap:', keyIndex = {19}, int = 0})
+--         end
+--         if state.settings.allowMovement then
+--             table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Movement Mode:', keyIndex = {38}, int = 6})
+--         end
+--     elseif state.mode == 'movement' then
+--         table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Move:', keyIndex = {32, 33, 34, 35}, int = 3})
+--         table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Rotate:', keyIndex = {174, 175}, int = 2})
+--         if state.settings.allowVertical then
+--             table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Up/Down:', keyIndex = {85, 48}, int = 1})
+--         end
+--         if state.settings.allowNormal then
+--             table.insert(buttons, {type = "SET_DATA_SLOT", name = 'Normal Mode:', keyIndex = {38}, int = 0})
+--         end
+--     end
 
-    SetEntityCollision(entity, false, false)
-    FreezeEntityPosition(entity, false)
+--     table.insert(buttons, {type = "DRAW_INSTRUCTIONAL_BUTTONS"})
+--     table.insert(buttons, {type = "SET_BACKGROUND_COLOUR"})
 
-    -- Get current entity position and rotation
-    local coords = GetEntityCoords(entity)
-    local heading = GetEntityHeading(entity)
-    local moved = false
-
-    -- Movement speed settings
-    local moveSpeed = 0.1
-    local fastMoveSpeed = 0.5
-    local rotateSpeed = 2.0
-
-    -- Check if shift is held for faster movement
-    local isFastMode = IsControlPressed(0, 21) -- Left Shift
-    local currentMoveSpeed = isFastMode and fastMoveSpeed or moveSpeed
-
-    -- Get camera rotation for relative movement
-    local camRot = GetGameplayCamRot(2)
-    local camHeading = math.rad(camRot.z)
-
-    -- Calculate camera-relative directions
-    local camForward = vector3(-math.sin(camHeading), math.cos(camHeading), 0)
-    local camRight = vector3(math.cos(camHeading), math.sin(camHeading), 0)
-
-    -- WASD movement (relative to camera direction)
-    if IsControlPressed(0, 32) then -- W - Move forward relative to camera
-        coords = coords + camForward * currentMoveSpeed
-        moved = true
-    elseif IsControlPressed(0, 33) then -- S - Move backward relative to camera
-        coords = coords - camForward * currentMoveSpeed
-        moved = true
-    end
-
-    if IsControlPressed(0, 34) then -- A - Move left relative to camera
-        coords = coords - camRight * currentMoveSpeed
-        moved = true
-    elseif IsControlPressed(0, 35) then -- D - Move right relative to camera
-        coords = coords + camRight * currentMoveSpeed
-        moved = true
-    end
-
-    -- Up/Down movement (always world-relative)
-    if settings.allowVertical and IsControlPressed(0, 85) then -- Q - Move up
-        coords = coords + vector3(0, 0, currentMoveSpeed)
-        moved = true
-    elseif settings.allowVertical and IsControlPressed(0, 48) then -- Z - Move down
-        coords = coords + vector3(0, 0, -currentMoveSpeed)
-        moved = true
-    end
-
-    -- Rotation controls
-    if IsControlPressed(0, 174) then -- Left Arrow - Rotate left
-        heading = heading - rotateSpeed
-        moved = true
-    elseif IsControlPressed(0, 175) then -- Right Arrow - Rotate right
-        heading = heading + rotateSpeed
-        moved = true
-    end
-
-    -- Alternative rotation with mouse wheel
-    if IsControlJustPressed(0, 241) then -- Mouse wheel up
-        heading = heading + 15.0
-        moved = true
-    elseif IsControlJustPressed(0, 242) then -- Mouse wheel down
-        heading = heading - 15.0
-        moved = true
-    end
-
-    -- Apply movement if any occurred
-    if moved then
-        SetEntityCoords(entity, coords.x, coords.y, coords.z, false, false, false, false)
-        SetEntityHeading(entity, heading)
-    end
-
-    -- Confirm placement (Enter)
-    if IsControlJustPressed(0, 191) then
-        if not getBoundsStatus() then
-            print(Language.Locale("placeable_object.cant_place_here"))
-            return
-        end
-        isPlacing = false
-        if currentPromise then
-            currentPromise:resolve({
-                entity = entity,
-                position = GetEntityCoords(entity),
-                heading = GetEntityHeading(entity),
-                rotation = GetEntityRotation(entity)
-            })
-            currentPromise = nil
-        end
-        DeleteEntity(entity)
-        return
-    end
-
-    -- Cancel placement (Backspace)
-    if IsControlJustPressed(0, 202) then
-        isPlacing = false
-        if currentPromise then
-            currentPromise:resolve(nil) -- Return nil for cancel
-            currentPromise = nil
-        end
-        DeleteEntity(entity)
-        return
-    end
-
-    -- Switch to normal mode (E)
-    if settings.allowNormal and IsControlJustPressed(0, 38) then
-        currentMode = 'normal'
-        local playerPos = GetEntityCoords(PlayerPedId())
-        local entityPos = GetEntityCoords(entity)
-        local depth = #(playerPos - entityPos)
-        settings.currentDepth = depth
-        return
-    end
-
-    -- Snap to ground (Alt)
-    if IsControlJustPressed(0, 19) then
-        PlaceObjectOnGroundProperly(entity)
-    end
-
-    FreezeEntityPosition(entity, false)
-end
+--     -- return Scaleform.SetupInstructionalButtons(buttons)
+--     return nil -- Scaleform disabled for now
+-- end
 
 local function drawBoundaryBox(boundary)
     if not boundary then return end
 
-    local min = boundary.min
-    local max = boundary.max
+    -- Handle legacy min/max boundary format for backwards compatibility
+    if boundary.min and boundary.max then
+        local min = boundary.min
+        local max = boundary.max
 
-    -- Define the 8 corners of the box
-    local corners = {
-        vector3(min.x, min.y, min.z), -- 1: bottom front left
-        vector3(max.x, min.y, min.z), -- 2: bottom front right
-        vector3(max.x, max.y, min.z), -- 3: bottom back right
-        vector3(min.x, max.y, min.z), -- 4: bottom back left
-        vector3(min.x, min.y, max.z), -- 5: top front left
-        vector3(max.x, min.y, max.z), -- 6: top front right
-        vector3(max.x, max.y, max.z), -- 7: top back right
-        vector3(min.x, max.y, max.z), -- 8: top back left
-    }
+        -- Define the 8 corners of the box
+        local corners = {
+            vector3(min.x, min.y, min.z), -- 1
+            vector3(max.x, min.y, min.z), -- 2
+            vector3(max.x, max.y, min.z), -- 3
+            vector3(min.x, max.y, min.z), -- 4
+            vector3(min.x, min.y, max.z), -- 5
+            vector3(max.x, min.y, max.z), -- 6
+            vector3(max.x, max.y, max.z), -- 7
+            vector3(min.x, max.y, max.z), -- 8
+        }
 
-    -- Draw the box faces as triangles (2 triangles per face)
-    local alpha = 50 -- Semi-transparent
-    local r, g, b = 0, 255, 0 -- Green color
+        -- Draw wireframe box
+        local r, g, b, a = 0, 255, 0, 100
 
-    -- Bottom face (looking up from below)
-    DrawPoly(corners[1].x, corners[1].y, corners[1].z, corners[2].x, corners[2].y, corners[2].z, corners[3].x, corners[3].y, corners[3].z, r, g, b, alpha)
-    DrawPoly(corners[1].x, corners[1].y, corners[1].z, corners[3].x, corners[3].y, corners[3].z, corners[4].x, corners[4].y, corners[4].z, r, g, b, alpha)
+        -- Bottom face
+        DrawLine(corners[1].x, corners[1].y, corners[1].z, corners[2].x, corners[2].y, corners[2].z, r, g, b, a)
+        DrawLine(corners[2].x, corners[2].y, corners[2].z, corners[3].x, corners[3].y, corners[3].z, r, g, b, a)
+        DrawLine(corners[3].x, corners[3].y, corners[3].z, corners[4].x, corners[4].y, corners[4].z, r, g, b, a)
+        DrawLine(corners[4].x, corners[4].y, corners[4].z, corners[1].x, corners[1].y, corners[1].z, r, g, b, a)
 
-    -- Top face (looking down from above)
-    DrawPoly(corners[5].x, corners[5].y, corners[5].z, corners[7].x, corners[7].y, corners[7].z, corners[6].x, corners[6].y, corners[6].z, r, g, b, alpha)
-    DrawPoly(corners[5].x, corners[5].y, corners[5].z, corners[8].x, corners[8].y, corners[8].z, corners[7].x, corners[7].y, corners[7].z, r, g, b, alpha)
+        -- Top face
+        DrawLine(corners[5].x, corners[5].y, corners[5].z, corners[6].x, corners[6].y, corners[6].z, r, g, b, a)
+        DrawLine(corners[6].x, corners[6].y, corners[6].z, corners[7].x, corners[7].y, corners[7].z, r, g, b, a)
+        DrawLine(corners[7].x, corners[7].y, corners[7].z, corners[8].x, corners[8].y, corners[8].z, r, g, b, a)
+        DrawLine(corners[8].x, corners[8].y, corners[8].z, corners[5].x, corners[5].y, corners[5].z, r, g, b, a)
 
-    -- Front face (min Y)
-    DrawPoly(corners[1].x, corners[1].y, corners[1].z, corners[5].x, corners[5].y, corners[5].z, corners[6].x, corners[6].y, corners[6].z, r, g, b, alpha)
-    DrawPoly(corners[1].x, corners[1].y, corners[1].z, corners[6].x, corners[6].y, corners[6].z, corners[2].x, corners[2].y, corners[2].z, r, g, b, alpha)
-
-    -- Back face (max Y)
-    DrawPoly(corners[4].x, corners[4].y, corners[4].z, corners[7].x, corners[7].y, corners[7].z, corners[8].x, corners[8].y, corners[8].z, r, g, b, alpha)
-    DrawPoly(corners[4].x, corners[4].y, corners[4].z, corners[3].x, corners[3].y, corners[3].z, corners[7].x, corners[7].y, corners[7].z, r, g, b, alpha)
-
-    -- Left face (min X)
-    DrawPoly(corners[1].x, corners[1].y, corners[1].z, corners[4].x, corners[4].y, corners[4].z, corners[8].x, corners[8].y, corners[8].z, r, g, b, alpha)
-    DrawPoly(corners[1].x, corners[1].y, corners[1].z, corners[8].x, corners[8].y, corners[8].z, corners[5].x, corners[5].y, corners[5].z, r, g, b, alpha)
-
-    -- Right face (max X)
-    DrawPoly(corners[2].x, corners[2].y, corners[2].z, corners[6].x, corners[6].y, corners[6].z, corners[7].x, corners[7].y, corners[7].z, r, g, b, alpha)
-    DrawPoly(corners[2].x, corners[2].y, corners[2].z, corners[7].x, corners[7].y, corners[7].z, corners[3].x, corners[3].y, corners[3].z, r, g, b, alpha)
-end
-
--- Main placement function - now uses proper promise pattern
-function PlaceableObject.Create(model, settings)
-    if isPlacing then
-        return nil -- Already placing
+        -- Vertical edges
+        DrawLine(corners[1].x, corners[1].y, corners[1].z, corners[5].x, corners[5].y, corners[5].z, r, g, b, a)
+        DrawLine(corners[2].x, corners[2].y, corners[2].z, corners[6].x, corners[6].y, corners[6].z, r, g, b, a)
+        DrawLine(corners[3].x, corners[3].y, corners[3].z, corners[7].x, corners[7].y, corners[7].z, r, g, b, a)
+        DrawLine(corners[4].x, corners[4].y, corners[4].z, corners[8].x, corners[8].y, corners[8].z, r, g, b, a)
+        return
     end
 
-    settings = settings or {}
+    -- Handle list of points (polygon boundary)
+    if boundary.points and #boundary.points > 0 then
+        local points = boundary.points
+        local minZ = boundary.minZ or 0
+        local maxZ = boundary.maxZ or 50
+        local r, g, b, a = 0, 255, 0, 100
+
+        -- Draw bottom polygon outline
+        for i = 1, #points do
+            local currentPoint = points[i]
+            local nextPoint = points[i % #points + 1] -- Wrap around to first point
+
+            local x1, y1 = currentPoint.x or currentPoint[1], currentPoint.y or currentPoint[2]
+            local x2, y2 = nextPoint.x or nextPoint[1], nextPoint.y or nextPoint[2]
+
+            -- Bottom edge
+            DrawLine(x1, y1, minZ, x2, y2, minZ, r, g, b, a)
+
+            -- Top edge
+            DrawLine(x1, y1, maxZ, x2, y2, maxZ, r, g, b, a)
+
+            -- Vertical edge
+            DrawLine(x1, y1, minZ, x1, y1, maxZ, r, g, b, a)
+        end
+        return
+    end
+end
+
+local function drawEntityBoundingBox(entity, inBounds)
+    if not entity or not DoesEntityExist(entity) then return end
+
+    -- Enable entity outline
+    SetEntityDrawOutlineShader(1)
+    SetEntityDrawOutline(entity, true)
+    -- Set color based on boundary status
+    if inBounds then
+        -- Green outline for valid placement
+        SetEntityDrawOutlineColor(0, 255, 0, 255)
+    else
+        -- Red outline for invalid placement
+        SetEntityDrawOutlineColor(255, 0, 0, 255)
+    end
+end
+
+local function handleNormalMode()
+    if not state.isPlacing or state.mode ~= 'normal' or state.paused then
+        return
+    end
+
+    -- Disable conflicting controls
+    DisableControlAction(0, 24, true) -- Attack
+    DisableControlAction(0, 25, true) -- Aim
+    DisableControlAction(0, 36, true) -- Duck
+
+    local moveSpeed = state.keys.depthModifier and (state.settings.depthStep or 0.1) or (state.settings.rotationStep or 0.5)
+
+    -- Scroll wheel controls using key mappings
+    if state.keys.depthModifier then -- Depth modifier held - depth control
+        if state.keys.scrollUp then
+            state.keys.scrollUp = false -- Reset the key state
+            state.depth = math.min(state.settings.maxDepth, state.depth + moveSpeed) -- Use maxDepth setting
+        elseif state.keys.scrollDown then
+            state.keys.scrollDown = false -- Reset the key state
+            state.depth = math.max(1.0, state.depth - moveSpeed) -- Fixed: scroll down decreases distance
+        end
+    else -- Regular scroll - rotation
+        if state.keys.scrollUp then
+            state.keys.scrollUp = false -- Reset the key state
+            state.heading = state.heading - 5.0 -- Fixed: scroll up = counterclockwise
+        elseif state.keys.scrollDown then
+            state.keys.scrollDown = false -- Reset the key state
+            state.heading = state.heading + 5.0 -- Fixed: scroll down = clockwise
+        end
+    end
+
+    -- -- Arrow key rotation using key mappings
+    -- if state.keys.rotateLeft then
+    --     state.heading = state.heading + 2.0
+    -- elseif state.keys.rotateRight then
+    --     state.heading = state.heading - 2.0
+    -- end
+
+    -- Height controls (only if vertical movement allowed and not snapped to ground)
+    if state.settings.allowVertical and not state.snapToGround then
+        if IsControlPressed(0, 16) then -- Q
+            state.height = state.height + (state.settings.heightStep or 0.5)
+        elseif IsControlPressed(0, 17) then -- E
+            state.height = state.height - (state.settings.heightStep or 0.5)
+        end
+    end
+    -- Toggle ground snap
+    if state.settings.allowVertical and IsControlJustPressed(0, 19) then -- Alt
+        state.snapToGround = not state.snapToGround
+        if state.snapToGround then
+            state.height = 0.0
+        end
+    end
+
+    -- Switch to movement mode
+    if state.settings.allowMovement and IsControlJustPressed(0, 38) then -- E
+        state.mode = 'movement'
+        SetEntityCollision(state.currentEntity, false, false)
+    end
+    -- Update entity position
+    local pos = getMouseWorldPos(state.depth)
+
+    if not state.snapToGround and state.settings.allowVertical then
+        pos = pos + vector3(0, 0, state.height)
+    end
+
+    if state.currentEntity then
+        SetEntityCoords(state.currentEntity, pos.x, pos.y, pos.z, false, false, false, true)
+        SetEntityHeading(state.currentEntity, state.heading)
+        if state.snapToGround then
+            local slerp = PlaceObjectOnGroundProperly(state.currentEntity)
+            if not slerp then
+                -- If the object can't be placed on the ground, adjust its Z position
+                local groundZ, _z = GetGroundZFor_3dCoord(pos.x, pos.y, pos.z + 50, false)
+                if groundZ then
+                    SetEntityCoords(state.currentEntity, pos.x, pos.y, _z, false, false, false, true)
+                end
+            end
+        end
+    end
+    -- Visual feedback
+    if not state.settings.disableSphere then
+        DrawSphere(pos.x, pos.y, pos.z, 0.5, 255, 0, 0, 50)
+    end
+end
+
+local function handleMovementMode()
+    if not state.isPlacing or state.mode ~= 'movement' or not DoesEntityExist(state.currentEntity) then
+        return
+    end
+
+    -- Disable player movement
+    DisableControlAction(0, 30, true) -- Move Left/Right
+    DisableControlAction(0, 31, true) -- Move Forward/Back
+    DisableControlAction(0, 36, true) -- Duck
+    DisableControlAction(0, 21, true) -- Sprint
+    DisableControlAction(0, 22, true) -- Jump
+
+    local coords = GetEntityCoords(state.currentEntity)
+    local heading = GetEntityHeading(state.currentEntity)
+    local moveSpeed = IsControlPressed(0, 21) and (state.settings.movementStepFast or 0.5) or (state.settings.movementStep or 0.1) -- Faster with shift
+    local moved = false
+
+    -- Get camera direction for relative movement
+    local camRot = GetGameplayCamRot(2)
+    local camHeading = math.rad(camRot.z)
+    local camForward = vector3(-math.sin(camHeading), math.cos(camHeading), 0)
+    local camRight = vector3(math.cos(camHeading), math.sin(camHeading), 0)
+
+    -- WASD movement
+    if IsControlPressed(0, 32) then -- W
+        coords = coords + camForward * moveSpeed
+        moved = true
+    elseif IsControlPressed(0, 33) then -- S
+        coords = coords - camForward * moveSpeed
+        moved = true
+    end
+
+    if IsControlPressed(0, 34) then -- A
+        coords = coords - camRight * moveSpeed
+        moved = true
+    elseif IsControlPressed(0, 35) then -- D
+        coords = coords + camRight * moveSpeed
+        moved = true
+    end
+
+    -- Vertical movement
+    if state.settings.allowVertical then
+        if IsControlPressed(0, 85) then -- Q
+            coords = coords + vector3(0, 0, moveSpeed)
+            moved = true
+        elseif IsControlPressed(0, 48) then -- Z
+            coords = coords + vector3(0, 0, -moveSpeed)
+            moved = true
+        end
+    end
+
+    -- Rotation
+    if IsControlPressed(0, 174) then -- Left arrow
+        heading = heading + 2.0
+        moved = true
+    elseif IsControlPressed(0, 175) then -- Right arrow
+        heading = heading - 2.0
+        moved = true
+    end
+
+    -- Apply changes
+    if moved then
+        SetEntityCoords(state.currentEntity, coords.x, coords.y, coords.z, false, false, false, true)
+        SetEntityHeading(state.currentEntity, heading)
+    end
+
+    -- Switch to normal mode
+    if state.settings.allowNormal and IsControlJustPressed(0, 38) then -- E
+        state.mode = 'normal'
+        SetEntityCollision(state.currentEntity, true, true)
+    end
+
+    -- Snap to ground
+    if IsControlJustPressed(0, 19) then -- Alt
+        PlaceObjectOnGroundProperly(state.currentEntity)
+    end
+end
+
+local function placementLoop()
+    CreateThread(function()
+        while state.isPlacing do
+            Wait(0)
+
+            -- Handle input based on mode
+            if state.mode == 'normal' then
+                handleNormalMode()
+            elseif state.mode == 'movement' then
+                handleMovementMode()
+            end
+
+            -- Common controls using key mappings
+            if state.keys.placeObject then
+                state.keys.placeObject = false -- Reset the key state
+                local canPlace = checkMaterialAndBoundary()
+                if canPlace then
+                    local coords = GetEntityCoords(state.currentEntity)
+                    local heading = GetEntityHeading(state.currentEntity)
+
+                    if state.promise then
+                        state.promise:resolve({
+                            entity = state.currentEntity,
+                            coords = coords,
+                            heading = heading,
+                            placed = true
+                        })
+                    end
+
+                    PlaceableObject.Stop()
+                    break
+                end
+            end
+
+            -- Cancel placement using key mapping
+            if state.keys.cancelPlacement then
+                state.keys.cancelPlacement = false -- Reset the key state
+                if state.promise then
+                    state.promise:resolve(false)
+                end
+
+                PlaceableObject.Stop()
+                break
+            end
+
+            -- Check if entity is outside boundary and cancel if so
+            if state.settings.boundary and state.currentEntity then
+                local canPlace = checkMaterialAndBoundary()
+                if not canPlace then
+                    if state.promise then
+                        state.promise:resolve(false)
+                    end
+
+                    PlaceableObject.Stop()
+                    break
+                end
+            end
+
+            -- Draw boundary if exists and enabled
+            if state.settings.drawBoundary then
+                drawBoundaryBox(state.settings.boundary)
+            end
+
+            -- Draw entity bounding box if enabled
+            if state.settings.drawInBoundary and state.currentEntity then
+                local overallResult, boundaryResult, customResult = checkMaterialAndBoundaryDetailed()
+                -- Show red if any check fails, green if all pass
+                local inBounds = overallResult
+                drawEntityBoundingBox(state.currentEntity, inBounds)
+            end
+
+            -- Show help text for placement controls
+            local placementText = {
+                string.format(locale('placeable_object.place_object_place'), Bridge.Utility.GetCommandKey('+place_object')),
+                string.format(locale('placeable_object.place_object_cancel'), Bridge.Utility.GetCommandKey('+cancel_placement')),
+                -- string.format(locale('placeable_object.rotate_left'), Bridge.Utility.GetCommandKey('+rotate_left')),
+                -- string.format(locale('placeable_object.rotate_right'), Bridge.Utility.GetCommandKey('+rotate_right')),
+                string.format(locale('placeable_object.place_object_scroll_up'), Bridge.Utility.GetCommandKey('+scroll_up')),
+                string.format(locale('placeable_object.place_object_scroll_down'), Bridge.Utility.GetCommandKey('+scroll_down')),
+                string.format(locale('placeable_object.depth_modifier'), Bridge.Utility.GetCommandKey('+depth_modifier'))
+            }
+            Bridge.Notify.ShowHelpText(type(placementText) == 'table' and table.concat(placementText))
+
+            -- -- Draw entity bounding box
+            -- drawEntityBoundingBox(state.currentEntity, checkMaterialAndBoundary())
+
+            -- -- Update instructional buttons
+            -- if state.scaleform then
+            --     Scaleform.RenderInstructionalButtons(state.scaleform)
+            -- end
+        end
+    end)
+end
+
+-- Main functions
+
+
+---@param model - Model name or hash
+---@param settings - Configuration table:
+--[[
+    depth (3.0): Starting distance from player,
+    allowVertical (false): Enable height controls,
+    allowMovement (false): Enable WASD mode,
+    disableSphere (false): Hide position indicator,
+    boundary: Area restriction {min = vector3(), max = vector3()},
+    allowedMats: Surface materials {"concrete", "grass"},
+    depthStep (0.1): Step size for depth adjustment,
+    rotationStep (0.5): Step size for rotation,
+    heightStep (0.5): Step size for height adjustment,
+    movementStep (0.1): Step size for normal movement,
+    movementStepFast (0.5): Step size for fast movement (with shift),
+    maxDepth (50.0): Maximum distance from player,
+--]]
+---@returns Promise with: {entity, coords, heading, placed, cancelled}
+--[[
+    Example:
+    local result = Citizen.Await(PlaceableObject.Create("prop_barrier_work05", {
+        depth = 5.0,
+        allowVertical = false
+    }))
+--]]
+
+function PlaceableObject.Create(model, settings)
+    if state.isPlacing then
+        PlaceableObject.Stop()
+    end
 
     -- Default settings
-    local config = {
-        depthMin = settings.depthMin or 2.0,
-        depthMax = settings.depthMax or 10.0,
-        rotationStep = settings.rotationStep or 15.0,
-        depthStep = settings.depthStep or 1.0,
-        heightStep = settings.heightStep or 0.1, -- New height step setting
-        disableSphere = settings.useSphere and false or true,
-        depth = settings.depth or 10.0,
-        allowMovement = settings.allowMovement ~= false, -- default true
-        allowNormal = settings.allowNormal ~= false, -- default true
-        allowVertical = settings.allowVertical ~= false, -- default true - allow vertical movement in normal mode
-        startMode = settings.startMode or 'normal', -- 'normal' or 'movement'
-        allowedMats = settings.allowedMats,
-        boundary = settings.boundary,
-        config = settings.config or {},
-        maxDepth = settings.maxDepth or 10,
-        showInstructionalButtons = settings.showInstructionalButtons
+    settings = settings or {}
+    settings.depth = settings.depth or 3.0  -- Start closer to player
+    settings.allowVertical = settings.allowVertical or false
+    settings.allowMovement = settings.allowMovement or false
+    settings.allowNormal = settings.allowNormal or false
+    settings.disableSphere = settings.disableSphere or false
+    settings.drawBoundary = settings.drawBoundary or false
+    settings.drawInBoundary = settings.drawInBoundary or false
+
+    -- Movement speed settings
+    settings.depthStep = settings.depthStep or 0.1 -- Fine control for depth adjustment
+    settings.rotationStep = settings.rotationStep or 0.5 -- Normal rotation speed
+    settings.heightStep = settings.heightStep or 0.5 -- Height adjustment speed
+    settings.movementStep = settings.movementStep or 0.1 -- Normal movement speed
+    settings.movementStepFast = settings.movementStepFast or 0.5 -- Fast movement speed (with shift)
+    settings.maxDepth = settings.maxDepth or 5.0 -- Maximum distance from player
+
+    state.settings = settings
+    state.depth = settings.depth  -- Use the settings depth
+    state.heading = -GetEntityHeading(PlayerPedId())
+    state.height = 0.0
+    state.snapToGround = not settings.allowVertical
+    state.mode = 'normal'
+
+    local p = promise.new()
+    state.promise = p
+
+    local point = Bridge.ClientEntity.Register({
+        id = 'placeable_object',
+        entityType = 'object',
+        model = model,
+        coords = GetEntityCoords(PlayerPedId()),
+        rotation = vector3(0.0, 0.0, state.heading),
+        OnSpawn= function(data)
+            state.currentEntity = data.spawned
+            SetEntityCollision(state.currentEntity, false, false)
+            FreezeEntityPosition(state.currentEntity, false)
+
+            -- Set initial position based on depth
+            local playerPos = GetEntityCoords(PlayerPedId())
+            local forward = GetEntityForwardVector(PlayerPedId())
+            local spawnPos = playerPos + forward * state.depth
+            SetEntityCoords(state.currentEntity, spawnPos.x, spawnPos.y, spawnPos.z + state.height, false, false, false, true)
+        end,
+    })
+    -- Setup instructional buttons
+    -- state.scaleform = setupInstructionalButtons()
+    state.scaleform = nil
+
+    state.isPlacing = true
+
+    -- Show help text for placement controls
+    local placementText = {
+        string.format(locale('placeable_object.place_object_place'), Bridge.Utility.GetCommandKey('+place_object')),
+        string.format(locale('placeable_object.place_object_cancel'), Bridge.Utility.GetCommandKey('+cancel_placement')),
+        -- string.format(locale('placeable_object.rotate_left'), Bridge.Utility.GetCommandKey('+rotate_left')),
+        -- string.format(locale('placeable_object.rotate_right'), Bridge.Utility.GetCommandKey('+rotate_right')),
+        string.format(locale('placeable_object.place_object_scroll_up'), Bridge.Utility.GetCommandKey('+scroll_up')),
+        string.format(locale('placeable_object.place_object_scroll_down'), Bridge.Utility.GetCommandKey('+scroll_down')),
+        string.format(locale('placeable_object.depth_modifier'), Bridge.Utility.GetCommandKey('+depth_modifier'))
     }
+    Bridge.Notify.ShowHelpText(type(placementText) == 'table' and table.concat(placementText))
 
-    -- Create the promise and store it globally
-    currentPromise = promise.new()
+    placementLoop()
 
-    isPlacing = true
-    currentMode = config.startMode
 
-    -- Create entity if model provided
-    if model then
-        local heading = -GetEntityHeading(PlayerPedId())
-        local pos = eyetrace(config.depth, config.disableSphere)
-        local obj = Utility.CreateProp(model, pos, vector3(0, 0, heading), nil)
-        currentEntity = obj
-    else
-        currentEntity = settings.entity
-    end
-
-    if not currentEntity then
-        isPlacing = false
-        if currentPromise then
-            currentPromise:resolve(nil)
-            currentPromise = nil
-        end
-        return nil
-    end
-
-    -- Setup entity
-    SetEntityCollision(currentEntity, false, false)
-    SetEntityAlpha(currentEntity, 150, false)
-    SetPedConfigFlag(PlayerPedId(), 146, true)
-    SetCanClimbOnEntity(currentEntity, false)
-    SetEntityCompletelyDisableCollision(currentEntity, true, false)
-    SetEntityNoCollisionEntity(PlayerPedId(), currentEntity, false)
-
-    -- Setup boundary checking
-    local getBoundsStatus = checkBoundaryAndMaterials(currentEntity, config)
-
-    -- Setup instructional buttons only if enabled
-    local scaleform = nil
-    if config.showInstructionalButtons then
-        scaleform = setupInstructionalButtons(config)
-    end
-
-    -- Main loop
-    CreateThread(function()
-        local lastMode = currentMode
-        while isPlacing do
-            -- Update instructional buttons if mode changed and buttons are enabled
-            if config.showInstructionalButtons and (not lastMode or lastMode ~= currentMode) then
-                scaleform = setupInstructionalButtons(config)
-                lastMode = currentMode
-            end
-
-            -- Draw instructional buttons only if enabled
-            if config.showInstructionalButtons and scaleform then
-                DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 0)
-            end
-
-            -- Draw boundary box if defined
-            if config.boundary then
-                drawBoundaryBox(config.boundary)
-            end
-
-            if currentMode == 'normal' and config.allowNormal then
-                normalPlacementLoop(currentEntity, config, getBoundsStatus)
-            elseif currentMode == 'movement' and config.allowMovement then
-                movementPlacementLoop(currentEntity, config, getBoundsStatus)
-            end
-
-            Wait(0)
-        end
-
-        -- Cleanup
-        if DoesEntityExist(currentEntity) then
-            if IsEntityAPed(currentEntity) then
-                SetEntityAlpha(currentEntity, 255)
-            end
-            SetEntityDrawOutline(currentEntity, false)
-        end
-
-        currentEntity = nil
-    end)
-
-    -- Return Citizen.Await on the promise
-    return Citizen.Await(currentPromise)
+    return Citizen.Await(p)
 end
 
--- Stop placement function
 function PlaceableObject.Stop()
-    if not isPlacing then return false end
-
-    isPlacing = false
-    if currentEntity and DoesEntityExist(currentEntity) then
-        DeleteEntity(currentEntity)
+    Bridge.Notify.HideHelpText()
+    if state.currentEntity and DoesEntityExist(state.currentEntity) then
+        -- Disable entity outline before deleting
+        SetEntityDrawOutline(state.currentEntity, false)
+        DeleteObject(state.currentEntity)
     end
+
+    if state.scaleform then
+        Scaleform.Unload(state.scaleform)
+    end
+    ClientEntity.Unregister('placeable_object')
+    -- Reset state
+    state.isPlacing = false
+    state.currentEntity = nil
+    state.mode = 'normal'
+    state.promise = nil
+    state.scaleform = nil
+    state.settings = {}
 
     return true
 end
 
--- Get current status
+-- Status functions
 function PlaceableObject.IsPlacing()
-    return isPlacing
+    return state.isPlacing
 end
 
 function PlaceableObject.GetCurrentEntity()
-    return currentEntity
+    return state.currentEntity
 end
 
 function PlaceableObject.GetCurrentMode()
-    return currentMode
+    return state.mode
 end
 
-
+AddEventHandler('onResourceStop', function(resource)
+    if resource ~= GetCurrentResourceName() then return end
+    if state.isPlacing then
+        PlaceableObject.Stop()
+    end
+end)
 
 return PlaceableObject
