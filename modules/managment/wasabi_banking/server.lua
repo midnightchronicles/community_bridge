@@ -1,38 +1,39 @@
 ---@diagnostic disable: duplicate-set-field
-if GetResourceState('tgiann-bank') == 'missing' then return end
+if GetResourceState('wasabi_banking') == 'missing' then return end
 Managment = Managment or {}
 
-local tgiann = exports["tgiann-bank"]
+local wasabi_banking = exports['wasabi_banking']
 
 ---This will get the name of the Managment system being being used.
 ---@return string
 Managment.GetManagmentName = function()
-    return 'tgiann-bank'
+    return 'wasabi_banking'
 end
 
 ---This will return a number
 ---@param account string
 ---@return number
 Managment.GetAccountMoney = function(account)
-    return tgiann:GetJobAccountBalance(account)
+    local balance = wasabi_banking:GetAccountBalance(account, 'society')
+    return balance or 0
 end
 
 ---This will add money to the specified account of the passed amount
 ---@param account string
 ---@param amount number
----@param _ string
+---@param reason string
 ---@return boolean
-Managment.AddAccountMoney = function(account, amount, _)
-    return tgiann:AddJobMoney(account, amount)
+Managment.AddAccountMoney = function(account, amount, reason)
+    return wasabi_banking:AddMoney('society', account, amount)
 end
 
 ---This will remove money from the specified account of the passed amount
 ---@param account string
 ---@param amount number
----@param _ string
+---@param reason string
 ---@return boolean
-Managment.RemoveAccountMoney = function(account, amount, _)
-    return tgiann:RemoveJobMoney(account, amount)
+Managment.RemoveAccountMoney = function(account, amount, reason)
+    return wasabi_banking:RemoveMoney('society', account, amount)
 end
 
 return Managment
