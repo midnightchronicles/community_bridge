@@ -84,6 +84,63 @@ function Math.GetOffsetFromMatrix(position, rotation, offset)
     return position + rotated
 end
 
+function Math.InBoundary(pos, boundary)
+    if not boundary then return true end
+
+    local x, y, z = table.unpack(pos)
+
+    -- Handle legacy min/max boundary format for backwards compatibility
+    if boundary.min and boundary.max then
+        local minX, minY, minZ = table.unpack(boundary.min)
+        local maxX, maxY, maxZ = table.unpack(boundary.max)
+        return x >= minX and x <= maxX and y >= minY and y <= maxY and z >= minZ and z <= maxZ
+    end
+
+    -- Handle list of points (polygon boundary)
+    if boundary.points and #boundary.points > 0 then
+        local points = boundary.points
+        local minZ = boundary.minZ or -math.huge
+        local maxZ = boundary.maxZ or math.huge
+
+        -- Check Z bounds first
+        if z < minZ or z > maxZ then
+            return false
+        end
+
+        -- Point-in-polygon test using ray casting algorithm (improved version)
+        local inside = false
+        local n = #points
+
+        for i = 1, n do
+            local j = i == n and 1 or i + 1 -- Next point (wrap around)
+
+            local xi, yi = points[i].x or points[i][1], points[i].y or points[i][2]
+            local xj, yj = points[j].x or points[j][1], points[j].y or points[j][2]
+
+            -- Ensure xi, yi, xj, yj are numbers
+            if not (xi and yi and xj and yj) then
+                goto continue
+            end
+
+            -- Ray casting test
+            if ((yi > y) ~= (yj > y)) then
+                -- Calculate intersection point
+                local intersect = (xj - xi) * (y - yi) / (yj - yi) + xi
+                if x < intersect then
+                    inside = not inside
+                end
+            end
+
+            ::continue::
+        end
+
+        return inside
+    end
+
+    -- Fallback to true if boundary format is not recognized
+    return true
+end
+
 exports('Math', Math)
 
 return Math

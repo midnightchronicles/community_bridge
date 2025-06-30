@@ -125,68 +125,68 @@ local function getMouseWorldPos(depth)
     return playerPos + normal * depth
 end
 
-local function isInBoundary(pos, boundary)
-    if not boundary then return true end
+-- local function isInBoundary(pos, boundary)
+--     if not boundary then return true end
 
-    local x, y, z = table.unpack(pos)
+--     local x, y, z = table.unpack(pos)
 
-    -- Handle legacy min/max boundary format for backwards compatibility
-    if boundary.min and boundary.max then
-        local minX, minY, minZ = table.unpack(boundary.min)
-        local maxX, maxY, maxZ = table.unpack(boundary.max)
-        return x >= minX and x <= maxX and y >= minY and y <= maxY and z >= minZ and z <= maxZ
-    end
+--     -- Handle legacy min/max boundary format for backwards compatibility
+--     if boundary.min and boundary.max then
+--         local minX, minY, minZ = table.unpack(boundary.min)
+--         local maxX, maxY, maxZ = table.unpack(boundary.max)
+--         return x >= minX and x <= maxX and y >= minY and y <= maxY and z >= minZ and z <= maxZ
+--     end
 
-    -- Handle list of points (polygon boundary)
-    if boundary.points and #boundary.points > 0 then
-        local points = boundary.points
-        local minZ = boundary.minZ or -math.huge
-        local maxZ = boundary.maxZ or math.huge
+--     -- Handle list of points (polygon boundary)
+--     if boundary.points and #boundary.points > 0 then
+--         local points = boundary.points
+--         local minZ = boundary.minZ or -math.huge
+--         local maxZ = boundary.maxZ or math.huge
 
-        -- Check Z bounds first
-        if z < minZ or z > maxZ then
-            return false
-        end
+--         -- Check Z bounds first
+--         if z < minZ or z > maxZ then
+--             return false
+--         end
 
-        -- Point-in-polygon test using ray casting algorithm (improved version)
-        local inside = false
-        local n = #points
+--         -- Point-in-polygon test using ray casting algorithm (improved version)
+--         local inside = false
+--         local n = #points
 
-        for i = 1, n do
-            local j = i == n and 1 or i + 1 -- Next point (wrap around)
+--         for i = 1, n do
+--             local j = i == n and 1 or i + 1 -- Next point (wrap around)
 
-            local xi, yi = points[i].x or points[i][1], points[i].y or points[i][2]
-            local xj, yj = points[j].x or points[j][1], points[j].y or points[j][2]
+--             local xi, yi = points[i].x or points[i][1], points[i].y or points[i][2]
+--             local xj, yj = points[j].x or points[j][1], points[j].y or points[j][2]
 
-            -- Ensure xi, yi, xj, yj are numbers
-            if not (xi and yi and xj and yj) then
-                goto continue
-            end
+--             -- Ensure xi, yi, xj, yj are numbers
+--             if not (xi and yi and xj and yj) then
+--                 goto continue
+--             end
 
-            -- Ray casting test
-            if ((yi > y) ~= (yj > y)) then
-                -- Calculate intersection point
-                local intersect = (xj - xi) * (y - yi) / (yj - yi) + xi
-                if x < intersect then
-                    inside = not inside
-                end
-            end
+--             -- Ray casting test
+--             if ((yi > y) ~= (yj > y)) then
+--                 -- Calculate intersection point
+--                 local intersect = (xj - xi) * (y - yi) / (yj - yi) + xi
+--                 if x < intersect then
+--                     inside = not inside
+--                 end
+--             end
 
-            ::continue::
-        end
+--             ::continue::
+--         end
 
-        return inside
-    end
+--         return inside
+--     end
 
-    -- Fallback to true if boundary format is not recognized
-    return true
-end
+--     -- Fallback to true if boundary format is not recognized
+--     return true
+-- end
 
 local function checkMaterialAndBoundary()
     if not state.currentEntity then return true end
 
     local pos = GetEntityCoords(state.currentEntity)
-    local inBounds = isInBoundary(pos, state.settings.boundary)
+    local inBounds = Bridge.Math.InBoundary(pos, state.settings.boundary)
 
     -- Check built-in boundary first
     if state.settings.boundary and not inBounds then return false end
@@ -217,7 +217,7 @@ local function checkMaterialAndBoundaryDetailed()
     if not state.currentEntity then return true, true, true end
 
     local pos = GetEntityCoords(state.currentEntity)
-    local inBounds = isInBoundary(pos, state.settings.boundary)
+    local inBounds = Bridge.Math.InBoundary(pos, state.settings.boundary)
     local customCheckPassed = true
     local materialCheckPassed = true
 
@@ -440,7 +440,7 @@ local function handleNormalMode()
     end
 
     if state.currentEntity then
-        SetEntityCoords(state.currentEntity, pos.x, pos.y, pos.z, false, false, false, true)
+        SetEntityCoords(state.currentEntity, pos.x, pos.y, pos.z, false, false, false, false)
         SetEntityHeading(state.currentEntity, state.heading)
         if state.snapToGround then
             local slerp = PlaceObjectOnGroundProperly(state.currentEntity)
@@ -554,14 +554,21 @@ local function placementLoop()
                 state.keys.placeObject = false -- Reset the key state
                 local canPlace = checkMaterialAndBoundary()
                 if canPlace then
+                    Wait(100)
                     local coords = GetEntityCoords(state.currentEntity)
-                    local heading = GetEntityHeading(state.currentEntity)
+                    if not state.settings.allowVertical or state.snapToGround then
+                        local groundZ, _z = GetGroundZFor_3dCoord(coords.x, coords.y, coords.z + 50, false)
+                        if groundZ then
+                            coords = vector3(coords.x, coords.y, _z)
+                        end
+                    end
 
+                    local rotation = GetEntityRotation(state.currentEntity)
                     if state.promise then
                         state.promise:resolve({
                             entity = state.currentEntity,
                             coords = coords,
-                            heading = heading,
+                            rotation = rotation,
                             placed = true
                         })
                     end
@@ -692,7 +699,7 @@ function PlaceableObject.Create(model, settings)
     local p = promise.new()
     state.promise = p
 
-    local point = Bridge.ClientEntity.Register({
+    local point = Bridge.ClientEntity.Create({
         id = 'placeable_object',
         entityType = 'object',
         model = model,
