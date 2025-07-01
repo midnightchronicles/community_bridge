@@ -33,6 +33,7 @@ server_scripts {
     'modules/notify/**/server.lua',
     'modules/housing/**/server.lua',
     'modules/skills/**/server.lua',
+    'modules/bossmenu/**/server.lua',
     "lib/**/server.lua",
     'init.lua',
 }
@@ -59,6 +60,7 @@ client_scripts {
     'modules/shops/**/client.lua',
     'modules/housing/**/client.lua',
     'modules/skills/**/client.lua',
+    'modules/bossmenu/**/client.lua',
     'init.lua',
     -- 'unit_tests/input_test.lua',
 }
