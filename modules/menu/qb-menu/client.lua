@@ -36,10 +36,14 @@ function OxToQBMenu(id, menu)
     return qbMenu
 end
 
-OpenMenu = function(id, data, useQBinput)
+function OpenMenu(id, data, useQBinput)
     if not useQBinput then
         data = OxToQBMenu(id, data)
     end
     exports['qb-menu']:openMenu(data)
     return data
+end
+
+GetMenuResourceName = function()
+    return resourceName
 end

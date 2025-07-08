@@ -53,7 +53,7 @@ client_scripts {
     'modules/progressbar/**/client.lua',
     'modules/clothing/**/client.lua',
     'modules/input/**/client.lua',
-    'modules/menu/*.lua',
+    'modules/menu/**/client.lua',
     'modules/helptext/**/client.lua',
     'modules/notify/**/client.lua',
     'modules/dialogue/**/client/*.lua',

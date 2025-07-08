@@ -14,16 +14,16 @@ local function convertFromQB(options)
     local prop2 = options.propTwo or {}
     local props = {
         {
-            model = prop1.model,
-            bone = prop1.bone,
-            pos = prop1.coords,
-            rot = prop1.rotation,
+            model = prop1?.model,
+            bone = prop1?.bone,
+            pos = prop1?.coords,
+            rot = prop1?.rotation,
         },
         {
-            model = prop2.model,
-            bone = prop2.bone,
-            pos = prop2.coords,
-            rot = prop2.rotation,
+            model = prop2?.model,
+            bone = prop2?.bone,
+            pos = prop2?.coords,
+            rot = prop2?.rotation,
         }
     }
     return {

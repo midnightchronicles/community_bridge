@@ -44,11 +44,15 @@ local function QBToOxMenu(id, menu)
     return oxMenu
 end
 
-OpenMenu = function(id, data, useQBinput)
+function OpenMenu(id, data, useQBinput)
     if useQBinput then
         data = QBToOxMenu(id, data)
     end
     lib.registerContext(data)
     lib.showContext(id)
     return data
+end
+
+GetMenuResourceName = function()
+    return resourceName
 end
