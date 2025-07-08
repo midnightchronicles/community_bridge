@@ -5,7 +5,6 @@ if (configValue == "auto" and GetResourceState(resourceName) == "missing") or (c
 
 Input = {}
 
-
 -- this probably needs improvement
 function Input.Open(title, data, isQBFormat, submitText)
     local input = data.inputs
@@ -18,13 +17,11 @@ function Input.Open(title, data, isQBFormat, submitText)
         inputs = input
     })
     if not returnData then return end
-    print(json.encode(returnData))
     if returnData[1] then return returnData end
     --converting to standard format (ox)
     local convertedData = {}
     if isQBFormat then
         for i, v in pairs(input) do
-            print("Converting input: " .. v.name)
             for k, j in pairs(returnData) do
                 if k == v.name then
                     convertedData[tonumber(i)] = j
@@ -36,13 +33,17 @@ function Input.Open(title, data, isQBFormat, submitText)
 
     for i, v in pairs(returnData) do
         local index = i and tonumber(i)
-        if not index then 
+        if not index then
             table.insert(convertedData, v)
         else
             convertedData[index] = v
         end
     end
     return convertedData
+end
+
+function Input.GetResourceName()
+    return resourceName
 end
 
 return Input
