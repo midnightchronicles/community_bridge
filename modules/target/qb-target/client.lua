@@ -80,6 +80,21 @@ Target.AddGlobalVehicle = function(options)
     })
 end
 
+---This will add a networked entity to the target system.
+---@param netids table | number
+---@param options table
+Target.AddNetworkedEntity = function(netids, options)
+    options = Target.FixOptions(options)
+    qb_target:AddTargetEntity(netids, options)
+end
+
+---This will remove a networked entity from the target system.
+---@param netids table | number
+---@param optionNames string
+Target.RemoveNetworkedEntity = function(netids, optionNames)
+    qb_target:RemoveTargetEntity(netids, optionNames)
+end
+
 ---This will remove target options from all vehicles.
 ---@param options table
 Target.RemoveGlobalVehicle = function(options)

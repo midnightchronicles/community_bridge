@@ -80,6 +80,21 @@ Target.RemoveGlobalVehicle = function(options)
     sleepless_interact:removeGlobalVehicle(assembledLables)
 end
 
+---This will add a networked entity to the target system.
+---@param netids table | number
+---@param options table
+Target.AddNetworkedEntity = function(netids, options)
+    options = Target.FixOptions(options)
+    sleepless_interact:addEntity(netids, options)
+end
+
+---This will remove a networked entity from the target system.
+---@param netids table | number
+---@param optionNames string
+Target.RemoveNetworkedEntity = function(netids, optionNames)
+    sleepless_interact:removeEntity(netids, optionNames)
+end
+
 ---This will generate targets on non networked entites with the passed options.
 ---@param entities number | table
 ---@param options table

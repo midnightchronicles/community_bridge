@@ -97,6 +97,21 @@ Target.RemoveLocalEntity = function(entities, optionNames)
     ox_target:removeLocalEntity(entities, optionNames)
 end
 
+---This will add a networked entity to the target system.
+---@param netids table | number
+---@param options table
+Target.AddNetworkedEntity = function(netids, options)
+    options = Target.FixOptions(options)
+    ox_target:addEntity(netids, options)
+end
+
+---This will remove a networked entity from the target system.
+---@param netids table | number
+---@param optionNames string
+Target.RemoveNetworkedEntity = function(netids, optionNames)
+    ox_target:removeEntity(netids, optionNames)
+end
+
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
 ---@param models number | table
 ---@param options table
