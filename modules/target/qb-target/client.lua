@@ -57,6 +57,19 @@ Target.RemoveGlobalPlayer = function()
     qb_target:RemoveGlobalPlayer()
 end
 
+---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
+---@param options table
+Target.AddGlobalPed = function(options)
+    options = Target.FixOptions(options)
+    qb_target:AddGlobalPed(options)
+end
+
+---This will remove target options from all peds. This is useful for when you want to remove target options from all peds.
+---@param options any
+Target.RemoveGlobalPed = function(options)
+    qb_target:RemoveGlobalPed(options)
+end
+
 ---This will add taget options to all vehicles.
 ---@param options table
 Target.AddGlobalVehicle = function(options)
@@ -65,6 +78,21 @@ Target.AddGlobalVehicle = function(options)
         options = options,
         distance = options.distance or 1.5
     })
+end
+
+---This will add a networked entity to the target system.
+---@param netids table | number
+---@param options table
+Target.AddNetworkedEntity = function(netids, options)
+    options = Target.FixOptions(options)
+    qb_target:AddTargetEntity(netids, options)
+end
+
+---This will remove a networked entity from the target system.
+---@param netids table | number
+---@param optionNames string
+Target.RemoveNetworkedEntity = function(netids, optionNames)
+    qb_target:RemoveTargetEntity(netids, optionNames)
 end
 
 ---This will remove target options from all vehicles.
@@ -96,20 +124,6 @@ Target.RemoveLocalEntity = function(entity, labels)
 end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
----@param options table
-Target.AddGlobalPed = function(options)
-    options = Target.FixOptions(options)
-    qb_target:AddGlobalPed(options)
-end
-
----This will remove target options from all peds. This is useful for when you want to remove target options from all peds.
----@param options any
-Target.RemoveGlobalPed = function(options)
-    qb_target:RemoveGlobalPed(options)
-end
-
-
----This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
 ---@param models number | table
 ---@param options table
 Target.AddModel = function(models, options)
@@ -125,17 +139,6 @@ end
 Target.RemoveModel = function(model)
     qb_target:RemoveTargetModel(model)
 end
-
--- Target.DisableTargeting = function(bool)
---     qb_target:AllowTargeting(bool)
--- end
-
--- Target.Refresh = function()
---     qb_target:AllowTargeting(false)
---     Wait(10)
---     qb_target:AllowTargeting(true)
--- end
-
 
 ---This will add a box zone to the target system. This is useful for when you want to add target options to a specific area.
 ---@param name string

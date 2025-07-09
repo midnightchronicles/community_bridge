@@ -28,6 +28,9 @@ end
 Skills.AddXp = function(src, skillName, amount)
     local skillData = exports.OT_skills:getSkill(src, skillName)
     if not skillData then return false, print("Skill not found") end
+    if not Skills.All[skillName] then
+       Skills.All[skillName] = Skills.Create(skillName, 99, 50)
+    end
     exports.OT_skills:addXP(src, skillName, amount)
     return true
 end

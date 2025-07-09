@@ -12,6 +12,10 @@ function Menu.Open(data, useQb)
     return id
 end
 
+function Menu.GetResourceName()
+    return GetMenuResourceName()
+end
+
 ---Event to handle callback from menu selection.
 ---@param _args table The arguments passed to the callback.
 ---@return nil

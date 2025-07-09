@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 Shops = Shops or {}
 
 RegisterNetEvent('community_bridge:openShop', function(_type, _title, shopData)

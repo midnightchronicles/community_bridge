@@ -10,7 +10,6 @@ if (configValue == "auto" and GetResourceState(resourceName) ~= "started") or (c
 Skills.GetResourceName = function()
     return resourceName
 end
-
 ---This will return the skill level of the passed skill name.
 ---@param src number
 ---@param skillName string
@@ -28,6 +27,9 @@ end
 Skills.AddXp = function(src, skillName, amount)
     local skillData = exports.evolent_skills:getSkillLevel(src, skillName)
     if not skillData then return false, print("Skill not found") end
+    if not Skills.All[skillName] then
+       Skills.All[skillName] = Skills.Create(skillName, 99, 50)
+    end
     exports.evolent_skills:addXp(src, skillName, amount)
     return true
 end

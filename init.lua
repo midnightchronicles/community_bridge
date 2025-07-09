@@ -46,6 +46,7 @@ end
 
 --Bridge
 Bridge.RegisterModule("Framework", Framework)
+Bridge.RegisterModule("BossMenu", BossMenu)
 Bridge.RegisterModule("Inventory", Inventory)
 Bridge.RegisterModule("Notify", Notify)
 Bridge.RegisterModule("HelpText", HelpText)

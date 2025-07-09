@@ -62,20 +62,35 @@ end
 
 --- Registers an entity received from the server and sets up proximity spawning.
 -- @param entityData table Data received from the server via 'community_bridge:client:CreateEntity'
-function ClientEntity.Register(entityData)
-    if Entities[entityData.id] then return end -- Already registered
-
+function ClientEntity.Create(entityData)
+    entityData.id = entityData.id or Ids.CreateUniqueId(Entities)
+    if Entities[entityData.id] then return Entities[entityData.id] end -- Already registered
     Entities[entityData.id] = entityData
-    -- print(string.format("[ClientEntity] Registering %s entity %s", entityData.entityType, entityData.id))
-
-    -- Use Point system for proximity checks
-    -- print(string.format("[ClientEntity] Registering entity %s at %s", entityData.id, json.encode(entityData)))
-     return Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, function() end)
+    return Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, function() end)
 end
+
+--Depricated use ClientEntity.Create instead
+--- Registers an entity and spawns it in the world if not already spawned.
+ClientEntity.Register = ClientEntity.Create
+
+
+function ClientEntity.CreateBulk(entities)
+    local registeredEntities = {}
+    for _, entityData in pairs(entities) do
+        local entity = ClientEntity.Create(entityData)
+        registeredEntities[entity.id] = entity
+    end
+    return registeredEntities
+end
+
+-- Depricated use ClientEntity.CreateBulk instead
+ClientEntity.RegisterBulk = ClientEntity.CreateBulk
+
+
 
 --- Unregisters an entity and removes it from the world if spawned.
 -- @param id string|number The ID of the entity to unregister.
-function ClientEntity.Unregister(id)
+function ClientEntity.Destroy(id)
     local entityData = Entities[id]
     if not entityData then return end
 
@@ -83,6 +98,8 @@ function ClientEntity.Unregister(id)
     RemoveEntity(entityData)
     Entities[id] = nil
 end
+ClientEntity.Unregister = ClientEntity.Destroy
+
 
 --- Updates the data for a registered entity.
 -- @param id string|number The ID of the entity to update.
@@ -95,7 +112,6 @@ function ClientEntity.Update(id, data)
     local needsPointUpdate = false
     for key, value in pairs(data) do
         if key == 'coords' and #(entityData.coords - value) > 0.1 then
-            -- print(string.format("[ClientEntity] Updating coords for entity %s", id))
              needsPointUpdate = true
         end
         if key == 'spawnDistance' and entityData.spawnDistance ~= value then
@@ -153,9 +169,21 @@ function ClientEntity.RegisterAction(name, func)
     ClientEntityActions.RegisterAction(name, func)
 end
 
+function ClientEntity.OnCreate(_type, func)
+    ClientEntity.OnCreates = ClientEntity.OnCreates or {}
+    if not ClientEntity.OnCreates[_type] then
+        ClientEntity.OnCreates[_type] = {}
+    end
+    table.insert(ClientEntity.OnCreates[_type], func)
+end
+
 -- Network Event Handlers
 RegisterNetEvent("community_bridge:client:CreateEntity", function(entityData)
-    ClientEntity.Register(entityData)
+    ClientEntity.Create(entityData)
+end)
+
+RegisterNetEvent("community_bridge:client:CreateEntities", function(entities)
+    ClientEntity.CreateBulk(entities)
 end)
 
 RegisterNetEvent("community_bridge:client:DeleteEntity", function(id)

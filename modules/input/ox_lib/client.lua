@@ -4,6 +4,7 @@ local configValue = BridgeClientConfig.InputSystem
 if (configValue == "auto" and GetResourceState(resourceName) == "missing") or (configValue ~= "auto" and configValue ~= resourceName) then return end
 
 Input = {}
+
 function Input.Open(title, data, isQBFormat, submitText)
     local inputs = data.inputs
     if isQBFormat then
@@ -13,5 +14,8 @@ function Input.Open(title, data, isQBFormat, submitText)
     end
 end
 
-return Input
+function Input.GetResourceName()
+    return resourceName
+end
 
+return Input

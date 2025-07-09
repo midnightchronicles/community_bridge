@@ -2,6 +2,7 @@
 if GetResourceState('es_extended') ~= 'started' then return end
 
 Prints = Prints or Require("lib/utility/shared/prints.lua")
+Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 
 ESX = exports["es_extended"]:getSharedObject()
 
@@ -299,12 +300,12 @@ end
 ---@param src number
 ---@param status boolean
 ---@return boolean
-Framework.SetPlayerDuty = function(src, dutystatus)
+Framework.SetPlayerDuty = function(src, status)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return false end
     local job = xPlayer.getJob()
     if not job.onDuty then return false end
-    xPlayer.setJob(job.name, job.grade, dutystatus)
+    xPlayer.setJob(job.name, job.grade, status)
     return true
 end
 
@@ -452,8 +453,7 @@ AddEventHandler("playerDropped", function()
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
 
---<-- TODO swap to internal callback system
-lib.callback.register('community_bridge:Callback:GetFrameworkJobs', function(source)
+Callback.Register('community_bridge:Callback:GetFrameworkJobs', function(source)
     return Framework.GetFrameworkJobs() or {}
 end)
 

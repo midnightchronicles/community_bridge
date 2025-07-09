@@ -2,6 +2,7 @@
 if GetResourceState('es_extended') ~= 'started' then return end
 
 ESX = exports["es_extended"]:getSharedObject()
+Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 
 Framework = Framework or {}
 
@@ -18,11 +19,10 @@ Framework.GetPlayerData = function()
     return ESX.GetPlayerData()
 end
 
---<-- TODO swap to internal callback system
 ---This will return a table of all the jobs in the framework.
 ---@return table
 Framework.GetFrameworkJobs = function()
-    local jobs = lib.callback.await('community_bridge:Callback:GetFrameworkJobs', false)
+    local jobs = Callback.Trigger('community_bridge:Callback:GetFrameworkJobs', false)
     return jobs
 end
 

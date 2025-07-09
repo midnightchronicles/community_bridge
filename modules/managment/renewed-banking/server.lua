@@ -10,9 +10,9 @@ Managment.GetManagmentName = function()
     return 'Renewed-Banking'
 end
 
----This will return a table with account details
+---This will return a number
 ---@param account string
----@return table
+---@return number
 Managment.GetAccountMoney = function(account)
     return renewed:getAccountMoney(account)
 end

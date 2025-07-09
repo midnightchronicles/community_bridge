@@ -10,9 +10,9 @@ Managment.GetManagmentName = function()
     return 'okokBanking'
 end
 
----This will return a table with account details
+---This will return a number
 ---@param account string
----@return table
+---@return number
 Managment.GetAccountMoney = function(account)
     return okokBanking:GetAccount(account)
 end
