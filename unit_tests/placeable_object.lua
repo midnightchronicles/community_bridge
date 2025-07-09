@@ -27,3 +27,12 @@ RegisterCommand('startplacer', function(source, args, rawCommand)
         print("Placement cancelled")
     end
 end)
+
+
+RegisterCommand("startplacerold", function(source, args, rawCommand)
+    local model = args[1] or 'prop_barrel_01a' -- Default model if none provided
+    local distance = tonumber(args[2]) or 5.0 -- Default distance if not provided
+    local snapToGround = true
+    local offset = vector3(0.0, 0.0, 0.0) -- No offset
+    local obj = Bridge.Placeable.PlaceObject(model, distance, snapToGround, {}, offset)
+end)

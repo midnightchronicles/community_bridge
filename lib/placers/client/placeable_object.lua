@@ -6,12 +6,12 @@ Language = Language or Require("modules/locales/shared.lua")
 PlaceableObject = PlaceableObject or {}
 
 -- Register key mappings for placement controls
-RegisterKeyMapping('+place_object', locale('placeable_object.place_object_place'), 'mouse_button', 'MOUSE_LEFT')
-RegisterKeyMapping('+cancel_placement', locale('placeable_object.place_object_cancel'), 'mouse_button', 'MOUSE_RIGHT')
+RegisterKeyMapping('+place_object', locale('placeable_object.object_place'), 'mouse_button', 'MOUSE_LEFT')
+RegisterKeyMapping('+cancel_placement', locale('placeable_object.object_cancel'), 'mouse_button', 'MOUSE_RIGHT')
 RegisterKeyMapping('+rotate_left', locale('placeable_object.rotate_left'), 'keyboard', 'LEFT')
 RegisterKeyMapping('+rotate_right', locale('placeable_object.rotate_right'), 'keyboard', 'RIGHT')
-RegisterKeyMapping('+scroll_up', locale('placeable_object.place_object_scroll_up'), 'mouse_wheel', 'IOM_WHEEL_UP')
-RegisterKeyMapping('+scroll_down', locale('placeable_object.place_object_scroll_down'), 'mouse_wheel', 'IOM_WHEEL_DOWN')
+RegisterKeyMapping('+scroll_up', locale('placeable_object.object_scroll_up'), 'mouse_wheel', 'IOM_WHEEL_UP')
+RegisterKeyMapping('+scroll_down', locale('placeable_object.object_scroll_down'), 'mouse_wheel', 'IOM_WHEEL_DOWN')
 RegisterKeyMapping('+depth_modifier', locale('placeable_object.depth_modifier'), 'keyboard', 'LCONTROL')
 
 local state = {

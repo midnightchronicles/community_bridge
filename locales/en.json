@@ -20,10 +20,14 @@
 	"placeable_object": {
 		"no_prop_defined": "You didnt define any object to place",
 		"cant_place_here": "You can't place this object here",
-		"place_object_place": "[%s] Place  \n",
-		"place_object_cancel": "[%s] Cancel  \n",
-		"place_object_scroll_up": "[%s] Turn right  \n",
-		"place_object_scroll_down": "[%s] Turn left  \n",
+		"place_object_place": "[E] Place  \n",
+		"place_object_cancel": "[X] Cancel  \n",
+		"place_object_scroll_up": "[Scroll Up] Turn right  \n",
+		"place_object_scroll_down": "[Scroll Down] Turn left  \n",
+		"object_place": "[%s] Place  \n",
+		"object_cancel": "[%s] Cancel  \n",
+		"object_scroll_up": "[%s] Turn right  \n",
+		"object_scroll_down": "[%s] Turn left  \n",
 		"depth_modifier": "[%s] Depth Control Modifier  \n"
 	}
 }
