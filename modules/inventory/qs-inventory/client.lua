@@ -22,6 +22,12 @@ Inventory.GetItemInfo = function(item)
     }
 end
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    return quasar:GetItemList()
+end
+
 ---Will return boolean if the player has the item.
 ---@param item string
 ---@return boolean
