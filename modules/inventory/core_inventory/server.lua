@@ -251,4 +251,10 @@ Callback.Register('community_bridge:Callback:core_inventory', function(source)
 	return items or {}
 end)
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    return core:getItemsList()
+end
+
 return Inventory

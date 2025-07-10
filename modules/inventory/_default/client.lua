@@ -42,4 +42,10 @@ Inventory.StripPNG = function(item)
     return item
 end
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    return Framework.Shared.Items
+end
+
 return Inventory

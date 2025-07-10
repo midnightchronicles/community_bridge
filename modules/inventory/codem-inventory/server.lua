@@ -46,6 +46,12 @@ Inventory.GetItemInfo = function(item)
     }
 end
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    return codem:GetItemList()
+end
+
 ---This wil return the players inventory.
 ---@param src number
 ---@return table

@@ -66,6 +66,12 @@ Inventory.GetItemInfo = function(item)
     }
 end
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    return Framework.Shared.Items
+end
+
 ---Returns the specified slot data as a table.
 ---
 ---format {weight, name, metadata, slot, label, count}

@@ -24,6 +24,24 @@ Inventory.GetItemInfo = function(item)
     return {name = dataRepack.name, label = dataRepack.label, stack = dataRepack.stack, weight = dataRepack.weight, description = dataRepack.description, image = Inventory.GetImagePath(dataRepack.name) }
 end
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    local frameworkName = Framework.GetFrameworkName()
+    if not frameworkName then return {} end
+    local dataRepack = {}
+    if frameworkName == 'es_extended' then
+        local callbackData = Callback.Trigger('community_bridge:Callback:core_inventory', false)
+        -- really really wish this inventory allowed me to pull the item list client side....
+        dataRepack = callbackData
+        if not dataRepack then return {} end
+    elseif frameworkName == 'qb-core' then
+        dataRepack = Framework.Shared.Items
+        if not dataRepack then return {} end
+    end
+    return dataRepack
+end
+
 ---Will return boolean if the player has the item.
 ---@param item string
 ---@return boolean

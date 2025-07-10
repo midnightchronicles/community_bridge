@@ -27,6 +27,12 @@ Inventory.HasItem = function(item)
     return jpr:HasItem(item)
 end
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    return Framework.Shared.Items
+end
+
 ---This will get the image path for this item, if not found will return placeholder.
 ---@param item string
 ---@return string
