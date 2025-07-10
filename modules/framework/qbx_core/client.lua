@@ -11,6 +11,13 @@ Framework.GetFrameworkName = function()
     return 'qbx_core'
 end
 
+---This will return true if the player is loaded, false otherwise.
+---This could be useful in scripts that rely on player loaded events and offer a debug mode to hit this function.
+---@return boolean
+Framework.GetIsPlayerLoaded = function()
+    return LocalPlayer.state.isLoggedIn or false
+end
+
 ---This will return a table of the player data, this will be in the framework format.
 ---This is mainly for internal bridge use and should be avoided.
 ---@return table

@@ -11,8 +11,7 @@ local cachedItemList = nil
 Framework.ItemList = function()
     if cachedItemList then return cachedItemList end
     local items = Callback.Trigger('community_bridge:Callback:GetFrameworkItems', false)
-    local fakeShared = { Items = items.Items or {} }
-    cachedItemList = fakeShared
+    cachedItemList = { Items = items.Items or {} }
     return cachedItemList
 end
 
@@ -20,6 +19,13 @@ end
 ---@return string
 Framework.GetFrameworkName = function()
     return 'es_extended'
+end
+
+---This will return true if the player is loaded, false otherwise.
+---This could be useful in scripts that rely on player loaded events and offer a debug mode to hit this function.
+---@return boolean
+Framework.GetIsPlayerLoaded = function()
+    return ESX.IsPlayerLoaded()
 end
 
 ---This will return a table of the player data, this will be in the framework format.

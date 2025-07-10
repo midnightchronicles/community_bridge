@@ -1,28 +1,37 @@
 {
 	"Shops": {
-		"NotEnoughMoney": "คุณไม่มีเงินเพียงพอที่จะซื้อสินค้านี้",
+		"NotEnoughMoney": "คุณไม่มีเงินเพียงพอที่จะซื้อสิ่งนี้",
 		"Input": "ป้อนจำนวน",
-		"PurchaseAmount": "จำนวนการซื้อ",
-		"PurchasedItem": "คุณซื้อแล้ว ",
-		"CurrencySymbol": "฿",
+		"PurchaseAmount": "จำนวนที่ซื้อ",
+		"PurchasedItem": "คุณได้ซื้อ ",
+		"CurrencySymbol": "$ %s",
 		"Confirm": "ยืนยันการซื้อ",
-		"AreYouSure": "คุณแน่ใจหรือไม่ว่าต้องการซื้อ ",
-		"PayByCash": "จ่ายด้วยเงินสด",
-		"PayByCard": "จ่ายด้วยบัตร"
+		"AreYouSure": "คุณแน่ใจหรือว่าต้องการซื้อ %s",
+		"PayByCash": "จ่าย %s ด้วยเงินสด",
+		"PayByCard": "จ่าย %s ด้วยบัตร",
+		"CardIcon": "fa-solid fa-building-columns",
+		"CashIcon": "fa-solid fa-money-bill-wave",
+		"ShopIcon": "fa-solid fa-basket-shopping",
+		"ShopName": "ชื่อร้าน"
 	},
 	"UNITTEST": {
-		"UNITTESTA": "ฉันคือ %s %s",
+		"UNITTESTA": "ฉันเป็น %s %s",
 		"locale-unit-test": "นี่คือสตริงทดสอบ"
 	},
 	"clipboard": {
-		"copy": "คัดลอกไปยังคลิปบอร์ดแล้ว"
+		"copy": "คัดลอกไปยังคลิปบอร์ด"
 	},
 	"placeable_object": {
-		"no_prop_defined": "คุณไม่ได้กำหนดวัตถุใดๆ ให้วาง",
-		"cant_place_here": "คุณไม่สามารถวางวัตถุนี้ที่นี่ได้",
+		"no_prop_defined": "คุณไม่ได้กำหนดวัตถุใดๆ เพื่อวาง",
+		"cant_place_here": "คุณไม่สามารถวางวัตถุนี้ที่นี่",
 		"place_object_place": "[E] วาง  \n",
 		"place_object_cancel": "[X] ยกเลิก  \n",
-		"place_object_scroll_up": "[SCROLL UP] หมุนขวา  \n",
-		"place_object_scroll_down": "[SCROLL DOWN] หมุนซ้าย"
+		"place_object_scroll_up": "[Scroll Up] หมุนไปทางขวา  \n",
+		"place_object_scroll_down": "[Scroll Down] หมุนไปทางซ้าย  \n",
+		"object_place": "[%s] วาง  \n",
+		"object_cancel": "[%s] ยกเลิก  \n",
+		"object_scroll_up": "[%s] หมุนไปทางขวา  \n",
+		"object_scroll_down": "[%s] หมุนไปทางซ้าย  \n",
+		"depth_modifier": "[%s] ตัวปรับเปลี่ยนการควบคุมความลึก  \n"
 	}
 }

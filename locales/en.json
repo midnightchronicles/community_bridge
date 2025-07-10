@@ -1,24 +1,28 @@
 {
 	"Shops": {
-		"NotEnoughMoney": "You dont have enough money to buy this item",
+		"NotEnoughMoney": "You don't have enough money to buy this item",
 		"Input": "Amount Input",
-		"PurchaseAmount": "Purchase Quanity",
+		"PurchaseAmount": "Purchase Quantity",
 		"PurchasedItem": "You Have Purchased ",
-		"CurrencySymbol": "$",
+		"CurrencySymbol": "$ %s",
 		"Confirm": "Confirm Purchase",
-		"AreYouSure": "Are you sure you want to purchase a ",
-		"PayByCash": "Pay by cash",
-		"PayByCard": "Pay by card"
+		"AreYouSure": "Are you sure you want to purchase a %s",
+		"PayByCash": "Pay %s with cash",
+		"PayByCard": "Pay %s with card",
+		"CardIcon": "fa-solid fa-building-columns",
+		"CashIcon": "fa-solid fa-money-bill-wave",
+		"ShopIcon": "fa-solid fa-basket-shopping",
+		"ShopName": "Shop Name"
 	},
 	"UNITTEST": {
-		"UNITTESTA": "Im a %s %s",
+		"UNITTESTA": "I'm a %s %s",
 		"locale-unit-test": "This is a test string"
 	},
 	"clipboard": {
 		"copy": "Copied to clipboard"
 	},
 	"placeable_object": {
-		"no_prop_defined": "You didnt define any object to place",
+		"no_prop_defined": "You didn't define any object to place",
 		"cant_place_here": "You can't place this object here",
 		"place_object_place": "[E] Place  \n",
 		"place_object_cancel": "[X] Cancel  \n",
