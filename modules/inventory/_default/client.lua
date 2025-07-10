@@ -45,6 +45,10 @@ end
 ---This will return the entire items table from the inventory.
 ---@return table 
 Inventory.Items = function()
+    if not Framework.Shared or not Framework.Shared.Items then
+        local itemList = Framework.ItemList() or { Items = {} }
+        return itemList.Items
+    end
     return Framework.Shared.Items
 end
 
