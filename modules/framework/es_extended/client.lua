@@ -6,11 +6,14 @@ Callback = Callback or Require("lib/utility/shared/callbacks.lua")
 
 Framework = Framework or {}
 
+local cachedItemList = nil
 -- This is an internal function, its here to attempt to emulate qbs shared items mainly.
 Framework.ItemList = function()
+    if cachedItemList then return cachedItemList end
     local items = Callback.Trigger('community_bridge:Callback:GetFrameworkItems', false)
     local fakeShared = { Items = items.Items or {} }
-    return fakeShared
+    cachedItemList = fakeShared
+    return cachedItemList
 end
 
 ---This will get the name of the framework being used (if a supported framework).

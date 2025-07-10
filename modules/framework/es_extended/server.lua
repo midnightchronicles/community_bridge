@@ -8,6 +8,8 @@ ESX = exports["es_extended"]:getSharedObject()
 
 Framework = Framework or {}
 
+local cachedItemList = nil
+
 ---This will return the name of the framework in use.
 ---@return string
 Framework.GetFrameworkName = function()
@@ -16,6 +18,7 @@ end
 
 -- This is an internal function, its here to attempt to emulate qbs shared items mainly.
 Framework.ItemList = function()
+    if cachedItemList then return cachedItemList end
     local items = ESX.Items
     local repackedTable = {}
     for k, v in pairs(items) do
@@ -33,7 +36,8 @@ Framework.ItemList = function()
             }
         end
     end
-    return { Items = repackedTable or {} }
+    cachedItemList = { Items = repackedTable or {} }
+    return cachedItemList
 end
 
 ---This will return if the player is an admin in the framework.
