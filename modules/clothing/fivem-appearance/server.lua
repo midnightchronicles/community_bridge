@@ -1,5 +1,6 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('fivem-appearance') == 'missing' then return end
+if GetResourceState('rcore_clothing') ~= 'missing' then return end
 Clothing = Clothing or {}
 Clothing.Players = {}
 
@@ -159,20 +160,20 @@ end)
 RegisterCommand('clothing:debug', function(source, args, rawCommand)
     local src = source
     Clothing.SetAppearance(src, {
-        components ={
-            {component_id = 1, drawable = math.random(0, 50), texture = 0},
-            {component_id = 2, drawable = math.random(0, 50), texture = 0},
-            {component_id = 3, drawable = math.random(0, 50), texture = 0},
-            {component_id = 4, drawable = math.random(0, 50), texture = 0},
-            {component_id = 5, drawable = math.random(0, 50), texture = 0},
-            {component_id = 6, drawable = math.random(0, 50), texture = 0},
-            {component_id = 7, drawable = math.random(0, 50), texture = 0},
-            {component_id = 8, drawable = math.random(0, 50), texture = 0},
+        components = {
+            { component_id = 1, drawable = math.random(0, 50), texture = 0 },
+            { component_id = 2, drawable = math.random(0, 50), texture = 0 },
+            { component_id = 3, drawable = math.random(0, 50), texture = 0 },
+            { component_id = 4, drawable = math.random(0, 50), texture = 0 },
+            { component_id = 5, drawable = math.random(0, 50), texture = 0 },
+            { component_id = 6, drawable = math.random(0, 50), texture = 0 },
+            { component_id = 7, drawable = math.random(0, 50), texture = 0 },
+            { component_id = 8, drawable = math.random(0, 50), texture = 0 },
         },
         props = {
-            {prop_id = 3, drawable = 0, texture = 0},
-            {prop_id = 1, drawable = 0, texture = 0},
-            {prop_id = 2, drawable = 0, texture = 0},
+            { prop_id = 3, drawable = 0, texture = 0 },
+            { prop_id = 1, drawable = 0, texture = 0 },
+            { prop_id = 2, drawable = 0, texture = 0 },
         }
     }, false, true)
 end, false)

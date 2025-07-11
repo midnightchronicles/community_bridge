@@ -1,5 +1,6 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('esx_skin') == 'missing' then return end
+if GetResourceState('rcore_clothing') ~= 'missing' then return end
 
 Clothing = Clothing or {}
 
@@ -58,19 +59,19 @@ Props.InverseMap = {
 -- Converts from illinium format to esx format
 function Components.ConvertFromDefault(defaultComponents)
     local returnComponents = {}
-    for index, componentData in pairs(defaultComponents or {}) do        
+    for index, componentData in pairs(defaultComponents or {}) do
         local componentId = Components.Map[componentData.component_id]
         if componentId then
             returnComponents[componentId .. '_1'] = componentData.drawable
             returnComponents[componentId .. '_2'] = componentData.texture
         end
     end
-    return returnComponents    
-end 
+    return returnComponents
+end
 
 function Components.ConvertToDefault(esxComponents)
     local returnComponents = {}
-    for componentIndex, componentData in pairs(esxComponents or {}) do      
+    for componentIndex, componentData in pairs(esxComponents or {}) do
         local isTexture = componentIndex:find('_2')
         componentIndex = componentIndex:gsub('_1', ''):gsub('_2', '')
         local componentId = Components.InverseMap[componentIndex]
@@ -103,7 +104,7 @@ end
 
 function Props.ConvertToDefault(esxProps)
     local returnProps = {}
-    for propIndex, propData in pairs(esxProps or {}) do   
+    for propIndex, propData in pairs(esxProps or {}) do
         local isTexture = propIndex:find('_2')
         propIndex = propIndex:gsub('_1', ''):gsub('_2', '')
         local propId = Props.InverseMap[propIndex]
@@ -141,19 +142,6 @@ function Clothing.ConvertToDefault(esxClothing)
     local props = Props.ConvertToDefault(esxClothing)
     return { components = components, props = props }
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 -- Clothing = {}
 

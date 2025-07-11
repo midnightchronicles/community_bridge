@@ -1,6 +1,5 @@
 ---@diagnostic disable: duplicate-set-field
-if GetResourceState('fivem-appearance') == 'missing' then return end
-if GetResourceState('rcore_clothing') ~= 'missing' then return end
+if GetResourceState('rcore_clothing') == 'missing' then return end
 Clothing = Clothing or {}
 
 function Clothing.OpenMenu()
