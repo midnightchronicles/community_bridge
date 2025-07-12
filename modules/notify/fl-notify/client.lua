@@ -16,7 +16,6 @@ end
 ---@return nil
 Notify.SendNotify = function(message, _type, time)
     time = time or 3000
-
     if _type == "error" or _type == "info" then
         _type = tostring(1)
     elseif _type == "success" then
@@ -24,7 +23,7 @@ Notify.SendNotify = function(message, _type, time)
     elseif _type == "warning" or _type == "warn" then
         _type = tostring(3)
     end
-    return TriggerEvent("fl:notify", "Notification", "", message, time, _type, 0)
+    return exports['FL-Notify']:Notify("Notification", "", message, 5000, tonumber(_type), 0)
 end
 
 return Notify
