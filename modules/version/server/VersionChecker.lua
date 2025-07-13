@@ -30,7 +30,7 @@ end
 
 AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
-    Version.VersionChecker("The-Order-Of-The-Sacred-Framework/community_bridge")
+    Version.VersionChecker("TheOrderFivem/community_bridge")
 end)
 
 return Version
