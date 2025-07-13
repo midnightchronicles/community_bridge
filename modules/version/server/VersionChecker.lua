@@ -4,7 +4,7 @@ Version = Version or {}
 ---
 ---Tebex is a optional boolean to determine if the message should be for a escrowed resource or not.
 ---
----Example Version.VersionChecker("The-Order-Of-The-Sacred-Framework/community_bridge", false)
+---Example Version.VersionChecker("TheOrderFivem/community_bridge", false)
 ---@param repoPath string
 ---@param tebex boolean | nil
 ---@return nil
@@ -30,7 +30,7 @@ end
 
 AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
-    Version.VersionChecker("The-Order-Of-The-Sacred-Framework/community_bridge")
+    Version.VersionChecker("TheOrderFivem/community_bridge")
 end)
 
 return Version

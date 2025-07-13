@@ -1,5 +1,4 @@
---[[This module is incomplete]]--
-
+---@diagnostic disable: duplicate-set-field
 Clothing = Clothing or {}
 
 ClothingBackup = {}
@@ -25,10 +24,12 @@ function Clothing.GetAppearance(entity)
     local model = GetEntityModel(entity)
     local skinData = { model = model, components = {}, props = {} }
     for i = 0, 11 do
-        table.insert(skinData.components, { component_id = i, drawable = GetPedDrawableVariation(entity, i), texture = GetPedTextureVariation(entity, i) })
+        table.insert(skinData.components,
+            { component_id = i, drawable = GetPedDrawableVariation(entity, i), texture = GetPedTextureVariation(entity, i) })
     end
     for i = 0, 13 do
-        table.insert(skinData.props, { prop_id = i, drawable = GetPedPropIndex(entity, i), texture = GetPedPropTextureIndex(entity, i) })
+        table.insert(skinData.props,
+            { prop_id = i, drawable = GetPedPropIndex(entity, i), texture = GetPedPropTextureIndex(entity, i) })
     end
     return skinData
 end
@@ -91,11 +92,10 @@ end, 1000)
 
 local onChange = nil
 Clothing.ToggleDebugging = function()
-
     if Clothing.RunningDebug then
         Clothing.RunningDebug = false
         print("Clothing Debugging Disabled")
-        return Cache.RemoveOnChange('Clothing', onChange)        
+        return Cache.RemoveOnChange('Clothing', onChange)
     end
     Clothing.RunningDebug = true
     print("Clothing Debugging Enabled")
@@ -109,62 +109,22 @@ Clothing.ToggleDebugging = function()
         for k, v in pairs(old.components) do
             if v.component_id then
                 if new.components[k].drawable ~= v.drawable or new.components[k].texture ~= v.texture then
-                    print("Component ID: " .. v.component_id .. " Drawable: " .. new.components[k].drawable .. " Texture: " .. new.components[k].texture)
+                    print("Component ID: " ..
+                    v.component_id ..
+                    " Drawable: " .. new.components[k].drawable .. " Texture: " .. new.components[k].texture)
                 end
             end
         end
         for k, v in pairs(old.props) do
             if v.prop_id then
                 if new.props[k].drawable ~= v.drawable or new.props[k].texture ~= v.texture then
-                    print("Prop ID: " .. v.prop_id .. " Drawable: " .. new.props[k].drawable .. " Texture: " .. new.props[k].texture)
+                    print("Prop ID: " ..
+                    v.prop_id .. " Drawable: " .. new.props[k].drawable .. " Texture: " .. new.props[k].texture)
                 end
             end
         end
     end)
-    -- CreateThread(function()
-    --     while Clothing.RunningDebug do
-    --         Wait(3)
-    --         local ped = PlayerPedId()
-    --         if ped then 
-    --             if not Clothing.Cache then
-    --                 Clothing.Cache = Clothing.GetAppearance(ped)
-    --             end
-    --             for k, v in pairs(Clothing.Cache.components) do
-    --                 if v.component_id then
-    --                     local drawable = GetPedDrawableVariation(ped, v.component_id)
-    --                     local texture = GetPedTextureVariation(ped, v.component_id)
-    --                     if drawable ~= v.drawable or texture ~= v.texture then
-    --                         print("Component ID: " .. v.component_id .. " Drawable: " .. drawable .. " Texture: " .. texture)
-    --                         Clothing.Cache.components[k].drawable = drawable
-    --                         Clothing.Cache.components[k].texture = texture
-    --                     end
-    --                 end
-    --             end
-    --             for k, v in pairs(Clothing.Cache.props) do
-    --                 if v.prop_id then
-    --                     local drawable = GetPedPropIndex(ped, v.prop_id)
-    --                     local texture = GetPedPropTextureIndex(ped, v.prop_id)
-    --                     if drawable ~= v.drawable or texture ~= v.texture then
-    --                         print("Prop ID: " .. v.prop_id .. " Drawable: " .. drawable .. " Texture: " .. texture)
-    --                         Clothing.Cache.props[k].drawable = drawable
-    --                         Clothing.Cache.props[k].texture = texture
-    --                     end
-    --                 end
-    --             end
-    --         end
-    --         -- esc key to exit
-    --         if IsControlJustPressed(0, 177) then
-    --             Clothing.RunningDebug = false              
-    --             print("Clothing Debugging Disabled")
-    --         end
-    --     end
-    --     Clothing.Cache = nil
-    -- end)
 end
-
-RegisterCommand("clothing:enabledebug", function(source, args, rawCommand)
-    Clothing.ToggleDebugging()
-end)
 
 RegisterNetEvent('community_bridge:client:SetAppearance', function(data)
     Clothing.SetAppearance(PlayerPedId(), data)
@@ -178,10 +138,13 @@ RegisterNetEvent('community_bridge:client:RestoreAppearance', function()
     Clothing.RestoreAppearance(PlayerPedId())
 end)
 
-RegisterCommand("clothing:copy", function(source, args, rawCommand)
-    Clothing.CopyAppearanceToClipboard()
-end)
+-- RegisterCommand("clothing:enabledebug", function(source, args, rawCommand)
+--     Clothing.ToggleDebugging()
+-- end)
 
+-- RegisterCommand("clothing:copy", function(source, args, rawCommand)
+--     Clothing.CopyAppearanceToClipboard()
+-- end)
 
 
 return Clothing

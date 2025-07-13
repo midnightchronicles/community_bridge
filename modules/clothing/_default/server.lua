@@ -1,5 +1,4 @@
---[[This module is incomplete]]--
-
+---@diagnostic disable: duplicate-set-field
 Clothing = Clothing or {}
 Clothing.LastAppearance = Clothing.LastAppearance or {}
 Callback = Callback or Require("lib/utility/shared/callbacks.lua")
@@ -9,7 +8,6 @@ function Clothing.IsMale(src)
     if not ped or not DoesEntityExist(ped) then return end
     return GetEntityModel(ped) == `mp_m_freemode_01`
 end
-
 
 function Clothing.GetAppearance(src)
     return Callback.Trigger('community_bridge:cb:GetAppearance', src)

@@ -1,5 +1,7 @@
+---@diagnostic disable: duplicate-set-field
 
 if GetResourceState('qb-clothing') == 'missing' then return end
+if GetResourceState('rcore_clothing') ~= 'missing' then return end
 
 Clothing = Clothing or {}
 
@@ -49,7 +51,7 @@ Props.InverseMap = {
 
 function Components.ConvertFromDefault(defaultComponents)
     local returnComponents = {}
-    for index, componentData in pairs(defaultComponents or {}) do        
+    for index, componentData in pairs(defaultComponents or {}) do
         local componentId = Components.Map[componentData.component_id]
         if componentId then
             returnComponents[componentId] = {
@@ -58,12 +60,12 @@ function Components.ConvertFromDefault(defaultComponents)
             }
         end
     end
-    return returnComponents    
-end 
+    return returnComponents
+end
 
 function Components.ConvertToDefault(qbComponents)
     local returnComponents = {}
-    for componentIndex, componentData in pairs(qbComponents or {}) do        
+    for componentIndex, componentData in pairs(qbComponents or {}) do
         local componentId = Components.InverseMap[componentIndex]
         if componentId then
             returnComponents[componentId] = {
@@ -78,7 +80,7 @@ end
 
 function Props.ConvertFromDefault(defaultProps)
     local returnProps = {}
-    for index, propData in pairs(defaultProps or {}) do        
+    for index, propData in pairs(defaultProps or {}) do
         local propId = Props.Map[propData.prop_id]
         if propId then
             returnProps[propId] = {
@@ -87,7 +89,7 @@ function Props.ConvertFromDefault(defaultProps)
             }
         end
     end
-    return returnProps    
+    return returnProps
 end
 
 function Props.ConvertToDefault(qbProps)
@@ -124,21 +126,6 @@ function Clothing.ConvertToDefault(qbClothing)
     local props = Props.ConvertToDefault(qbClothing)
     return { components = components, props = props }
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 -- Clothing = {}
 

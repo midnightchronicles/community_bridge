@@ -1,5 +1,6 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('esx_skin') == 'missing' then return end
+if GetResourceState('rcore_clothing') ~= 'missing' then return end
 Clothing = Clothing or {}
 Clothing.Players = {}
 
@@ -17,7 +18,7 @@ function Clothing.GetFullAppearanceData(src)
 
     if Clothing.Players[citId] then return Clothing.Players[citId] end
 
-    local result = MySQL.query.await('SELECT skin FROM users WHERE identifier = ?', { citId})
+    local result = MySQL.query.await('SELECT skin FROM users WHERE identifier = ?', { citId })
     if result[1] == nil then return end
 
     local model = GetEntityModel(GetPlayerPed(src))
@@ -63,6 +64,7 @@ function Clothing.Save(src)
         citId
     })
 end
+
 ---Sets a player's appearance based on the provided data
 ---@param src number The server ID of the player
 ---@param data table The appearance data to apply

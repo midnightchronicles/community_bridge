@@ -74,6 +74,12 @@ Inventory.GetItemInfo = function(item)
     }
 end
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    return ox_inventory:Items()
+end
+
 ---This will return the count of the item in the players inventory, if not found will return 0.
 ---
 ---if metadata is passed it will find the matching items count.

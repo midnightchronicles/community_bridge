@@ -8,10 +8,36 @@ ESX = exports["es_extended"]:getSharedObject()
 
 Framework = Framework or {}
 
+local cachedItemList = nil
+
 ---This will return the name of the framework in use.
 ---@return string
 Framework.GetFrameworkName = function()
     return 'es_extended'
+end
+
+-- This is an internal function, its here to attempt to emulate qbs shared items mainly.
+Framework.ItemList = function()
+    if cachedItemList then return cachedItemList end
+    local items = ESX.Items
+    local repackedTable = {}
+    for k, v in pairs(items) do
+        if v.label then
+            repackedTable[k] = {
+                name = k,
+                label = v.label,
+                weight = v.weight,
+                type = "item",
+                image = k .. ".png",
+                unique = false,
+                useable = true,
+                shouldClose = true,
+                description = 'No description provided.',
+            }
+        end
+    end
+    cachedItemList = { Items = repackedTable or {} }
+    return cachedItemList
 end
 
 ---This will return if the player is an admin in the framework.
@@ -455,6 +481,11 @@ end)
 
 Callback.Register('community_bridge:Callback:GetFrameworkJobs', function(source)
     return Framework.GetFrameworkJobs() or {}
+end)
+
+-- This is linked to an internal function, its an attempt to standardize the item list across frameworks.
+Callback.Register('community_bridge:Callback:GetFrameworkItems', function(source)
+    return Framework.ItemList() or {}
 end)
 
 Framework.Commands = {}

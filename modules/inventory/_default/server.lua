@@ -51,6 +51,16 @@ Inventory.GetItemInfo = function(item)
     return Framework.GetItemInfo(item)
 end
 
+---This will return the entire items table from the inventory.
+---@return table 
+Inventory.Items = function()
+    if not Framework.Shared or not Framework.Shared.Items then
+        local itemList = Framework.ItemList() or { Items = {} }
+        return itemList.Items
+    end
+    return Framework.Shared.Items
+end
+
 ---This will return the count of the item in the players inventory, if not found will return 0.
 ---if metadata is passed it will find the matching items count.
 ---example: 0

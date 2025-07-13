@@ -15,17 +15,17 @@ Shops.FinalizeCheckOut = function(shopName, item, itemLabel, price, amount)
     local generatedID = Ids.CreateUniqueId()
     local buildMenu = {
         {
-            title = locale('Shops.PayByCash').." "..tostring(mathStuff),
-            description = locale('Shops.AreYouSure') .. itemLabel,
-            icon = "fa-solid fa-money-bill-wave",
+            title = string.format(locale('Shops.PayByCash'), tostring(mathStuff)),
+            description = string.format(locale('Shops.AreYouSure'), itemLabel),
+            icon = locale('Shops.CashIcon'),
             onSelect = function(_, __, ___)
                 TriggerServerEvent('community_bridge:completeCheckout', shopName, item, amount, "money")
             end
         },
         {
-            title = locale('Shops.PayByCard').." "..tostring(mathStuff),
-            description = locale('Shops.AreYouSure') .. itemLabel,
-            icon = "fa-solid fa-building-columns",
+            title = string.format(locale('Shops.PayByCard'), tostring(mathStuff)),
+            description = string.format(locale('Shops.AreYouSure'), itemLabel),
+            icon = locale('Shops.CardIcon'),
             onSelect = function(_, __, ___)
                 TriggerServerEvent('community_bridge:completeCheckout', shopName, item, amount, "bank")
             end
@@ -67,8 +67,8 @@ Shops.OpenShop = function(title, shopData)
         local getItemName = Inventory.GetItemInfo(v.name).label
         table.insert(buildMenu, {
             title = getItemName,
-            description = locale('Shops.CurrencySymbol')..tostring(v.price),
-            icon = "fa-solid fa-basket-shopping",
+            description = string.format(locale('Shops.CurrencySymbol'), tostring(v.price)),
+            icon = locale('Shops.ShopIcon'),
             onSelect = function(selected, secondary, args)
                 Shops.AmountSelect(title, v.name, getItemName, v.price)
                 --Shops.FinalizeCheckOut(title, v.name, getItemName, v.price)
