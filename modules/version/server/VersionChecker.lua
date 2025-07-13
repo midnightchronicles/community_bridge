@@ -4,7 +4,7 @@ Version = Version or {}
 ---
 ---Tebex is a optional boolean to determine if the message should be for a escrowed resource or not.
 ---
----Example Version.VersionChecker("The-Order-Of-The-Sacred-Framework/community_bridge", false)
+---Example Version.VersionChecker("TheOrderFivem/community_bridge", false)
 ---@param repoPath string
 ---@param tebex boolean | nil
 ---@return nil
