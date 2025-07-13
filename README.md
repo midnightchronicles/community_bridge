@@ -6,6 +6,12 @@ By bridging core game systems including inventory, dispatch, targeting, door loc
 
 ---
 
+![](https://img.shields.io/github/downloads/TheOrderFivem/community_bridge/total?logo=github)
+![](https://img.shields.io/github/downloads/TheOrderFivem/community_bridge/latest/total?logo=github)
+![](https://img.shields.io/github/contributors/TheOrderFivem/community_bridge?logo=github)
+![](https://img.shields.io/github/v/release/TheOrderFivem/community_bridge?logo=github)
+
+
 ## Features
 
 ### Framework Compatibility
