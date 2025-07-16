@@ -95,6 +95,9 @@ A: Community Bridge is designed to be extensible and supports integration with c
 **Q: How often is the project updated?**
 A: Updates are regularly released to improve compatibility, add features, and fix issues based on community feedback.
 
+**Q: Why is the seo so bad?**
+A: Straight up, I have no clue and have tried everything to improve it. If you have tips PLEASE let me know in the discord or pr some changes to the repos dev branch.
+
 ---
 
 ## Keywords (for SEO)
