@@ -69,7 +69,7 @@ Join the Community Bridge Discord server for support, discussion, and contributi
 
 ## About Community Bridge
 
-Community Bridge is developed by The Order of the Sacred Framework, a collaborative team focused on improving interoperability and reducing development friction in the FiveM ecosystem. The project is open source and licensed under GPLv3.
+community_bridge is developed by The Order of the Sacred Framework, a collaborative team focused on improving interoperability and reducing development friction in the FiveM ecosystem. The project is open source and licensed under GPLv3.
 We also have a vscode extension located at https://marketplace.visualstudio.com/items?itemName=TheOrderOfTheSacredFramework.fivem-community-bridge-lua
 
 ---
