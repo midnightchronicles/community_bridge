@@ -61,7 +61,10 @@ end
 ---@param options table
 Target.AddGlobalPed = function(options)
     options = Target.FixOptions(options)
-    qb_target:AddGlobalPed(options)
+    qb_target:AddGlobalPed({
+        options = options,
+        distance = options.distance or 1.5
+    })
 end
 
 ---This will remove target options from all peds. This is useful for when you want to remove target options from all peds.

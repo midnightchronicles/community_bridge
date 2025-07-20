@@ -6,6 +6,10 @@ By bridging core game systems including inventory, dispatch, targeting, door loc
 
 ---
 
+![](https://img.shields.io/github/contributors/TheOrderFivem/community_bridge?logo=github)
+![](https://img.shields.io/github/v/release/TheOrderFivem/community_bridge?logo=github)
+
+
 ## Features
 
 ### Framework Compatibility
@@ -65,7 +69,7 @@ Join the Community Bridge Discord server for support, discussion, and contributi
 
 ## About Community Bridge
 
-Community Bridge is developed by The Order of the Sacred Framework, a collaborative team focused on improving interoperability and reducing development friction in the FiveM ecosystem. The project is open source and licensed under GPLv3.
+community_bridge is developed by The Order of the Sacred Framework, a collaborative team focused on improving interoperability and reducing development friction in the FiveM ecosystem. The project is open source and licensed under GPLv3.
 We also have a vscode extension located at https://marketplace.visualstudio.com/items?itemName=TheOrderOfTheSacredFramework.fivem-community-bridge-lua
 
 ---
@@ -90,6 +94,9 @@ A: Community Bridge is designed to be extensible and supports integration with c
 
 **Q: How often is the project updated?**
 A: Updates are regularly released to improve compatibility, add features, and fix issues based on community feedback.
+
+**Q: Why is the seo so bad?**
+A: Straight up, I have no clue and have tried everything to improve it. If you have tips PLEASE let me know in the discord or pr some changes to the repos dev branch.
 
 ---
 

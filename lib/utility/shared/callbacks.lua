@@ -67,11 +67,16 @@ if IsDuplicityVersion() then
     end
 
     RegisterNetEvent(EVENT_NAMES.CLIENT_TO_SERVER, function(name, callbackId, ...)
+        if not name or not callbackId then return print(string.format("[%s] Warning: Invalid callback parameters - name: %s, callbackId: %s", RESOURCE, tostring(name), tostring(callbackId))) end
+
         local handler = Callback[name]
         if not handler then return end
 
-        local result = table.pack(handler(source, ...))
-        TriggerClientEvent(EVENT_NAMES.CLIENT_RESPONSE, source, name, callbackId, table.unpack(result))
+        local playerId = source
+        if not playerId or playerId == 0 then return print(string.format("[%s] Warning: Invalid source for callback '%s'", RESOURCE, name)) end
+
+        local result = table.pack(handler(playerId, ...))
+        TriggerClientEvent(EVENT_NAMES.CLIENT_RESPONSE, playerId, name, callbackId, table.unpack(result))
     end)
 
     RegisterNetEvent(EVENT_NAMES.SERVER_RESPONSE, function(name, callbackId, ...)
@@ -107,7 +112,7 @@ else
 
         if not callback then
             local result = Citizen.Await(promise)
-            return #result == 1 and result[1] or table.unpack(result)
+            return table.unpack(result)
         end
     end
 
