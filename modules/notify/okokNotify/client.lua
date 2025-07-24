@@ -15,7 +15,7 @@ end
 ---@return nil
 Notify.SendNotify = function(message, _type, time)
     time = time or 3000
-    return exports['okokNotify']:Alert('Notification', message, time, _type, false)
+    return exports['okokNotify']:Alert('Notification', message, time, _type or "Success", false)
 end
 
 return Notify

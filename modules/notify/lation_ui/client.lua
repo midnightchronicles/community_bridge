@@ -16,7 +16,7 @@ end
 ---@return nil
 Notify.SendNotify = function(message, _type, time)
     time = time or 3000
-    return exports.lation_ui:notify({ message = message, type = _type, duration = time, position = 'top-right' })
+    return exports.lation_ui:notify({ message = message, type = _type or "success", duration = time, position = 'top-right' })
 end
 
 return Notify

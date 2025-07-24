@@ -16,7 +16,7 @@ end
 ---@return nil
 Notify.SendNotify = function(message, _type, time)
     time = time or 3000
-    return exports['brutal_notify']:SendAlert('Notification', message, time, _type, false)
+    return exports['brutal_notify']:SendAlert('Notification', message, time, _type or "success", false)
 end
 
 return Notify
