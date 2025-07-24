@@ -226,10 +226,9 @@ end
 
 ---Load a model into memory
 ---@param model string|number
----@return boolean
+---@return boolean, number
 function Utility.LoadModel(model)
-    local loaded = ensureModelLoaded(model)
-    return loaded
+    return ensureModelLoaded(model)
 end
 
 ---Request an animation dictionary

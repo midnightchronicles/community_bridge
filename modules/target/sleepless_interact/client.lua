@@ -28,6 +28,7 @@ Target.FixOptions = function(options)
             return action(entityOrData)
         end
         options[k].onSelect = select
+        options[k].groups = v.job or v.groups
     end
     return options
 end

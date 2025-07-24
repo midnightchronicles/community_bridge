@@ -22,14 +22,18 @@ Target = Target or {}
 Target.FixOptions = function(options)
     for k, v in pairs(options) do
         local action = v.onSelect or v.action
-        local select = function(entityOrData)
-            if type(entityOrData) == 'table' then
-                return action(entityOrData.entity)
+        if not action then
+            print(("Target option (%s) %s is missing an 'onSelect' or 'action' function."):format(k, v.label))
+        else
+            local select = function(entityOrData)
+                if type(entityOrData) == 'table' then
+                    return action(entityOrData.entity)
+                end
+                return action(entityOrData)
             end
-            return action(entityOrData)
+            options[k].onSelect = select
+            options[k].groups = v.job or v.groups
         end
-        options[k].onSelect = select
-        options[k].groups = v.job or v.groups
     end
     return options
 end

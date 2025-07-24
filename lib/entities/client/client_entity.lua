@@ -12,15 +12,15 @@ local function SpawnEntity(entityData)
     -- for k, v in pairs(entityData.args) do
     --     print(string.format("SpawnEntity %s: %s", k, v))
     -- end
-    local model = entityData.model and type(entityData.model) == 'string' and GetHashKey(entityData.model) or entityData.model
-    if model and not Utility.LoadModel(model) then
+    local loaded, model = Utility.GetModel(entityData.model)
+    if not loaded then
         print(string.format("[ClientEntity] Failed to load model %s for entity %s", entityData.model, entityData.id))
         return
     end
 
     local entity = nil
     local coords = entityData.coords
-    local rotation = entityData.rotation or vector3(0.0, 0.0, 0.0) -- Default rotation if not provided
+    local rotation = entityData.rotation or vector3(0.0, 0.0, entityData.heading or 0.0) -- Default rotation if not provided
 
     if entityData.entityType == 'object' then
         entity = CreateObject(model, coords.x, coords.y, coords.z, false, false, false)
