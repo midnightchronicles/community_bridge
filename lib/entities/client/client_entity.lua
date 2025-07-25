@@ -12,7 +12,7 @@ local function SpawnEntity(entityData)
     -- for k, v in pairs(entityData.args) do
     --     print(string.format("SpawnEntity %s: %s", k, v))
     -- end
-    local loaded, model = Utility.GetModel(entityData.model)
+    local loaded, model = Utility.LoadModel(entityData.model)
     if not loaded then
         print(string.format("[ClientEntity] Failed to load model %s for entity %s", entityData.model, entityData.id))
         return

@@ -90,6 +90,7 @@ end)
 -- ▄█▀ █▄▄ █▀▄ ▀▄▀ █▄▄ █▀▄ 
 if not IsDuplicityVersion() then goto client end
 Bridge.RegisterModule('Version', Version)
+Bridge.RegisterModule('Banking', Banking)
 
 --    ▄▀▀ █   █ ██▀ █▄ █ ▀█▀ 
 --    ▀▄▄ █▄▄ █ █▄▄ █ ▀█  █  

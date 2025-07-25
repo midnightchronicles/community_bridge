@@ -1,19 +1,19 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('wasabi_banking') == 'missing' then return end
-Managment = Managment or {}
+Banking = Banking or {}
 
 local wasabi_banking = exports['wasabi_banking']
 
 ---This will get the name of the Managment system being being used.
 ---@return string
-Managment.GetManagmentName = function()
+Banking.GetManagmentName = function()
     return 'wasabi_banking'
 end
 
 ---This will return a number
 ---@param account string
 ---@return number
-Managment.GetAccountMoney = function(account)
+Banking.GetAccountMoney = function(account)
     local balance = wasabi_banking:GetAccountBalance(account, 'society')
     return balance or 0
 end
@@ -23,7 +23,7 @@ end
 ---@param amount number
 ---@param reason string
 ---@return boolean
-Managment.AddAccountMoney = function(account, amount, reason)
+Banking.AddAccountMoney = function(account, amount, reason)
     return wasabi_banking:AddMoney('society', account, amount)
 end
 
@@ -32,8 +32,8 @@ end
 ---@param amount number
 ---@param reason string
 ---@return boolean
-Managment.RemoveAccountMoney = function(account, amount, reason)
+Banking.RemoveAccountMoney = function(account, amount, reason)
     return wasabi_banking:RemoveMoney('society', account, amount)
 end
 
-return Managment
+return Banking

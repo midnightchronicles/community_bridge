@@ -66,7 +66,6 @@ function Dialogue.Open( name, dialogue, characterOptions, dialogueOptions, onSel
         SetCamCoord(cam, endLocation.x, endLocation.y, endLocation.z)
         RenderScriptCams(true, true, 1000, true, false)
         SetCamActive(cam, true)
-
     end
     SendNUIMessage({
         type = "open",
