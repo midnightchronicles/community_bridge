@@ -156,49 +156,47 @@ Callback.Register('community_bridge:cb:GetAppearance', function(source)
     return Clothing.GetAppearance(src)
 end)
 
-
-RegisterCommand('clothing:debug', function(source, args, rawCommand)
-    local src = source
-    Clothing.SetAppearance(src, {
-        components = {
-            { component_id = 1, drawable = math.random(0, 50), texture = 0 },
-            { component_id = 2, drawable = math.random(0, 50), texture = 0 },
-            { component_id = 3, drawable = math.random(0, 50), texture = 0 },
-            { component_id = 4, drawable = math.random(0, 50), texture = 0 },
-            { component_id = 5, drawable = math.random(0, 50), texture = 0 },
-            { component_id = 6, drawable = math.random(0, 50), texture = 0 },
-            { component_id = 7, drawable = math.random(0, 50), texture = 0 },
-            { component_id = 8, drawable = math.random(0, 50), texture = 0 },
-        },
-        props = {
-            { prop_id = 3, drawable = 0, texture = 0 },
-            { prop_id = 1, drawable = 0, texture = 0 },
-            { prop_id = 2, drawable = 0, texture = 0 },
-        }
-    }, false, true)
-end, false)
-
-
-RegisterCommand('clothing:revert', function(source, args, rawCommand)
-    local src = source
-    Clothing.Revert(src)
-end, false)
+-- All the this below should go in unit tests if we are to continue using them.
+-- RegisterCommand('clothing:debug', function(source, args, rawCommand)
+--     local src = source
+--     Clothing.SetAppearance(src, {
+--         components = {
+--             { component_id = 1, drawable = math.random(0, 50), texture = 0 },
+--             { component_id = 2, drawable = math.random(0, 50), texture = 0 },
+--             { component_id = 3, drawable = math.random(0, 50), texture = 0 },
+--             { component_id = 4, drawable = math.random(0, 50), texture = 0 },
+--             { component_id = 5, drawable = math.random(0, 50), texture = 0 },
+--             { component_id = 6, drawable = math.random(0, 50), texture = 0 },
+--             { component_id = 7, drawable = math.random(0, 50), texture = 0 },
+--             { component_id = 8, drawable = math.random(0, 50), texture = 0 },
+--         },
+--         props = {
+--             { prop_id = 3, drawable = 0, texture = 0 },
+--             { prop_id = 1, drawable = 0, texture = 0 },
+--             { prop_id = 2, drawable = 0, texture = 0 },
+--         }
+--     }, false, true)
+-- end, false)
 
 
-RegisterCommand('clothing:current', function(source, args, rawCommand)
-    local src = source
-    local currentClothing = Clothing.GetAppearance(src)
-    if not currentClothing then return end
-    print(json.encode(currentClothing, { indent = true }))
-end, false)
-
-RegisterCommand('clothing:openmenu', function(source, args, rawCommand)
-    local src = source
-    Clothing.OpenMenu(src)
-end, false)
+-- RegisterCommand('clothing:revert', function(source, args, rawCommand)
+--     local src = source
+--     Clothing.Revert(src)
+-- end, false)
 
 
--- This should be moved into unit tests
+-- RegisterCommand('clothing:current', function(source, args, rawCommand)
+--     local src = source
+--     local currentClothing = Clothing.GetAppearance(src)
+--     if not currentClothing then return end
+--     print(json.encode(currentClothing, { indent = true }))
+-- end, false)
+
+-- RegisterCommand('clothing:openmenu', function(source, args, rawCommand)
+--     local src = source
+--     Clothing.OpenMenu(src)
+-- end, false)
+
 -- RegisterCommand('clothing:crowley', function(source, args, rawCommand)
 --     local src = source
 --     Clothing.SetAppearance(src, {
