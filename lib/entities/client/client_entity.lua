@@ -45,7 +45,7 @@ local function SpawnEntity(entityData)
     end
 end
 
-local function RemoveEntity(entityData)
+local function RemoveEntity(entityData, skip)
     entityData = entityData and entityData.args or entityData
     if not entityData then return end
     ClientEntityActions.StopAction(entityData.id)
@@ -55,7 +55,7 @@ local function RemoveEntity(entityData)
         SetEntityAsMissionEntity(entityHandle, false, false)
         DeleteEntity(entityHandle)
     end
-    if entityData.OnRemove then
+    if not skip and entityData.OnRemove then
         entityData.OnRemove(entityData)
     end
 end
@@ -239,7 +239,7 @@ AddEventHandler('onResourceStop', function(resourceName)
     if resourceName == GetCurrentResourceName() then
         for id, entityData in pairs(Entities) do
             Point.Remove(id) -- Clean up point registration
-            RemoveEntity(entityData) -- Clean up spawned game entity
+            RemoveEntity(entityData, true) -- Clean up spawned game entity
         end
         Entities = {} -- Clear local cache
     end
