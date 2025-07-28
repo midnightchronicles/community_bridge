@@ -229,4 +229,13 @@ Inventory.GetItem = function(src, item, metadata)
     return item
 end
 
+Inventory.OpenPlayerInventory = function(src, target)
+    assert(src, "OpenPlayerInventory: src is required")
+    if not target then
+        target = src
+    end
+    exports['tgiann-inventory']:OpenInventoryById(src, target)
+end
+
+
 return Inventory

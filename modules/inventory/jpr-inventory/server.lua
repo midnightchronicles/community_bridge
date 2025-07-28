@@ -189,4 +189,14 @@ Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGrou
     return true
 end
 
+Inventory.OpenPlayerInventory = function(src, target)
+    assert(src, "OpenPlayerInventory: src is required")
+    if not target then
+        target = src
+    end
+    local identifier = Framework.GetPlayerIdentifier(target)
+    if not identifier then return false end
+    exports['jpr-inventory']:OpenInventory(src, identifier)
+end
+
 return Inventory

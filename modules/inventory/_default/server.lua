@@ -193,4 +193,8 @@ Inventory.StripPNG = function(item)
     return item
 end
 
+Inventory.OpenPlayerInventory = function(src, targetSrc)
+    return false, Prints.Error("OpenPlayerInventory is not implemented in this inventory, because of this we dont have a way to open a players inventory.")
+end
+
 return Inventory

@@ -170,11 +170,11 @@ end
 ---@param coords table
 ---@param radius number
 ---@param options table
-Target.AddSphereZone = function(name, coords, radius, options)
+Target.AddSphereZone = function(name, coords, radius, options, debug)
     options = Target.FixOptions(options)
     qb_target:AddCircleZone(name, coords, radius, {
         name = name,
-        debugPoly = targetDebug,
+        debugPoly = targetDebug or debug,
     }, {
         options = options,
         distance = options.distance or 1.5,

@@ -224,4 +224,12 @@ Inventory.GetItem = function(src, item, metadata)
     return ox_inventory:GetItem(src, item, metadata, false)
 end
 
+Inventory.OpenPlayerInventory = function(src, target)
+    assert(src, "OpenPlayerInventory: src is required")
+    if not target then
+        target = src
+    end
+    exports.ox_inventory:openInventory('player', target)
+end
+
 return Inventory

@@ -155,13 +155,13 @@ end
 ---@param coords table
 ---@param radius number
 ---@param options table
-Target.AddSphereZone = function(name, coords, radius, heading, options)
+Target.AddSphereZone = function(name, coords, radius, options, debug)
     options = Target.FixOptions(options)
     local target = ox_target:addSphereZone({
         coords = coords,
         radius = radius,
         name = name,
-        debug = targetDebug,
+        debug = targetDebug or debug,
         options = options
     })
     table.insert(targetZones, { name = name, id = target, creator = GetInvokingResource() })

@@ -275,4 +275,12 @@ Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGrou
     end
 end
 
+Inventory.OpenPlayerInventory = function(src, target)
+    assert(src, "OpenPlayerInventory: src is required")
+    if not target then
+        target = src
+    end
+    exports['qb-inventory']:OpenInventory(src, target)
+end
+
 return Inventory
