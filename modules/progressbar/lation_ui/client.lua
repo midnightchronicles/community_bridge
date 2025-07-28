@@ -99,7 +99,7 @@ function ProgressBar.Open(options, cb, isQBInput)
 
     local success = exports.lation_ui:progressBar(options)
 
-    if cb then cb(not success) end
+    if cb then cb(success) end
     return success
 end
 
