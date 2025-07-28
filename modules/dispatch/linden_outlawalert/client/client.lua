@@ -3,6 +3,7 @@ if GetResourceState('linden_outlawalert') == 'missing' then return end
 Dispatch = Dispatch or {}
 
 Dispatch.SendAlert = function(data)
+    local ped = PlayerPedId()
     TriggerServerEvent('wf-alerts:svNotify', {
         dispatchData = {
             displayCode = data.code or '211',
@@ -14,7 +15,7 @@ Dispatch.SendAlert = function(data)
             info = data.message or "Alert"
         },
         caller = 'Anonymous',
-        coords = data.coords or GetEntityCoords(cache.ped)
+        coords = data.coords or GetEntityCoords(ped)
     })
 end
 

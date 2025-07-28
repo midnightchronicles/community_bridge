@@ -6,8 +6,9 @@ Doorlock = Doorlock or {}
 ---This will get the closest door to the ped
 ---@return string | nil
 Doorlock.GetClosestDoor = function()
+    local ped = PlayerPedId()
     local allDoors = exports.rcore_doorlock:getLoadedDoors()
-    local pedCoords = GetEntityCoords(cache.ped)
+    local pedCoords = GetEntityCoords(ped)
     local door = 0
     local doorDist = 1000.0
     for _, data in pairs(allDoors) do

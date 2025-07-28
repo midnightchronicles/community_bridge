@@ -36,6 +36,7 @@ Placeable.PlaceObject = function(object, distance, snapToGround, allowedMats, of
     local propObject = type(object) == 'string' and joaat(object) or object
     local heading = 0.0
     local checkDist = distance or 10.0
+    local ped = PlayerPedId()
 
     Utility.LoadModel(propObject)
 
@@ -60,7 +61,7 @@ Placeable.PlaceObject = function(object, distance, snapToGround, allowedMats, of
             end
 
             SetEntityCoords(activePlacementProp, coords.x, coords.y, coords.z, false, false, false, false)
-            local distCheck = #(GetEntityCoords(cache.ped) - coords)
+            local distCheck = #(GetEntityCoords(ped) - coords)
             SetEntityHeading(activePlacementProp, heading)
 
             if snapToGround then

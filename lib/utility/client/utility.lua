@@ -312,10 +312,11 @@ end
 ---Reload the player's skin and remove attached objects
 ---@return boolean
 function Utility.ReloadSkin()
-    local skinData = Utility.GetEntitySkinData(cache.ped)
-    Utility.SetEntitySkinData(cache.ped, skinData)
+    local ped = PlayerPedId()
+    local skinData = Utility.GetEntitySkinData(ped)
+    Utility.SetEntitySkinData(ped, skinData)
     for _, props in pairs(GetGamePool("CObject")) do
-        if IsEntityAttachedToEntity(cache.ped, props) then
+        if IsEntityAttachedToEntity(ped, props) then
             SetEntityAsMissionEntity(props, true, true)
             DeleteObject(props)
             DeleteEntity(props)
@@ -366,6 +367,7 @@ end
 ---@param conditionFunction function|nil
 ---@param afterTeleportFunction function|nil
 function Utility.TeleportPlayer(coords, conditionFunction, afterTeleportFunction)
+    local ped = PlayerPedId()
     if conditionFunction ~= nil then
         if not conditionFunction() then
             return
@@ -373,18 +375,18 @@ function Utility.TeleportPlayer(coords, conditionFunction, afterTeleportFunction
     end
     DoScreenFadeOut(2500)
     Wait(2500)
-    SetEntityCoords(cache.ped, coords.x, coords.y, coords.z, false, false, false, false)
+    SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
     if coords.w then
-        SetEntityHeading(cache.ped, coords.w)
+        SetEntityHeading(ped, coords.w)
     end
-    FreezeEntityPosition(cache.ped, true)
+    FreezeEntityPosition(ped, true)
     local count = 0
-    while not HasCollisionLoadedAroundEntity(cache.ped) and count <= 30000 do
+    while not HasCollisionLoadedAroundEntity(ped) and count <= 30000 do
         RequestCollisionAtCoord(coords.x, coords.y, coords.z)
         Wait(0)
         count = count + 1
     end
-    FreezeEntityPosition(cache.ped, false)
+    FreezeEntityPosition(ped, false)
     DoScreenFadeIn(1000)
     if afterTeleportFunction ~= nil then
         afterTeleportFunction()
@@ -406,8 +408,8 @@ end
 function Utility.GetClosestPlayer(coords, distanceScope, includeMe)
     local players = GetActivePlayers()
     local closestPlayer = 0
-    local selfPed = cache.ped
-    local selfCoords = coords or GetEntityCoords(cache.ped)
+    local selfPed = PlayerPedId()
+    local selfCoords = coords or GetEntityCoords(selfPed)
     local closestDistance = distanceScope or 5
 
     for _, player in ipairs(players) do
@@ -434,12 +436,13 @@ function Utility.GetClosestVehicle(coords, distanceScope, includePlayerVeh)
     local vehicleEntity = nil
     local vehicleNetID = nil
     local vehicleCoords = nil
-    local selfCoords = coords or GetEntityCoords(cache.ped)
+    local ped = PlayerPedId()
+    local selfCoords = coords or GetEntityCoords(ped)
     local closestDistance = distanceScope or 5
     local includeMyVeh = includePlayerVeh or false
     local gamePoolVehicles = GetGamePool("CVehicle")
 
-    local playerVehicle = IsPedInAnyVehicle(cache.ped, false) and GetVehiclePedIsIn(cache.ped, false) or 0
+    local playerVehicle = IsPedInAnyVehicle(ped, false) and GetVehiclePedIsIn(ped, false) or 0
 
     for i = 1, #gamePoolVehicles do
         local thisVehicle = gamePoolVehicles[i]
