@@ -4,8 +4,6 @@ if GetResourceState('rcore_clothing') ~= 'missing' then return end
 
 Clothing = Clothing or {}
 
--- {"glasses_2":0,"shoes_1":70,"dad":0,"shoes_2":2,"pants_1":28,"eye_squint":0,"ears_1":-1,"hair_color_1":61,"eyebrows_6":0,"bodyb_3":-1,"beard_1":11,"complexion_2":0,"arms_2":0,"hair_1":76,"nose_1":0,"blush_2":0,"bracelets_2":0,"blush_1":0,"jaw_2":0,"helmet_1":-1,"eyebrows_3":0,"watches_1":-1,"eyebrows_4":0,"jaw_1":0,"lipstick_1":0,"eyebrows_1":0,"nose_4":0,"age_2":0,"torso_1":23,"hair_2":0,"chin_2":0,"arms":1,"chain_1":22,"nose_2":0,"cheeks_1":2,"tshirt_1":4,"glasses_1":0,"pants_2":3,"lipstick_4":0,"chin_13":0,"beard_4":0,"beard_3":0,"chain_2":2,"cheeks_3":6,"sex":0,"lipstick_3":0,"makeup_1":0,"hair_color_2":29,"mask_2":0,"chin_1":0,"eyebrows_5":0,"bodyb_2":0,"sun_2":0,"watches_2":0,"sun_1":0,"chin_4":0,"nose_3":0,"helmet_2":0,"bags_2":0,"moles_2":0,"mask_1":0,"blemishes_2":0,"chest_1":0,"cheeks_2":-10,"age_1":0,"chest_2":0,"beard_2":10,"torso_2":2,"blush_3":0,"bproof_1":0,"moles_1":0,"chin_3":0,"lip_thickness":-2,"lipstick_2":0,"chest_3":0,"complexion_1":0,"bodyb_4":0,"neck_thickness":0,"bproof_2":0,"makeup_3":0,"tshirt_2":2,"makeup_2":0,"makeup_4":0,"bracelets_1":-1,"decals_2":0,"nose_6":0,"bodyb_1":-1,"bags_1":0,"blemishes_1":0,"decals_1":0,"mom":21,"eyebrows_2":0,"eye_color":0,"skin_md_weight":50,"face_md_weight":50,"nose_5":10,"ears_2":0}
-
 Components = {}
 Components.Map = {
     [1] = 'mask', -- componentId
@@ -142,63 +140,3 @@ function Clothing.ConvertToDefault(esxClothing)
     local props = Props.ConvertToDefault(esxClothing)
     return { components = components, props = props }
 end
-
--- Clothing = {}
-
--- StoredOldClothing = {}
-
--- Clothing.SetAppearance = function(clothingData)
---     if GetEntityModel(cache.ped) == `mp_m_freemode_01` then
---         clothingData = clothingData.male
---     else
---         clothingData = clothingData.female
---     end
---     local repackedTable = {}
---     local componentMap = {
---         [1] = "mask",
---         [3] = "arms",
---         [4] = "pants",
---         [5] = "bag",
---         [6] = "shoes",
---         [7] = "accessory",
---         [8] = "t-shirt",
---         [9] = "vest",
---         [10] = "decals",
---         [11] = "torso2"
---     }
-
---     local propMap = {
---         [0] = "hat",
---         [1] = "glass",
---         [2] = "ear",
---         [6] = "watch",
---         [7] = "bracelet"
---     }
-
---     local specialMap = {
---         eye_color_id = "eye_color",
---         moles_id = "moles",
---         ageing_id = "ageing",
---         hair_id = "hair",
---         face_id = "face"
---     }
-
---     for _, data in pairs(clothingData) do
---         if componentMap[data.component_id] then
---             repackedTable[componentMap[data.component_id]] = {drawable = data.drawable, texture = data.texture}
---         elseif propMap[data.prop_id] then
---             repackedTable[propMap[data.prop_id]] = {drawable = data.drawable, texture = data.texture}
---         elseif specialMap[data.eye_color_id] then
---             repackedTable[specialMap[data.eye_color_id]] = {drawable = data.drawable, texture = data.texture}
---         elseif specialMap[data.moles_id] then
---             repackedTable[specialMap[data.moles_id]] = {drawable = data.drawable, texture = data.texture}
---         elseif specialMap[data.ageing_id] then
---             repackedTable[specialMap[data.ageing_id]] = {drawable = data.drawable, texture = data.texture}
---         elseif specialMap[data.hair_id] then
---             repackedTable[specialMap[data.hair_id]] = {drawable = data.drawable, texture = data.texture}
---         elseif specialMap[data.face_id] then
---             repackedTable[specialMap[data.face_id]] = {drawable = data.drawable, texture = data.texture}
---         end
---     end
---     TriggerEvent('esx-clothing:client:loadOutfit', repackedTable)
--- end
