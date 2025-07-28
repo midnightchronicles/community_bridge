@@ -25,7 +25,7 @@ server_scripts {
     'modules/inventory/**/server.lua',
     'modules/doorlock/**/server.lua',
     'modules/phone/**/server.lua',
-    'modules/managment/**/server.lua',
+    'modules/banking/**/server.lua',
     'modules/dispatch/**/server.lua',
     'modules/clothing/**/server.lua',
     'modules/shops/**/server.lua',
