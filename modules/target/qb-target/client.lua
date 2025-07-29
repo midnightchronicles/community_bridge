@@ -41,7 +41,6 @@ Target.FixOptions = function(options)
         options[k].action = select
         options[k].job = v.job or v.groups
         options[k].jobType = v.jobType
-        print("Fixing options for target:", k, "with job:", options[k].job, "and jobType:", options[k].jobType)
     end
     return options
 end
