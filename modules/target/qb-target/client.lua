@@ -24,14 +24,24 @@ local qb_target = exports['qb-target']
 Target.FixOptions = function(options)
     for k, v in pairs(options) do
         local action = v.onSelect or v.action
-        local select = function(entityOrData)
+        local select = action and function(entityOrData)
             if type(entityOrData) == 'table' then
                 return action(entityOrData.entity)
             end
             return action(entityOrData)
         end
+        if v.serverEvent then 
+            v.type = "server"
+            v.event = v.serverEvent
+        elseif v.event then
+            v.type = "client"
+            v.event = v.event
+            print("Fixing options for target:", k, "with event:", v.event)
+        end
         options[k].action = select
         options[k].job = v.job or v.groups
+        options[k].jobType = v.jobType
+        print("Fixing options for target:", k, "with job:", options[k].job, "and jobType:", options[k].jobType)
     end
     return options
 end

@@ -24,7 +24,7 @@ function Input.Open(title, data, isQBFormat, submitText)
         for i, v in pairs(input) do
             for k, j in pairs(returnData) do
                 if k == v.name then
-                    convertedData[tonumber(i)] = j
+                    convertedData[v.name] = j
                 end
             end
         end

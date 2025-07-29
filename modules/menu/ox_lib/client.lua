@@ -25,7 +25,7 @@ local function QBToOxMenu(id, menu)
                 description = v.txt,
                 icon = v.icon,
                 args = v.params.args,
-                onSelect = function(selected, secondary, args)
+                onSelect = v.action or function(selected, secondary, args)
                     local params = menu[id]?.options?[selected]?.params
                     if not params then return end
                     local event = params.event
