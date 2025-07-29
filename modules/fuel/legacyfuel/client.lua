@@ -1,6 +1,7 @@
 ---@diagnostic disable: duplicate-set-field
 local resourceName = "LegacyFuel"
 if GetResourceState(resourceName) == 'missing' then return end
+if GetResourceState("qb-fuel") == 'started' then return end
 Fuel = Fuel or {}
 
 ---This will get the name of the Fuel being used (if a supported Fuel).
