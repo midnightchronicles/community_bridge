@@ -30,13 +30,12 @@ Target.FixOptions = function(options)
             end
             return action(entityOrData)
         end
-        if v.serverEvent then 
+        if v.serverEvent then
             v.type = "server"
             v.event = v.serverEvent
         elseif v.event then
             v.type = "client"
             v.event = v.event
-            print("Fixing options for target:", k, "with event:", v.event)
         end
         options[k].action = select
         options[k].job = v.job or v.groups
