@@ -42,9 +42,7 @@ local function getDownloadUrl(repoPath, tebex, actualRepoPath)
         return "https://portal.cfx.re/assets/granted-assets"
     elseif actualRepoPath and actualRepoPath ~= false then
         local repoUser, repoName = actualRepoPath:match("([^/]+)/([^/]+)")
-        if repoUser and repoName then
-            return ('https://github.com/%s/%s/releases/latest'):format(repoUser, repoName)
-        end
+        if repoUser and repoName then return ('https://github.com/%s/%s/releases/latest'):format(repoUser, repoName) end
     end
     return nil
 end
