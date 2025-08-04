@@ -474,6 +474,12 @@ RegisterNetEvent("esx:playerLogout", function(src)
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
 end)
 
+RegisterNetEvent("esx:setJob", function(src, job, lastJob)
+    src = src or source
+    if not job or not lastJob then return end
+    TriggerEvent("community_bridge:Server:OnPlayerJobChange", src, job.name)
+end)
+
 AddEventHandler("playerDropped", function()
     local src = source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
