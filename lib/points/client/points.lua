@@ -154,9 +154,9 @@ function Point.StartLoop()
                             insidePoints[point.id] = nil
                         end
                         
-                        if point.onNearby then
-                            point.onNearby(GridCells[cellKey]?.points, waitTime)
-                        end
+                        -- if point.onNearby then
+                        --     point.onNearby(GridCells[cellKey]?.points, waitTime)
+                        -- end
                     end
                 end
             end
