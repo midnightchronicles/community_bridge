@@ -56,3 +56,23 @@ end
 GetMenuResourceName = function()
     return resourceName
 end
+
+
+-- RegisterCommand('menutest', function()
+--     local test1 = function()
+--         print("Test 1 executed")
+--     end
+
+--     Bridge.Menu.Open({
+--         title = "test",
+--         description = "test",
+--         options = {
+--             {
+--                 title = "test",
+--                 description = "test",
+--                 icon = "fas fa-box-open",
+--                 onSelect = test1
+--             },           
+--         }
+--     })
+-- end)

@@ -12,7 +12,7 @@ RegisterKeyMapping('+rotate_left', locale('placeable_object.rotate_left'), 'keyb
 RegisterKeyMapping('+rotate_right', locale('placeable_object.rotate_right'), 'keyboard', 'RIGHT')
 RegisterKeyMapping('+scroll_up', locale('placeable_object.object_scroll_up'), 'mouse_wheel', 'IOM_WHEEL_UP')
 RegisterKeyMapping('+scroll_down', locale('placeable_object.object_scroll_down'), 'mouse_wheel', 'IOM_WHEEL_DOWN')
-RegisterKeyMapping('+depth_modifier', locale('placeable_object.depth_modifier'), 'keyboard', 'LCONTROL')
+RegisterKeyMapping('+depth_modifier', locale('placeable_object.depth_modifier'), 'keyboard', 'LCONTROL') 
 
 local state = {
     isPlacing = false,
@@ -42,6 +42,15 @@ local state = {
         scrollDown = false,
         depthModifier = false
     }
+}
+
+local placementText = {
+    string.format(locale('placeable_object.object_place'), Utility.GetCommandKey('+place_object')),
+    string.format(locale('placeable_object.object_cancel'), Utility.GetCommandKey('+cancel_placement')),
+    string.format(locale('placeable_object.rotate_clockwise'), Utility.GetCommandKey('+scroll_up')),
+    string.format(locale('placeable_object.rotate_counter_clockwise'), Utility.GetCommandKey('+scroll_down')),
+    string.format(locale('placeable_object.depth_modifier'), Utility.GetCommandKey('+depth_modifier'))
+    
 }
 
 -- Command handlers for key mappings
@@ -554,15 +563,14 @@ local function placementLoop()
                 state.keys.placeObject = false -- Reset the key state
                 local canPlace = checkMaterialAndBoundary()
                 if canPlace then
-                    Wait(100)
                     local coords = GetEntityCoords(state.currentEntity)
-                    if not state.settings.allowVertical or state.snapToGround then
-                        local groundZ, _z = GetGroundZFor_3dCoord(coords.x, coords.y, coords.z + 50, false)
-                        if groundZ then
-                            coords = vector3(coords.x, coords.y, _z)
-                        end
-                    end
-
+                    -- if not state.settings.allowVertical or state.snapToGround then
+                    --     local groundZ, _z = GetGroundZFor_3dCoord(coords.x, coords.y, coords.z + 50, false)
+                    --     if groundZ then
+                           
+                    --     end
+                    -- end
+                    coords = vector3(coords.x, coords.y, coords.z - 0.2) -- Adjust Z to ground level
                     local rotation = GetEntityRotation(state.currentEntity)
                     if state.promise then
                         state.promise:resolve({
@@ -616,15 +624,15 @@ local function placementLoop()
             end
 
             -- Show help text for placement controls
-            local placementText = {
-                string.format(locale('placeable_object.place_object_place'), Bridge.Utility.GetCommandKey('+place_object')),
-                string.format(locale('placeable_object.place_object_cancel'), Bridge.Utility.GetCommandKey('+cancel_placement')),
-                -- string.format(locale('placeable_object.rotate_left'), Bridge.Utility.GetCommandKey('+rotate_left')),
-                -- string.format(locale('placeable_object.rotate_right'), Bridge.Utility.GetCommandKey('+rotate_right')),
-                string.format(locale('placeable_object.place_object_scroll_up'), Bridge.Utility.GetCommandKey('+scroll_up')),
-                string.format(locale('placeable_object.place_object_scroll_down'), Bridge.Utility.GetCommandKey('+scroll_down')),
-                string.format(locale('placeable_object.depth_modifier'), Bridge.Utility.GetCommandKey('+depth_modifier'))
-            }
+            -- local placementText = {
+            --     string.format(locale('placeable_object.place_object_place'), Bridge.Utility.GetCommandKey('+place_object')),
+            --     string.format(locale('placeable_object.place_object_cancel'), Bridge.Utility.GetCommandKey('+cancel_placement')),
+            --     -- string.format(locale('placeable_object.rotate_left'), Bridge.Utility.GetCommandKey('+rotate_left')),
+            --     -- string.format(locale('placeable_object.rotate_right'), Bridge.Utility.GetCommandKey('+rotate_right')),
+            --     string.format(locale('placeable_object.place_object_scroll_up'), Bridge.Utility.GetCommandKey('+scroll_up')),
+            --     string.format(locale('placeable_object.place_object_scroll_down'), Bridge.Utility.GetCommandKey('+scroll_down')),
+            --     string.format(locale('placeable_object.depth_modifier'), Bridge.Utility.GetCommandKey('+depth_modifier'))
+            -- }
             Bridge.Notify.ShowHelpText(type(placementText) == 'table' and table.concat(placementText))
 
             -- -- Draw entity bounding box
@@ -644,18 +652,24 @@ end
 ---@param model - Model name or hash
 ---@param settings - Configuration table:
 --[[
-    depth (3.0): Starting distance from player,
-    allowVertical (false): Enable height controls,
-    allowMovement (false): Enable WASD mode,
-    disableSphere (false): Hide position indicator,
-    boundary: Area restriction {min = vector3(), max = vector3()},
-    allowedMats: Surface materials {"concrete", "grass"},
-    depthStep (0.1): Step size for depth adjustment,
-    rotationStep (0.5): Step size for rotation,
-    heightStep (0.5): Step size for height adjustment,
-    movementStep (0.1): Step size for normal movement,
-    movementStepFast (0.5): Step size for fast movement (with shift),
-    maxDepth (50.0): Maximum distance from player,
+    {
+        depth = 3.0,                -- Starting distance from player
+        allowVertical = false,      -- Enable height controls (Q/E, Alt to toggle ground snap)
+        allowMovement = false,      -- Enable WASD movement mode
+        allowNormal = false,        -- Allow switching back to normal mode from movement
+        disableSphere = false,      -- Hide position indicator sphere
+        drawBoundary = false,       -- Draw boundary box/polygon
+        drawInBoundary = false,     -- Draw entity outline (green/red) based on boundary/material
+        boundary = nil,             -- Area restriction (box: {min=vector3(), max=vector3()}, polygon: {points={...}, minZ, maxZ})
+        allowedMats = nil,          -- Allowed surface materials (e.g. {"concrete", "grass"})
+        customCheck = nil,          -- Custom function(pos, entity, settings) -> bool
+        depthStep = 0.1,            -- Step size for depth adjustment (scroll + modifier)
+        rotationStep = 0.5,         -- Step size for rotation (scroll)
+        heightStep = 0.5,           -- Step size for height adjustment (Q/E)
+        movementStep = 0.1,         -- Step size for WASD movement
+        movementStepFast = 0.5,     -- Step size for fast movement (WASD + Shift)
+        maxDepth = 5.0,             -- Maximum distance from player
+    }
 --]]
 ---@returns Promise with: {entity, coords, heading, placed, cancelled}
 --[[
@@ -724,15 +738,6 @@ function PlaceableObject.Create(model, settings)
     state.isPlacing = true
 
     -- Show help text for placement controls
-    local placementText = {
-        string.format(locale('placeable_object.place_object_place'), Bridge.Utility.GetCommandKey('+place_object')),
-        string.format(locale('placeable_object.place_object_cancel'), Bridge.Utility.GetCommandKey('+cancel_placement')),
-        -- string.format(locale('placeable_object.rotate_left'), Bridge.Utility.GetCommandKey('+rotate_left')),
-        -- string.format(locale('placeable_object.rotate_right'), Bridge.Utility.GetCommandKey('+rotate_right')),
-        string.format(locale('placeable_object.place_object_scroll_up'), Bridge.Utility.GetCommandKey('+scroll_up')),
-        string.format(locale('placeable_object.place_object_scroll_down'), Bridge.Utility.GetCommandKey('+scroll_down')),
-        string.format(locale('placeable_object.depth_modifier'), Bridge.Utility.GetCommandKey('+depth_modifier'))
-    }
     Bridge.Notify.ShowHelpText(type(placementText) == 'table' and table.concat(placementText))
 
     placementLoop()

@@ -40,6 +40,7 @@ Target.FixOptions = function(options)
            
         end
         v.groups = v.job or v.groups
+        -- print(json.encode(v))
     end
     return options
 end
