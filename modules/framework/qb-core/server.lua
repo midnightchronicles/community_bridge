@@ -361,18 +361,10 @@ Framework.GetPlayerGang = function(src)
 end
 
 ---This will get a table of player sources that have the specified job name.
----@param job any
+---@param job string
 ---@return table
 Framework.GetPlayersByJob = function(job)
-    local playerList = {}
-    local players = QBCore.Functions.GetPlayers()
-    for _, src in pairs(players) do
-        local player = Framework.GetPlayer(src).PlayerData
-        if player.job.name == job then
-            table.insert(playerList, src)
-        end
-    end
-    return playerList
+    return Framework.GetPlayerSourcesByJob(job) or {}
 end
 
 ---Depricated: Returns the job name, label, grade name, and grade level of the player.

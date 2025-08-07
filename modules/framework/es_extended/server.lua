@@ -336,18 +336,10 @@ Framework.SetPlayerDuty = function(src, status)
 end
 
 ---This will get a table of player sources that have the specified job name.
----@param job any
+---@param job string
 ---@return table
 Framework.GetPlayersByJob = function(job)
-    local players = GetPlayers()
-    local playerList = {}
-    for _, src in pairs(players) do
-        local xPlayer = Framework.GetPlayer(src)
-        if xPlayer and xPlayer.getJob().name == job then
-            table.insert(playerList, src)
-        end
-    end
-    return playerList
+    return Framework.GetPlayerSourcesByJob(job) or {}
 end
 
 -- Sets the player's job to the specified name and grade.
@@ -363,7 +355,7 @@ Framework.SetPlayerJob = function(src, name, grade)
         return
     end
     xPlayer.setJob(name, grade, true)
-    return true 
+    return true
 end
 
 ---This will add money based on the type of account (money/bank)

@@ -286,18 +286,11 @@ Framework.GetPlayerGang = function(src)
     return player.gang.name
 end
 
----This will return a table of all players with the specified job.
+---This will get a table of player sources that have the specified job name.
 ---@param job string
 ---@return table
 Framework.GetPlayersByJob = function(job)
-    local playerList = {}
-    local players = QBox:GetQBPlayers()
-    for src, player in pairs(players) do
-        if player.PlayerData.job.name == job then
-            table.insert(playerList, src)
-        end
-    end
-    return playerList
+    return Framework.GetPlayerSourcesByJob(job) or {}
 end
 
 ---Depricated: Returns the job name, label, grade name, and grade level of the player.
