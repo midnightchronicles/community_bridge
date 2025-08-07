@@ -1,11 +1,8 @@
----@class Utility
 Utility = Utility or {}
 local blipIDs = {}
 local spawnedPeds = {}
 
 Locales = Locales or Require('modules/locales/shared.lua')
-
--- === Local Helpers ===
 
 ---Get the hash of a model (string or number)
 ---@param model string|number
@@ -22,6 +19,7 @@ end
 ---@return boolean, number
 local function ensureModelLoaded(model)
     local hash = getModelHash(model)
+    if HasModelLoaded(hash) then return true, hash end
     if not IsModelValid(hash) and not IsModelInCdimage(hash) then return false, hash end
     RequestModel(hash)
     local count = 0
@@ -31,84 +29,6 @@ local function ensureModelLoaded(model)
     end
     return HasModelLoaded(hash), hash
 end
-
----Add a text entry if possible
----@param key string
----@param text string
-local function addTextEntryOnce(key, text)
-    if not AddTextEntry then return end
-    AddTextEntry(key, text)
-end
-
----Create a blip safely and store its reference
----@param coords vector3
----@param sprite number
----@param color number
----@param scale number
----@param label string
----@param shortRange boolean
----@param displayType number
----@return number
-local function safeAddBlip(coords, sprite, color, scale, label, shortRange, displayType)
-    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-    SetBlipSprite(blip, sprite or 8)
-    SetBlipColour(blip, color or 3)
-    SetBlipScale(blip, scale or 0.8)
-    SetBlipDisplay(blip, displayType or 2)
-    SetBlipAsShortRange(blip, shortRange)
-    addTextEntryOnce(label, label)
-    BeginTextCommandSetBlipName(label)
-    EndTextCommandSetBlipName(blip)
-    table.insert(blipIDs, blip)
-    return blip
-end
-
----Create a entiyty blip safely and store its reference
----@param entity number
----@param sprite number
----@param color number
----@param scale number
----@param label string
----@param shortRange boolean
----@param displayType number
----@return number
-local function safeAddEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
-    local blip = AddBlipForEntity(entity)
-    SetBlipSprite(blip, sprite or 8)
-    SetBlipColour(blip, color or 3)
-    SetBlipScale(blip, scale or 0.8)
-    SetBlipDisplay(blip, displayType or 2)
-    SetBlipAsShortRange(blip, shortRange)
-    ShowHeadingIndicatorOnBlip(blip, true)
-    addTextEntryOnce(label, label)
-    BeginTextCommandSetBlipName(label)
-    EndTextCommandSetBlipName(blip)
-    table.insert(blipIDs, blip)
-    return blip
-end
-
----Remove a blip safely from the stored list
----@param blip number
----@return boolean
-local function safeRemoveBlip(blip)
-    for i, storedBlip in ipairs(blipIDs) do
-        if storedBlip == blip then
-            RemoveBlip(storedBlip)
-            table.remove(blipIDs, i)
-            return true
-        end
-    end
-    return false
-end
-
----Add a text entry if possible (shortcut)
----@param text string
-local function safeAddTextEntry(text)
-    if not AddTextEntry then return end
-    AddTextEntry(text, text)
-end
-
--- === Public Utility Functions ===
 
 ---Create a prop with the given model and coordinates
 ---@param model string|number
@@ -147,11 +67,7 @@ function Utility.CreateVehicle(model, coords, heading, networked)
     SetVehicleNeedsToBeHotwired(vehicle, false)
     SetVehRadioStation(vehicle, "OFF")
     SetModelAsNoLongerNeeded(hash)
-    return vehicle, {
-        networkid = NetworkGetNetworkIdFromEntity(vehicle) or 0,
-        coords = GetEntityCoords(vehicle),
-        heading = GetEntityHeading(vehicle),
-    }
+    return vehicle, {networkid = NetworkGetNetworkIdFromEntity(vehicle) or 0,coords = GetEntityCoords(vehicle),heading = GetEntityHeading(vehicle),}
 end
 
 ---Create a ped with the given model and coordinates
@@ -166,7 +82,7 @@ function Utility.CreatePed(model, coords, heading, networked, settings)
     if not loaded then return nil, Prints and Prints.Error and Prints.Error("Model Has Not Loaded") end
     local spawnedEntity = CreatePed(0, hash, coords.x, coords.y, coords.z, heading, networked, false)
     SetModelAsNoLongerNeeded(hash)
-    table.insert(spawnedPeds, spawnedEntity)
+    spawnedPeds[tostring(spawnedEntity)] = true
     return spawnedEntity
 end
 
@@ -174,7 +90,7 @@ end
 ---@param text string
 ---@return boolean
 function Utility.StartBusySpinner(text)
-    safeAddTextEntry(text)
+    AddTextEntry(text, text)
     BeginTextCommandBusyString(text)
     AddTextComponentSubstringPlayerName(text)
     EndTextCommandBusyString(0)
@@ -201,7 +117,17 @@ end
 ---@param displayType number
 ---@return number
 function Utility.CreateBlip(coords, sprite, color, scale, label, shortRange, displayType)
-    return safeAddBlip(coords, sprite, color, scale, label, shortRange, displayType)
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, sprite or 8)
+    SetBlipColour(blip, color or 3)
+    SetBlipScale(blip, scale or 0.8)
+    SetBlipDisplay(blip, displayType or 2)
+    SetBlipAsShortRange(blip, shortRange)
+    AddTextEntry(label, label)
+    BeginTextCommandSetBlipName(label)
+    EndTextCommandSetBlipName(blip)
+    blipIDs[tostring(blip)] = true
+    return blip
 end
 
 ---Create a blip on the provided entity
@@ -214,14 +140,28 @@ end
 ---@param displayType number
 ---@return number
 function Utility.CreateEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
-    return safeAddEntityBlip(entity, sprite, color, scale, label, shortRange, displayType)
+    local blip = AddBlipForEntity(entity)
+    SetBlipSprite(blip, sprite or 8)
+    SetBlipColour(blip, color or 3)
+    SetBlipScale(blip, scale or 0.8)
+    SetBlipDisplay(blip, displayType or 2)
+    SetBlipAsShortRange(blip, shortRange)
+    ShowHeadingIndicatorOnBlip(blip, true)
+    AddTextEntry(label, label)
+    BeginTextCommandSetBlipName(label)
+    EndTextCommandSetBlipName(blip)
+    blipIDs[tostring(blip)] = true
+    return blip
 end
 
 ---Remove a blip if it exists
 ---@param blip number
 ---@return boolean
 function Utility.RemoveBlip(blip)
-    return safeRemoveBlip(blip)
+    if not blipIDs[tostring(blip)] then return false end
+    RemoveBlip(blip)
+    blipIDs[tostring(blip)] = nil
+    return true
 end
 
 ---Load a model into memory
@@ -235,6 +175,7 @@ end
 ---@param dict string
 ---@return boolean
 function Utility.RequestAnimDict(dict)
+    if HasAnimDictLoaded(dict) then return true end
     RequestAnimDict(dict)
     local count = 0
     while not HasAnimDictLoaded(dict) and count < 30000 do
@@ -248,18 +189,12 @@ end
 ---@param entity number
 ---@return boolean
 function Utility.RemovePed(entity)
-    local success = false
-    if DoesEntityExist(entity) then
-        DeleteEntity(entity)
-    end
-    for i, storedEntity in ipairs(spawnedPeds) do
-        if storedEntity == entity then
-            table.remove(spawnedPeds, i)
-            success = true
-            break
-        end
-    end
-    return success
+    if not spawnedPeds[tostring(entity)] then return false end
+    spawnedPeds[tostring(entity)] = nil
+    if not DoesEntityExist(entity) then return false end
+    SetEntityAsMissionEntity(entity, true, true)
+    DeleteEntity(entity)
+    return true
 end
 
 ---Show a native input menu and return the result
@@ -269,7 +204,7 @@ end
 function Utility.NativeInputMenu(text, length)
     local maxLength = Math and Math.Clamp and Math.Clamp(length, 1, 50) or math.min(math.max(length or 10, 1), 50)
     local menuText = text or 'enter text'
-    safeAddTextEntry(menuText)
+    AddTextEntry(menuText, menuText)
     DisplayOnscreenKeyboard(1, menuText, "", "", "", "", "", maxLength)
     while (UpdateOnscreenKeyboard() == 0) do
         DisableAllControlActions(0)
@@ -315,7 +250,8 @@ function Utility.ReloadSkin()
     local ped = PlayerPedId()
     local skinData = Utility.GetEntitySkinData(ped)
     Utility.SetEntitySkinData(ped, skinData)
-    for _, props in pairs(GetGamePool("CObject")) do
+    local poolObject = GetGamePool("CObject")
+    for _, props in pairs(poolObject) do
         if IsEntityAttachedToEntity(ped, props) then
             SetEntityAsMissionEntity(props, true, true)
             DeleteObject(props)
@@ -329,9 +265,21 @@ end
 ---@param text string
 ---@param duration number
 function Utility.HelpText(text, duration)
-    safeAddTextEntry(text)
+    AddTextEntry(text, text)
     BeginTextCommandDisplayHelp(text)
     EndTextCommandDisplayHelp(0, false, true, duration or 5000)
+end
+
+---Show a floating help text in the world
+---@param text string The text to show
+---@param coords table The coords to show the message at
+---@return nil
+function Utility.FloatingHelpText(text, coords)
+    AddTextEntry("community_bridge_"..text, "community_bridge_"..text)
+    SetFloatingHelpTextWorldPosition(1, coords.x, coords.y, coords.z)
+    SetFloatingHelpTextStyle(1, 1, 2, -1, 3, 0)
+    BeginTextCommandDisplayHelp("community_bridge_"..text)
+    EndTextCommandDisplayHelp(2, false, false, -1)
 end
 
 ---Draw 3D help text in the world
@@ -343,10 +291,10 @@ function Utility.Draw3DHelpText(coords, text, scale)
     if onScreen then
         SetTextScale(scale or 0.35, scale or 0.35)
         SetTextFont(4)
-        SetTextProportional(1)
+        SetTextProportional(true)
         SetTextColour(255, 255, 255, 215)
         SetTextEntry("STRING")
-        SetTextCentre(1)
+        SetTextCentre(true)
         AddTextComponentString(text)
         DrawText(x, y)
         local factor = (string.len(text)) / 370
@@ -357,7 +305,7 @@ end
 ---Show a native notification
 ---@param text string
 function Utility.NotifyText(text)
-    safeAddTextEntry(text)
+    AddTextEntry(text, text)
     SetNotificationTextEntry(text)
     DrawNotification(false, true)
 end
@@ -376,9 +324,7 @@ function Utility.TeleportPlayer(coords, conditionFunction, afterTeleportFunction
     DoScreenFadeOut(2500)
     Wait(2500)
     SetEntityCoords(ped, coords.x, coords.y, coords.z, false, false, false, false)
-    if coords.w then
-        SetEntityHeading(ped, coords.w)
-    end
+    if coords.w then SetEntityHeading(ped, coords.w) end
     FreezeEntityPosition(ped, true)
     local count = 0
     while not HasCollisionLoadedAroundEntity(ped) and count <= 30000 do
@@ -627,13 +573,13 @@ end
 AddEventHandler('onResourceStop', function(resource)
     if resource ~= GetCurrentResourceName() then return end
     for _, blip in pairs(blipIDs) do
-        if blip and DoesBlipExist(blip) then
-            RemoveBlip(blip)
+        if blip and DoesBlipExist(tonumber(blip)) then
+            RemoveBlip(tonumber(blip))
         end
     end
     for _, ped in pairs(spawnedPeds) do
-        if ped and DoesEntityExist(ped) then
-            DeleteEntity(ped)
+        if ped and DoesEntityExist(tonumber(ped)) then
+            DeleteEntity(tonumber(ped))
         end
     end
 end)
