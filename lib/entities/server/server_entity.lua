@@ -29,7 +29,7 @@ end
 function ServerEntity.Create(id, entityType, model, coords, rotation, meta)
     local self = ServerEntity.New(id, entityType, model, coords, rotation, meta)
     if not self then
-        print("Failed to create entity with ID: " .. tostring(id))
+        -- print("Failed to create entity with ID: " .. tostring(id))
         return nil
     end
     TriggerClientEvent("community_bridge:client:CreateEntity", -1, self)
@@ -68,7 +68,7 @@ end
 -- @param data table The data fields to update.
 function ServerEntity.Update(id, data)
     local entity = Entities[id]
-    print("Updating entity: ", id, entity)
+    -- print("Updating entity: ", id, entity)
     if not entity then return false end
 
     for key, value in pairs(data) do
@@ -84,7 +84,7 @@ end
 -- @param actionName string The name of the action to trigger (must match a function in ClientEntityActions).
 -- @param ... any Additional arguments for the action function.
 function ServerEntity.TriggerAction(entityId, actionName, endPosition, ...)
-    print("Triggering action: ", entityId, actionName, ...)
+    -- print("Triggering action: ", entityId, actionName, ...)
     local entity = Entities[entityId]
     if not entity then
         print(string.format("[ServerEntity] Attempted to trigger action '%s' on non-existent entity %s", actionName, entityId))
