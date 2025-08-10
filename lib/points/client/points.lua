@@ -11,7 +11,7 @@ local GRID_SIZE = 500.0 -- Size of each grid cell
 local CELL_BUFFER = 1 -- Number of adjacent cells to check
 
 -- Consider adding these optimizations
-local ADAPTIVE_WAIT = true -- Adjust wait time based on player speed
+local ADAPTIVE_WAIT = false -- Adjust wait time based on player speed
 
 ---This is an internal function, do not call this externally
 function Point.GetCellKey(coords)
