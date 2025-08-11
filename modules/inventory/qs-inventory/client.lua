@@ -18,7 +18,7 @@ Inventory.GetItemInfo = function(item)
         stack = itemData.unique or "false",
         weight = itemData.weight or "0",
         description = itemData.description or "none",
-        image = itemData.image or Inventory.GetImagePath(item),
+        image = Inventory.GetImagePath(item),
     }
 end
 
