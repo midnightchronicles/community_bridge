@@ -14,6 +14,7 @@ Inventory.Stashes = Inventory.Stashes or {}
 ---@param metadata table
 ---@return boolean
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    if not tgiann:CanCarryItem(src, item, count) then return false end
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return tgiann:AddItem(src, item, count, slot, metadata, false)
 end

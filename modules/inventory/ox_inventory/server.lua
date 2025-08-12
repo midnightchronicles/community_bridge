@@ -17,6 +17,7 @@ Inventory.Stashes = Inventory.Stashes or {}
 ---@param metadata table
 ---@return boolean
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    if not ox_inventory:CanCarryItem(src, item, count, metadata) then return false end
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return ox_inventory:AddItem(src, item, count, metadata)
 end

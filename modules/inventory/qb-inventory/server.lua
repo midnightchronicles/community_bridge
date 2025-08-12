@@ -21,6 +21,7 @@ end
 ---@param metadata table
 ---@return boolean
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    if getInventoryNewVersion() then if not qbInventory:CanAddItem(src, item, count) then return false end end
     TriggerClientEvent('qb-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', count)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return qbInventory:AddItem(src, item, count, slot, metadata, 'community_bridge')
