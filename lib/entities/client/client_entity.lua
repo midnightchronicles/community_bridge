@@ -183,6 +183,37 @@ function ClientEntity.OnCreate(_type, func)
     table.insert(ClientEntity.OnCreates[_type], func)
 end
 
+function ClientEntity.SetOnSpawn(id, func)
+    local entityData = Entities[id]
+    if not entityData then
+        print(string.format("[ClientEntity] SetOnSpawn: Entity %s does not exist", id))
+        return
+    end
+    entityData.OnSpawn = func
+end
+
+function ClientEntity.SetOnRemove(id, func)
+    local entityData = Entities[id]
+    if not entityData then
+        print(string.format("[ClientEntity] SetOnRemove: Entity %s does not exist", id))
+        return
+    end
+    entityData.OnRemove = func
+end
+
+function ClientEntity.UpdateCoords(id, coords)
+    local entityData = Entities[id]
+    if not entityData then
+        print(string.format("[ClientEntity] UpdateCoords: Entity %s does not exist", id))
+        return
+    end
+    entityData.coords = coords
+    Point.UpdateCoords(id, coords)
+    if entityData.spawned and DoesEntityExist(entityData.spawned) then
+        SetEntityCoords(entityData.spawned, coords.x, coords.y, coords.z, false, false, false, true)
+    end
+end
+
 -- Network Event Handlers
 RegisterNetEvent("community_bridge:client:CreateEntity", function(entityData)
     ClientEntity.Create(entityData)

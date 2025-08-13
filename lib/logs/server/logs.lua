@@ -55,46 +55,54 @@ Logs.Send = function(src, message)
     end
 end
 
+local embeds = {}
 Logs.Notify = function(src, url, image, message)
     if not src or not message then return end
     local logType = LogSystem or "built-in"
     if logType == "built-in" then
+        embeds[url] = embeds[url] or {}
+        local embed = embeds[url].embed or {}
         local firstName, lastName = Framework.GetPlayerName(src)
-        PerformHttpRequest(url, function(err, text, headers) end, 'POST', json.encode(
-        {
-            username = string.format("%s %s", firstName, lastName),
-            avatar_url = image or 'https://avatars.githubusercontent.com/u/192999457?s=400&u=da632e8f64c85def390cfd1a73c3b664d6882b38&v=4',
-            embeds = {
+
+        table.insert(embed, {
+            color = "15769093",
+            title = GetInvokingResource(),
+            -- url = 'https://discord.gg/Gm6rYEXUsn',
+            thumbnail = { url = LogoForEmbed },
+            fields = {
                 {
-                    color = "15769093",
-                    title = GetInvokingResource(),
-                    -- url = 'https://discord.gg/Gm6rYEXUsn',
-                    thumbnail = { url = LogoForEmbed },
-                    fields = {
-                        {
-                            name = '**Player ID**',
-                            value = src,
-                            inline = true,
-                        },
-                        {
-                            name = '**Player Identifier**',
-                            value = Framework.GetPlayerIdentifier(src),
-                            inline = true,
-                        },
-                        {
-                            name = 'Log Message',
-                            value = "```"..message.."```",
-                            inline = false,
-                        },
-                    },
-                    timestamp = os.date('!%Y-%m-%dT%H:%M:%S'),
-                    footer = {
-                        text = "Community_Bridge | ",
-                        icon_url = 'https://avatars.githubusercontent.com/u/192999457?s=400&u=da632e8f64c85def390cfd1a73c3b664d6882b38&v=4',
-                    },
-                }
-            }
-        }), { ['Content-Type']= 'application/json' })
+                    name = '**Player ID**',
+                    value = src,
+                    inline = true,
+                },
+                {
+                    name = '**Player Identifier**',
+                    value = Framework.GetPlayerIdentifier(src),
+                    inline = true,
+                },
+                {
+                    name = 'Log Message',
+                    value = "```"..message.."```",
+                    inline = false,
+                },
+            },
+            timestamp = os.date('!%Y-%m-%dT%H:%M:%S'),
+            footer = {
+                text = "Community_Bridge | ",
+                icon_url = 'https://avatars.githubusercontent.com/u/192999457?s=400&u=da632e8f64c85def390cfd1a73c3b664d6882b38&v=4',
+            },
+        })
+        embeds[url].embed = embed
+        if embeds[url].inProgress then return end
+        embeds[url].inProgress = true
+        SetTimeout(5000, function()
+            PerformHttpRequest(url, function(err, text, headers) end, 'POST', json.encode({
+                username = string.format("%s %s", firstName, lastName),
+                avatar_url = image or 'https://avatars.githubusercontent.com/u/192999457?s=400&u=da632e8f64c85def390cfd1a73c3b664d6882b38&v=4',
+                embeds = embeds[url].embed
+            }), { ['Content-Type']= 'application/json' })        
+            embeds[url].inProgress = false
+        end)
     elseif logType == "qb" then
         return TriggerEvent('qb-log:server:CreateLog', GetCurrentResourceName(), GetCurrentResourceName(), 'green', message)
     elseif logType == "ox_lib" then
