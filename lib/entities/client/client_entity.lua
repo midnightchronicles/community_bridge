@@ -40,31 +40,30 @@ local function SpawnEntity(entityData)
     else
         SetModelAsNoLongerNeeded(model)
     end
+    -- if entityData.OnSpawn then
+    --     entityData.OnSpawn(entityData)
+    -- end
     if entityData.OnSpawn then
-        entityData.OnSpawn(entityData)
+        pcall(function (...)
+            return entityData.OnSpawn(entityData)
+        end)
     end
 end
 
 local function RemoveEntity(entityData)
-    print(string.format("[ClientEntity] Removing entity %s", entityData.id))
     entityData = entityData and entityData.args or entityData
     if not entityData then return end
-    -- ClientEntityActions.StopAction(entityData.id)
-    print(string.format("[ClientEntity] Stopping actions for entity %s", entityData.id, entityData.OnRemove))
-    for k, v in pairs(entityData) do
-        print(string.format("RemoveEntity %s", k))
-    end
-    print(json.encode(skip))
     if entityData.OnRemove then
-        print(string.format("[ClientEntity] Calling OnRemove for entity %s", entityData.id))
-        entityData.OnRemove(entityData)
+        pcall(function (...)
+            return entityData.OnRemove(entityData)
+        end)
     end
     if entityData.spawned and DoesEntityExist(entityData.spawned) then
         local entityHandle = entityData.spawned
         entityData.spawned = nil
-        SetEntityAsMissionEntity(entityHandle, false, false)
+        SetEntityAsMissionEntity(entityHandle, true, true)
         DeleteEntity(entityHandle)
-    end    
+    end
 end
 
 --- Registers an entity received from the server and sets up proximity spawning.
