@@ -270,16 +270,18 @@ function Utility.HelpText(text, duration)
     EndTextCommandDisplayHelp(0, false, true, duration or 5000)
 end
 
+local doingstuff = false
+
 ---Show a floating help text in the world
 ---@param text string The text to show
 ---@param coords table The coords to show the message at
 ---@return nil
-function Utility.FloatingHelpText(text, coords)
-    AddTextEntry("community_bridge_"..text, "community_bridge_"..text)
-    SetFloatingHelpTextWorldPosition(1, coords.x, coords.y, coords.z)
+function Utility.FloatingHelpText(text, coords) 
+    AddTextEntry("community_bridge_"..text, text)
+    SetFloatingHelpTextWorldPosition(1, coords.x, coords.y, coords.z)    
     SetFloatingHelpTextStyle(1, 1, 2, -1, 3, 0)
     BeginTextCommandDisplayHelp("community_bridge_"..text)
-    EndTextCommandDisplayHelp(2, false, false, -1)
+    EndTextCommandDisplayHelp(2, false, false, 100)
 end
 
 ---Draw 3D help text in the world

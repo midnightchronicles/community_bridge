@@ -8,7 +8,7 @@ function Particle.New(data)
     assert(data.dict, "Invalid particle data. Must contain string dict.")
     assert(data.ptfx, "Invalid particle data. Must contain string ptfx.")
 
-    local _id = data.id or id.CreateUniqueId(Particles)
+    local _id = data.id or Bridge.Ids.CreateUniqueId(Particles)
     data = {
         id = _id,
         dict = data.dict,
