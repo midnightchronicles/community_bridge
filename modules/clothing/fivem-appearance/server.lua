@@ -18,13 +18,22 @@ function Clothing.GetFullAppearanceData(src)
 
     if Clothing.Players[citId] then return Clothing.Players[citId] end
 
-    local result = MySQL.query.await('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', { citId, 1 })
-    if result[1] == nil then return end
-
-    local model = result[1].model
-    local skinData = json.decode(result[1].skin)
-    local converted = skinData
-
+    local result = nil
+    local model = GetEntityModel(GetPlayerPed(src))
+    local skinData = nil
+    local converted = nil
+    if Bridge.Framework.GetFrameworkName() == "es_extended" then
+        result = MySQL.query.await('SELECT skin FROM users WHERE identifier = ?', { citId })
+        if not result or not result[1] then return end
+        skinData = json.decode(result[1].skin)
+        converted = skinData
+    else
+        result = MySQL.query.await('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', { citId, 1 })        
+        if not result or not result[1] then return end
+        model = result[1].model
+        skinData = json.decode(result[1].skin)
+        converted = skinData
+    end
     -- Store complete data in the cache
     Clothing.Players[citId] = {
         model = model,

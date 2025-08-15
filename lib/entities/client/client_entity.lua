@@ -9,9 +9,6 @@ ClientEntity = {} -- Renamed from BaseEntity
 local function SpawnEntity(entityData)
     entityData = entityData and entityData.args
     if entityData.spawned and DoesEntityExist(entityData.spawned) then return end -- Already spawned
-    -- for k, v in pairs(entityData.args) do
-    --     print(string.format("SpawnEntity %s: %s", k, v))
-    -- end
     local loaded, model = Utility.LoadModel(entityData.model)
     if not loaded then
         print(string.format("[ClientEntity] Failed to load model %s for entity %s", entityData.model, entityData.id))
@@ -40,9 +37,6 @@ local function SpawnEntity(entityData)
     else
         SetModelAsNoLongerNeeded(model)
     end
-    -- if entityData.OnSpawn then
-    --     entityData.OnSpawn(entityData)
-    -- end
     if entityData.OnSpawn then
         pcall(function (...)
             return entityData.OnSpawn(entityData)
