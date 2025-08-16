@@ -69,7 +69,7 @@ function Point.StartLoop()
                             end
                         end
                     else
-                        local distance = #(coords.xyz - point.coords.xyz)
+                        local distance = #(vector3(coords.x, coords.y, coords.z) - vector3(point.coords.x, point.coords.y, point.coords.z))
                         if distance < point.distance then
                             if not point.inside then
                                 point.inside = true
