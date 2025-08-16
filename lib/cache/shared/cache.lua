@@ -128,11 +128,8 @@ local function trackResource(resourceName, type, data)
             for _, cb in ipairs(resourceTracker.callbacks[resourceName] or {}) do
                 local targetCache = Cache.Caches[cb.cacheName]
                 if targetCache then
-                    table.remove(targetCache.OnChange, cb.index)
-                    debugPrint(("Removed OnChange callback from cache '%s' - resource '%s' stopped"):format(
-                        cb.cacheName,
-                        resourceName
-                    ))
+                    targetCache.OnChange[cb.index] = nil
+                    debugPrint(("Removed callback '%s' from cache '%s' - resource '%s' stopped"):format(cb.index, cb.cacheName, resourceName))
                 end
             end
 
