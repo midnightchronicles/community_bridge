@@ -90,7 +90,6 @@ end
 function Point.Register(id, target, distance, args, _onEnter, _onExit)
     local isEntity = type(target) == "number"
     local coords = isEntity and GetEntityCoords(target) or target
-    print(target)
     Grid.Generate()
     local self = {}
     self.id = id
