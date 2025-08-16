@@ -47,6 +47,7 @@ cLib = {
     Math = Math or Require("lib/utility/shared/math.lua"),
     LA = LA or Require("lib/utility/shared/la.lua"),
     Perlin = Perlin or Require("lib/utility/shared/perlin.lua"),
+    -- Zones = Poly or Require("lib/zones/shared/zones.lua"),
     -- Action = Action or Require("lib/entities/shared/actions.lua"),
 }
 
@@ -71,7 +72,7 @@ cLib.Placeable = Placeable or Require("lib/placers/client/object_placer.lua")
 cLib.Utility = Utility or Require("lib/utility/client/utility.lua")
 cLib.PlaceableObject = ObjectPlacer or Require("lib/placers/client/placeable_object.lua")
 cLib.Raycast = Raycast or Require("lib/raycast/client/raycast.lua")
-cLib.Point = Point or Require("lib/points/client/points.lua")
+cLib.Point = Point or Require("lib/points/client/pointsv2.lua")
 cLib.Particle = Particle or Require("lib/particles/client/particles.lua")
 cLib.Cache = Cache or Require("lib/cache/client/cache.lua")
 cLib.ClientEntity = ClientEntity or Require("lib/entities/client/client_entity.lua")
