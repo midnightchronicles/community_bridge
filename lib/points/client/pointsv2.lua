@@ -102,7 +102,8 @@ function Point.Register(id, target, distance, args, _onEnter, _onExit)
     self.inside = false -- Track if player is inside
     self.args = args or {}
     local grid = Grid.GetCellByCoords(coords)
-    self.cellKey = Grid.GetCellId(coords)
+    -- OLD CODE: self.cellKey = Grid.GetCellId(coords) -- This caused points to overwrite each other in same cell
+    self.cellKey = id -- Use unique ID instead of cell coordinates
     grid[self.cellKey] = self
     Point.All[id] = self
     Point.StartLoop()
@@ -132,14 +133,17 @@ function Point.UpdateCoords(id, coords)
     if not point then return end
 
     local newGrid = Grid.GetCellByCoords(coords)
-    if not newGrid or newGrid[point.cellKey] then return end
+    if not newGrid then return end
+    -- OLD CODE: if not newGrid or newGrid[point.cellKey] then return end -- This prevented adding points to cells with existing points
+    
     local oldGrid = Grid.GetCellByCoords(point.coords)
     if oldGrid then
         oldGrid[point.cellKey] = nil
     end
     -- Add to new grid
     point.coords = coords
-    point.cellKey = string.format("%d_%d", newGrid.x, newGrid.y)
+    -- OLD CODE: point.cellKey = string.format("%d_%d", newGrid.x, newGrid.y) -- This used cell coordinates instead of unique ID
+    point.cellKey = id -- Keep using the unique ID
     newGrid[point.cellKey] = point
     return true
 end
