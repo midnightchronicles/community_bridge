@@ -126,7 +126,7 @@ function Utility.CreateBlip(coords, sprite, color, scale, label, shortRange, dis
     AddTextEntry(label, label)
     BeginTextCommandSetBlipName(label)
     EndTextCommandSetBlipName(blip)
-    blipIDs[tostring(blip)] = true
+    blipIDs[tostring(blip)] = blip
     return blip
 end
 
@@ -150,7 +150,7 @@ function Utility.CreateEntityBlip(entity, sprite, color, scale, label, shortRang
     AddTextEntry(label, label)
     BeginTextCommandSetBlipName(label)
     EndTextCommandSetBlipName(blip)
-    blipIDs[tostring(blip)] = true
+    blipIDs[tostring(blip)] = blip
     return blip
 end
 
@@ -158,8 +158,8 @@ end
 ---@param blip number
 ---@return boolean
 function Utility.RemoveBlip(blip)
-    if not blipIDs[tostring(blip)] then return false end
-    RemoveBlip(blip)
+    if not blipIDs[tostring(blip)] then return false, print("NO BLIP BY ID") end
+    RemoveBlip(blipIDs[tostring(blip)])
     blipIDs[tostring(blip)] = nil
     return true
 end
