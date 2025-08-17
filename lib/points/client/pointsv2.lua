@@ -32,12 +32,7 @@ end
 function Grid.GetCellByCoords(coords)
     local cellX = math.floor(coords.x / CELL_SIZE) + 1
     local cellY = math.floor(coords.y / CELL_SIZE) + 1
-
-    if Grids[cellX] and Grids[cellX][cellY] then
-        return Grids[cellX][cellY]
-    end
-
-    return nil
+    return Grids[cellX][cellY]
 end
 
 local Points = {}
@@ -102,8 +97,7 @@ function Point.Register(id, target, distance, args, _onEnter, _onExit)
     self.inside = false -- Track if player is inside
     self.args = args or {}
     local grid = Grid.GetCellByCoords(coords)
-    self.cellKey = Grid.GetCellId(coords)
-    grid[self.cellKey] = self
+    grid[id] = self
     Point.All[id] = self
     Point.StartLoop()
     return self
@@ -116,7 +110,7 @@ function Point.Remove(id)
     -- Remove from grid
     local grid = Grid.GetCellByCoords(point.coords)
     if grid then
-        grid[point.cellKey] = nil
+        grid[point.id] = nil
     end
 
     Point.All[id] = nil
@@ -132,15 +126,14 @@ function Point.UpdateCoords(id, coords)
     if not point then return end
 
     local newGrid = Grid.GetCellByCoords(coords)
-    if not newGrid or newGrid[point.cellKey] then return end
+    if not newGrid or newGrid[point.id] then return end
     local oldGrid = Grid.GetCellByCoords(point.coords)
     if oldGrid then
-        oldGrid[point.cellKey] = nil
+        oldGrid[point.id] = nil
     end
     -- Add to new grid
     point.coords = coords
-    point.cellKey = string.format("%d_%d", newGrid.x, newGrid.y)
-    newGrid[point.cellKey] = point
+    newGrid[point.id] = point
     return true
 end
 
