@@ -3,6 +3,7 @@ local blipIDs = {}
 local spawnedPeds = {}
 
 Locales = Locales or Require('modules/locales/shared.lua')
+Point = Point or Require('lib/points/client/pointsv2.lua')
 
 ---Get the hash of a model (string or number)
 ---@param model string|number
@@ -410,8 +411,8 @@ function Utility.GetClosestVehicle(coords, distanceScope, includePlayerVeh)
 end
 
 -- Deprecated point functions (no changes)
-function Utility.RegisterPoint(pointID, pointCoords, pointDistance, _onEnter, _onExit, _nearby)
-    return Point.Register(pointID, pointCoords, pointDistance, nil, _onEnter, _onExit, _nearby)
+function Utility.RegisterPoint(pointID, pointCoords, pointDistance, _onEnter, _onExit)
+    return Point.Register(pointID, pointCoords, pointDistance, nil, _onEnter, _onExit)
 end
 
 function Utility.GetPointById(pointID)
