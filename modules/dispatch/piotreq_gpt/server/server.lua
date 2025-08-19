@@ -7,11 +7,11 @@ Dispatch.SendAlert = function(src, alertData)
     exports['piotreq_gpt']:SendAlert(src, {
     title = alertData.message or "No message provided",
     code = alertData.code or '10-80',
-    icon = alertData.icon or 'fas fa-question',
+    icon = alertData.icon or 'fa-solid fa-question',
     info = {
-        {icon = alertData.icon or 'fas fa-question', data = alertData.message or "No additional info", isStreet = false},
+        {icon = 'fa-solid fa-road', isStreet = true},
+        {icon = alertData.icon or 'fa-solid fa-question', data = alertData.message or "No additional info"},
     },
-    --jobs = alertData.jobs or "police",
     blip = { -- optional
         scale = alertData.blipData and alertData.blipData.scale or 1.0,
         sprite = alertData.blipData and alertData.blipData.sprite or 161,
@@ -24,7 +24,7 @@ Dispatch.SendAlert = function(src, alertData)
         name = alertData.message or "Dispatch Alert"
     },
     type = 'normal', -- default normal
-    canAnswer = true, -- default false
+    canAnswer = false, -- default false
     maxOfficers = 6, -- default 4
     time = 10,-- 10 minutes, default 5
     notifyTime = 8000, -- 8 seconds, default 7
