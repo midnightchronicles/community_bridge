@@ -56,8 +56,7 @@ end
 ---@param metadata table | string
 ---@return table | string | number | boolean
 Framework.GetPlayerMetaData = function(metadata)
-    local playerData = Framework.GetPlayerData()
-    return playerData.metadata[metadata]
+    return Framework.GetPlayerData().metadata[metadata]
 end
 
 ---This will send a notification to the player.

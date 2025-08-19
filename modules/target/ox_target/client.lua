@@ -22,14 +22,25 @@ Target = Target or {}
 Target.FixOptions = function(options)
     for k, v in pairs(options) do
         local action = v.onSelect or v.action
-        local select = function(entityOrData)
-            if type(entityOrData) == 'table' then
-                return action(entityOrData.entity)
+        if not action then 
+            local _type = v.type
+            if _type and _type == "server" then
+                v.serverEvent = v.event
+                v.event = nil
             end
-            return action(entityOrData)
+
+        else
+            local select = function(entityOrData)
+                if type(entityOrData) == 'table' then
+                    return action(entityOrData.entity)
+                end
+                return action(entityOrData)
+            end
+            v.onSelect = select
+           
         end
-        options[k].onSelect = select
-        options[k].groups = v.job or v.groups
+        v.groups = v.job or v.groups
+        -- print(json.encode(v))
     end
     return options
 end
@@ -151,13 +162,13 @@ end
 ---@param coords table
 ---@param radius number
 ---@param options table
-Target.AddSphereZone = function(name, coords, radius, heading, options)
+Target.AddSphereZone = function(name, coords, radius, options, debug)
     options = Target.FixOptions(options)
     local target = ox_target:addSphereZone({
         coords = coords,
         radius = radius,
         name = name,
-        debug = targetDebug,
+        debug = targetDebug or debug,
         options = options
     })
     table.insert(targetZones, { name = name, id = target, creator = GetInvokingResource() })

@@ -17,6 +17,7 @@ Inventory.Stashes = Inventory.Stashes or {}
 ---@param metadata table
 ---@return boolean
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    if not ox_inventory:CanCarryItem(src, item, count, metadata) then return false end
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return ox_inventory:AddItem(src, item, count, metadata)
 end
@@ -222,6 +223,14 @@ end
 ---@return table
 Inventory.GetItem = function(src, item, metadata)
     return ox_inventory:GetItem(src, item, metadata, false)
+end
+
+Inventory.OpenPlayerInventory = function(src, target)
+    assert(src, "OpenPlayerInventory: src is required")
+    if not target then
+        target = src
+    end
+    exports.ox_inventory:openInventory('player', target)
 end
 
 return Inventory

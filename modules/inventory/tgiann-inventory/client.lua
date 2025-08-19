@@ -10,13 +10,14 @@ Inventory = Inventory or {}
 Inventory.GetItemInfo = function(item)
     local itemData = tgiann:GetItemList()
     if not itemData[item] then return {} end
+    itemData = itemData[item]
     return {
         name = itemData.name or "Missing Name",
         label = itemData.label or "Missing Label",
         stack = itemData.unique or "false",
         weight = itemData.weight or "0",
         description = itemData.description or "none",
-        image = itemData.image or Inventory.GetImagePath(item),
+        image = Inventory.GetImagePath(item),
     }
 end
 
@@ -39,10 +40,11 @@ end
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
-    item = Inventory.StripPNG(item)
-    local pngPath = LoadResourceFile("inventory_images", string.format("html/images/%s.png", item))
-    local webpPath = LoadResourceFile("inventory_images", string.format("html/images/%s.webp", item))
-    local imagePath = pngPath and string.format("nui://inventory_images/html/images/%s.png", item) or webpPath and string.format("nui://inventory_images/html/images/%s.webp", item)
+    local pngItem = Inventory.StripPNG(item)
+    local webpItem = Inventory.StripWebp(item)
+    local pngPath = LoadResourceFile("inventory_images", string.format("/images/%s.png", pngItem))
+    local webpPath = LoadResourceFile("inventory_images", string.format("/images/%s.webp", webpItem))
+    local imagePath = pngPath and string.format("nui://inventory_images/images/%s.png", pngItem) or webpPath and string.format("nui://inventory_images/images/%s.webp", webpItem)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 

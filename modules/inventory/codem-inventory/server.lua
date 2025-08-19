@@ -190,4 +190,13 @@ Inventory.GetImagePath = function(item)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
 
+Inventory.OpenPlayerInventory = function(src, target)
+    assert(src, "OpenPlayerInventory: src is required")
+    if not target then
+        target = src
+    end
+    exports['codem-inventory']:OpenInventory(src, target)
+end
+
+
 return Inventory

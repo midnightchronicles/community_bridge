@@ -22,6 +22,8 @@ Notify.SendNotify = function(message, _type, time)
         _type = tostring(2)
     elseif _type == "warning" or _type == "warn" then
         _type = tostring(3)
+    else
+        _type = tostring(2) -- Default to 2 if type is not recognized
     end
     return exports['FL-Notify']:Notify("Notification", "", message, 5000, tonumber(_type), 0)
 end

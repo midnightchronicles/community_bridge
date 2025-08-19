@@ -25,7 +25,7 @@ local function QBToOxMenu(id, menu)
                 description = v.txt,
                 icon = v.icon,
                 args = v.params.args,
-                onSelect = function(selected, secondary, args)
+                onSelect = v.action or function(selected, secondary, args)
                     local params = menu[id]?.options?[selected]?.params
                     if not params then return end
                     local event = params.event
@@ -56,3 +56,23 @@ end
 GetMenuResourceName = function()
     return resourceName
 end
+
+
+-- RegisterCommand('menutest', function()
+--     local test1 = function()
+--         print("Test 1 executed")
+--     end
+
+--     Bridge.Menu.Open({
+--         title = "test",
+--         description = "test",
+--         options = {
+--             {
+--                 title = "test",
+--                 description = "test",
+--                 icon = "fas fa-box-open",
+--                 onSelect = test1
+--             },           
+--         }
+--     })
+-- end)

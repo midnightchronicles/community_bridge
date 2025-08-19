@@ -330,24 +330,16 @@ Framework.SetPlayerDuty = function(src, status)
     local xPlayer = Framework.GetPlayer(src)
     if not xPlayer then return false end
     local job = xPlayer.getJob()
-    if not job.onDuty then return false end
+    if job.name == 'unemployed' then return false end
     xPlayer.setJob(job.name, job.grade, status)
     return true
 end
 
 ---This will get a table of player sources that have the specified job name.
----@param job any
+---@param job string
 ---@return table
 Framework.GetPlayersByJob = function(job)
-    local players = GetPlayers()
-    local playerList = {}
-    for _, src in pairs(players) do
-        local xPlayer = Framework.GetPlayer(src)
-        if xPlayer and xPlayer.getJob().name == job then
-            table.insert(playerList, src)
-        end
-    end
-    return playerList
+    return Framework.GetPlayerSourcesByJob(job) or {}
 end
 
 -- Sets the player's job to the specified name and grade.
@@ -363,7 +355,7 @@ Framework.SetPlayerJob = function(src, name, grade)
         return
     end
     xPlayer.setJob(name, grade, true)
-    return true 
+    return true
 end
 
 ---This will add money based on the type of account (money/bank)
@@ -472,6 +464,12 @@ end)
 RegisterNetEvent("esx:playerLogout", function(src)
     src = src or source
     TriggerEvent("community_bridge:Server:OnPlayerUnload", src)
+end)
+
+RegisterNetEvent("esx:setJob", function(src, job, lastJob)
+    src = src or source
+    if not job or not lastJob then return end
+    TriggerEvent("community_bridge:Server:OnPlayerJobChange", src, job.name)
 end)
 
 AddEventHandler("playerDropped", function()

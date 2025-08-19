@@ -1,20 +1,20 @@
 ---@diagnostic disable: duplicate-set-field
-if GetResourceState('tgg-banking') == 'missing' then return end
-Managment = Managment or {}
+if GetResourceState('tgiann-bank') == 'missing' then return end
+Banking = Banking or {}
 
-local tgg = exports['tgg-banking']
+local tgiann = exports["tgiann-bank"]
 
 ---This will get the name of the Managment system being being used.
 ---@return string
-Managment.GetManagmentName = function()
-    return 'tgg-banking'
+Banking.GetManagmentName = function()
+    return 'tgiann-bank'
 end
 
 ---This will return a number
 ---@param account string
 ---@return number
-Managment.GetAccountMoney = function(account)
-    return tgg:GetSocietyAccountMoney(account) or 0
+Banking.GetAccountMoney = function(account)
+    return tgiann:GetJobAccountBalance(account)
 end
 
 ---This will add money to the specified account of the passed amount
@@ -22,8 +22,8 @@ end
 ---@param amount number
 ---@param _ string
 ---@return boolean
-Managment.AddAccountMoney = function(account, amount, _)
-    return tgg:AddSocietyMoney(account, amount)
+Banking.AddAccountMoney = function(account, amount, _)
+    return tgiann:AddJobMoney(account, amount)
 end
 
 ---This will remove money from the specified account of the passed amount
@@ -31,8 +31,8 @@ end
 ---@param amount number
 ---@param _ string
 ---@return boolean
-Managment.RemoveAccountMoney = function(account, amount, _)
-    return tgg:RemoveSocietyMoney(account, amount)
+Banking.RemoveAccountMoney = function(account, amount, _)
+    return tgiann:RemoveJobMoney(account, amount)
 end
 
-return Managment
+return Banking

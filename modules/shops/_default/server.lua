@@ -51,7 +51,7 @@ Shops.CompleteCheckout = function(src, shopName, item, amount, paymentType)
     local mathStuff = tonumber(itemData.price) * tonumber(amount)
     if balance < mathStuff then return Notify.SendNotify(src, ilocale('Shops.NotEnoughMoney'), "error", 5000) end
     if not Framework.RemoveAccountBalance(src, paymentType, mathStuff) then return end
-    Inventory.AddItem(src, itemData.name, amount)
+    Inventory.AddItem(src, itemData.name, tonumber(amount))
     local itemLabel = Inventory.GetItemInfo(itemData.name).label
     Notify.SendNotify(src, ilocale('Shops.PurchasedItem')..itemLabel, "success", 5000)
 end

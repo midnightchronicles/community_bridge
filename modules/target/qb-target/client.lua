@@ -24,14 +24,22 @@ local qb_target = exports['qb-target']
 Target.FixOptions = function(options)
     for k, v in pairs(options) do
         local action = v.onSelect or v.action
-        local select = function(entityOrData)
+        local select = action and function(entityOrData)
             if type(entityOrData) == 'table' then
                 return action(entityOrData.entity)
             end
             return action(entityOrData)
         end
+        if v.serverEvent then
+            v.type = "server"
+            v.event = v.serverEvent
+        elseif v.event then
+            v.type = "client"
+            v.event = v.event
+        end
         options[k].action = select
         options[k].job = v.job or v.groups
+        options[k].jobType = v.jobType
     end
     return options
 end
@@ -170,11 +178,11 @@ end
 ---@param coords table
 ---@param radius number
 ---@param options table
-Target.AddSphereZone = function(name, coords, radius, options)
+Target.AddSphereZone = function(name, coords, radius, options, debug)
     options = Target.FixOptions(options)
     qb_target:AddCircleZone(name, coords, radius, {
         name = name,
-        debugPoly = targetDebug,
+        debugPoly = targetDebug or debug,
     }, {
         options = options,
         distance = options.distance or 1.5,

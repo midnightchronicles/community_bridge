@@ -17,7 +17,7 @@ Dispatch.SendAlert = function(data)
             model = data.vehicle and (GetDisplayNameFromVehicleModel(GetEntityModel(data.vehicle))) or nil,
             color = color,
             plate = data.vehicle and GetVehicleNumberPlateText(data.vehicle) or nil,
-            speed = data.vehicle and (GetEntitySpeed(veh) * 3.6)..' kmh' or nil
+            speed = data.vehicle and (GetEntitySpeed(data.vehicle) * 3.6)..' kmh' or nil
         }
     }
 

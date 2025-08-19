@@ -9,18 +9,15 @@ ClientEntity = {} -- Renamed from BaseEntity
 local function SpawnEntity(entityData)
     entityData = entityData and entityData.args
     if entityData.spawned and DoesEntityExist(entityData.spawned) then return end -- Already spawned
-    -- for k, v in pairs(entityData.args) do
-    --     print(string.format("SpawnEntity %s: %s", k, v))
-    -- end
-    local model = entityData.model and type(entityData.model) == 'string' and GetHashKey(entityData.model) or entityData.model
-    if model and not Utility.LoadModel(model) then
+    local loaded, model = Utility.LoadModel(entityData.model)
+    if not loaded then
         print(string.format("[ClientEntity] Failed to load model %s for entity %s", entityData.model, entityData.id))
         return
     end
 
     local entity = nil
     local coords = entityData.coords
-    local rotation = entityData.rotation or vector3(0.0, 0.0, 0.0) -- Default rotation if not provided
+    local rotation = entityData.rotation or vector3(0.0, 0.0, entityData.heading or 0.0) -- Default rotation if not provided
 
     if entityData.entityType == 'object' then
         entity = CreateObject(model, coords.x, coords.y, coords.z, false, false, false)
@@ -41,22 +38,25 @@ local function SpawnEntity(entityData)
         SetModelAsNoLongerNeeded(model)
     end
     if entityData.OnSpawn then
-        entityData.OnSpawn(entityData)
+        pcall(function (...)
+            return entityData.OnSpawn(entityData)
+        end)
     end
 end
 
 local function RemoveEntity(entityData)
     entityData = entityData and entityData.args or entityData
     if not entityData then return end
-    ClientEntityActions.StopAction(entityData.id)
+    if entityData.OnRemove then
+        pcall(function (...)
+            return entityData.OnRemove(entityData)
+        end)
+    end
     if entityData.spawned and DoesEntityExist(entityData.spawned) then
         local entityHandle = entityData.spawned
         entityData.spawned = nil
-        SetEntityAsMissionEntity(entityHandle, false, false)
+        SetEntityAsMissionEntity(entityHandle, true, true)
         DeleteEntity(entityHandle)
-    end
-    if entityData.OnRemove then
-        entityData.OnRemove(entityData)
     end
 end
 
@@ -175,6 +175,37 @@ function ClientEntity.OnCreate(_type, func)
         ClientEntity.OnCreates[_type] = {}
     end
     table.insert(ClientEntity.OnCreates[_type], func)
+end
+
+function ClientEntity.SetOnSpawn(id, func)
+    local entityData = Entities[id]
+    if not entityData then
+        print(string.format("[ClientEntity] SetOnSpawn: Entity %s does not exist", id))
+        return
+    end
+    entityData.OnSpawn = func
+end
+
+function ClientEntity.SetOnRemove(id, func)
+    local entityData = Entities[id]
+    if not entityData then
+        print(string.format("[ClientEntity] SetOnRemove: Entity %s does not exist", id))
+        return
+    end
+    entityData.OnRemove = func
+end
+
+function ClientEntity.UpdateCoords(id, coords)
+    local entityData = Entities[id]
+    if not entityData then
+        print(string.format("[ClientEntity] UpdateCoords: Entity %s does not exist", id))
+        return
+    end
+    entityData.coords = coords
+    Point.UpdateCoords(id, coords)
+    if entityData.spawned and DoesEntityExist(entityData.spawned) then
+        SetEntityCoords(entityData.spawned, coords.x, coords.y, coords.z, false, false, false, true)
+    end
 end
 
 -- Network Event Handlers

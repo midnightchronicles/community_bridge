@@ -5,15 +5,16 @@ Dispatch = Dispatch or {}
 ---@param data table The data to send to the dispatch system.
 ---@return nil
 Dispatch.SendAlert = function(data)
+    local ped = PlayerPedId()
     TriggerServerEvent('community_bridge:Server:DispatchAlert', {
         sprite = data.blipData.sprite or 161,
         color = data.blipData.color or 1,
         scale = data.blipData.scale or 0.8,
         vehicle = data.vehicle or nil,
         plate = data.vehicle and GetVehicleNumberPlateText(data.vehicle) or nil,
-        ped = data.ped or cache.ped,
-        pedCoords = data.pedCoords or GetEntityCoords(cache.ped),
-        coords = data.coords or GetEntityCoords(cache.ped),
+        ped = data.ped or ped,
+        pedCoords = data.pedCoords or GetEntityCoords(ped),
+        coords = data.coords or GetEntityCoords(ped),
         message = data.message or "An Alert Has Been Made",
         code = data.code or '10-80',
         icon = data.icon or 'fas fa-question',

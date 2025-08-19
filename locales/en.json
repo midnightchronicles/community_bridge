@@ -30,8 +30,8 @@
 		"place_object_scroll_down": "[Scroll Down] Turn left  \n",
 		"object_place": "[%s] Place  \n",
 		"object_cancel": "[%s] Cancel  \n",
-		"object_scroll_up": "[%s] Turn right  \n",
-		"object_scroll_down": "[%s] Turn left  \n",
+		"rotate_clockwise": "[%s] Rotate Clockwise  \n",
+		"rotate_counter_clockwise": "[%s] Rotate Counter-Clockwise  \n",
 		"depth_modifier": "[%s] Depth Control Modifier  \n"
 	}
 }

@@ -60,7 +60,7 @@ function ProgressBar.Open(options, cb, isQBInput)
     local style = options.style or 'bar'
     local success = style == 'circle' and exports.ox_lib:progressCircle(options) or exports.ox_lib:progressBar(options)
 
-    if cb then cb(not success) end
+    if cb then cb(success) end
     return success
 end
 

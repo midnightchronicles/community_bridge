@@ -193,4 +193,19 @@ Inventory.StripPNG = function(item)
     return item
 end
 
+---This will remove the file extension from the item name if present.
+---example: "item.webp" will become "item"
+---@param item string
+---@return string
+Inventory.StripWebp = function(item)
+    if string.find(item, ".webp") then
+        item = string.gsub(item, ".webp", "")
+    end
+    return item
+end
+
+Inventory.OpenPlayerInventory = function(src, targetSrc)
+    return false, Prints.Error("OpenPlayerInventory is not implemented in this inventory, because of this we dont have a way to open a players inventory.")
+end
+
 return Inventory

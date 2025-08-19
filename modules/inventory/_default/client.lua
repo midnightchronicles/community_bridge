@@ -32,12 +32,28 @@ end
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
+    print("No get image path for this inventory, using default.")
     return "https://avatars.githubusercontent.com/u/47620135"
 end
 
+---This will remove the file extension from the item name if present.
+---example: "item.png" will become "item"
+---@param item string
+---@return string
 Inventory.StripPNG = function(item)
     if string.find(item, ".png") then
         item = string.gsub(item, ".png", "")
+    end
+    return item
+end
+
+---This will remove the file extension from the item name if present.
+---example: "item.webp" will become "item"
+---@param item string
+---@return string
+Inventory.StripWebp = function(item)
+    if string.find(item, ".webp") then
+        item = string.gsub(item, ".webp", "")
     end
     return item
 end
@@ -51,5 +67,7 @@ Inventory.Items = function()
     end
     return Framework.Shared.Items
 end
+
+
 
 return Inventory

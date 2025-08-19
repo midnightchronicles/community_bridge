@@ -57,7 +57,7 @@ function ProgressBar.Open(options, cb, qbFormat)
     end
     local prom = promise.new()
     exports['progressbar']:Progress(options, function(cancelled)
-        if cb then cb(not cancelled) end
+        if cb then cb( not cancelled) end
         prom:resolve(not cancelled)
     end)
     return Citizen.Await(prom)

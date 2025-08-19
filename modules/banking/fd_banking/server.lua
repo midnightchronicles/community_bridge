@@ -1,19 +1,19 @@
 ---@diagnostic disable: duplicate-set-field
 if GetResourceState('fd_banking') == 'missing' then return end
-Managment = Managment or {}
+Banking = Banking or {}
 
 local fd_banking = exports['fd_banking']
 
 ---This will get the name of the Managment system being being used.
 ---@return string
-Managment.GetManagmentName = function()
+Banking.GetManagmentName = function()
     return 'fd_banking'
 end
 
 ---This will return a number
 ---@param account string
 ---@return number
-Managment.GetAccountMoney = function(account)
+Banking.GetAccountMoney = function(account)
     return fd_banking:GetAccount(account)
 end
 
@@ -22,7 +22,7 @@ end
 ---@param amount number
 ---@param reason string
 ---@return boolean
-Managment.AddAccountMoney = function(account, amount, reason)
+Banking.AddAccountMoney = function(account, amount, reason)
     return fd_banking:AddMoney(account, amount, reason)
 end
 
@@ -31,8 +31,8 @@ end
 ---@param amount number
 ---@param reason string
 ---@return boolean
-Managment.RemoveAccountMoney = function(account, amount, reason)
+Banking.RemoveAccountMoney = function(account, amount, reason)
     return fd_banking:RemoveMoney(account, amount, reason)
 end
 
-return Managment
+return Banking

@@ -14,6 +14,7 @@ Inventory.Stashes = Inventory.Stashes or {}
 ---@param metadata table
 ---@return boolean
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    if not tgiann:CanCarryItem(src, item, count) then return false end
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return tgiann:AddItem(src, item, count, slot, metadata, false)
 end
@@ -200,17 +201,17 @@ Inventory.ClearStash = function(id, _type)
     return true
 end
 
----This will get the image path for an item, it is an alternate option to GetItemInfo. If a image isnt found will revert to community_bridge logo (useful for menus)
+---This will get the image path for this item, if not found will return placeholder.
 ---@param item string
 ---@return string
 Inventory.GetImagePath = function(item)
-    item = Inventory.StripPNG(item)
-    local pngPath = LoadResourceFile("inventory_images", string.format("html/images/%s.png", item))
-    local webpPath = LoadResourceFile("inventory_images", string.format("html/images/%s.webp", item))
-    local imagePath = pngPath and string.format("nui://inventory_images/html/images/%s.png", item) or webpPath and string.format("nui://inventory_images/html/images/%s.webp", item)
+    local pngItem = Inventory.StripPNG(item)
+    local webpItem = Inventory.StripWebp(item)
+    local pngPath = LoadResourceFile("inventory_images", string.format("/images/%s.png", pngItem))
+    local webpPath = LoadResourceFile("inventory_images", string.format("/images/%s.webp", webpItem))
+    local imagePath = pngPath and string.format("nui://inventory_images/images/%s.png", pngItem) or webpPath and string.format("nui://inventory_images/images/%s.webp", webpItem)
     return imagePath or "https://avatars.githubusercontent.com/u/47620135"
 end
-
 
 ---UNUSED:
 ---This will return generic item data from the specified inventory, with the items total count.
@@ -228,5 +229,14 @@ Inventory.GetItem = function(src, item, metadata)
     item.metadata = item.info
     return item
 end
+
+Inventory.OpenPlayerInventory = function(src, target)
+    assert(src, "OpenPlayerInventory: src is required")
+    if not target then
+        target = src
+    end
+    exports['tgiann-inventory']:OpenInventoryById(src, target)
+end
+
 
 return Inventory

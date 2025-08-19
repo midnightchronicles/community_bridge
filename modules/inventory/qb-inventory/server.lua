@@ -21,6 +21,7 @@ end
 ---@param metadata table
 ---@return boolean
 Inventory.AddItem = function(src, item, count, slot, metadata)
+    if getInventoryNewVersion() then if not qbInventory:CanAddItem(src, item, count) then return false end end
     TriggerClientEvent('qb-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add', count)
     TriggerClientEvent("community_bridge:client:inventory:updateInventory", src, {action = "add", item = item, count = count, slot = slot, metadata = metadata})
     return qbInventory:AddItem(src, item, count, slot, metadata, 'community_bridge')
@@ -273,6 +274,14 @@ Inventory.RegisterShop = function(shopTitle, shopInventory, shopCoords, shopGrou
         v1ShopData[shopTitle] = shopData
         print("QB-INVENTORY: You are using an outdated version of qb-inventory, please update to the latest version. Stuff will still work but you are using litterally the most exploitable inventory in fivem.")
     end
+end
+
+Inventory.OpenPlayerInventory = function(src, target)
+    assert(src, "OpenPlayerInventory: src is required")
+    if not target then
+        target = src
+    end
+    exports['qb-inventory']:OpenInventory(src, target)
 end
 
 return Inventory
