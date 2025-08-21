@@ -40,6 +40,13 @@ Target.FixOptions = function(options)
         options[k].action = select
         options[k].job = v.job or v.groups
         options[k].jobType = v.jobType
+        local optionsCanInteract = v.canInteract      
+        if optionsCanInteract then 
+            local id = Target.CreateCanInteract(optionsCanInteract)
+            v.canInteract = function(...)
+                return Target.CanInteract(id, ...)
+            end
+        end
     end
     return options
 end

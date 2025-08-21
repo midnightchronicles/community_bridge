@@ -1,8 +1,39 @@
 ---@diagnostic disable: duplicate-set-field
 Target = Target or {}
+Ids = Ids or Require("lib/utility/shared/ids.lua")
 
 local function warnUser()
     print("Currently Only Targeting Is Supported By Community Bridge, You Are Using A Resource That Requires The Target Module To Be Used.")
+end
+local InteractIds = {}
+
+Target.GetCanInteract = function(id)
+    return InteractIds[id]
+end
+
+Target.CreateCanInteract = function(cb)
+    if not cb then return end
+    local id = Ids.CreateUniqueId(InteractIds)
+    InteractIds[id] = {
+        id = id,
+        ableToInteract = -1,
+        onInteract = cb
+    }
+    return id
+end
+
+Target.CanInteract = function(id, ...)
+    local interactData = InteractIds[id]
+    if not interactData then return true end
+    if interactData.ableToInteract == -1 then
+        local cb = interactData.onInteract
+        local canInteractStatus = cb(...)
+        interactData.ableToInteract = canInteractStatus and 1 or 0
+        SetTimeout(1000, function()
+            interactData.ableToInteract = -1
+        end)
+    end
+    return interactData.ableToInteract > 0
 end
 
 Target.FixOptions = function(options)
@@ -15,6 +46,13 @@ Target.FixOptions = function(options)
             return action(entityOrData)
         end
         options[k].onSelect = select
+        local optionsCanInteract = v.canInteract
+        if optionsCanInteract then 
+            local id = Target.CreateCanInteract(optionsCanInteract)
+            v.canInteract = function(...)
+                return Target.CanInteract(id, ...)
+            end
+        end
     end
     return options
 end
@@ -77,7 +115,6 @@ Target.AddLocalEntity = function(entities, _options)
         end)
     end
 end
-
 
 Target.AddModel = function(models, options)
     warnUser()

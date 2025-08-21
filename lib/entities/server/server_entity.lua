@@ -29,7 +29,6 @@ end
 function ServerEntity.Create(id, entityType, model, coords, rotation, meta)
     local self = ServerEntity.New(id, entityType, model, coords, rotation, meta)
     if not self then
-        -- print("Failed to create entity with ID: " .. tostring(id))
         return nil
     end
     TriggerClientEvent("community_bridge:client:CreateEntity", -1, self)

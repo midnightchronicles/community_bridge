@@ -1,7 +1,6 @@
 Utility = Utility or Require("lib/utility/client/utility.lua")
 Ids = Ids or Require("lib/utility/shared/ids.lua")
 Point = Point or Require("lib/points/client/points.lua")
-ClientEntityActions = ClientEntityActions or Require("lib/entities/client/client_entity_actions_ext.lua") -- Added
 
 local Entities = {} -- Stores entity data received from server
 ClientEntity = {} -- Renamed from BaseEntity
@@ -86,8 +85,6 @@ end
 -- Depricated use ClientEntity.CreateBulk instead
 ClientEntity.RegisterBulk = ClientEntity.CreateBulk
 
-
-
 --- Unregisters an entity and removes it from the world if spawned.
 -- @param id string|number The ID of the entity to unregister.
 function ClientEntity.Destroy(id)
@@ -99,7 +96,6 @@ function ClientEntity.Destroy(id)
     Entities[id] = nil
 end
 ClientEntity.Unregister = ClientEntity.Destroy
-
 
 --- Updates the data for a registered entity.
 -- @param id string|number The ID of the entity to update.
@@ -165,10 +161,6 @@ function ClientEntity.GetAll()
     return Entities
 end
 
-function ClientEntity.RegisterAction(name, func)
-    ClientEntityActions.RegisterAction(name, func)
-end
-
 function ClientEntity.OnCreate(_type, func)
     ClientEntity.OnCreates = ClientEntity.OnCreates or {}
     if not ClientEntity.OnCreates[_type] then
@@ -203,10 +195,21 @@ function ClientEntity.UpdateCoords(id, coords)
     end
     entityData.coords = coords
     Point.UpdateCoords(id, coords)
-    if entityData.spawned and DoesEntityExist(entityData.spawned) then
-        SetEntityCoords(entityData.spawned, coords.x, coords.y, coords.z, false, false, false, true)
-    end
+    if not entityData.spawned or not DoesEntityExist(entityData.spawned) then return end
+    SetEntityCoords(entityData.spawned, coords.x, coords.y, coords.z, false, false, false, true)
 end
+
+function ClientEntity.ChangeModel(id, model)
+    local entityData = Entities[id]
+    if not entityData then return print(string.format("[ClientEntity] ChangeModel: Entity %s does not exist", id)) end
+
+    entityData.model = model
+    if not entityData.spawned or not DoesEntityExist(entityData.spawned) then return end
+
+    RemoveEntity(entityData)
+    SpawnEntity(entityData)
+end
+
 
 -- Network Event Handlers
 RegisterNetEvent("community_bridge:client:CreateEntity", function(entityData)
@@ -223,46 +226,6 @@ end)
 
 RegisterNetEvent("community_bridge:client:UpdateEntity", function(id, data)
     ClientEntity.Update(id, data)
-end)
-
--- New handler for entity actions
-RegisterNetEvent("community_bridge:client:TriggerEntityAction", function(entityId, actionName, ...)
-    local entityData = Entities[entityId]
-    -- Check if entity exists locally (it doesn't need to be spawned to queue actions)
-    if entityData then
-        if actionName == "Stop" then
-            ClientEntityActions.StopAction(entityId)
-        elseif actionName == "Skip" then
-            ClientEntityActions.SkipAction(entityId)
-        else
-            print(string.format("[ClientEntity] Triggering action '%s' for entity %s", actionName, entityId))
-            local currentAction = ClientEntityActions.ActionQueue[entityId] and ClientEntityActions.ActionQueue[entityId][1]
-            ClientEntityActions.QueueAction(entityData, actionName, ...)
-        end
-    -- else
-        -- Optional: Log if action received but entity doesn't exist locally at all
-        -- print(string.format("[ClientEntity] Received action '%s' for non-existent entity %s.", actionName, entityId))
-    end
-end)
-
-RegisterNetEvent("community_bridge:client:TriggerEntityActions", function(entityId, actions, endPosition)
-    local entityData = Entities[entityId]
-    if entityData then
-        for _, actionData in pairs(actions) do
-            local actionName = actionData.name
-            local actionParams = actionData.params
-            if actionName == "Stop" then
-                ClientEntityActions.StopAction(entityId)
-            elseif actionName == "Skip" then
-                ClientEntityActions.SkipAction(entityId)
-            else
-                local currentAction = ClientEntityActions.ActionQueue[entityId] and ClientEntityActions.ActionQueue[entityId][1]
-                ClientEntityActions.QueueAction(entityData, actionName, table.unpack(actionParams))
-            end
-        end
-    else
-        print(string.format("[ClientEntity] Received actions for non-existent entity %s.", entityId))
-    end
 end)
 
 -- Resource Stop Cleanup

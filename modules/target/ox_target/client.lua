@@ -40,6 +40,13 @@ Target.FixOptions = function(options)
            
         end
         v.groups = v.job or v.groups
+        local optionsCanInteract = v.canInteract      
+        if optionsCanInteract then 
+            local id = Target.CreateCanInteract(optionsCanInteract)
+            v.canInteract = function(...)
+                return Target.CanInteract(id, ...)
+            end
+        end
         -- print(json.encode(v))
     end
     return options
