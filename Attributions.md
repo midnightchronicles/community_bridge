@@ -27,27 +27,6 @@
 
 ---
 
-### dirk\_lib
-
-**Purpose:** Vehicle fuel and vehicle key bridging systems
-**Repository:** [dirk\_lib](https://github.com/DirkDigglerz/dirk_lib)
-
-<details>
-<summary>Implementation Details</summary>
-
-**Code we use:**
-
-* Client-side vehicle fuel management
-* Vehicle key bridging functionality
-
-**Modifications made:**
-
-* None - code used as-is with full credit to original author
-
-</details>
-
----
-
 ### ox\_lib
 
 **Purpose:** External compatibility and architectural inspiration
