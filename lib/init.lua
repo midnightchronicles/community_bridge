@@ -39,10 +39,10 @@ end
 
 cLib = {
     Require = Require,
-    Callback = Callback or Require("lib/utility/shared/callbacks.lua"),
+    Callback = Callback or Require("lib/callback/shared/callback.lua"),
     Ids = Ids or Require("lib/utility/shared/ids.lua"),
     ReboundEntities = ReboundEntities or Require("lib/utility/shared/rebound_entities.lua"),
-    Tables = Tables or Require("lib/utility/shared/tables.lua"),
+    Tables = Table or Require("lib/utility/shared/tables.lua"),
     Prints = Prints or Require("lib/utility/shared/prints.lua"),
     Math = Math or Require("lib/utility/shared/math.lua"),
     LA = LA or Require("lib/utility/shared/la.lua"),
