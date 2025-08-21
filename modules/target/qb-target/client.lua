@@ -17,6 +17,16 @@ local targetZones = {}
 Target = Target or {}
 local qb_target = exports['qb-target']
 
+function GetLargestDistance(data)
+    local largestDistance = -1
+    for _, v in pairs(data) do
+        if v.distance and v.distance > largestDistance then
+            largestDistance = v.distance
+        end
+    end
+    return largestDistance ~= -1 and largestDistance or 2.0
+end
+
 
 ---This is an internal function that is used to fix the options passed to fit alternative target systems, for example qb-ox or ox-qb etc.
 ---@param options table
@@ -63,7 +73,7 @@ Target.AddGlobalPlayer = function(options)
     options = Target.FixOptions(options)
     qb_target:AddGlobalPlayer({
         options = options,
-        distance = options.distance or 1.5
+        distance = GetLargestDistance(options)
     })
 end
 
@@ -74,11 +84,11 @@ end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
 ---@param options table
-Target.AddGlobalPed = function(options)
+Target.AddGlobalPed = function(options, distance)
     options = Target.FixOptions(options)
     qb_target:AddGlobalPed({
         options = options,
-        distance = options.distance or 1.5
+        distance = GetLargestDistance(options)
     })
 end
 
@@ -90,11 +100,11 @@ end
 
 ---This will add taget options to all vehicles.
 ---@param options table
-Target.AddGlobalVehicle = function(options)
+Target.AddGlobalVehicle = function(options, distance)
     options = Target.FixOptions(options)
     qb_target:AddGlobalVehicle({
         options = options,
-        distance = options.distance or 1.5
+        distance = GetLargestDistance(options)
     })
 end
 
@@ -126,11 +136,11 @@ end
 ---This will generate targets on non networked entites with the passed options.
 ---@param entities number | table
 ---@param options table
-Target.AddLocalEntity = function(entities, options)
+Target.AddLocalEntity = function(entities, options, distance)
     options = Target.FixOptions(options)
     qb_target:AddTargetEntity(entities, {
         options = options,
-        distance = options.distance or 1.5
+        distance = GetLargestDistance(options)
     })
 end
 
@@ -144,11 +154,11 @@ end
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
 ---@param models number | table
 ---@param options table
-Target.AddModel = function(models, options)
+Target.AddModel = function(models, options, distance)
     options = Target.FixOptions(options)
     qb_target:AddTargetModel(models, {
         options = options,
-        distance = options.distance or 1.5,
+        distance = GetLargestDistance(options),
     })
 end
 
@@ -164,7 +174,7 @@ end
 ---@param size table
 ---@param heading number
 ---@param options table
-Target.AddBoxZone = function(name, coords, size, heading, options, debug)
+Target.AddBoxZone = function(name, coords, size, heading, options, debug, distance)
     options = Target.FixOptions(options)
     if not next(options) then return end
     qb_target:AddBoxZone(name, coords, size.x, size.y, {
@@ -175,7 +185,7 @@ Target.AddBoxZone = function(name, coords, size, heading, options, debug)
         maxZ = coords.z + (size.z * 0.5),
     }, {
         options = options,
-        distance = options.distance or 1.5,
+        distance = GetLargestDistance(options),
     })
     table.insert(targetZones, { name = name, creator = GetInvokingResource() })
 end
@@ -185,14 +195,14 @@ end
 ---@param coords table
 ---@param radius number
 ---@param options table
-Target.AddSphereZone = function(name, coords, radius, options, debug)
+Target.AddSphereZone = function(name, coords, radius, options, debug, distance)
     options = Target.FixOptions(options)
     qb_target:AddCircleZone(name, coords, radius, {
         name = name,
         debugPoly = targetDebug or debug,
     }, {
         options = options,
-        distance = options.distance or 1.5,
+        distance = GetLargestDistance(options),
     })
     table.insert(targetZones, { name = name, creator = GetInvokingResource() })
 end
