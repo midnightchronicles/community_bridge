@@ -4,10 +4,13 @@ if GetResourceState('ox_doorlock') == 'missing' then return end
 Doorlock = Doorlock or {}
 
 ---This will toggle the lock status of the door.
----@param doorID string
+---@param doorID string|number
 ---@param toggle boolean
 ---@return boolean
 Doorlock.ToggleDoorLock = function(doorID, toggle)
+    if type(doorID) == 'string' then
+        doorID = tonumber(doorID)
+    end
     local state = toggle
     if state then
         exports.ox_doorlock:setDoorState(doorID, 1)
