@@ -1,7 +1,7 @@
 ---@diagnostic disable: duplicate-set-field
 Clothing = Clothing or {}
 Clothing.LastAppearance = Clothing.LastAppearance or {}
-Callback = Callback or Require("lib/utility/shared/callbacks.lua")
+Callback = Callback or Require("lib/callback/shared/callback.lua")
 
 function Clothing.IsMale(src)
     local ped = GetPlayerPed(src)

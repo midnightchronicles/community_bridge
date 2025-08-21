@@ -2,7 +2,7 @@
 Clothing = Clothing or {}
 
 ClothingBackup = {}
-Callback = Callback or Require("lib/utility/shared/callbacks.lua")
+Callback = Callback or Require("lib/callback/shared/callback.lua")
 Ultility = Utility or Require('lib/utility/client/utility.lua')
 Cache = Cache or Require('lib/cache/shared/cache.lua')
 

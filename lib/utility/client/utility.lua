@@ -3,7 +3,7 @@ local blipIDs = {}
 local spawnedPeds = {}
 
 Locales = Locales or Require('modules/locales/shared.lua')
-Point = Point or Require('lib/points/client/pointsv2.lua')
+Point = Point or Require('lib/points/client/points.lua')
 
 ---Get the hash of a model (string or number)
 ---@param model string|number

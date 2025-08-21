@@ -41,11 +41,10 @@ cLib = {
     Require = Require,
     Callback = Callback or Require("lib/callback/shared/callback.lua"),
     Ids = Ids or Require("lib/utility/shared/ids.lua"),
-    ReboundEntities = ReboundEntities or Require("lib/utility/shared/rebound_entities.lua"),
     Tables = Table or Require("lib/utility/shared/tables.lua"),
     Prints = Prints or Require("lib/utility/shared/prints.lua"),
     Math = Math or Require("lib/utility/shared/math.lua"),
-    LA = LA or Require("lib/utility/shared/la.lua"),
+    LA = LA or Require("lib/utility/shared/la.lua")
     -- Zones = Poly or Require("lib/zones/shared/zones.lua"),
     -- Action = Action or Require("lib/entities/shared/actions.lua"),
 }
@@ -56,8 +55,6 @@ if not IsDuplicityVersion() then goto client end
 
 cLib.SQL = SQL or Require("lib/sql/server/sqlHandler.lua")
 cLib.Logs = Logs or Require("lib/logs/server/logs.lua")
-cLib.ItemsBuilder = ItemsBuilder or Require("lib/generators/server/ItemsBuilder.lua")
-cLib.LootTables = LootTables or Require("lib/generators/server/lootTables.lua")
 cLib.Cache = Cache or Require("lib/cache/shared/cache.lua")
 cLib.Marker = Marker or Require("lib/markers/server/server.lua")
 cLib.Particle = Particle or Require("lib/particles/server/particles.lua")
@@ -70,11 +67,10 @@ cLib.Placeable = Placeable or Require("lib/placers/client/object_placer.lua")
 cLib.Utility = Utility or Require("lib/utility/client/utility.lua")
 cLib.PlaceableObject = ObjectPlacer or Require("lib/placers/client/placeable_object.lua")
 cLib.Raycast = Raycast or Require("lib/raycast/client/raycast.lua")
-cLib.Point = Point or Require("lib/points/client/pointsv2.lua")
+cLib.Point = Point or Require("lib/points/client/points.lua")
 cLib.Particle = Particle or Require("lib/particles/client/particles.lua")
 cLib.Cache = Cache or Require("lib/cache/client/cache.lua")
 cLib.ClientEntity = ClientEntity or Require("lib/entities/client/client_entity.lua")
-cLib.ClientStateBag = ClientStateBag or Require("lib/statebags/client/client.lua")
 cLib.Marker = Marker or Require("lib/markers/client/markers.lua")
 cLib.Anim = Anim or Require("lib/anim/client/client.lua")
 cLib.Cutscene = Cutscene or Require("lib/cutscenes/client/cutscene.lua")
