@@ -61,6 +61,7 @@ client_scripts {
     'modules/housing/**/client.lua',
     'modules/skills/**/client.lua',
     'modules/bossmenu/**/client.lua',
+    'modules/zones/**/client.lua',
     'init.lua',
     -- 'unit_tests/*.lua',
 }
