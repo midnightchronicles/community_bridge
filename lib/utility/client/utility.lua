@@ -131,7 +131,7 @@ function Utility.CreateBlip(coords, sprite, color, scale, label, shortRange, dis
     return blip
 end
 
-function Utility.CreateBlipRadius(coords, radius, color, alpha, label, shortRange, displayType)
+function Utility.CreateRadiusBlip(coords, radius, color, alpha, label, shortRange, displayType)
     local blip = AddBlipForRadius(coords.x, coords.y, coords.z, radius)
     SetBlipColour(blip, color or 3)
     SetBlipAlpha(blip, alpha or 255)
