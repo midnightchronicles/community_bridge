@@ -168,8 +168,8 @@ end
 ---This will get a players dead status.
 ---@return boolean
 Framework.GetIsPlayerDead = function()
-    local platerData = Framework.GetPlayerData()
-    return platerData.metadata["isdead"] or platerData.metadata["inlaststand"]
+    local playerData = Framework.GetPlayerData()
+    return playerData.metadata["isdead"] or playerData.metadata["inlaststand"]
 end
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
