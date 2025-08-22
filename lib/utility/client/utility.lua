@@ -131,6 +131,19 @@ function Utility.CreateBlip(coords, sprite, color, scale, label, shortRange, dis
     return blip
 end
 
+function Utility.CreateBlipRadius(coords, radius, color, alpha, label, shortRange, displayType)
+    local blip = AddBlipForRadius(coords.x, coords.y, coords.z, radius)
+    SetBlipColour(blip, color or 3)
+    SetBlipAlpha(blip, alpha or 255)
+    SetBlipDisplay(blip, displayType or 2)
+    SetBlipAsShortRange(blip, shortRange)
+    AddTextEntry(label, label)
+    BeginTextCommandSetBlipName(label)
+    EndTextCommandSetBlipName(blip)
+    blipIDs[tostring(blip)] = blip
+    return blip
+end
+
 ---Create a blip on the provided entity
 ---@param entity number
 ---@param sprite number
