@@ -1,12 +1,17 @@
 Utility = Utility or Require("lib/utility/client/utility.lua")
 Ids = Ids or Require("lib/utility/shared/ids.lua")
 Point = Point or Require("lib/points/client/points.lua")
-
+Behaviors = Behaviors or Require("lib/entities/client/behaviors.lua")
 local Entities = {} -- Stores entity data received from server
 ClientEntity = {} -- Renamed from BaseEntity
+ClientEntity.Behaviors = Behaviors
+
+
+
+
+--------------------
 
 local function SpawnEntity(entityData)
-    entityData = entityData and entityData.args
     if entityData.spawned and DoesEntityExist(entityData.spawned) then return end -- Already spawned
     local loaded, model = Utility.LoadModel(entityData.model)
     if not loaded then
@@ -39,13 +44,15 @@ local function SpawnEntity(entityData)
     if entityData.OnSpawn then
         pcall(function (...)
             return entityData.OnSpawn(entityData)
-        end)
+        end)        
     end
+    Behaviors.Trigger("OnSpawn", entityData)
 end
 
 local function RemoveEntity(entityData)
     entityData = entityData and entityData.args or entityData
     if not entityData then return end
+    Behaviors.Trigger("OnRemove", entityData)
     if entityData.OnRemove then
         pcall(function (...)
             return entityData.OnRemove(entityData)
@@ -59,13 +66,48 @@ local function RemoveEntity(entityData)
     end
 end
 
+local function UpdateEntity(_entityData)
+    local entityData = ClientEntity.Get(_entityData.id)
+    if not entityData then return end
+    if entityData.oldCoords and entityData.oldCoords ~= entityData.coords then
+        local dist = #(entityData.coords.xyz - entityData.oldCoords.xyz)
+        if dist > 0.1 then
+            ClientEntity.UpdateCoords(entityData.id, entityData.coords)           
+        end       
+        entityData.oldCoords = entityData.coords
+    end   
+
+    if not entityData.oldRotation or entityData.oldRotation ~= entityData.rotation then
+        if entityData.spawned and DoesEntityExist(entityData.spawned) then
+            if entityData.entityType == 'object' then
+                SetEntityRotation(entityData.spawned, entityData.rotation.x, entityData.rotation.y, entityData.rotation.z, 2, true)
+            else -- Ped/Vehicle heading
+                SetEntityHeading(entityData.spawned, type(entityData.rotation) == 'number' and entityData.rotation or entityData.rotation.z)
+            end
+        end
+        entityData.oldRotation = entityData.rotation
+    end
+    if entityData.OnUpdate then
+        pcall(function (...)
+            return entityData.OnUpdate(entityData)
+        end)
+    end
+    Behaviors.Trigger("OnUpdate", entityData)
+end
+
 --- Registers an entity received from the server and sets up proximity spawning.
 -- @param entityData table Data received from the server via 'community_bridge:client:CreateEntity'
 function ClientEntity.Create(entityData)
     entityData.id = entityData.id or Ids.CreateUniqueId(Entities)
-    if Entities[entityData.id] then return Entities[entityData.id] end -- Already registered
-    Entities[entityData.id] = entityData
-    return Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, function() end)
+    if Entities[entityData.id] then return Entities[entityData.id] end
+    entityData.rotation = entityData.rotation or vector3(0.0, 0.0, entityData.heading or 0.0)
+    entityData.oldCoords = entityData.oldCoords or vector3(0.0, 0.0, 0.0)
+    entityData.oldRotation = entityData.rotation
+ 
+    local entityPoint = Point.Register(entityData.id, entityData.coords, entityData.spawnDistance or 50.0, entityData, SpawnEntity, RemoveEntity, UpdateEntity)
+    Entities[entityData.id] = entityPoint
+    Behaviors.Trigger("OnCreate", entityPoint)
+    return entityPoint
 end
 
 --Depricated use ClientEntity.Create instead
@@ -97,61 +139,68 @@ function ClientEntity.Destroy(id)
 end
 ClientEntity.Unregister = ClientEntity.Destroy
 
+
+
+function ClientEntity.Set(id, key, value)
+    local entityData = ClientEntity.Get(id)
+    if not entityData then return print(string.format("[ClientEntity] SetKey: Entity %s does not exist", id)) end
+    entityData[key] = value
+end
+
 --- Updates the data for a registered entity.
 -- @param id string|number The ID of the entity to update.
 -- @param data table The data fields to update.
-function ClientEntity.Update(id, data)
-    local entityData = Entities[id]
-    -- print(string.format("[ClientEntity] Updating entity %s", id))
-    if not entityData then return end
+-- function ClientEntity.Update(id, data)
+--     local entityData = ClientEntity.Get(id)
+--     if not entityData then return end
 
-    local needsPointUpdate = false
-    for key, value in pairs(data) do
-        if key == 'coords' and #(entityData.coords - value) > 0.1 then
-             needsPointUpdate = true
-        end
-        if key == 'spawnDistance' and entityData.spawnDistance ~= value then
-             needsPointUpdate = true
-        end
-        entityData[key] = value
-    end
+--     local needsPointUpdate = false
+--     for key, value in pairs(data) do
+--         if key == 'coords' and #(entityData.coords - value) > 0.1 then
+--              needsPointUpdate = true
+--         end
+--         if key == 'spawnDistance' and entityData.spawnDistance ~= value then
+--              needsPointUpdate = true
+--         end
+--         entityData[key] = value
+--     end
 
-    -- If entity is currently spawned, apply updates
-    if entityData.spawned and DoesEntityExist(entityData.spawned) then
-        if data.coords then
-            SetEntityCoords(entityData.spawned, entityData.coords.x, entityData.coords.y, entityData.coords.z, false, false, false, true)
-        end
-        if data.rotation then
-             if entityData.entityType == 'object' then
-                 SetEntityRotation(entityData.spawned, entityData.rotation.x, entityData.rotation.y, entityData.rotation.z, 2, true)
-             else -- Ped/Vehicle heading
-                 SetEntityHeading(entityData.spawned, type(entityData.rotation) == 'number' and entityData.rotation or entityData.rotation.z)
-             end
-        end
-        if data.freeze ~= nil then
-            FreezeEntityPosition(entityData.spawned, data.freeze)
-        end
-        -- Add other updatable properties as needed
-    end
+--     -- If entity is currently spawned, apply updates
+--     if entityData.spawned and DoesEntityExist(entityData.spawned) then
+--         if data.coords then
+--             SetEntityCoords(entityData.spawned, entityData.coords.x, entityData.coords.y, entityData.coords.z, false, false, false, true)
+--         end
+--         if data.rotation then
+--              if entityData.entityType == 'object' then
+--                  SetEntityRotation(entityData.spawned, entityData.rotation.x, entityData.rotation.y, entityData.rotation.z, 2, true)
+--              else -- Ped/Vehicle heading
+--                  SetEntityHeading(entityData.spawned, type(entityData.rotation) == 'number' and entityData.rotation or entityData.rotation.z)
+--              end
+--         end
+--         if data.freeze ~= nil then
+--             FreezeEntityPosition(entityData.spawned, data.freeze)
+--         end
+--         -- Add other updatable properties as needed
+--     end
 
-    -- Update Point registration if coords or distance changed
-    if needsPointUpdate then
-        Point.Remove(id)
-        Point.Register(
-            entityData.id,
-            entityData.coords,
-            entityData.spawnDistance or 50.0,
-            SpawnEntity,
-            RemoveEntity,
-            nil,
-            entityData
-        )
-    end
+--     -- Update Point registration if coords or distance changed
+--     if needsPointUpdate then
+--         Point.Remove(id)
+--         Point.Register(
+--             entityData.id,
+--             entityData.coords,
+--             entityData.spawnDistance or 50.0,
+--             entityData,
+--             SpawnEntity,
+--             RemoveEntity,
+--             OnUpdateEntity
+--         )
+--     end
 
-    if entityData.OnUpdate and type(entityData.OnUpdate) == 'function' then
-        entityData.OnUpdate(entityData, data)
-    end
-end
+--     if entityData.OnUpdate and type(entityData.OnUpdate) == 'function' then
+--         entityData.OnUpdate(entityData, data)
+--     end
+-- end
 
 function ClientEntity.Get(id)
     return Entities[id]
@@ -226,6 +275,11 @@ end)
 
 RegisterNetEvent("community_bridge:client:UpdateEntity", function(id, data)
     ClientEntity.Update(id, data)
+end)
+
+AddEventHandler('onResourceStart', function(resourceName)
+    if resourceName ~= GetCurrentResourceName() then return end
+    Behaviors.Setup()
 end)
 
 -- Resource Stop Cleanup

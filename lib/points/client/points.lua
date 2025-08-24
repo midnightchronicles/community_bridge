@@ -75,6 +75,9 @@ function Point.StartLoop()
                             point.args = point?.onExit(point, point.args) or point.args
                         end
                     end
+                    if point.inside and point.onUpdate then
+                        point.onUpdate(point, point.args)
+                    end
                 end
             end
             Wait(1000)
@@ -82,11 +85,11 @@ function Point.StartLoop()
     end)
 end
 
-function Point.Register(id, target, distance, args, _onEnter, _onExit)
+function Point.Register(id, target, distance, args, _onEnter, _onExit, _onUpdate)
     local isEntity = type(target) == "number"
     local coords = isEntity and GetEntityCoords(target) or target
     Grid.Generate()
-    local self = {}
+    local self = args or {}
     self.id = id
     self.target = target -- Store entity ID or Vector3
     self.isEntity = isEntity
@@ -94,8 +97,8 @@ function Point.Register(id, target, distance, args, _onEnter, _onExit)
     self.distance = distance
     self.onEnter = _onEnter or function() end
     self.onExit = _onExit or function() end
+    self.onUpdate = _onUpdate or function() end
     self.inside = false -- Track if player is inside
-    self.args = args or {}
     local grid = Grid.GetCellByCoords(coords)
     grid[id] = self
     Point.All[id] = self

@@ -1,3 +1,25 @@
+--- ox_lib compatibility wrapper for zone creation and management.
+--- Provides a small API around lib.zones (box, sphere, poly) to create/destroy
+--- and lookup zones with automatic id generation and resource ownership.
+---
+--- Example:
+--- local id = cZones.Create("box", { coords = vec3(0,0,0), size = vec3(2,2,2), onEnter = function(z) ... end })
+--- cZones.Destroy(id)
+---
+---@module cZones
+---@class ZoneData
+---@field id string Unique id for the zone (generated)
+---@field invoking string Resource that created the zone
+---@field coords vector3? Center coordinates (box/sphere)
+---@field points vector2[]? Array of points for poly zones
+---@field radius number? Radius for sphere zones
+---@field size table? Size table or vec3 for box zones
+---@field zone any Internal zone handle returned by lib.zones
+---@field debug boolean? Debug flag passed to lib.zones
+---@field onEnter fun(data:ZoneData)? Callback invoked on enter (receives ZoneData)
+---@field onExit fun(data:ZoneData)? Callback invoked on exit (receives ZoneData)
+---@alias ZoneType "box"|"sphere"|"poly"
+
 ---@diagnostic disable: duplicate-set-field
 local resourceName = "ox_lib"
 if GetResourceState(resourceName) == 'missing' then return end
@@ -6,6 +28,12 @@ Ids = Ids or Require('lib/utility/shared/ids.lua')
 
 cZones = {} --conflict with ox
 cZones.All = {}
+
+--- Create a zone of the specified type.
+--- Supported types: "box", "sphere", "poly"
+---@param type ZoneType
+---@param data ZoneData
+---@return string|nil id Returns the generated zone id on success, or nil on failure
 function cZones.Create(type, data)
     assert(type, "Requires zone type ('box', 'sphere', or 'poly')")
     assert(data, "Requires data table")
@@ -93,6 +121,9 @@ function cZones.Create(type, data)
     return nil
 end
 
+--- Destroy a zone by id.
+---@param id string
+---@return boolean success True if destroyed, false otherwise
 function cZones.Destroy(id)
     if not id then return false end
     local zone = cZones.All[id].zone
@@ -102,6 +133,9 @@ function cZones.Destroy(id)
     return true
 end
 
+--- Destroy all zones created by a specific resource.
+---@param resource string Name of the invoking resource
+---@return boolean success True if operation completed (no guarantee zones existed)
 function cZones.DestroyByResource(resource)
     if not resource then return false end
     for id, zone in pairs(cZones.All or {}) do
@@ -112,11 +146,16 @@ function cZones.DestroyByResource(resource)
     return true
 end
 
+--- Retrieve zone data by id.
+---@param id string
+---@return ZoneData|nil
 function cZones.Get(id)
     if not id then return nil end
     return cZones.All[id]
 end
 
+--- Event handler: clean up zones when a resource stops.
+--- This is registered to the "onResourceStop" event and delegates to DestroyByResource.
 RegisterNetEvent("onResourceStop", function(resource)
     cZones.DestroyByResource(resource)
 end)

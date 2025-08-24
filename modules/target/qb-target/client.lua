@@ -84,7 +84,7 @@ end
 
 ---This will add target options to all specified models. This is useful for when you want to add target options to all models of a specific type.
 ---@param options table
-Target.AddGlobalPed = function(options, distance)
+Target.AddGlobalPed = function(options)
     options = Target.FixOptions(options)
     qb_target:AddGlobalPed({
         options = options,
@@ -100,7 +100,7 @@ end
 
 ---This will add taget options to all vehicles.
 ---@param options table
-Target.AddGlobalVehicle = function(options, distance)
+Target.AddGlobalVehicle = function(options)
     options = Target.FixOptions(options)
     qb_target:AddGlobalVehicle({
         options = options,
@@ -136,7 +136,7 @@ end
 ---This will generate targets on non networked entites with the passed options.
 ---@param entities number | table
 ---@param options table
-Target.AddLocalEntity = function(entities, options, distance)
+Target.AddLocalEntity = function(entities, options)
     options = Target.FixOptions(options)
     qb_target:AddTargetEntity(entities, {
         options = options,
@@ -174,7 +174,7 @@ end
 ---@param size table
 ---@param heading number
 ---@param options table
-Target.AddBoxZone = function(name, coords, size, heading, options, debug, distance)
+Target.AddBoxZone = function(name, coords, size, heading, options, debug)
     options = Target.FixOptions(options)
     if not next(options) then return end
     qb_target:AddBoxZone(name, coords, size.x, size.y, {
@@ -195,7 +195,7 @@ end
 ---@param coords table
 ---@param radius number
 ---@param options table
-Target.AddSphereZone = function(name, coords, radius, options, debug, distance)
+Target.AddSphereZone = function(name, coords, radius, options, debug)
     options = Target.FixOptions(options)
     qb_target:AddCircleZone(name, coords, radius, {
         name = name,
