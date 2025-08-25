@@ -70,9 +70,16 @@ local function UpdateEntity(_entityData)
     local entityData = ClientEntity.Get(_entityData.id)
     if not entityData then return end
     if entityData.oldCoords and entityData.oldCoords ~= entityData.coords then
-        local dist = #(entityData.coords.xyz - entityData.oldCoords.xyz)
+        local coords = vector3(entityData.coords.x, entityData.coords.y, entityData.coords.z)
+        local dist = #(coords.xyz - entityData.oldCoords.xyz)
         if dist > 0.1 then
-            ClientEntity.UpdateCoords(entityData.id, entityData.coords)           
+            -- ClientEntity.UpdateCoords(entityData.id, entityData.coords)       
+            if entityData.OnMove then
+                pcall(function (...)
+                    return entityData.OnMove(entityData)
+                end)
+            end
+            Behaviors.Trigger("OnMove", entityData, entityData.oldCoords, entityData.coords)
         end       
         entityData.oldCoords = entityData.coords
     end   
@@ -145,6 +152,7 @@ function ClientEntity.Set(id, key, value)
     local entityData = ClientEntity.Get(id)
     if not entityData then return print(string.format("[ClientEntity] SetKey: Entity %s does not exist", id)) end
     entityData[key] = value
+    -- TriggerServerEvent("community_bridge:server:UpdateEntity", id, {[key] = value})
 end
 
 --- Updates the data for a registered entity.
