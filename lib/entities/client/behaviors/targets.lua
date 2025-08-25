@@ -40,8 +40,7 @@ function Targets.OnUpdate(entityData)
             entityData.newTargets = {entityData.targets}
         end
         newTarget = entityData.newTargets[i]
-        if newTarget
-            and target.label ~= newTarget.label
+        if newTarget and target.label ~= newTarget.label
             or target.distance ~= newTarget.distance
             or target.description ~= newTarget.description
         then

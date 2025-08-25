@@ -1,6 +1,7 @@
 local fileList = {
     "particles",
     "targets",
+    "follow",
 }
 
 local path = "lib/entities/client/behaviors/"

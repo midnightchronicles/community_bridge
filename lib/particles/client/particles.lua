@@ -2,8 +2,6 @@ Particles = {}
 Particle = {}
 ---@diagnostic disable: duplicate-set-field
 Ids = Ids or Require("lib/utility/shared/ids.lua")
-local point =  Require("lib/points/client/points.lua")
-
 ---Loads a ptfx asset into memory.
 ---@param dict string
 ---@return boolean
@@ -27,7 +25,7 @@ end
 --- @param color vector3
 --- @param looped boolean
 --- @param loopLength number|nil
---- @return number|nil ptfxHandle -- The handle of the particle effect, or nil if it failed to create.
+--- @return string|nil ptfxHandle -- The handle of the particle effect, or nil if it failed to create.
 function Particle.Play(dict, ptfx, pos, rot, scale, color, looped, removeAfter)
     LoadPtfxAsset(dict)
     UseParticleFxAssetNextCall(dict)
@@ -58,7 +56,7 @@ function Particle.Play(dict, ptfx, pos, rot, scale, color, looped, removeAfter)
             end)
             return strParticle
         else
-            if not removeAfter or removeAfter <= 0 then return particle end
+            if not removeAfter or removeAfter <= 0 then return strParticle end
             CreateThread(function()
                 while Particles[strParticle] do
                     Wait(removeAfter)
@@ -82,15 +80,16 @@ function Particle.Play(dict, ptfx, pos, rot, scale, color, looped, removeAfter)
         Particle.Stop(particle)
     end
 
-    return particle
+    return tostring(particle)
 end
 
-function Particle.Stop(particle)
-    if not particle then return end
+function Particle.Stop(particleid)
+    if not particleid then return end
+    local particle = tonumber(Particles[particleid]) or tonumber(particleid)
     StopParticleFxLooped(particle, false)
     RemoveParticleFx(particle, false)
     RemoveNamedPtfxAsset(particle)
-    Particles[tostring(particle)] = nil
+    Particles[particleid] = nil
 end
 
 
